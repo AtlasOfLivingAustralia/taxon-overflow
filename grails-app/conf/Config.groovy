@@ -26,7 +26,7 @@ headerAndFooter.baseURL = 'http://www2.ala.org.au/commonui'
 ala.baseURL = "http://www.ala.org.au"
 bie.baseURL = "http://bie.ala.org.au"
 bie.searchPath = "/search"
-grails.project.groupId = "au.org.ala.taxonoverflow" // change this to alter the default package name and Maven publishing destination
+grails.project.groupId = "au.org.ala" // change this to alter the default package name and Maven publishing destination
 
 // The ACCEPT header will not be used for content negotiation for user agents containing the following strings (defaults to the 4 major rendering engines)
 grails.mime.disable.accept.header.userAgents = ['Gecko', 'WebKit', 'Presto', 'Trident']
