@@ -7,6 +7,8 @@ grails.project.target.level = 1.6
 grails.project.source.level = 1.6
 //grails.project.war.file = "target/${appName}-${appVersion}.war"
 
+// grails.plugin.location.'ala-web-theme' = "../ala-web-theme"
+
 grails.project.fork = [
     // configure settings for compilation JVM, note that if you alter the Groovy version forked compilation is required
     //  compile: [maxMemory: 256, minMemory: 64, debug: false, maxPerm: 256, daemon:true],
@@ -50,10 +52,12 @@ grails.project.dependency.resolution = {
     dependencies {
         // specify dependencies here under either 'build', 'compile', 'runtime', 'test' or 'provided' scopes e.g.
         // runtime 'mysql:mysql-connector-java:5.1.29'
-        // runtime 'org.postgresql:postgresql:9.3-1101-jdbc41'
+        runtime 'org.postgresql:postgresql:9.3-1101-jdbc41'
         test "org.grails:grails-datastore-test-support:1.0-grails-2.4"
 
         compile 'org.pegdown:pegdown:1.4.2'
+        compile 'org.elasticsearch:elasticsearch:1.3.2'
+        compile 'net.sf.ehcache:ehcache:2.8.4'
     }
 
     plugins {
@@ -67,7 +71,7 @@ grails.project.dependency.resolution = {
         compile ":asset-pipeline:1.9.9"
 
         // plugins needed at runtime but not for compilation
-        // runtime ":hibernate4:4.3.5.5" // or ":hibernate:3.6.10.17"
+        runtime ":hibernate4:4.3.5.5"
         runtime ":database-migration:1.4.0"
         runtime ":jquery:1.11.1"
 
