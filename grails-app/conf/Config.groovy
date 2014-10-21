@@ -28,6 +28,15 @@ bie.baseURL = "http://bie.ala.org.au"
 bie.searchPath = "/search"
 grails.project.groupId = "au.org.ala" // change this to alter the default package name and Maven publishing destination
 
+bie.baseUrl = "http://bie.ala.org.au"
+collectory.baseUrl = "http://collections.ala.org.au"
+biocache.apiKey = "api-key-to-use"
+biocache.baseUrl = "http://biocache.ala.org.au/ws"
+biocache.queryContext = "" // datahub uuid - e.g. ozcam  = " data_hub_uid:dh1 || avh = data_hub_uid:dh2"
+biocache.downloads.extra = "dataResourceUid,dataResourceName.p"
+biocache.ajax.useProxy = false
+collections.baseUrl = "http://collections.ala.org.au"
+
 elasticsearch.location = "/data/${appName}/elasticsearch"
 
 // The ACCEPT header will not be used for content negotiation for user agents containing the following strings (defaults to the 4 major rendering engines)

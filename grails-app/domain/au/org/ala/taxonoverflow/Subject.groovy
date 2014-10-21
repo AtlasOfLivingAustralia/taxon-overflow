@@ -5,5 +5,7 @@ class Subject {
     String occurrenceId
 
     static constraints = {
+        occurrenceId nullable: false
     }
+
 }
