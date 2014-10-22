@@ -14,4 +14,15 @@ class SubjectController {
         def totalCount = Subject.count()
         [subjects: subjects, totalCount: totalCount]
     }
+
+    def delete(int id) {
+        def subject = Subject.get(id)
+        if (subject) {
+            subject.delete()
+        } else {
+            flash.message = "Failed to delete subject id ${id}. Subject not found."
+        }
+        redirect(action:'list')
+    }
+
 }

@@ -67,14 +67,14 @@ grails.project.dependency.resolution = {
         // plugins for the compile step
         compile ":scaffolding:2.1.2"
         compile ':cache:1.1.6'
-        compile ":asset-pipeline:1.9.9"
+        // compile ":asset-pipeline:1.9.9"
 
         // plugins needed at runtime but not for compilation
         runtime ":hibernate4:4.3.5.5"
         runtime ":database-migration:1.4.0"
-        runtime ":jquery:1.11.1"
+        //runtime ":jquery:1.11.1"
 
-        runtime ":ala-web-theme:1.0.0"
+        runtime ":ala-web-theme:1.0.1"
 
         // Uncomment these to enable additional asset-pipeline capabilities
         //compile ":sass-asset-pipeline:1.9.0"

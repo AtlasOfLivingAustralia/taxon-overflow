@@ -6,20 +6,39 @@
         <style type="text/css" media="screen">
 
         </style>
+        <r:script>
+
+            $(document).ready(function() {
+
+                $(".btnDelete").click(function(e) {
+                    e.preventDefault();
+                    var subjectId = $(this).find("[subjectId]").attr("subjectId");
+                    if (subjectId) {
+                        if (tolib.areYouSure({"question":"Are you wish to delete this subject?"})) {
+                            alert("delete " + subjectId);
+                        }
+                    }
+                });
+
+            });
+        </r:script>
+
     </head>
     <body class="content">
-        <table class="table table-condensed table-striped">
+        <table class="table table-condensed table-striped table-bordered">
             <thead>
                 <tr>
                     <th>Id</th>
                     <th>OccurrenceId</th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
                 <g:each in="${subjects}" var="subject">
-                    <tr>
+                    <tr subjectId="${subject.id}">
                         <td>${subject.id}</td>
                         <td>${subject.occurrenceId}</td>
+                        <td><button type="button" class="btn btn-small btn-danger btnDelete"><i class="icon-remove icon-white"></i></button></td>
                     </tr>
                 </g:each>
             </tbody>
