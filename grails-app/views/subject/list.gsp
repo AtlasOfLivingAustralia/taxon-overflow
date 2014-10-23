@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <meta name="layout" content="main"/>
+        <meta name="layout" content="tomain"/>
         <title>Welcome to Grails</title>
         <style type="text/css" media="screen">
 
@@ -12,7 +12,8 @@
 
                 $(".btnDelete").click(function(e) {
                     e.preventDefault();
-                    var subjectId = $(this).find("[subjectId]").attr("subjectId");
+                    var subjectId = $(this).closest("[subjectId]").attr("subjectId");
+                    alert(subjectId);
                     if (subjectId) {
                         if (tolib.areYouSure({"question":"Are you wish to delete this subject?"})) {
                             alert("delete " + subjectId);

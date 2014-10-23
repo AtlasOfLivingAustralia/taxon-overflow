@@ -1,4 +1,4 @@
-package au.org.ala
+package au.org.ala.taxonoverflow
 
 import au.org.ala.taxonoverflow.Subject
 

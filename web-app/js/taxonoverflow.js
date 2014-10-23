@@ -65,20 +65,20 @@ var tolib = {};
         }
 
         var modalOptions = {
-            url: IMAGES_CONF.areYouSureUrl + "?message=" + encodeURIComponent(options.message),
+            url: TAXON_OVERFLOW_CONF.areYouSureUrl + "?message=" + encodeURIComponent(options.message),
             title: options.title
         };
 
         lib.areYouSureOptions.affirmativeAction = options.affirmativeAction;
         lib.areYouSureOptions.negativeAction = options.negativeAction;
 
-        imglib.showModal(modalOptions);
+        lib.showModal(modalOptions);
     };
 
     lib.pleaseWait = function(message, ajaxUrl, resultHandler) {
 
         var modalOptions = {
-            url: IMAGES_CONF.pleaseWaitUrl + "?message=" + encodeURIComponent(message),
+            url: TAXON_OVERFLOW_CONF.pleaseWaitUrl + "?message=" + encodeURIComponent(message),
             title: "Please wait...",
             onShown: function() {
                 $.ajax(ajaxUrl).done(function(result) {
