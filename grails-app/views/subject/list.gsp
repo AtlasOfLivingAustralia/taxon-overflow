@@ -13,9 +13,8 @@
                 $(".btnDelete").click(function(e) {
                     e.preventDefault();
                     var subjectId = $(this).closest("[subjectId]").attr("subjectId");
-                    alert(subjectId);
                     if (subjectId) {
-                        if (tolib.areYouSure({"question":"Are you wish to delete this subject?"})) {
+                        if (tolib.areYouSure({title: "Delete subject", message: "Are you sure you wish to delete this subject?"})) {
                             alert("delete " + subjectId);
                         }
                     }
