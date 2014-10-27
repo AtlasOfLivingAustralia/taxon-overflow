@@ -1,6 +1,5 @@
 package au.org.ala.taxonoverflow
 
-import au.org.ala.taxonoverflow.Subject
 import grails.converters.JSON
 import grails.converters.XML
 import org.codehaus.groovy.grails.web.json.JSONObject
@@ -9,23 +8,24 @@ class WebServiceController {
 
     def biocacheService
     def grailsApplication
-    def subjectService
+    def questionService
 
     def index() {
         render([success: "true", version: grailsApplication.metadata['app.version']])
     }
 
-    def createSubjectFromBiocache() {
+    def createQuestionFromBiocache() {
         def occurrenceId = params.occurrenceId
         def results = ['success':'true']
 
         if (occurrenceId) {
+            QuestionType questionType = (params.questionType as QuestionType) ?: QuestionType.Identification
             def occurrence = biocacheService.getRecord(occurrenceId)
             if (occurrence && (occurrence.raw?.uuid || occurrence.processed?.uuid)) {
                 def errors = []
                 if (validateOccurrenceRecord(occurrenceId, occurrence, errors)) {
-                    def subject = new Subject(occurrenceId: occurrenceId)
-                    subject.save()
+                    def question = new Question(occurrenceId: occurrenceId, questionType: questionType)
+                    question.save()
                 }
             }
 
@@ -34,7 +34,7 @@ class WebServiceController {
 
             def body = request.JSON
 
-            // TODO: make a subject from a JSON Post - post body may contain overriding information?
+            // TODO: make a question from a JSON Post - post body may contain overriding information?
 
             if (body) {
             } else {
@@ -46,14 +46,14 @@ class WebServiceController {
 
     private boolean validateOccurrenceRecord(String occurrenceId, JSONObject occurrence, List errors) {
 
-        // first check if a subject already exists for this occurrence
+        // first check if a question already exists for this occurrence
 
-        if (subjectService.subjectExists(occurrenceId)) {
-            errors << "A subject already exists for this occurrence"
+        if (questionService.questionExists(occurrenceId)) {
+            errors << "A question already exists for this occurrence"
             return false
         }
 
-        // TODO: Check that the occurrence record is sufficient to create a subject (i.e. contains the minimum set of required fields)
+        // TODO: Check that the occurrence record is sufficient to create a question (i.e. contains the minimum set of required fields)
 
 
         return true

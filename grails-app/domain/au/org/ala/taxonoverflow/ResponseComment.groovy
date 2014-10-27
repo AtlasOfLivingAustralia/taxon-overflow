@@ -1,11 +1,12 @@
 package au.org.ala.taxonoverflow
 
-class IdentificationVote extends Vote {
+class ResponseComment extends Comment {
 
-    Identification identification
+    Response identification
 
     static constraints = {
         identification nullable: false
     }
 
 }
+

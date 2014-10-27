@@ -1,10 +1,12 @@
 package au.org.ala.taxonoverflow
 
-class Subject {
+class Question {
 
+    QuestionType questionType
     String occurrenceId
 
     static constraints = {
+        questionType nullable: false
         occurrenceId nullable: false
     }
 

@@ -12,11 +12,14 @@
 
                 $(".btnDelete").click(function(e) {
                     e.preventDefault();
-                    var subjectId = $(this).closest("[subjectId]").attr("subjectId");
-                    if (subjectId) {
-                        if (tolib.areYouSure({title: "Delete subject", message: "Are you sure you wish to delete this subject?"})) {
-                            alert("delete " + subjectId);
-                        }
+                    var questionId = $(this).closest("[questionId]").attr("questionId");
+                    if (questionId) {
+                        tolib.areYouSure({
+                            title: "Delete question", message: "Are you sure you wish to delete this question?",
+                            affirmativeAction: function() {
+                                window.location = "${createLink(action:'delete')}/" + questionId;
+                            }
+                        })
                     }
                 });
 
@@ -34,10 +37,10 @@
                 </tr>
             </thead>
             <tbody>
-                <g:each in="${subjects}" var="subject">
-                    <tr subjectId="${subject.id}">
-                        <td>${subject.id}</td>
-                        <td>${subject.occurrenceId}</td>
+                <g:each in="${questions}" var="question">
+                    <tr questionId="${question.id}">
+                        <td>${question.id}</td>
+                        <td>${question.occurrenceId}</td>
                         <td><button type="button" class="btn btn-small btn-danger btnDelete"><i class="icon-remove icon-white"></i></button></td>
                     </tr>
                 </g:each>
