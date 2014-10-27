@@ -11,7 +11,6 @@
     </head>
 
     <body>
-        Goo!
         <g:layoutBody/>
     </body>
 </g:applyLayout>

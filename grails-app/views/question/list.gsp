@@ -40,7 +40,7 @@
                 <g:each in="${questions}" var="question">
                     <tr questionId="${question.id}">
                         <td>${question.id}</td>
-                        <td>${question.occurrenceId}</td>
+                        <td><g:link action="view" id="${question.id}">${question.occurrenceId}</g:link></td>
                         <td><button type="button" class="btn btn-small btn-danger btnDelete"><i class="icon-remove icon-white"></i></button></td>
                     </tr>
                 </g:each>

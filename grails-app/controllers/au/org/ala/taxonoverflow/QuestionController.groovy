@@ -28,4 +28,15 @@ class QuestionController {
         redirect(action:'list')
     }
 
+    def view(int id) {
+        def question = Question.get(id)
+        if (question) {
+            def responses = Response.findAllByQuestion(question)
+            return [question: question, responses: responses]
+        } else {
+            flash.message = "No such question, or question not specified"
+            redirect(action:'list')
+        }
+    }
+
 }
