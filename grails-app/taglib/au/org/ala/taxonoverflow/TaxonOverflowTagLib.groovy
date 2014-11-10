@@ -4,7 +4,7 @@ class TaxonOverflowTagLib {
 
     static namespace = "to"
 
-    def pegDownService
+    def markdownService
 
     static defaultEncodeAs = [taglib:'none']
     static encodeAsForTags = [markdown: [taglib:'none']]
@@ -13,7 +13,7 @@ class TaxonOverflowTagLib {
      * Body contains markdown
      */
     def markdown = { attrs, body ->
-        out << pegDownService.markdown(body().trim())
+        out << markdownService.markdown(body().trim())
     }
 
 }

@@ -53,10 +53,9 @@ grails.project.dependency.resolution = {
         // specify dependencies here under either 'build', 'compile', 'runtime', 'test' or 'provided' scopes e.g.
         runtime 'org.postgresql:postgresql:9.3-1101-jdbc41'
         test "org.grails:grails-datastore-test-support:1.0-grails-2.4"
-
-        compile 'org.pegdown:pegdown:1.4.2'
         compile 'org.elasticsearch:elasticsearch:1.3.2'
         compile 'net.sf.ehcache:ehcache:2.8.4'
+        compile 'com.github.rjeschke:txtmark:0.11'
     }
 
     plugins {
