@@ -17,4 +17,10 @@ modules = {
         resource url:'js/taxonoverflow.js'
     }
 
+    flexisel {
+        dependsOn 'jquery'
+        resource url:'flexisel/jquery.flexisel.js'
+        resource url:'flexisel/style.css'
+    }
+
 }

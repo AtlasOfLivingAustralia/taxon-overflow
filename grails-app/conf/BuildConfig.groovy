@@ -74,6 +74,7 @@ grails.project.dependency.resolution = {
         //runtime ":jquery:1.11.1"
 
         runtime ":ala-web-theme:1.0.1"
+        runtime ":images-client-plugin:0.2.2"
 
         // Uncomment these to enable additional asset-pipeline capabilities
         //compile ":sass-asset-pipeline:1.9.0"

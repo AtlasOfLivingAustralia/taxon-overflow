@@ -1,8 +1,12 @@
 package au.org.ala.taxonoverflow
 
+import static grails.async.Promises.*
+
 class QuestionController {
 
     def questionService
+    def biocacheService
+    def imagesWebService
 
     def index() {
         redirect(action:'list')
@@ -31,8 +35,26 @@ class QuestionController {
     def view(int id) {
         def question = Question.get(id)
         if (question) {
-            def responses = Response.findAllByQuestion(question)
-            return [question: question, responses: responses]
+
+            def responsesPromise = task {
+                Response.findAllByQuestion(question)
+            }
+
+            def specimenPromise = task {
+                biocacheService.getRecord(question.occurrenceId)
+            }
+
+            waitAll(specimenPromise, responsesPromise)
+
+            imagesWebService.getImageInfo()
+
+            def specimen = specimenPromise.get()
+
+            def imageIds = specimen?.images*.filePath
+
+            println imageIds
+
+            return [question: question, responses: responsesPromise.get(), imageIds: imageIds]
         } else {
             flash.message = "No such question, or question not specified"
             redirect(action:'list')
