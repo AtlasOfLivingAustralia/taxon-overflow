@@ -7,7 +7,7 @@
         <r:style type="text/css">
 
             #imageViewer {
-                height: 250px;
+                height: 400px;
             }
 
             %{--.image-thumb {--}%
@@ -27,14 +27,23 @@
             </g:each>
 
             $(document).ready(function() {
+
                 if (images.length > 0) {
                     imgvwr.viewImage($("#imageViewer"), images[0], {})
                 }
+
+                $(".image-thumb").click(function(e) {
+                    e.preventDefault();
+                    var imageId = $(this).closest("[imageId]").attr("imageId");
+                    if (imageId) {
+                        imgvwr.viewImage($("#imageViewer"), imageId, {})
+                    }
+                });
             });
 
             $(window).load(function() {
                 $("#mediaThumbs").flexisel({
-                    visibleItems: 3,
+                    visibleItems: 4,
                     animationSpeed: 200,
                     autoPlay: false,
                     autoPlaySpeed: 3000,
@@ -70,13 +79,16 @@
             </div>
             <div class="span6">
                 <div id="imageViewer"></div>
-                <div style="margin-top: 10px">
-                    <ul id="mediaThumbs">
-                        <g:each in="${imageIds}" var="imageId">
-                            <li><img class="image-thumb" src="http://images.ala.org.au/image/proxyImageThumbnail?imageId=${imageId}" /></li>
-                        </g:each>
-                    </ul>
-                </div>
+                <g:if test="${imageIds.size() > 1}">
+                    <div style="margin-top: 10px">
+                        ${imageIds.size()} images
+                        <ul id="mediaThumbs">
+                            <g:each in="${imageIds}" var="imageId">
+                                <li imageId="${imageId}" ><img class="image-thumb" src="http://images.ala.org.au/image/proxyImageThumbnail?imageId=${imageId}" /></li>
+                            </g:each>
+                        </ul>
+                    </div>
+                </g:if>
             </div>
         </div>
     </body>

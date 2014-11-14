@@ -8,15 +8,6 @@
 		</style>
 	</head>
 	<body class="content">
-<to:markdown>
-Hello
-=====
-
- * List 1
- * List 2
-
-    `some code?`
-
-</to:markdown>
+		<a href="${createLink(controller:'question', action:'list')}">Question list</a>
 	</body>
 </html>
