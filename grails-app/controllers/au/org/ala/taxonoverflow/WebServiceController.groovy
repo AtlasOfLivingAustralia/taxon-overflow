@@ -18,47 +18,29 @@ class WebServiceController {
         def occurrenceId = params.occurrenceId
         def results = ['success':'true']
 
+        Question question
+
         if (occurrenceId) {
             QuestionType questionType = (params.questionType as QuestionType) ?: QuestionType.Identification
-            def occurrence = biocacheService.getRecord(occurrenceId)
-            if (occurrence && (occurrence.raw?.uuid || occurrence.processed?.uuid)) {
-                def errors = []
-                if (validateOccurrenceRecord(occurrenceId, occurrence, errors)) {
-                    def question = new Question(occurrenceId: occurrenceId, questionType: questionType)
-                    question.save()
-                }
-            }
-
-            results.occurrence = occurrence
+            question = questionService.createQuestionFromOccurrence(occurrenceId, questionType, [])
         } else {
-
             def body = request.JSON
-
-            // TODO: make a question from a JSON Post - post body may contain overriding information?
-
             if (body) {
-            } else {
+                def tags= body.tags as List<String>
+                occurrenceId = body.occurrenceId as String
+                def questionType = (body.questionType as QuestionType) ?: QuestionType.Identification
+                question = questionService.createQuestionFromOccurrence(occurrenceId, questionType, [])
             }
+        }
+
+        if (question) {
+            results.questionId = question.id
+        } else {
+            results.success = false
         }
 
         renderResults(results)
     }
-
-    private boolean validateOccurrenceRecord(String occurrenceId, JSONObject occurrence, List errors) {
-
-        // first check if a question already exists for this occurrence
-
-        if (questionService.questionExists(occurrenceId)) {
-            errors << "A question already exists for this occurrence"
-            return false
-        }
-
-        // TODO: Check that the occurrence record is sufficient to create a question (i.e. contains the minimum set of required fields)
-
-
-        return true
-    }
-
 
     private renderResults(Object results, int responseCode = 200) {
 

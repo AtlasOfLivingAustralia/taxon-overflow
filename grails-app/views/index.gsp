@@ -8,6 +8,14 @@
 		</style>
 	</head>
 	<body class="content">
-		<a href="${createLink(controller:'question', action:'list')}">Question list</a>
+		<ul>
+			<li>
+				<a href="${createLink(controller:'question', action:'list')}">Question list</a>
+			</li>
+			<li>
+				<a href="${createLink(controller:'question', action:'createQuestion')}">Create a question from an occurrence Id</a>
+			</li>
+
+		</ul>
 	</body>
 </html>

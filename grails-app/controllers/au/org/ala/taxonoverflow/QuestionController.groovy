@@ -61,4 +61,29 @@ class QuestionController {
         }
     }
 
+    def createQuestion() {
+
+    }
+
+    def createQuestionFromOccurrenceId() {
+
+        def occurrenceId = params.occurrenceId as String
+
+        if (!occurrenceId) {
+            flash.message = "You must supply an occurrence id from the biocache!"
+            redirect(action: 'createQuestion')
+            return
+        }
+        def questionType = params.questionType as QuestionType ?: QuestionType.Identification
+        def tags = params.tags?.split(",").toList()
+
+        def question = questionService.createQuestionFromOccurrence(occurrenceId, questionType, tags)
+
+        if (!question) {
+            flash.message = "Failed to create question for occurrence id ${occurrenceId}"
+        }
+
+        redirect(action:'list')
+    }
+
 }
