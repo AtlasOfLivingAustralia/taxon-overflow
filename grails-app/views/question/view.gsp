@@ -75,7 +75,8 @@
 
         <div class="row-fluid">
             <div class="span6">
-
+                <to:occurrencePropertiesTable title="Location" section="location" names="locality, decimalLatitude, decimalLongitude" occurrence="${occurrence}" />
+                <to:occurrencePropertiesTable title="Identification" section="classification" names="scientificName" occurrence="${occurrence}" />
             </div>
             <div class="span6">
                 <div id="imageViewer"></div>

@@ -55,7 +55,12 @@ grails.project.dependency.resolution = {
         test "org.grails:grails-datastore-test-support:1.0-grails-2.4"
         compile 'org.elasticsearch:elasticsearch:1.3.2'
         compile 'net.sf.ehcache:ehcache:2.8.4'
+        compile "javax.validation:validation-api:1.1.0.Final"
+        runtime "org.hibernate:hibernate-validator:5.0.3.Final"
         compile 'com.github.rjeschke:txtmark:0.11'
+        compile('ognl:ognl:3.0.8') {
+            excludes('javassist:javassist:3.11.0.GA')
+        }
     }
 
     plugins {
@@ -65,11 +70,11 @@ grails.project.dependency.resolution = {
 
         // plugins for the compile step
         compile ":scaffolding:2.1.2"
-        compile ':cache:1.1.6'
+        compile ':cache:1.1.8'
         // compile ":asset-pipeline:1.9.9"
 
         // plugins needed at runtime but not for compilation
-        runtime ":hibernate4:4.3.5.5"
+        runtime ":hibernate4:4.3.6.1"
         runtime ":database-migration:1.4.0"
         //runtime ":jquery:1.11.1"
 

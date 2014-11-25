@@ -52,9 +52,9 @@ class QuestionController {
 
             def imageIds = specimen?.images*.filePath
 
-            println imageIds
+            println specimen
 
-            return [question: question, responses: responsesPromise.get(), imageIds: imageIds]
+            return [question: question, responses: responsesPromise.get(), imageIds: imageIds, occurrence: specimen]
         } else {
             flash.message = "No such question, or question not specified"
             redirect(action:'list')
