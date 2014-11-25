@@ -11,6 +11,11 @@
     </head>
 
     <body>
+        <div class="row-fluid">
+            <div class="span12">
+                <to:userContext />
+            </div>
+        </div>
         <g:layoutBody/>
     </body>
 </g:applyLayout>

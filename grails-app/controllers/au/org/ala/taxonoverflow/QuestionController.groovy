@@ -7,6 +7,7 @@ class QuestionController {
     def questionService
     def biocacheService
     def imagesWebService
+    def userService
 
     def index() {
         redirect(action:'list')
@@ -36,25 +37,18 @@ class QuestionController {
         def question = Question.get(id)
         if (question) {
 
-            def responsesPromise = task {
-                Response.findAllByQuestion(question)
-            }
-
             def specimenPromise = task {
                 biocacheService.getRecord(question.occurrenceId)
             }
 
-            waitAll(specimenPromise, responsesPromise)
+            waitAll(specimenPromise)
 
             imagesWebService.getImageInfo()
 
             def specimen = specimenPromise.get()
-
             def imageIds = specimen?.images*.filePath
 
-            println specimen
-
-            return [question: question, responses: responsesPromise.get(), imageIds: imageIds, occurrence: specimen]
+            return [question: question, imageIds: imageIds, occurrence: specimen]
         } else {
             flash.message = "No such question, or question not specified"
             redirect(action:'list')
@@ -68,22 +62,44 @@ class QuestionController {
     def createQuestionFromOccurrenceId() {
 
         def occurrenceId = params.occurrenceId as String
+        def user = userService.currentUser
+
+        if (!user) {
+            flash.message = "Not logged in or a configuration error has occurred. No current user object!"
+            redirect(uri: '/')
+            return
+
+        }
 
         if (!occurrenceId) {
             flash.message = "You must supply an occurrence id from the biocache!"
             redirect(action: 'createQuestion')
             return
         }
+
         def questionType = params.questionType as QuestionType ?: QuestionType.Identification
         def tags = params.tags?.split(",").toList()
 
-        def question = questionService.createQuestionFromOccurrence(occurrenceId, questionType, tags)
+        def question = questionService.createQuestionFromOccurrence(occurrenceId, questionType, tags, user)
 
         if (!question) {
             flash.message = "Failed to create question for occurrence id ${occurrenceId}"
         }
 
         redirect(action:'list')
+    }
+
+    def answersListFragment(int id) {
+        def question = Question.get(id)
+        def answers = []
+        if (question) {
+            answers = Answer.findAllByQuestion(question)
+        }
+        [answers: answers, question: question]
+    }
+
+    def ajaxSubmitAnswer(int id) {
+        def userId
     }
 
 }

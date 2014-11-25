@@ -9,6 +9,7 @@ class TaxonOverflowTagLib {
     static namespace = "to"
 
     def markdownService
+    def authService
 
     static defaultEncodeAs = [taglib:'none']
     static encodeAsForTags = [markdown: [taglib:'none']]
@@ -59,23 +60,25 @@ class TaxonOverflowTagLib {
     }
 
     /**
-     * @attr names
-     * @attr occurrence
+     * @attr question
+     * @attr answer (optional)
      */
-    def occurrencePropertiesRow = { attrs, body ->
-        def names = attrs.names?.split(",")?.toList()
-        def mb = new MarkupBuilder(out)
-        names?.each { name ->
-            mb.tr {
-                td {
-                    mkp.yield(name)
-                }
-                td {
-                    mkp.yield("???")
-                }
-            }
+    def renderAnswerTemplate =  {attrs, body ->
+        def question = attrs.question as Question
+
+        if (!question) {
+            out << "No question specified!"
+            return
         }
 
+        def html = render(template: "/question/edit${question.questionType.toString()}Answer", model: [question: question, answer: attrs.answer as Answer])
+
+        out << html
     }
+
+    def userContext = { attrs, body ->
+        out << authService.userDetails().toString()
+    }
+
 
 }

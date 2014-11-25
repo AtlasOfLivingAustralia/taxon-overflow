@@ -33,6 +33,7 @@
                 <tr>
                     <th>Id</th>
                     <th>OccurrenceId</th>
+                    <th>User</th>
                     <th></th>
                 </tr>
             </thead>
@@ -41,6 +42,7 @@
                     <tr questionId="${question.id}">
                         <td>${question.id}</td>
                         <td><g:link action="view" id="${question.id}">${question.occurrenceId}</g:link></td>
+                        <td>${question.user.alaUserId}</td>
                         <td><button type="button" class="btn btn-small btn-danger btnDelete"><i class="icon-remove icon-white"></i></button></td>
                     </tr>
                 </g:each>

@@ -4,17 +4,22 @@
         <meta name="layout" content="tomain"/>
         <title>Welcome to Grails</title>
 
+        <style>
         <r:style type="text/css">
 
             #imageViewer {
                 height: 400px;
             }
 
-            %{--.image-thumb {--}%
-                %{--height: 100px--}%
-            %{--}--}%
+            .newAnswerDiv {
+                border: 1px solid #dddddd;
+                border-radius: 4px;
+                padding: 10px;
+            }
 
         </r:style>
+        </style>
+
 
         <r:require module="viewer" />
         <r:require module="flexisel" />
@@ -42,8 +47,11 @@
             });
 
             $(window).load(function() {
+
+                renderAnswers();
+
                 $("#mediaThumbs").flexisel({
-                    visibleItems: 4,
+                    visibleItems: 3,
                     animationSpeed: 200,
                     autoPlay: false,
                     autoPlaySpeed: 3000,
@@ -67,22 +75,36 @@
                 });
             });
 
+            function renderAnswers() {
+                $.ajax("${createLink(action:'answersListFragment', id: question.id)}").done(function(content) {
+                    $("#answersDiv").html(content);
+                });
+            }
+
         </r:script>
 
     </head>
     <body class="content">
-        Question ${question.id}
+        <H3>Question ${question.id}</H3>
+
 
         <div class="row-fluid">
-            <div class="span6">
+            <div class="span8">
                 <to:occurrencePropertiesTable title="Location" section="location" names="locality, decimalLatitude, decimalLongitude" occurrence="${occurrence}" />
                 <to:occurrencePropertiesTable title="Identification" section="classification" names="scientificName" occurrence="${occurrence}" />
+
+                <div id="answersDiv">
+
+                </div>
+
+                <div class="newAnswerDiv">
+                    <to:renderAnswerTemplate question="${question}" />
+                </div>
             </div>
-            <div class="span6">
+            <div class="span4">
                 <div id="imageViewer"></div>
                 <g:if test="${imageIds.size() > 1}">
                     <div style="margin-top: 10px">
-                        ${imageIds.size()} images
                         <ul id="mediaThumbs">
                             <g:each in="${imageIds}" var="imageId">
                                 <li imageId="${imageId}" ><img class="image-thumb" src="http://images.ala.org.au/image/proxyImageThumbnail?imageId=${imageId}" /></li>

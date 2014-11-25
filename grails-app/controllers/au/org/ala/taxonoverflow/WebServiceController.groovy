@@ -6,7 +6,7 @@ import org.codehaus.groovy.grails.web.json.JSONObject
 
 class WebServiceController {
 
-    def biocacheService
+    def userService
     def grailsApplication
     def questionService
 
@@ -22,14 +22,16 @@ class WebServiceController {
 
         if (occurrenceId) {
             QuestionType questionType = (params.questionType as QuestionType) ?: QuestionType.Identification
-            question = questionService.createQuestionFromOccurrence(occurrenceId, questionType, [])
+            def user = userService.getUserFromUserId(params.userid)
+            question = questionService.createQuestionFromOccurrence(occurrenceId, questionType, [], user)
         } else {
             def body = request.JSON
             if (body) {
                 def tags= body.tags as List<String>
                 occurrenceId = body.occurrenceId as String
+                def user = userService.getUserFromUserId(body.userid)
                 def questionType = (body.questionType as QuestionType) ?: QuestionType.Identification
-                question = questionService.createQuestionFromOccurrence(occurrenceId, questionType, [])
+                question = questionService.createQuestionFromOccurrence(occurrenceId, questionType, [], user)
             }
         }
 

@@ -1,6 +1,6 @@
 package au.org.ala.taxonoverflow
 
-class Response {
+class Answer {
 
     Question question
     User user

@@ -22,7 +22,7 @@ class QuestionService {
         }
     }
 
-    def createQuestionFromOccurrence(String occurrenceId, QuestionType questionType, List<String> tags) {
+    def createQuestionFromOccurrence(String occurrenceId, QuestionType questionType, List<String> tags, User user) {
 
         def occurrence = biocacheService.getRecord(occurrenceId)
 
@@ -35,7 +35,7 @@ class QuestionService {
 
             def errors = []
             if (validateOccurrenceRecord(occurrenceId, occurrence, errors)) {
-                def question = new Question(occurrenceId: occurrenceId, questionType: questionType)
+                def question = new Question(user: user, occurrenceId: occurrenceId, questionType: questionType)
                 question.save()
 
                 // Save the tags
