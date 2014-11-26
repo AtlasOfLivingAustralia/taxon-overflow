@@ -63,5 +63,61 @@ class WebServiceController {
         response.status = responseCode
     }
 
+    def submitAnswer(int id) {
+        def question = Question.get(id);
+        def results = [success: false]
+
+        if (!params.userId) {
+            results.message = "You must supply a userId!"
+        } else if (!question) {
+            results.message = "Invalid or missing question id!"
+        } else {
+            def user = userService.getUserFromUserId(params.userId)
+            if (!user) {
+                results.message = "Invalid user id!"
+            } else {
+                switch (question.questionType) {
+                    case QuestionType.Identification:
+
+                        if (!params.scientificName) {
+                            results.message = "A scientific name must be supplied"
+                        } else {
+                            def answer = new Answer(question: question, scientificName: params.scientificName, description: params.identificationRemarks, user: user)
+                            answer.save(failOnError: true)
+                            results.success = true
+                        }
+                        break
+                    default:
+                        results.success = false
+                        results.message = "Unhandled question type: ${question.questionType?.toString()}"
+                }
+            }
+        }
+        renderResults(results)
+    }
+
+    def deleteAnswer(long id) {
+        def answer = Answer.get(id)
+        def results = [success: false]
+        if (answer) {
+            questionService.deleteAnswer(answer)
+            results.success = true
+        } else {
+            results.message = "Invalid or missing answer id!"
+        }
+        renderResults(results)
+    }
+
+    def acceptAnswer(long id) {
+        def answer = Answer.get(id)
+        def results = [success: false]
+        if (answer) {
+            questionService.acceptAnswer(answer)
+            results.success = true
+        } else {
+            results.message = "Invalid or missing answer id!"
+        }
+        renderResults(results)
+    }
 
 }

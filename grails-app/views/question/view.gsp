@@ -81,20 +81,37 @@
                 });
             }
 
+            function submitAnswer() {
+
+                var answer = { questionId: ${question.id}, userId: "${userId}" };
+
+                $(".newAnswerDiv .answer-field").each(function() {
+                    answer[$(this).attr("id")] = $(this).val();
+                });
+
+                if (scientificName) {
+                    $.post("${createLink(controller: 'webService', action:'submitAnswer', id:question.id)}", answer, null, "json").done(function(response) {
+                        if (response.success) {
+                            renderAnswers();
+                        } else {
+                            alert(response.message);
+                        }
+                    });
+                }
+            }
+
         </r:script>
 
     </head>
     <body class="content">
-        <H3>Question ${question.id}</H3>
-
-
+        <H3>Question ${question.id}&nbsp;<small>[ <a href="http://biocache.ala.org.au/occurrence/${question.occurrenceId}" target="occurrenceDetails">View record in biocache</a> ]</small></H3>
         <div class="row-fluid">
             <div class="span8">
+                <to:occurrencePropertiesTable title="General" section="" names="occurrence.recordedBy, event.eventDate" occurrence="${occurrence}" />
                 <to:occurrencePropertiesTable title="Location" section="location" names="locality, decimalLatitude, decimalLongitude" occurrence="${occurrence}" />
                 <to:occurrencePropertiesTable title="Identification" section="classification" names="scientificName" occurrence="${occurrence}" />
-
+                <to:occurrencePropertiesTable title="Remarks" section="occurrence" names="occurrenceRemarks" occurrence="${occurrence}" />
                 <div id="answersDiv">
-
                 </div>
 
                 <div class="newAnswerDiv">
@@ -103,7 +120,7 @@
             </div>
             <div class="span4">
                 <div id="imageViewer"></div>
-                <g:if test="${imageIds.size() > 1}">
+                <g:if test="${imageIds?.size() > 1}">
                     <div style="margin-top: 10px">
                         <ul id="mediaThumbs">
                             <g:each in="${imageIds}" var="imageId">

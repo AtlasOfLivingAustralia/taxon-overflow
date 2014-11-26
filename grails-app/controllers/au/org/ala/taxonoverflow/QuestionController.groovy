@@ -8,6 +8,7 @@ class QuestionController {
     def biocacheService
     def imagesWebService
     def userService
+    def authService
 
     def index() {
         redirect(action:'list')
@@ -35,6 +36,7 @@ class QuestionController {
 
     def view(int id) {
         def question = Question.get(id)
+        def userId = authService.userId
         if (question) {
 
             def specimenPromise = task {
@@ -43,12 +45,12 @@ class QuestionController {
 
             waitAll(specimenPromise)
 
-            imagesWebService.getImageInfo()
-
             def specimen = specimenPromise.get()
             def imageIds = specimen?.images*.filePath
 
-            return [question: question, imageIds: imageIds, occurrence: specimen]
+            println specimen.processed
+
+            return [question: question, imageIds: imageIds, occurrence: specimen, userId: userId]
         } else {
             flash.message = "No such question, or question not specified"
             redirect(action:'list')
@@ -91,11 +93,20 @@ class QuestionController {
 
     def answersListFragment(int id) {
         def question = Question.get(id)
+        def user = userService.currentUser
         def answers = []
         if (question) {
-            answers = Answer.findAllByQuestion(question)
+            def c = Answer.createCriteria()
+            answers = c.list {
+                eq("question", question)
+                and {
+                    order("accepted", "desc")
+                    order("dateCreated", "asc")
+                }
+            }
+
         }
-        [answers: answers, question: question]
+        [answers: answers, question: question, currentUserId: user.alaUserId]
     }
 
     def ajaxSubmitAnswer(int id) {

@@ -8,6 +8,7 @@
                 pleaseWaitUrl: "${createLink(controller:'dialog', action:'pleaseWaitFragment')}"
             };
         </r:script>
+        <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
     </head>
 
     <body>

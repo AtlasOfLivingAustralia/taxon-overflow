@@ -6,15 +6,17 @@ class Answer {
     User user
     Date dateCreated
     int votes
-    // Below only one of the following should be not empty...
+    boolean accepted
 
-    String taxonGUID // from bie
-    String binomial // handles scientific names that could not be matched in the BIE
-    String commonName // catch all
-    String description // Description text for an answer
+    // Below is superset of allowable answer fields, depending on question type
+    String scientificName
+    String description // Descriptive/free text for an answer
 
     static constraints = {
         question nullable: false
-        dateCreated nullable: false
+        user nullable: false
+        description nullable: true
+        scientificName nullable: true
     }
+
 }

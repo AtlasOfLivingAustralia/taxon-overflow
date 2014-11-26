@@ -10,6 +10,7 @@ class TaxonOverflowTagLib {
 
     def markdownService
     def authService
+    def userService
 
     static defaultEncodeAs = [taglib:'none']
     static encodeAsForTags = [markdown: [taglib:'none']]
@@ -33,6 +34,16 @@ class TaxonOverflowTagLib {
         if (occurrence && names) {
             def mb = new MarkupBuilder(out)
 
+            def values = []
+
+            names.each {
+                def name = (it as String).trim()
+                def rawValue = Ognl.getValue("raw${attrs.section ? ('.' + attrs.section) : ''}.${name}", occurrence)
+                def processedValue = Ognl.getValue("processed${attrs.section ? ('.' + attrs.section) : ''}.${name}", occurrence)
+                values << [name:name, processed: processedValue, raw: rawValue]
+            }
+
+
             mb.table(class:'table table-bordered table-condensed table-striped') {
                 thead {
                     tr {
@@ -42,14 +53,13 @@ class TaxonOverflowTagLib {
                     }
                 }
                 tbody {
-                    names.each {
-                        def name = (it as String).trim()
+                    values.each { valuemap ->
                         mb.tr {
-                            td {
-                                mkp.yield(name)
+                            td(style: 'width: 200px') {
+                                mkp.yield(valuemap.name)
                             }
                             td {
-                                mkp.yield(Ognl.getValue("processed.${attrs.section}.${name}", occurrence) ?: Ognl.getValue("raw.${attrs.section}.${name}", occurrence))
+                                mkp.yield(valuemap.processed ?: valuemap.raw)
                             }
                         }
                     }
@@ -80,5 +90,38 @@ class TaxonOverflowTagLib {
         out << authService.userDetails().toString()
     }
 
+    /**
+     * @attr user
+     */
+    def userDisplayName = { attrs, body ->
+        def user = attrs.user as User
+        // Todo: lookup user display name
+        out << user?.alaUserId
+    }
+
+    /**
+     * @attr answer
+     */
+    def ifCanDeleteAnswer = { attrs, body ->
+        def answer = attrs.answer as Answer
+        if (answer) {
+            if (answer.user == userService.currentUser) {
+                out << body()
+            }
+        }
+    }
+
+    /**
+     * @attr answer
+     */
+    def ifCanAcceptAnswer = { attrs, body ->
+        def answer = attrs.answer as Answer
+        if (answer && !answer.accepted) {
+            // If the current user is one who asked the question, they can accept the answer
+            if (answer.question.user == userService.currentUser) {
+                out << body()
+            }
+        }
+    }
 
 }

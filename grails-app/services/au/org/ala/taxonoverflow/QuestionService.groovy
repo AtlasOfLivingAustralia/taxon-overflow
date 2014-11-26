@@ -69,5 +69,25 @@ class QuestionService {
         return true
     }
 
+    def deleteAnswer(Answer answer) {
+        answer?.delete(flush: true)
+    }
+
+    def acceptAnswer(Answer answer) {
+
+        if (!answer) {
+            return
+        }
+
+        // first check if there any other accepted answers for this question, and if there are, reset them (only one accepted answer at this point)
+        def existing = Answer.findAllByQuestionAndAccepted(answer.question, true)
+        existing.each { acceptedAnswer ->
+            acceptedAnswer.accepted = false
+            acceptedAnswer.save()
+        }
+
+        answer.accepted = true
+        answer.save()
+    }
 
 }
