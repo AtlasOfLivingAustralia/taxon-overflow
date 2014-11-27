@@ -2,11 +2,10 @@ package au.org.ala.taxonoverflow
 
 class AnswerVote extends Vote {
 
-    Answer identification
+    Answer answer
 
     static constraints = {
-        identification nullable: false
-        user nullable: false
+        answer nullable: false
     }
 
 }

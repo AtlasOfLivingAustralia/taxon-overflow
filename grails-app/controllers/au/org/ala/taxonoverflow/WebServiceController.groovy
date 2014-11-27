@@ -22,8 +22,17 @@ class WebServiceController {
 
         if (occurrenceId) {
             QuestionType questionType = (params.questionType as QuestionType) ?: QuestionType.Identification
-            def user = userService.getUserFromUserId(params.userid)
-            question = questionService.createQuestionFromOccurrence(occurrenceId, questionType, [], user)
+            def user = userService.getUserFromUserId(params.userId)
+            def tagParam = params.tags as String
+            def tags = []
+            if (tagParam?.trim()) {
+                tags = tagParam.split(',')?.collect { String str -> str.trim() }
+            }
+            def messages = []
+            question = questionService.createQuestionFromOccurrence(occurrenceId, questionType, tags, user, messages)
+            if (!question) {
+                results.message = messages.join(". ")
+            }
         } else {
             def body = request.JSON
             if (body) {
@@ -76,13 +85,14 @@ class WebServiceController {
             if (!user) {
                 results.message = "Invalid user id!"
             } else {
+                Answer answer
                 switch (question.questionType) {
                     case QuestionType.Identification:
 
                         if (!params.scientificName) {
                             results.message = "A scientific name must be supplied"
                         } else {
-                            def answer = new Answer(question: question, scientificName: params.scientificName, description: params.identificationRemarks, user: user)
+                            answer = new Answer(question: question, scientificName: params.scientificName, description: params.identificationRemarks, user: user)
                             answer.save(failOnError: true)
                             results.success = true
                         }
@@ -90,6 +100,11 @@ class WebServiceController {
                     default:
                         results.success = false
                         results.message = "Unhandled question type: ${question.questionType?.toString()}"
+                }
+
+                if (answer) {
+                    // Submitter gets an automatic (self) upvote
+                    questionService.castVoteOnAnswer(answer, user, VoteType.Up)
                 }
             }
         }
@@ -113,6 +128,38 @@ class WebServiceController {
         def results = [success: false]
         if (answer) {
             questionService.acceptAnswer(answer)
+            results.success = true
+        } else {
+            results.message = "Invalid or missing answer id!"
+        }
+        renderResults(results)
+    }
+
+    def unacceptAnswer(long id) {
+        def answer = Answer.get(id)
+        def results = [success: false]
+        if (answer) {
+            questionService.unacceptAnswer(answer)
+            results.success = true
+        } else {
+            results.message = "Invalid or missing answer id!"
+        }
+        renderResults(results)
+    }
+
+    def castVoteOnAnswer(long id) {
+        def answer = Answer.get(id)
+        def user = userService.getUserFromUserId(params.userId)
+        def dir = params.int("dir") ?: 1 // positive is up, negative is down and 0 is retract existing vote
+        def results = [success: false]
+        if (answer && user) {
+            def voteType = VoteType.Up
+            if (dir < 0) {
+                voteType = VoteType.Down
+            } else if (dir == 0) {
+                voteType = VoteType.Retract
+            }
+            questionService.castVoteOnAnswer(answer, user, voteType)
             results.success = true
         } else {
             results.message = "Invalid or missing answer id!"

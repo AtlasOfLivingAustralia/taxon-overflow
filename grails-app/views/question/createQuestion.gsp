@@ -4,16 +4,11 @@
     <meta name="layout" content="tomain"/>
     <title>Welcome to Grails</title>
     <style type="text/css" media="screen">
-
     </style>
-    <r:script>
-      $(document).ready(function() {
-      });
-    </r:script>
 
   </head>
   <body class="content">
-    <g:form action="createQuestionFromOccurrenceId" class="form-horizontal">
+    <div class="form-horizontal">
 
       <div class="control-group">
         <label class="control-label">Occurrence Id</label>
@@ -37,9 +32,43 @@
       </div>
 
       <div class="control-group">
-        <button type="button" class="btn">Cancel</button>
-        <button type="submit" class="btn btn-primary">Create question</button>
+        <button type="button" class="btn" id="btnCancel">Cancel</button>
+        <button type="button" class="btn btn-primary" id="btnSubmit">Create question</button>
       </div>
-    </g:form>
+    </div>
   </body>
+
+  <r:script>
+
+    $(document).ready(function() {
+
+      $("#btnCancel").click(function(e) {
+        e.preventDefault();
+        location.href = "${createLink(controller:'question', action:'list')}";
+      });
+
+      $("#btnSubmit").click(function(e) {
+        e.preventDefault();
+        var question = {
+            userId: "<to:currentUserId />",
+            occurrenceId: $("#occurrenceId").val(),
+            questionType: $("#questionType").val(),
+            tags: $("#tags").val()
+
+        };
+
+        $.post("${createLink(controller:'webService', action:'createQuestionFromBiocache')}", question, null, "json").done(function(response) {
+            if (response.success) {
+                location.href = "${createLink(controller:'question', action:'list')}";
+            } else {
+                alert(response.message)
+            }
+        });
+
+      });
+
+    });
+
+  </r:script>
+
 </html>

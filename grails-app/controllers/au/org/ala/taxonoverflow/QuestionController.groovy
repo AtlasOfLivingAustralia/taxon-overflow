@@ -36,21 +36,23 @@ class QuestionController {
 
     def view(int id) {
         def question = Question.get(id)
-        def userId = authService.userId
+
         if (question) {
 
             def specimenPromise = task {
                 biocacheService.getRecord(question.occurrenceId)
             }
 
+            def userId = authService.userId
+
             waitAll(specimenPromise)
 
             def specimen = specimenPromise.get()
             def imageIds = specimen?.images*.filePath
 
-            println specimen.processed
+            def acceptedAnswer = Answer.findByQuestionAndAccepted(question, true)
 
-            return [question: question, imageIds: imageIds, occurrence: specimen, userId: userId]
+            return [question: question, imageIds: imageIds, occurrence: specimen, userId: userId, acceptedAnswer: acceptedAnswer]
         } else {
             flash.message = "No such question, or question not specified"
             redirect(action:'list')
@@ -61,40 +63,10 @@ class QuestionController {
 
     }
 
-    def createQuestionFromOccurrenceId() {
-
-        def occurrenceId = params.occurrenceId as String
-        def user = userService.currentUser
-
-        if (!user) {
-            flash.message = "Not logged in or a configuration error has occurred. No current user object!"
-            redirect(uri: '/')
-            return
-
-        }
-
-        if (!occurrenceId) {
-            flash.message = "You must supply an occurrence id from the biocache!"
-            redirect(action: 'createQuestion')
-            return
-        }
-
-        def questionType = params.questionType as QuestionType ?: QuestionType.Identification
-        def tags = params.tags?.split(",").toList()
-
-        def question = questionService.createQuestionFromOccurrence(occurrenceId, questionType, tags, user)
-
-        if (!question) {
-            flash.message = "Failed to create question for occurrence id ${occurrenceId}"
-        }
-
-        redirect(action:'list')
-    }
-
     def answersListFragment(int id) {
         def question = Question.get(id)
         def user = userService.currentUser
-        def answers = []
+        List answers = []
         if (question) {
             def c = Answer.createCriteria()
             answers = c.list {
@@ -105,12 +77,21 @@ class QuestionController {
                 }
             }
 
-        }
-        [answers: answers, question: question, currentUserId: user.alaUserId]
-    }
+            c = AnswerVote.createCriteria()
+            def votes = c {
+                inList("answer", answers)
+                projections {
+                    property("answer")
+                    sum("voteValue")
+                    groupProperty("answer")
+                }
+            }
 
-    def ajaxSubmitAnswer(int id) {
-        def userId
+            def answerVoteTotals = votes.collectEntries { [ (it[0]) : it[1]] }
+            def userVotes = AnswerVote.findAllByUserAndAnswerInList(user, answers)?.collectEntries { [ (it.answer) : it]}
+            [answers: answers, question: question, currentUserId: user.alaUserId, answerVoteTotals: answerVoteTotals, userVotes: userVotes]
+        }
+
     }
 
 }

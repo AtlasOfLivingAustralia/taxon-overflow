@@ -11,6 +11,7 @@ class TaxonOverflowTagLib {
     def markdownService
     def authService
     def userService
+    def questionService
 
     static defaultEncodeAs = [taglib:'none']
     static encodeAsForTags = [markdown: [taglib:'none']]
@@ -40,26 +41,30 @@ class TaxonOverflowTagLib {
                 def name = (it as String).trim()
                 def rawValue = Ognl.getValue("raw${attrs.section ? ('.' + attrs.section) : ''}.${name}", occurrence)
                 def processedValue = Ognl.getValue("processed${attrs.section ? ('.' + attrs.section) : ''}.${name}", occurrence)
-                values << [name:name, processed: processedValue, raw: rawValue]
+                if (processedValue || rawValue) {
+                    values << [name: name, processed: processedValue, raw: rawValue]
+                }
             }
 
 
-            mb.table(class:'table table-bordered table-condensed table-striped') {
-                thead {
-                    tr {
-                        th(colspan:'2') {
-                            mkp.yield(attrs.title ?: attrs.section)
+            if (values) {
+                mb.table(class: 'table table-bordered table-condensed table-striped') {
+                    thead {
+                        tr {
+                            th(colspan: '2') {
+                                mkp.yield(attrs.title ?: attrs.section)
+                            }
                         }
                     }
-                }
-                tbody {
-                    values.each { valuemap ->
-                        mb.tr {
-                            td(style: 'width: 200px') {
-                                mkp.yield(valuemap.name)
-                            }
-                            td {
-                                mkp.yield(valuemap.processed ?: valuemap.raw)
+                    tbody {
+                        values.each { valuemap ->
+                            mb.tr {
+                                td(style: 'width: 200px') {
+                                    mkp.yield(valuemap.name)
+                                }
+                                td {
+                                    mkp.yield(valuemap.processed ?: valuemap.raw ?: '')
+                                }
                             }
                         }
                     }
@@ -99,6 +104,11 @@ class TaxonOverflowTagLib {
         out << user?.alaUserId
     }
 
+    def currentUserId = { attrs, body ->
+        def user = userService.currentUser
+        out << user?.alaUserId
+    }
+
     /**
      * @attr answer
      */
@@ -116,12 +126,24 @@ class TaxonOverflowTagLib {
      */
     def ifCanAcceptAnswer = { attrs, body ->
         def answer = attrs.answer as Answer
-        if (answer && !answer.accepted) {
-            // If the current user is one who asked the question, they can accept the answer
-            if (answer.question.user == userService.currentUser) {
+        if (answer) {
+            if (questionService.canUserAcceptAnswer(answer, userService.currentUser)) {
                 out << body()
             }
         }
     }
+
+    /**
+     * @attr answer
+     */
+    def ifCannotAcceptAnswer = { attrs, body ->
+        def answer = attrs.answer as Answer
+        if (answer) {
+            if (!questionService.canUserAcceptAnswer(answer, userService.currentUser)) {
+                out << body()
+            }
+        }
+    }
+
 
 }

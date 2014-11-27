@@ -105,6 +105,9 @@
     </head>
     <body class="content">
         <H3>Question ${question.id}&nbsp;<small>[ <a href="http://biocache.ala.org.au/occurrence/${question.occurrenceId}" target="occurrenceDetails">View record in biocache</a> ]</small></H3>
+        <g:if test="${acceptedAnswer}">
+            <div class="badge badge-success">An identification has been accepted for this occurrence: ${acceptedAnswer.scientificName}</div>
+        </g:if>
         <div class="row-fluid">
             <div class="span8">
                 <to:occurrencePropertiesTable title="General" section="" names="occurrence.recordedBy, event.eventDate" occurrence="${occurrence}" />

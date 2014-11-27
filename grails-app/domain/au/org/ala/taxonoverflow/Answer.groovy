@@ -7,6 +7,7 @@ class Answer {
     Date dateCreated
     int votes
     boolean accepted
+    Date dateAccepted
 
     // Below is superset of allowable answer fields, depending on question type
     String scientificName
@@ -17,6 +18,7 @@ class Answer {
         user nullable: false
         description nullable: true
         scientificName nullable: true
+        dateAccepted nullable: true
     }
 
 }

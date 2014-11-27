@@ -21,15 +21,21 @@
     font-size: 1.5em;
     border: 1px solid #dddddd;
     border-radius: 3px;
-    padding: 3px
+    padding: 3px;
+    text-decoration: none;
+    color: #000000;
+  }
+
+  .vote-arrow:hover {
+    text-decoration: none;
   }
 
   .vote-arrow-up {
-    color: darkgreen;
+    /*color: darkgreen;*/
   }
 
   .vote-arrow-down {
-    color: darkred;
+    /*color: darkred;*/
   }
 
   .striped {
@@ -41,6 +47,15 @@
     color: green;
   }
 
+  .user-upvoted {
+    color: orange;
+    font-size: 1.6em;
+  }
+
+  .user-downvoted {
+    color: orange;
+    font-size: 1.6em;
+  }
 
 </style>
 <div>
@@ -54,20 +69,31 @@
 
           <div class="span1">
             <g:if test="${answer.accepted}">
-              <i class="accepted-answer-mark fa fa-check"></i>
+              <to:ifCanAcceptAnswer answer="${answer}">
+                <a href="#" title="Click to undo acceptance of this answer." class="btnUnacceptAnswer">
+                  <i class="accepted-answer-mark fa fa-check"></i>
+                </a>
+              </to:ifCanAcceptAnswer>
+              <to:ifCannotAcceptAnswer answer="${answer}">
+                <i class="accepted-answer-mark fa fa-check"></i>
+              </to:ifCannotAcceptAnswer>
             </g:if>
           </div>
 
           <div class="span1" style="text-align: center">
-            <a class="vote-arrow vote-arrow-up">
+            <g:set var="userVote" value="${userVotes[answer]}" />
+            <g:set var="upvoteClass" value="${userVote?.voteValue > 0 ? 'user-upvoted' : '' }" />
+            <g:set var="downvoteClass" value="${userVote?.voteValue < 0 ? 'user-downvoted' : '' }" />
+            <a href="#" class="vote-arrow vote-arrow-up ${upvoteClass}">
               <i class="fa fa-thumbs-o-up"></i>
             </a>
             <br/>
-            <span class="voteCount">${answer.votes}</span>
+            <span class="voteCount">${answerVoteTotals[answer] ?: 0}</span>
             <br />
-            <a class="vote-arrow vote-arrow-down">
+            <a href="#" class="vote-arrow vote-arrow-down ${downvoteClass}">
               <i class="fa fa-thumbs-o-down"></i>
             </a>
+
           </div>
 
           <div class="span2">
@@ -96,6 +122,29 @@
 </div>
 
 <script>
+
+  $(".btnUnacceptAnswer").click(function(e) {
+    e.preventDefault();
+    var answerId = $(this).closest("[answerId]").attr("answerId");
+    if (answerId) {
+      var url = "${createLink(controller: 'webService', action:'unacceptAnswer')}/" + answerId;
+      $.post(url).done(function (results) {
+        location.reload(true);
+      });
+    }
+  });
+
+  $(".vote-arrow-up").click(function(e) {
+    e.preventDefault();
+    var answerId = $(this).closest("[answerId]").attr("answerId");
+    alert(answerId);
+  });
+
+  $(".vote-arrow-down").click(function(e) {
+    e.preventDefault();
+    var answerId = $(this).closest("[answerId]").attr("answerId");
+    alert(answerId);
+  });
 
   $(".btnAcceptAnswer").click(function(e) {
     e.preventDefault();

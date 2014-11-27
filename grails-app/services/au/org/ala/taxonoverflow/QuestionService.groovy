@@ -22,7 +22,7 @@ class QuestionService {
         }
     }
 
-    def createQuestionFromOccurrence(String occurrenceId, QuestionType questionType, List<String> tags, User user) {
+    def createQuestionFromOccurrence(String occurrenceId, QuestionType questionType, List<String> tags, User user, List messages) {
 
         def occurrence = biocacheService.getRecord(occurrenceId)
 
@@ -33,8 +33,7 @@ class QuestionService {
 
             occurrenceId = occurrence.raw?.uuid ?: occurrence.processed?.uuid
 
-            def errors = []
-            if (validateOccurrenceRecord(occurrenceId, occurrence, errors)) {
+            if (validateOccurrenceRecord(occurrenceId, occurrence, messages)) {
                 def question = new Question(user: user, occurrenceId: occurrenceId, questionType: questionType)
                 question.save()
 
@@ -47,8 +46,12 @@ class QuestionService {
                 }
 
                 return question
+            } else {
+
             }
 
+        } else {
+            messages << "Unable to retrieve occurrence details for ${occurrenceId}"
         }
 
         return null
@@ -83,11 +86,56 @@ class QuestionService {
         def existing = Answer.findAllByQuestionAndAccepted(answer.question, true)
         existing.each { acceptedAnswer ->
             acceptedAnswer.accepted = false
-            acceptedAnswer.save()
+            acceptedAnswer.dateAccepted = new Date()
+            acceptedAnswer.save(failOnError: true)
         }
 
         answer.accepted = true
         answer.save()
+    }
+
+    def unacceptAnswer(Answer answer) {
+
+        if (!answer) {
+            return
+        }
+
+        if (answer.accepted) {
+            answer.accepted = false
+            answer.dateAccepted = null
+            answer.save(failOnError: true)
+        }
+
+    }
+
+    def castVoteOnAnswer(Answer answer, User user, VoteType voteType) {
+
+        if (!answer || !user) {
+            return
+        }
+
+        def vote = AnswerVote.findByAnswerAndUser(answer, user)
+
+        if (voteType == VoteType.Retract) {
+            if (vote) {
+                vote.delete()
+            }
+        } else {
+            if (!vote) {
+                vote = new AnswerVote(user: user, answer: answer)
+            }
+            vote.voteValue = voteType == VoteType.Up ? 1 : -1
+            vote.save(failOnError: true)
+        }
+    }
+
+    def canUserAcceptAnswer(Answer answer, User user) {
+        // If the current user is one who asked the question, they can accept the answer
+        if (answer.question.user == user) {
+            return true
+        }
+
+        return false
     }
 
 }
