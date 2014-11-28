@@ -40,6 +40,7 @@ environments {
         dataSource {
             dbCreate = "update"
             testOnBorrow = true
+            url = "jdbc:postgresql://localhost/taxonoverflow"
             properties {
                 maxActive = 10
                 maxIdle = 5
