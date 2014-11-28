@@ -24,7 +24,18 @@
 <script>
 
     $("#btnSubmitAnswer").click(function(e) {
-        submitAnswer();
+
+        $("#btnSubmitAnswer").attr("disabled","disabled");
+
+        submitAnswer({
+            onComplete: function() {
+                $("#btnSubmitAnswer").removeAttr("disabled");
+            },
+            onSuccess: function() {
+                $("#scientificName").val("");
+                $("#identificationRemarks").val("");
+            }
+        });
     });
 
 </script>

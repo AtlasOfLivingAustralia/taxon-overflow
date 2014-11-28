@@ -2,7 +2,7 @@ package au.org.ala.taxonoverflow
 
 class AnswerVote extends Vote {
 
-    Answer answer
+    static belongsTo = [answer: Answer]
 
     static constraints = {
         answer nullable: false

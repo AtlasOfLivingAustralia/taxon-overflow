@@ -1,7 +1,10 @@
 <style>
+
   .voteCount {
     font-size: large;
     font-weight: bold;
+    margin-top: 5px;
+    margin-bottom: 5px;
   }
 
   .answer-list li.accepted-answer {
@@ -23,11 +26,12 @@
     border-radius: 3px;
     padding: 3px;
     text-decoration: none;
-    color: #000000;
+    color: dimgray;
   }
 
-  .vote-arrow:hover {
+  .vote-arrow:hover,.vote-arrow:visited {
     text-decoration: none;
+    color: dimgray;
   }
 
   .vote-arrow-up {
@@ -47,13 +51,13 @@
     color: green;
   }
 
-  .user-upvoted {
-    color: orange;
+  .user-upvoted, .user-upvoted:hover {
+    color: green;
     font-size: 1.6em;
   }
 
-  .user-downvoted {
-    color: orange;
+  .user-downvoted, .user-downvoted:hover {
+    color: red;
     font-size: 1.6em;
   }
 
@@ -83,16 +87,18 @@
           <div class="span1" style="text-align: center">
             <g:set var="userVote" value="${userVotes[answer]}" />
             <g:set var="upvoteClass" value="${userVote?.voteValue > 0 ? 'user-upvoted' : '' }" />
-            <g:set var="downvoteClass" value="${userVote?.voteValue < 0 ? 'user-downvoted' : '' }" />
-            <a href="#" class="vote-arrow vote-arrow-up ${upvoteClass}">
-              <i class="fa fa-thumbs-o-up"></i>
-            </a>
-            <br/>
-            <span class="voteCount">${answerVoteTotals[answer] ?: 0}</span>
-            <br />
-            <a href="#" class="vote-arrow vote-arrow-down ${downvoteClass}">
-              <i class="fa fa-thumbs-o-down"></i>
-            </a>
+            <g:set var="downvoteClass" value="${userVote?.voteValue && userVote?.voteValue < 0 ? 'user-downvoted' : '' }" />
+            <div>
+              <a href="#" class="vote-arrow vote-arrow-up ${upvoteClass}">
+                <i class="fa fa-thumbs-o-up"></i>
+              </a>
+            </div>
+            <div class="voteCount">${answerVoteTotals[answer] ?: 0}</div>
+            <div>
+              <a href="#" class="vote-arrow vote-arrow-down ${downvoteClass}">
+                <i class="fa fa-thumbs-o-down"></i>
+              </a>
+            </div>
 
           </div>
 
@@ -138,32 +144,35 @@
     e.preventDefault();
     var answerId = $(this).closest("[answerId]").attr("answerId");
     if (answerId) {
-      var voteData = {
-        userId: "<to:currentUserId />",
-        dir: 1
-      };
-
-      if ($(this).hasClass("user-upvoted")) {
-        voteData.dir = 0;
-      }
-
-      $.post("${createLink(controller:'webService', action:'castVoteOnAnswer')}/" + answerId, voteData, null, "json").done(function(response) {
-        if (response.success) {
-          if (renderAnswers) {
-            renderAnswers();
-          }
-        } else {
-          alert("Voting failed: " + response.message);
-        }
-      });
-
+      voteOnAnswer(answerId, 1);
     }
   });
+
+  function voteOnAnswer(answerId, direction) {
+    var voteData = {
+      userId: "<to:currentUserId />",
+      dir: direction
+    };
+
+    $.post("${createLink(controller:'webService', action:'castVoteOnAnswer')}/" + answerId, voteData, null, "json").done(function(response) {
+      if (response.success) {
+        if (renderAnswers) {
+          renderAnswers();
+        }
+      } else {
+        alert("Voting failed: " + response.message);
+      }
+    });
+
+  }
 
   $(".vote-arrow-down").click(function(e) {
     e.preventDefault();
     var answerId = $(this).closest("[answerId]").attr("answerId");
-    alert(answerId);
+    if (answerId) {
+      voteOnAnswer(answerId, -1);
+    }
+
   });
 
   $(".btnAcceptAnswer").click(function(e) {

@@ -13,7 +13,11 @@
 
     <body>
         <div class="row-fluid">
-            <div class="span12">
+            <div class="span8">
+                <a href="${createLink(controller:'question', action:'list')}">Question list</a>
+                <a href="${createLink(controller:'question', action:'createQuestion')}">Create question</a>
+            </div>
+            <div class="span4">
                 <to:userContext />
             </div>
         </div>

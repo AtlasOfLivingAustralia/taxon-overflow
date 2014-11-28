@@ -92,7 +92,7 @@ class TaxonOverflowTagLib {
     }
 
     def userContext = { attrs, body ->
-        out << authService.userDetails().toString()
+        out << "Logged in as " + authService.userDetails().userDisplayName
     }
 
     /**
@@ -100,8 +100,8 @@ class TaxonOverflowTagLib {
      */
     def userDisplayName = { attrs, body ->
         def user = attrs.user as User
-        // Todo: lookup user display name
-        out << user?.alaUserId
+        def userDetails = authService.getUserForUserId(user?.alaUserId)
+        out << userDetails?.displayName ?:  user?.alaUserId
     }
 
     def currentUserId = { attrs, body ->

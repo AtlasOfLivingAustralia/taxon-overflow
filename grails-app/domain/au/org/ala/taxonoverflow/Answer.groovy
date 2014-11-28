@@ -5,9 +5,10 @@ class Answer {
     Question question
     User user
     Date dateCreated
-    int votes
     boolean accepted
     Date dateAccepted
+
+    static hasMany = [votes: AnswerVote]
 
     // Below is superset of allowable answer fields, depending on question type
     String scientificName

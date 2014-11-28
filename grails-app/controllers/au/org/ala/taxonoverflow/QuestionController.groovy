@@ -77,17 +77,20 @@ class QuestionController {
                 }
             }
 
-            c = AnswerVote.createCriteria()
-            def votes = c {
-                inList("answer", answers)
-                projections {
-                    property("answer")
-                    sum("voteValue")
-                    groupProperty("answer")
+            def votes = []
+            if (answers) {
+                c = AnswerVote.createCriteria()
+                votes = c {
+                    inList("answer", answers)
+                    projections {
+                        property("answer")
+                        sum("voteValue")
+                        groupProperty("answer")
+                    }
                 }
             }
 
-            def answerVoteTotals = votes.collectEntries { [ (it[0]) : it[1]] }
+            def answerVoteTotals = votes?.collectEntries { [ (it[0]) : it[1]] }
             def userVotes = AnswerVote.findAllByUserAndAnswerInList(user, answers)?.collectEntries { [ (it.answer) : it]}
             [answers: answers, question: question, currentUserId: user.alaUserId, answerVoteTotals: answerVoteTotals, userVotes: userVotes]
         }

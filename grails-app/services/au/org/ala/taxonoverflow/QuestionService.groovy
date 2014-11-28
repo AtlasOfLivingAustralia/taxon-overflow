@@ -116,6 +116,13 @@ class QuestionService {
 
         def vote = AnswerVote.findByAnswerAndUser(answer, user)
 
+        int newVoteValue = voteType == VoteType.Up ? 1 : -1
+
+        if (vote?.voteValue == newVoteValue) {
+            voteType = VoteType.Retract
+        }
+
+
         if (voteType == VoteType.Retract) {
             if (vote) {
                 vote.delete()
@@ -124,7 +131,8 @@ class QuestionService {
             if (!vote) {
                 vote = new AnswerVote(user: user, answer: answer)
             }
-            vote.voteValue = voteType == VoteType.Up ? 1 : -1
+
+            vote.voteValue = newVoteValue
             vote.save(failOnError: true)
         }
     }

@@ -81,7 +81,7 @@
                 });
             }
 
-            function submitAnswer() {
+            function submitAnswer(options) {
 
                 var answer = { questionId: ${question.id}, userId: "${userId}" };
 
@@ -93,8 +93,18 @@
                     $.post("${createLink(controller: 'webService', action:'submitAnswer', id:question.id)}", answer, null, "json").done(function(response) {
                         if (response.success) {
                             renderAnswers();
+                            if (options && options.onSuccess instanceof Function) {
+                                options.onSuccess();
+                            }
                         } else {
                             alert(response.message);
+                            if (options && options.onFailure instanceof Function) {
+                                options.onFailure();
+                            }
+                        }
+                    }).always(function() {
+                        if (options && options.onComplete instanceof Function) {
+                            options.onComplete();
                         }
                     });
                 }
