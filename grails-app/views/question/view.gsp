@@ -106,7 +106,7 @@
     <body class="content">
         <H3>Question ${question.id}&nbsp;<small>[ <a href="http://biocache.ala.org.au/occurrence/${question.occurrenceId}" target="occurrenceDetails">View record in biocache</a> ]</small></H3>
         <g:if test="${acceptedAnswer}">
-            <div class="badge badge-success">An identification has been accepted for this occurrence: ${acceptedAnswer.scientificName}</div>
+            <div class="label label-success">An identification has been accepted for this occurrence: ${acceptedAnswer.scientificName}</div>
         </g:if>
         <div class="row-fluid">
             <div class="span8">

@@ -137,7 +137,27 @@
   $(".vote-arrow-up").click(function(e) {
     e.preventDefault();
     var answerId = $(this).closest("[answerId]").attr("answerId");
-    alert(answerId);
+    if (answerId) {
+      var voteData = {
+        userId: "<to:currentUserId />",
+        dir: 1
+      };
+
+      if ($(this).hasClass("user-upvoted")) {
+        voteData.dir = 0;
+      }
+
+      $.post("${createLink(controller:'webService', action:'castVoteOnAnswer')}/" + answerId, voteData, null, "json").done(function(response) {
+        if (response.success) {
+          if (renderAnswers) {
+            renderAnswers();
+          }
+        } else {
+          alert("Voting failed: " + response.message);
+        }
+      });
+
+    }
   });
 
   $(".vote-arrow-down").click(function(e) {
