@@ -29,17 +29,15 @@
     color: dimgray;
   }
 
-  .vote-arrow:hover,.vote-arrow:visited {
+  a.vote-arrow, a.vote-arrow:hover, a.vote-arrow:visited {
     text-decoration: none;
     color: dimgray;
   }
 
   .vote-arrow-up {
-    /*color: darkgreen;*/
   }
 
   .vote-arrow-down {
-    /*color: darkred;*/
   }
 
   .striped {
@@ -57,8 +55,20 @@
   }
 
   .user-downvoted, .user-downvoted:hover {
-    color: red;
+    color: orangered;
     font-size: 1.6em;
+  }
+
+  .answer-buttons .btn i {
+    font-size: 1.2em;
+  }
+
+  .answer-buttons .btn.btnDeleteAnswer i {
+    color: red;
+  }
+
+  .answer-buttons .btn.btnAcceptAnswer i {
+    color: green;
   }
 
 </style>
@@ -107,16 +117,17 @@
           <br />
             <g:formatDate date="${answer.dateCreated}" format="yyyy-MM-dd" />
           </div>
-          <div class="span6">
+          <div class="span5">
             <g:render template="/question/show${question.questionType.toString()}Answer" model="${[answer: answer]}" />
           </div>
-          <div class="span2">
-            <span class="pull-right">
-              <to:ifCanDeleteAnswer answer="${answer}">
-                <button type="button" title="Remove this answer" class="btnDeleteAnswer btn btn-mini btn-danger"><i class="icon-trash icon-white"></i></button>
-              </to:ifCanDeleteAnswer>
+          <div class="span3">
+            <span class="pull-right answer-buttons">
+              <to:ifCanEditAnswer answer="${answer}">
+                <button type="button" title="Edit this answer" class="btnEditAnswer btn btn-small"><i class="fa fa-edit"></i></button>
+                <button type="button" title="Remove this answer" class="btnDeleteAnswer btn btn-small"><i class="fa fa-remove"></i></button>
+              </to:ifCanEditAnswer>
               <to:ifCanAcceptAnswer answer="${answer}">
-                <button type="button" title="Accept this answer" class="btnAcceptAnswer btn btn-mini btn-success"><i class="icon-ok icon-white"></i></button>
+                <button type="button" title="Accept this answer" class="btnAcceptAnswer btn btn-small"><i class="fa fa-check"></i></button>
               </to:ifCanAcceptAnswer>
             </span>
           </div>
@@ -126,8 +137,73 @@
   </ul>
 
 </div>
+<g:if test="${(userAnswers?.size() ?: 0) == 0}">
+  <div class="newAnswerDiv">
+    <div class="row-fluid">
+      <div class="span12">
+        <to:renderAnswerTemplate question="${question}" />
+      </div>
+    </div>
+    <div class="row-fluid">
+      <div class="span12">
+        <button class="btn btn-success pull-right" id="btnSubmitAnswer">Submit identification</button>
+      </div>
+    </div>
+  </div>
+</g:if>
+<g:else>
+  <div class="existing-answer-message">
+    You have already supplied an identification. Click <a href="#">here</a> to edit it.
+  </div>
+</g:else>
+
 
 <script>
+
+  function submitAnswer(options) {
+
+    var answer = { questionId: ${question.id}, userId: "${user.alaUserId}" };
+
+    $(".newAnswerDiv .answer-field").each(function() {
+      answer[$(this).attr("id")] = $(this).val();
+    });
+
+
+    $.post("${createLink(controller: 'webService', action:'submitAnswer', id:question.id)}", answer, null, "application/json").done(function(response) {
+      if (response.success) {
+        renderAnswers();
+        if (options && options.onSuccess instanceof Function) {
+          options.onSuccess();
+        }
+      } else {
+        alert(response.message);
+        if (options && options.onFailure instanceof Function) {
+          options.onFailure();
+        }
+      }
+    }).always(function() {
+      if (options && options.onComplete instanceof Function) {
+        options.onComplete();
+      }
+    });
+
+  }
+
+  $("#btnSubmitAnswer").click(function(e) {
+    e.preventDefault();
+
+    $("#btnSubmitAnswer").attr("disabled","disabled");
+
+    submitAnswer({
+      onComplete: function() {
+        $("#btnSubmitAnswer").removeAttr("disabled");
+      },
+      onSuccess: function() {
+        $(".answer-field").val("");
+      }
+    });
+
+  });
 
   $(".btnUnacceptAnswer").click(function(e) {
     e.preventDefault();
@@ -160,7 +236,7 @@
           renderAnswers();
         }
       } else {
-        alert("Voting failed: " + response.message);
+        alert(response.message);
       }
     });
 
@@ -173,6 +249,18 @@
       voteOnAnswer(answerId, -1);
     }
 
+  });
+
+  $(".btnEditAnswer").click(function(e) {
+    e.preventDefault();
+    var answerId = $(this).closest("[answerId]").attr("answerId");
+    if (answerId) {
+      tolib.showModal( {
+        url: "${createLink(controller:'dialog', action:'editAnswerFragment')}?answerId=" + answerId,
+        title: "",
+        hideHeader: true
+      });
+    }
   });
 
   $(".btnAcceptAnswer").click(function(e) {
@@ -196,9 +284,7 @@
         affirmativeAction: function () {
           var url = "${createLink(controller: 'webService', action:'deleteAnswer')}/" + answerId;
           $.post(url).done(function(results) {
-            if (renderAnswers) {
-              renderAnswers();
-            }
+            location.reload(true);
           });
         }
       });

@@ -92,7 +92,9 @@ class QuestionController {
 
             def answerVoteTotals = votes?.collectEntries { [ (it[0]) : it[1]] }
             def userVotes = AnswerVote.findAllByUserAndAnswerInList(user, answers)?.collectEntries { [ (it.answer) : it]}
-            [answers: answers, question: question, currentUserId: user.alaUserId, answerVoteTotals: answerVoteTotals, userVotes: userVotes]
+            def userAnswers = Answer.findAllByQuestionAndUser(question, user)
+
+            [answers: answers, question: question, user: user, answerVoteTotals: answerVoteTotals, userVotes: userVotes, userAnswers: userAnswers]
         }
 
     }

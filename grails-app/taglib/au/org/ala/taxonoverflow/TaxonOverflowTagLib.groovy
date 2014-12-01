@@ -112,7 +112,7 @@ class TaxonOverflowTagLib {
     /**
      * @attr answer
      */
-    def ifCanDeleteAnswer = { attrs, body ->
+    def ifCanEditAnswer = { attrs, body ->
         def answer = attrs.answer as Answer
         if (answer) {
             if (answer.user == userService.currentUser) {

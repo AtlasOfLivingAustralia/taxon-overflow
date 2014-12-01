@@ -2,6 +2,8 @@ package au.org.ala.taxonoverflow
 
 class DialogController {
 
+    def userService
+
     def areYouSureFragment() {
         def message = params.message
         def affirmativeText = params.affirmativeText ?: "Yes"
@@ -12,6 +14,11 @@ class DialogController {
 
     def pleaseWaitFragment() {
         [message: params.message ?: "Please wait..."]
+    }
+
+    def editAnswerFragment() {
+        def answer = Answer.get(params.int("answerId"))
+        [answer: answer, user: userService.currentUser]
     }
 
 }

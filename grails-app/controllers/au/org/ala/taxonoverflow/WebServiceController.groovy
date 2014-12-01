@@ -101,11 +101,6 @@ class WebServiceController {
                         results.success = false
                         results.message = "Unhandled question type: ${question.questionType?.toString()}"
                 }
-
-                if (answer) {
-                    // Submitter gets an automatic (self) upvote
-                    questionService.castVoteOnAnswer(answer, user, VoteType.Up)
-                }
             }
         }
         renderResults(results)
@@ -148,22 +143,33 @@ class WebServiceController {
     }
 
     def castVoteOnAnswer(long id) {
+
+        def results = [success: false]
+
         def answer = Answer.get(id)
         def user = userService.getUserFromUserId(params.userId)
-        def dir = params.int("dir") ?: 1 // positive is up, negative is down and 0 is retract existing vote
-        def results = [success: false]
-        if (answer && user) {
-            def voteType = VoteType.Up
-            if (dir < 0) {
-                voteType = VoteType.Down
-            } else if (dir == 0) {
-                voteType = VoteType.Retract
-            }
-            questionService.castVoteOnAnswer(answer, user, voteType)
-            results.success = true
+
+        if (user == answer.user) {
+            // cannot vote on own answer!
+            results.message = "You cannot vote on your own answer!"
         } else {
-            results.message = "Invalid or missing answer id!"
+
+            def dir = params.int("dir") ?: 1 // positive is up, negative is down and 0 is retract existing vote
+
+            if (answer && user) {
+                def voteType = VoteType.Up
+                if (dir < 0) {
+                    voteType = VoteType.Down
+                } else if (dir == 0) {
+                    voteType = VoteType.Retract
+                }
+                questionService.castVoteOnAnswer(answer, user, voteType)
+                results.success = true
+            } else {
+                results.message = "Invalid or missing answer id!"
+            }
         }
+
         renderResults(results)
     }
 

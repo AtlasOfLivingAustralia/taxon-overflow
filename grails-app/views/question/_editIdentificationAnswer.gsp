@@ -3,7 +3,7 @@
     <div class="control-group">
         <label for="scientificName" class="control-label">Scientific Name</label>
         <div class="controls">
-            <g:textField class="span8 answer-field" name="scientificName" value="${answer?.binomial}" />
+            <g:textField class="span8 answer-field" name="scientificName" value="${answer?.scientificName}" />
         </div>
     </div>
     <div class="control-group">
@@ -13,29 +13,8 @@
         </div>
     </div>
 
-    <div class="control-group">
-        <div class="controls">
-            <button class="btn btn-success" id="btnSubmitAnswer">Submit identification</button>
-        </div>
-    </div>
 
 </div>
 
 <script>
-
-    $("#btnSubmitAnswer").click(function(e) {
-
-        $("#btnSubmitAnswer").attr("disabled","disabled");
-
-        submitAnswer({
-            onComplete: function() {
-                $("#btnSubmitAnswer").removeAttr("disabled");
-            },
-            onSuccess: function() {
-                $("#scientificName").val("");
-                $("#identificationRemarks").val("");
-            }
-        });
-    });
-
 </script>

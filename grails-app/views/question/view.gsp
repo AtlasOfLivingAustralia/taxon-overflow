@@ -44,6 +44,7 @@
                         imgvwr.viewImage($("#imageViewer"), imageId, {})
                     }
                 });
+
             });
 
             $(window).load(function() {
@@ -81,35 +82,6 @@
                 });
             }
 
-            function submitAnswer(options) {
-
-                var answer = { questionId: ${question.id}, userId: "${userId}" };
-
-                $(".newAnswerDiv .answer-field").each(function() {
-                    answer[$(this).attr("id")] = $(this).val();
-                });
-
-                if (scientificName) {
-                    $.post("${createLink(controller: 'webService', action:'submitAnswer', id:question.id)}", answer, null, "json").done(function(response) {
-                        if (response.success) {
-                            renderAnswers();
-                            if (options && options.onSuccess instanceof Function) {
-                                options.onSuccess();
-                            }
-                        } else {
-                            alert(response.message);
-                            if (options && options.onFailure instanceof Function) {
-                                options.onFailure();
-                            }
-                        }
-                    }).always(function() {
-                        if (options && options.onComplete instanceof Function) {
-                            options.onComplete();
-                        }
-                    });
-                }
-            }
-
         </r:script>
 
     </head>
@@ -125,10 +97,6 @@
                 <to:occurrencePropertiesTable title="Identification" section="classification" names="scientificName" occurrence="${occurrence}" />
                 <to:occurrencePropertiesTable title="Remarks" section="occurrence" names="occurrenceRemarks" occurrence="${occurrence}" />
                 <div id="answersDiv">
-                </div>
-
-                <div class="newAnswerDiv">
-                    <to:renderAnswerTemplate question="${question}" />
                 </div>
             </div>
             <div class="span4">
