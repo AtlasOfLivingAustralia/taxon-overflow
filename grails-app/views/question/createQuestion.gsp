@@ -8,6 +8,11 @@
 
   </head>
   <body class="content">
+
+    <div class="alert alert-error" style="display: none" id="errorMessageDiv">
+
+    </div>
+
     <div class="form-horizontal">
 
       <div class="control-group">
@@ -48,7 +53,11 @@
       });
 
       $("#btnSubmit").click(function(e) {
+
         e.preventDefault();
+
+        hideError();
+
         var question = {
             userId: "<to:currentUserId />",
             occurrenceId: $("#occurrenceId").val(),
@@ -57,17 +66,41 @@
 
         };
 
-        $.post("${createLink(controller:'webService', action:'createQuestionFromBiocache')}", question, null, "json").done(function(response) {
+        tolib.doJsonPost("${createLink(controller:'webService', action:'createQuestionFromBiocache')}", question).done(function(response) {
             if (response.success) {
                 location.href = "${createLink(controller:'question', action:'list')}";
             } else {
-                alert(response.message)
+                displayError(response.message);
             }
+        }).error(function() {
+            displayError("An internal error occurred on the server!");
         });
 
       });
 
     });
+
+    function doJsonPost(url, data) {
+        var dataStr = JSON.stringify(data);
+        return $.ajax({
+            type:'POST',
+            url: url,
+            contentType:'application/json',
+            data: dataStr
+        });
+    }
+
+    function displayError(message) {
+        var div = $("#errorMessageDiv");
+        div.html(message);
+        div.css('display', 'block');
+    }
+
+    function hideError() {
+        var div = $("#errorMessageDiv");
+        div.html("");
+        div.css('display', 'none');
+    }
 
   </r:script>
 

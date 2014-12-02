@@ -153,12 +153,48 @@
 </g:if>
 <g:else>
   <div class="existing-answer-message">
-    You have already supplied an identification. Click <a href="#">here</a> to edit it.
+    You have already supplied an identification. Click <a href="#" class="editAnswerLink" answerId="${userAnswers[0].id}">here</a> to edit it.
   </div>
 </g:else>
 
 
 <script>
+
+  function editAnswer(answerId) {
+    if (answerId) {
+      tolib.showModal( {
+        url: "${createLink(controller:'dialog', action:'editAnswerFragment')}?answerId=" + answerId,
+        title: "",
+        hideHeader: true
+      });
+    }
+  }
+
+  $(".btnEditAnswer").click(function(e) {
+    e.preventDefault();
+    var answerId = $(this).closest("[answerId]").attr("answerId");
+    if (answerId) {
+      editAnswer(answerId);
+    }
+  });
+
+  $(".editAnswerLink").click(function(e) {
+    e.preventDefault();
+    var answerId = $(this).attr("answerId");
+    if (answerId) {
+      editAnswer(answerId);
+    }
+  });
+
+  function clearErrorMessages() {
+    $(document).remove(".to-error-message");
+  }
+
+  function errorMessage(target, message) {
+    clearErrorMessages();
+    $(target).prepend('<div class="alert alert-error to-error-message">' + message + '</div>');
+
+  }
 
   function submitAnswer(options) {
 
@@ -168,15 +204,15 @@
       answer[$(this).attr("id")] = $(this).val();
     });
 
+    tolib.doJsonPost("${createLink(controller: 'webService', action:'submitAnswer', id:question.id)}", answer).done(function(response) {
 
-    $.post("${createLink(controller: 'webService', action:'submitAnswer', id:question.id)}", answer, null, "application/json").done(function(response) {
       if (response.success) {
         renderAnswers();
         if (options && options.onSuccess instanceof Function) {
           options.onSuccess();
         }
       } else {
-        alert(response.message);
+        errorMessage($("#newAnswerDiv"), response.message);
         if (options && options.onFailure instanceof Function) {
           options.onFailure();
         }
@@ -185,7 +221,9 @@
       if (options && options.onComplete instanceof Function) {
         options.onComplete();
       }
-    });
+    }).error(function() {
+      errorMessage($("#newAnswerDiv"), response.message)
+    })
 
   }
 
@@ -249,18 +287,6 @@
       voteOnAnswer(answerId, -1);
     }
 
-  });
-
-  $(".btnEditAnswer").click(function(e) {
-    e.preventDefault();
-    var answerId = $(this).closest("[answerId]").attr("answerId");
-    if (answerId) {
-      tolib.showModal( {
-        url: "${createLink(controller:'dialog', action:'editAnswerFragment')}?answerId=" + answerId,
-        title: "",
-        hideHeader: true
-      });
-    }
   });
 
   $(".btnAcceptAnswer").click(function(e) {

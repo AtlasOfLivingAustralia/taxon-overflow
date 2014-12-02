@@ -22,7 +22,9 @@ class QuestionService {
         }
     }
 
-    def createQuestionFromOccurrence(String occurrenceId, QuestionType questionType, List<String> tags, User user, List messages) {
+    ServiceResult<Question> createQuestionFromOccurrence(String occurrenceId, QuestionType questionType, List<String> tags, User user) {
+
+        def result = new ServiceResult<Question>(success: false)
 
         def occurrence = biocacheService.getRecord(occurrenceId)
 
@@ -30,12 +32,11 @@ class QuestionService {
 
             // the id used to search for an occurrence may not be canonical, so
             // once we've found an occurrence, use the canonical id from then on...
-
             occurrenceId = occurrence.raw?.uuid ?: occurrence.processed?.uuid
 
-            if (validateOccurrenceRecord(occurrenceId, occurrence, messages)) {
+            if (validateOccurrenceRecord(occurrenceId, occurrence, result.messages)) {
                 def question = new Question(user: user, occurrenceId: occurrenceId, questionType: questionType)
-                question.save()
+                question.save(failOnError: true)
 
                 // Save the tags
                 tags?.each {
@@ -45,16 +46,16 @@ class QuestionService {
                     }
                 }
 
-                return question
+                result.success(question)
             } else {
-
+                result.fail("Failed to validate occurrence record")
             }
 
         } else {
-            messages << "Unable to retrieve occurrence details for ${occurrenceId}"
+            result.fail("Unable to retrieve occurrence details for ${occurrenceId}")
         }
 
-        return null
+        return result
     }
 
     public boolean validateOccurrenceRecord(String occurrenceId, JSONObject occurrence, List errors) {

@@ -15,12 +15,13 @@
 
 <script>
 
-    $("#btnCancelEditAnswer").onClick(function(e) {
+    $("#btnCancelEditAnswer").click(function(e) {
         e.preventDefault();
         tolib.hideModal();
     });
 
-    $("#btnSaveAnswer").onClick(function(e) {
+    $("#btnSaveAnswer").click(function(e) {
+
         e.preventDefault();
 
         var answer = { answerId: ${answer.id}, userId: "${user.alaUserId}" };
@@ -29,24 +30,16 @@
             answer[$(this).attr("id")] = $(this).val();
         });
 
-        $.post("${createLink(controller: 'webService', action:'updateAnswer', id:answer.id)}", answer, null, "application/json").done(function(response) {
+        tolib.doJsonPost("${createLink(controller: 'webService', action:'updateAnswer', id:answer.id)}", answer).done(function(response) {
             if (response.success) {
                 renderAnswers();
-                if (options && options.onSuccess instanceof Function) {
-                    options.onSuccess();
-                }
+                tolib.hideModal();
             } else {
                 alert(response.message);
-                if (options && options.onFailure instanceof Function) {
-                    options.onFailure();
-                }
             }
-        }).always(function() {
-            if (options && options.onComplete instanceof Function) {
-                options.onComplete();
-            }
+        }).error(function() {
+            alert("error");
         });
-
     });
 
 

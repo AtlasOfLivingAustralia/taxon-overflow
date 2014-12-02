@@ -127,6 +127,16 @@ var tolib = {};
         spinner.css("display", "none");
     };
 
+    lib.doJsonPost = function(url, data) {
+        var dataStr = JSON.stringify(data);
+        return $.ajax({
+            type:'POST',
+            url: url,
+            contentType:'application/json',
+            data: dataStr
+        });
+    };
+
     lib.bindTooltips = function(selector, width) {
 
         if (!selector) {

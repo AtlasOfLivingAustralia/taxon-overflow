@@ -15,39 +15,24 @@ class WebServiceController {
     }
 
     def createQuestionFromBiocache() {
-        def occurrenceId = params.occurrenceId
-        def results = ['success':'true']
 
-        Question question
+        def results = [success:true]
+        def body = request.JSON
+        if (body) {
+            def tags= body.tags as List<String>
+            def occurrenceId = body.occurrenceId as String
+            def user = userService.getUserFromUserId(body.userId)
+            def questionType = (body.questionType as QuestionType) ?: QuestionType.Identification
+            def serviceResult = questionService.createQuestionFromOccurrence(occurrenceId, questionType, tags, user)
 
-        if (occurrenceId) {
-            QuestionType questionType = (params.questionType as QuestionType) ?: QuestionType.Identification
-            def user = userService.getUserFromUserId(params.userId)
-            def tagParam = params.tags as String
-            def tags = []
-            if (tagParam?.trim()) {
-                tags = tagParam.split(',')?.collect { String str -> str.trim() }
+            if (serviceResult) {
+                results.success = true
+                results.questionId = serviceResult.result?.id
+            } else {
+                results.success = false
+                results.message = serviceResult.combinedMessages
             }
-            def messages = []
-            question = questionService.createQuestionFromOccurrence(occurrenceId, questionType, tags, user, messages)
-            if (!question) {
-                results.message = messages.join(". ")
-            }
-        } else {
-            def body = request.JSON
-            if (body) {
-                def tags= body.tags as List<String>
-                occurrenceId = body.occurrenceId as String
-                def user = userService.getUserFromUserId(body.userid)
-                def questionType = (body.questionType as QuestionType) ?: QuestionType.Identification
-                question = questionService.createQuestionFromOccurrence(occurrenceId, questionType, [], user)
-            }
-        }
 
-        if (question) {
-            results.questionId = question.id
-        } else {
-            results.success = false
         }
 
         renderResults(results)
@@ -72,34 +57,91 @@ class WebServiceController {
         response.status = responseCode
     }
 
-    def submitAnswer(int id) {
-        def question = Question.get(id);
+    def updateAnswer() {
+        def answerDetails = request.JSON
         def results = [success: false]
 
-        if (!params.userId) {
+        if (!answerDetails) {
+            results.message = "You must supply a JSON body"
+            renderResults(results)
+            return
+        }
+
+        def answer = Answer.get(params.int("id")) ?: Answer.get(answerDetails.answerId as Long)
+
+        if (!answer) {
+            results.message = "You must supply a JSON body"
+            renderResults(results)
+            return
+        }
+
+        def messages = []
+        if (setAnswerProperties(answer, answerDetails, messages)) {
+            answer.save(failOnError: true, flush: true)
+            results.success = true
+        } else {
+            results.message = messages.join(". ")
+        }
+        renderResults(results)
+    }
+
+    private static setAnswerProperties(Answer answer, Object answerDetails, List messages) {
+        switch (answer.question.questionType) {
+            case QuestionType.Identification:
+                def scientificName = answerDetails.scientificName
+                def identificationRemarks = answerDetails.identificationRemarks
+
+                if (!scientificName) {
+                    messages << "A scientific name must be supplied"
+                } else {
+                    answer.scientificName = scientificName
+                    answer.description = identificationRemarks
+                    return true
+                }
+                break
+            default:
+                messages << "Unhandled question type: ${answer.question.questionType?.toString()}"
+        }
+
+        return false
+    }
+
+    def submitAnswer() {
+
+        def answerDetails = request.JSON
+        def results = [success: false]
+
+        if (!answerDetails) {
+            results.message = "You must supply a JSON body"
+            renderResults(results)
+            return
+        }
+
+        def question = Question.get(answerDetails.questionId ?: 0) ?:  Question.get(params.int('id'));
+
+        if (!question) {
+            results.message = "You must supply a questionId (either on URL or in JSON body)"
+            renderResults(results)
+            return
+        }
+
+        if (!answerDetails.userId) {
             results.message = "You must supply a userId!"
         } else if (!question) {
             results.message = "Invalid or missing question id!"
         } else {
-            def user = userService.getUserFromUserId(params.userId)
+            def user = userService.getUserFromUserId(answerDetails.userId)
             if (!user) {
                 results.message = "Invalid user id!"
             } else {
-                Answer answer
-                switch (question.questionType) {
-                    case QuestionType.Identification:
-
-                        if (!params.scientificName) {
-                            results.message = "A scientific name must be supplied"
-                        } else {
-                            answer = new Answer(question: question, scientificName: params.scientificName, description: params.identificationRemarks, user: user)
-                            answer.save(failOnError: true)
-                            results.success = true
-                        }
-                        break
-                    default:
-                        results.success = false
-                        results.message = "Unhandled question type: ${question.questionType?.toString()}"
+                Answer answer = new Answer(question: question, user: user)
+                def messages = []
+                if (setAnswerProperties(answer, answerDetails, messages)) {
+                    answer.save(failOnError: true)
+                    results.success = true
+                } else {
+                    results.success = false
+                    results.message = messages.join(". ")
                 }
             }
         }
