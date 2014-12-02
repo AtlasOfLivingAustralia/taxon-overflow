@@ -6,7 +6,7 @@ class Question {
     QuestionType questionType
     String occurrenceId
 
-    static hasMany = [comments: QuestionComment]
+    static hasMany = [comments: QuestionComment, views: QuestionView]
 
     static constraints = {
         user nullable: false
@@ -16,6 +16,7 @@ class Question {
 
     static mapping = {
         comments sort: 'dateCreated', order: 'asc'
+        views sort:'dateCreated', order: 'asc'
     }
 
 }

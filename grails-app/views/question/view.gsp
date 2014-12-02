@@ -90,7 +90,7 @@
 
     </head>
     <body class="content">
-        <H3>Question ${question.id}&nbsp;<small>[ <a href="http://biocache.ala.org.au/occurrence/${question.occurrenceId}" target="occurrenceDetails">View record in biocache</a> ]</small></H3>
+        <H3>Question ${question.id}&nbsp;<small>[ <a href="http://biocache.ala.org.au/occurrence/${question.occurrenceId}" target="occurrenceDetails">View record in biocache</a> ] Views: ${viewCount}</small></H3>
         <g:if test="${acceptedAnswer}">
             <div class="label label-success">An identification has been accepted for this occurrence: ${acceptedAnswer.scientificName}</div>
         </g:if>

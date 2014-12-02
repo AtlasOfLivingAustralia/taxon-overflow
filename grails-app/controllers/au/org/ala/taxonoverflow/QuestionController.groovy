@@ -6,9 +6,9 @@ class QuestionController {
 
     def questionService
     def biocacheService
-    def imagesWebService
     def userService
     def authService
+    def auditService
 
     def index() {
         redirect(action:'list')
@@ -45,13 +45,19 @@ class QuestionController {
 
             def userId = authService.userId
 
+            def acceptedAnswer = Answer.findByQuestionAndAccepted(question, true)
+
+
             waitAll(specimenPromise)
 
             def specimen = specimenPromise.get()
             def imageIds = specimen?.images*.filePath
-            def acceptedAnswer = Answer.findByQuestionAndAccepted(question, true)
 
-            return [question: question, imageIds: imageIds, occurrence: specimen, userId: userId, acceptedAnswer: acceptedAnswer]
+            auditService.logQuestionView(question)
+
+            def viewCount = auditService.getQuestionViewCount(question)
+
+            return [question: question, imageIds: imageIds, occurrence: specimen, userId: userId, acceptedAnswer: acceptedAnswer, viewCount: viewCount]
         } else {
             flash.message = "No such question, or question not specified"
             redirect(action:'list')
