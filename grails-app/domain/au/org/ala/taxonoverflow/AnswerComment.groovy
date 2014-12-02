@@ -8,8 +8,6 @@ class AnswerComment extends Comment {
 
     static constraints = {
         answer nullable: false
-        user nullable: false
-        comment nullable: false
     }
 
 }

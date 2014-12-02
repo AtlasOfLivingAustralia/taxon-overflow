@@ -1,5 +1,12 @@
 <style>
 
+    .voteCount {
+        font-size: large;
+        font-weight: bold;
+        margin-top: 5px;
+        margin-bottom: 5px;
+    }
+
     .answerCommentsContainer {
         border-top: 1px solid lightgray;
     }
@@ -136,20 +143,7 @@
         <ul class="comment-list">
             <g:each in="${answer.comments}" var="comment">
                 <li answerCommentId="${comment.id}">
-                    <div class="row-fluid">
-                        <div class="span11">
-                            ${comment.comment}
-                            <br/>
-                            <small>
-                            <to:userDisplayName user="${comment.user}" /> - <g:formatDate date="${comment.dateCreated}" format="yyyy-MM-dd HH:mm:ss" />
-                            </small>
-                        </div>
-                        <div class="span1">
-                            <to:ifCanEditComment comment="${comment}">
-                                <a href="#" class="btnDeleteComment"><i class="fa fa-remove"></i></a>
-                            </to:ifCanEditComment>
-                        </div>
-                    </div>
+                    <g:render template="commentFragment" model="${[comment: comment]}" />
                 </li>
             </g:each>
         </ul>

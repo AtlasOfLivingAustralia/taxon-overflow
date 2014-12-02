@@ -1,10 +1,9 @@
 <style>
 
-  .voteCount {
-    font-size: large;
-    font-weight: bold;
-    margin-top: 5px;
-    margin-bottom: 5px;
+  .newAnswerDiv {
+    border: 1px solid #dddddd;
+    border-radius: 4px;
+    padding: 10px;
   }
 
   .answer-list li.accepted-answer {

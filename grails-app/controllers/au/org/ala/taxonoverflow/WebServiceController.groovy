@@ -215,6 +215,41 @@ class WebServiceController {
         renderResults(results)
     }
 
+    def addQuestionComment() {
+        def results = [success: false]
+        def commentData = request.JSON
+
+        def user = User.findByAlaUserId(commentData?.userId)
+        if (!user) {
+            results.message = "Invalid or missing userId"
+            renderResults(results)
+            return
+        }
+
+        def question = Question.get(params.int("id")) ?: Question.get(commentData?.questionId)
+        if (!question) {
+            results.message = "Invalid or missing questionId"
+            renderResults(results)
+            return
+        }
+
+        def comment = commentData.comment
+        if (!comment) {
+            results.message = "Must supply a comment!"
+            renderResults(results)
+            return
+        }
+
+        def serviceResults = questionService.addQuestionComment(question, user, comment)
+        if (serviceResults) {
+            results.success = true
+            results.commentId = serviceResults.get().id
+        } else {
+            results.message = serviceResults.getCombinedMessages()
+        }
+        renderResults(results)
+    }
+
     def addAnswerComment() {
         def results = [success: false]
         def commentData = request.JSON
@@ -276,7 +311,34 @@ class WebServiceController {
             results.message = serviceResults.getCombinedMessages()
         }
         renderResults(results)
+    }
 
+    def deleteQuestionComment() {
+        def results = [success: false]
+        def commentData = request.JSON
+
+        def user = User.findByAlaUserId(commentData?.userId)
+        if (!user) {
+            results.message = "Invalid or missing userId"
+            renderResults(results)
+            return
+        }
+
+        def comment = QuestionComment.get(params.int("id")) ?: QuestionComment.get(commentData?.commentId)
+        if (!comment) {
+            results.message = "Invalid or missing commentId"
+            renderResults(results)
+            return
+        }
+
+        def serviceResults = questionService.removeQuestionComment(comment, user)
+        if (serviceResults) {
+            results.success = true
+            results.commentId = serviceResults.get().id
+        } else {
+            results.message = serviceResults.getCombinedMessages()
+        }
+        renderResults(results)
     }
 
 }

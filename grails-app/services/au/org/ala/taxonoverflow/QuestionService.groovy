@@ -147,6 +147,24 @@ class QuestionService {
         return false
     }
 
+
+    ServiceResult<QuestionComment> addQuestionComment(Question question, User user, String commentText) {
+        if (!question) {
+            return new ServiceResult<QuestionComment>().fail("No question supplied")
+        }
+        if (!user) {
+            return new ServiceResult<QuestionComment>().fail("No user supplied")
+        }
+
+        if (!commentText) {
+            return new ServiceResult<QuestionComment>().fail("No comment text supplied")
+        }
+
+        def comment = new QuestionComment(question: question, user: user, comment: commentText)
+        comment.save(failOnError: true)
+        return new ServiceResult<QuestionComment>(result: comment, success: true)
+    }
+
     ServiceResult<AnswerComment> addAnswerComment(Answer answer, User user, String commentText) {
         if (!answer) {
             return new ServiceResult<AnswerComment>().fail("No answer supplied")
@@ -176,6 +194,20 @@ class QuestionService {
 
         comment.delete(flush: true)
         return new ServiceResult<AnswerComment>(result: comment, success: true)
+    }
+
+    ServiceResult<QuestionComment> removeQuestionComment(QuestionComment comment, User user) {
+        if (!comment) {
+            return new ServiceResult<QuestionComment>().fail("No comment supplied")
+        }
+        if (!user) {
+            return new ServiceResult<QuestionComment>().fail("No user supplied")
+        }
+
+        // TODO: check permissions?
+
+        comment.delete(flush: true)
+        return new ServiceResult<QuestionComment>(result: comment, success: true)
     }
 
 }

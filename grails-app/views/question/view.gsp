@@ -11,10 +11,8 @@
                 height: 400px;
             }
 
-            .newAnswerDiv {
-                border: 1px solid #dddddd;
-                border-radius: 4px;
-                padding: 10px;
+            #questionCommentsDiv {
+                border-top: 1px solid #dddddd;
             }
 
         </r:style>
@@ -82,6 +80,12 @@
                 });
             }
 
+            function renderQuestionComments() {
+                $.ajax("${createLink(action:'questionCommentsFragment', id: question.id)}").done(function(content) {
+                    $("#questionCommentsDiv").html(content);
+                });
+            }
+
         </r:script>
 
     </head>
@@ -96,6 +100,9 @@
                 <to:occurrencePropertiesTable title="Location" section="location" names="locality, decimalLatitude, decimalLongitude" occurrence="${occurrence}" />
                 <to:occurrencePropertiesTable title="Identification" section="classification" names="scientificName" occurrence="${occurrence}" />
                 <to:occurrencePropertiesTable title="Remarks" section="occurrence" names="occurrenceRemarks" occurrence="${occurrence}" />
+                <div id="questionCommentsDiv">
+                    <g:render template="questionCommentsFragment" model="${[question: question]}" />
+                </div>
                 <div id="answersDiv">
                     <to:spinner />&nbsp;Loading answers...
                 </div>

@@ -49,7 +49,6 @@ class QuestionController {
 
             def specimen = specimenPromise.get()
             def imageIds = specimen?.images*.filePath
-
             def acceptedAnswer = Answer.findByQuestionAndAccepted(question, true)
 
             return [question: question, imageIds: imageIds, occurrence: specimen, userId: userId, acceptedAnswer: acceptedAnswer]
@@ -119,10 +118,20 @@ class QuestionController {
         }
     }
 
+    def questionCommentsFragment(long id) {
+        def question = Question.get(id)
+        render(template:'questionCommentsFragment', model:[question: question])
+    }
+
     def addAnswerCommentFragment(long id) {
         def answer = Answer.get(id)
 
         [answer: answer]
+    }
+
+    def addQuestionCommentFragment(long id) {
+        def question = Question.get(id)
+        [question: question]
     }
 
 }
