@@ -99,4 +99,30 @@ class QuestionController {
 
     }
 
+    def answerFragment(long id) {
+        def answer = Answer.get(id)
+
+        if (answer) {
+            def user = userService.currentUser
+            def userVote = AnswerVote.findByUserAndAnswer(user, answer)
+
+            def c = AnswerVote.createCriteria()
+            def totalVotes = c {
+                eq("answer", answer)
+                projections {
+                    groupProperty("answer")
+                    sum("voteValue")
+                }
+            }
+
+            render(template: "answerFragment", model: [question: answer?.question, answer: answer, userVote: userVote, totalVotes: totalVotes ? totalVotes[0][1] : 0])
+        }
+    }
+
+    def addAnswerCommentFragment(long id) {
+        def answer = Answer.get(id)
+
+        [answer: answer]
+    }
+
 }

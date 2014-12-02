@@ -18,6 +18,7 @@ public class ServiceResult<T> {
     def fail(String message) {
         success = false
         messages << message
+        return this
     }
 
     def getCombinedMessages(String delim = ". ") {

@@ -191,7 +191,7 @@ class WebServiceController {
         def answer = Answer.get(id)
         def user = userService.getUserFromUserId(params.userId)
 
-        if (user == answer.user) {
+        if (user == answer.user && false) {
             // cannot vote on own answer!
             results.message = "You cannot vote on your own answer!"
         } else {
@@ -213,6 +213,70 @@ class WebServiceController {
         }
 
         renderResults(results)
+    }
+
+    def addAnswerComment() {
+        def results = [success: false]
+        def commentData = request.JSON
+
+        def user = User.findByAlaUserId(commentData?.userId)
+        if (!user) {
+            results.message = "Invalid or missing userId"
+            renderResults(results)
+            return
+        }
+
+        def answer = Answer.get(params.int("id")) ?: Answer.get(commentData?.answerId)
+        if (!answer) {
+            results.message = "Invalid or missing answerId"
+            renderResults(results)
+            return
+        }
+
+        def comment = commentData.comment
+        if (!comment) {
+            results.message = "Must supply a comment!"
+            renderResults(results)
+            return
+        }
+
+        def serviceResults = questionService.addAnswerComment(answer, user, comment)
+        if (serviceResults) {
+            results.success = true
+            results.commentId = serviceResults.get().id
+        } else {
+            results.message = serviceResults.getCombinedMessages()
+        }
+        renderResults(results)
+    }
+
+    def deleteAnswerComment() {
+        def results = [success: false]
+        def commentData = request.JSON
+
+        def user = User.findByAlaUserId(commentData?.userId)
+        if (!user) {
+            results.message = "Invalid or missing userId"
+            renderResults(results)
+            return
+        }
+
+        def comment = AnswerComment.get(params.int("id")) ?: AnswerComment.get(commentData?.commentId)
+        if (!comment) {
+            results.message = "Invalid or missing commentId"
+            renderResults(results)
+            return
+        }
+
+        def serviceResults = questionService.removeAnswerComment(comment, user)
+        if (serviceResults) {
+            results.success = true
+            results.commentId = serviceResults.get().id
+        } else {
+            results.message = serviceResults.getCombinedMessages()
+        }
+        renderResults(results)
+
     }
 
 }

@@ -145,5 +145,25 @@ class TaxonOverflowTagLib {
         }
     }
 
+    /**
+     * @attr title alt text
+     */
+    def spinner = { attrs, body ->
+        def url = "${createLink(uri:'/images/spinner.gif')}"
+        out << "<img src=\"${url}\" alt=\"${attrs.title ?: "Loading..."}\" />"
+    }
+
+    /**
+     * @attr comment
+     */
+    def ifCanEditComment = { attrs, body ->
+        def comment = attrs.comment as Comment
+        if (comment) {
+            if (comment.user == userService.currentUser) {
+                out << body()
+            }
+        }
+    }
 
 }
+

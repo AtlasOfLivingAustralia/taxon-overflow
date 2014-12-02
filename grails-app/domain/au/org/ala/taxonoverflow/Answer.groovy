@@ -8,7 +8,7 @@ class Answer {
     boolean accepted
     Date dateAccepted
 
-    static hasMany = [votes: AnswerVote]
+    static hasMany = [votes: AnswerVote, comments: AnswerComment]
 
     // Below is superset of allowable answer fields, depending on question type
     String scientificName
@@ -20,6 +20,10 @@ class Answer {
         description nullable: true
         scientificName nullable: true
         dateAccepted nullable: true
+    }
+
+    static mapping = {
+        comments sort: 'dateCreated', order: 'asc'
     }
 
 }

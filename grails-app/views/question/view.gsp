@@ -97,6 +97,7 @@
                 <to:occurrencePropertiesTable title="Identification" section="classification" names="scientificName" occurrence="${occurrence}" />
                 <to:occurrencePropertiesTable title="Remarks" section="occurrence" names="occurrenceRemarks" occurrence="${occurrence}" />
                 <div id="answersDiv">
+                    <to:spinner />&nbsp;Loading answers...
                 </div>
             </div>
             <div class="span4">
