@@ -148,4 +148,106 @@
 
   });
 
+  function voteOnAnswer(answerId, direction) {
+    var voteData = {
+      userId: "<to:currentUserId />",
+      dir: direction
+    };
+
+    $.post("${createLink(controller:'webService', action:'castVoteOnAnswer')}/" + answerId, voteData, null, "json").done(function(response) {
+      if (response.success) {
+        if (renderAnswers) {
+          renderAnswers();
+        }
+      } else {
+        alert(response.message);
+      }
+    });
+  }
+
+  $("ul.answer-list").on("click", ".btnUpVote", function(e) {
+    e.preventDefault();
+    var answerId = $(this).closest("[answerId]").attr("answerId");
+    if (answerId) {
+      voteOnAnswer(answerId, 1);
+    }
+  });
+
+  $("ul.answer-list").on("click", ".btnDownVote", function(e) {
+    e.preventDefault();
+    var answerId = $(this).closest("[answerId]").attr("answerId");
+    if (answerId) {
+      voteOnAnswer(answerId, -1);
+    }
+  });
+
+  $("ul.answer-list").on("click", ".btnUnacceptAnswer", function(e) {
+    e.preventDefault();
+    var answerId = $(this).closest("[answerId]").attr("answerId");
+    if (answerId) {
+      var url = "${createLink(controller: 'webService', action:'unacceptAnswer')}/" + answerId;
+      $.post(url).done(function (results) {
+        location.reload(true);
+      });
+    }
+  });
+
+  $("ul.answer-list").on("click", ".btnAcceptAnswer", function(e) {
+    e.preventDefault();
+    var answerId = $(this).closest("[answerId]").attr("answerId");
+    if (answerId) {
+      var url = "${createLink(controller: 'webService', action:'acceptAnswer')}/" + answerId;
+      $.post(url).done(function(results) {
+        location.reload(true);
+      });
+    }
+  });
+
+  $("ul.answer-list").on("click", ".btnDeleteAnswer", function(e) {
+    e.preventDefault();
+    var answerId = $(this).closest("[answerId]").attr("answerId");
+    if (answerId) {
+      tolib.areYouSure({
+        message: 'Are you sure you wish to permanently delete this answer?',
+        title: 'Delete your answer?',
+        affirmativeAction: function () {
+          var url = "${createLink(controller: 'webService', action:'deleteAnswer')}/" + answerId;
+          $.post(url).done(function(results) {
+            location.reload(true);
+          });
+        }
+      });
+    }
+  });
+
+  $("ul.answer-list").on("click", ".btnAddAnswerComment", function(e) {
+    e.preventDefault();
+    var answerId = $(this).closest("[answerId]").attr("answerId");
+    if (answerId) {
+      $.ajax("${createLink(controller:'question', action:'addAnswerCommentFragment')}/" + answerId).done(function(content) {
+        $("[answerId=" + answerId + "] .newCommentDiv").html(content);
+      });
+    }
+  });
+
+  $("ul.answer-list").on("click", ".btnDeleteComment", function(e) {
+    e.preventDefault();
+    var answerId = $(this).closest("[answerId]").attr("answerId");
+    var commentId = $(this).closest("[answerCommentId]").attr("answerCommentId");
+    if (commentId && answerId) {
+      var commentData = {
+        userId: "<to:currentUserId />",
+        commentId: commentId
+      };
+
+      tolib.doJsonPost("${createLink(controller:'webService', action:'deleteAnswerComment')}", commentData).done(function(response) {
+        if (renderAnswer && renderAnswer instanceof Function) {
+          renderAnswer(answerId);
+        }
+      });
+    }
+  });
+
+
+
 </script>

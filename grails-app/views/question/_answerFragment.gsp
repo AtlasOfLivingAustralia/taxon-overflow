@@ -104,13 +104,13 @@
         <g:set var="upvoteClass" value="${userVote?.voteValue > 0 ? 'user-upvoted' : '' }" />
         <g:set var="downvoteClass" value="${userVote?.voteValue && userVote?.voteValue < 0 ? 'user-downvoted' : '' }" />
         <div>
-            <a href="#" class="vote-arrow vote-arrow-up ${upvoteClass}">
+            <a href="#" class="btnUpVote vote-arrow vote-arrow-up ${upvoteClass}">
                 <i class="fa fa-thumbs-o-up"></i>
             </a>
         </div>
         <div class="voteCount">${totalVotes ?: 0}</div>
         <div>
-            <a href="#" class="vote-arrow vote-arrow-down ${downvoteClass}">
+            <a href="#" class="btnDownVote vote-arrow vote-arrow-down ${downvoteClass}">
                 <i class="fa fa-thumbs-o-down"></i>
             </a>
         </div>
@@ -131,9 +131,12 @@
                 <button type="button" title="Edit this answer" class="btnEditAnswer btn btn-small"><i class="fa fa-edit"></i></button>
                 <button type="button" title="Remove this answer" class="btnDeleteAnswer btn btn-small"><i class="fa fa-remove"></i></button>
             </to:ifCanEditAnswer>
-            <to:ifCanAcceptAnswer answer="${answer}">
-                <button type="button" title="Accept this answer" class="btnAcceptAnswer btn btn-small"><i class="fa fa-check"></i></button>
-            </to:ifCanAcceptAnswer>
+
+            <g:if test="${!answer.accepted}">
+                <to:ifCanAcceptAnswer answer="${answer}">
+                    <button type="button" title="Accept this answer" class="btnAcceptAnswer btn btn-small"><i class="fa fa-check"></i></button>
+                </to:ifCanAcceptAnswer>
+            </g:if>
         </span>
     </div>
 </div>
@@ -152,109 +155,3 @@
         </div>
     </div>
 </div>
-
-<script>
-
-    $(".btnAddAnswerComment").click(function(e) {
-        e.preventDefault();
-        var answerId = $(this).closest("[answerId]").attr("answerId");
-        if (answerId) {
-            $.ajax("${createLink(controller:'question', action:'addAnswerCommentFragment')}/" + answerId).done(function(content) {
-                $("[answerId=" + answerId + "] .newCommentDiv").html(content);
-            });
-        }
-    });
-
-    $(".btnDeleteComment").click(function(e) {
-        var answerId = $(this).closest("[answerId]").attr("answerId");
-        var commentId = $(this).closest("[answerCommentId]").attr("answerCommentId");
-        if (commentId && answerId) {
-            var commentData = {
-                userId: "<to:currentUserId />",
-                commentId: commentId
-            };
-
-            tolib.doJsonPost("${createLink(controller:'webService', action:'deleteAnswerComment')}", commentData).done(function(response) {
-                if (renderAnswer && renderAnswer instanceof Function) {
-                    renderAnswer(answerId);
-                }
-            });
-        }
-    });
-
-    $(".btnUnacceptAnswer").click(function(e) {
-        e.preventDefault();
-        var answerId = $(this).closest("[answerId]").attr("answerId");
-        if (answerId) {
-            var url = "${createLink(controller: 'webService', action:'unacceptAnswer')}/" + answerId;
-            $.post(url).done(function (results) {
-                location.reload(true);
-            });
-        }
-    });
-
-    $(".vote-arrow-up").click(function(e) {
-        e.preventDefault();
-        var answerId = $(this).closest("[answerId]").attr("answerId");
-        if (answerId) {
-            voteOnAnswer(answerId, 1);
-        }
-    });
-
-    function voteOnAnswer(answerId, direction) {
-        var voteData = {
-            userId: "<to:currentUserId />",
-            dir: direction
-        };
-
-        $.post("${createLink(controller:'webService', action:'castVoteOnAnswer')}/" + answerId, voteData, null, "json").done(function(response) {
-            if (response.success) {
-                if (renderAnswers) {
-                    renderAnswers();
-                }
-            } else {
-                alert(response.message);
-            }
-        });
-
-    }
-
-    $(".vote-arrow-down").click(function(e) {
-        e.preventDefault();
-        var answerId = $(this).closest("[answerId]").attr("answerId");
-        if (answerId) {
-            voteOnAnswer(answerId, -1);
-        }
-
-    });
-
-    $(".btnAcceptAnswer").click(function(e) {
-        e.preventDefault();
-        var answerId = $(this).closest("[answerId]").attr("answerId");
-        if (answerId) {
-            var url = "${createLink(controller: 'webService', action:'acceptAnswer')}/" + answerId;
-            $.post(url).done(function(results) {
-                location.reload(true);
-            });
-        }
-    });
-
-    $(".btnDeleteAnswer").click(function(e) {
-        e.preventDefault();
-        var answerId = $(this).closest("[answerId]").attr("answerId");
-        if (answerId) {
-            tolib.areYouSure({
-                message: 'Are you sure you wish to permanently delete this answer?',
-                title: 'Delete your answer?',
-                affirmativeAction: function () {
-                    var url = "${createLink(controller: 'webService', action:'deleteAnswer')}/" + answerId;
-                    $.post(url).done(function(results) {
-                        location.reload(true);
-                    });
-                }
-            });
-        }
-
-    });
-
-</script>
