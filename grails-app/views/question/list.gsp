@@ -3,8 +3,15 @@
     <head>
         <meta name="layout" content="tomain"/>
         <title>Welcome to Grails</title>
-        <style type="text/css" media="screen">
+        <style>
+        <r:style>
 
+            .question-thumb {
+                height: 100px;
+                max-height: 100px;
+            }
+
+        </r:style>
         </style>
         <r:script>
 
@@ -28,21 +35,21 @@
 
     </head>
     <body class="content">
+        ${questions.size()} questions
         <table class="table table-condensed table-striped table-bordered">
-            <thead>
-                <tr>
-                    <th>Id</th>
-                    <th>OccurrenceId</th>
-                    <th>User</th>
-                    <th></th>
-                </tr>
-            </thead>
             <tbody>
                 <g:each in="${questions}" var="question">
                     <tr questionId="${question.id}">
-                        <td>${question.id}</td>
+                        <td style="width: 110px">
+                            <g:set var="questionUrl" value="${createLink(controller:'question', action:'view', id: question.id)}" />
+                            <g:if test="${imageInfoMap[question.occurrenceId]}">
+                                <a class="thumbnail" href="${questionUrl}">
+                                    <img class="question-thumb" src="${imageInfoMap[question.occurrenceId][0]?.squareThumbUrl}_darkGray" />
+                                </a>
+                            </g:if>
+                        </td>
                         <td><g:link action="view" id="${question.id}">${question.occurrenceId}</g:link></td>
-                        <td>${question.user.alaUserId}</td>
+                        <td><to:userDisplayName user="${question.user}" /></td>
                         <td><button type="button" class="btn btn-small btn-danger btnDelete"><i class="icon-remove icon-white"></i></button></td>
                     </tr>
                 </g:each>

@@ -9,6 +9,7 @@ class QuestionController {
     def userService
     def authService
     def auditService
+    def imagesWebService
 
     def index() {
         redirect(action:'list')
@@ -18,7 +19,21 @@ class QuestionController {
         params.max = params.max ?: 20
         def questions = Question.list(params)
         def totalCount = Question.count()
-        [questions: questions, totalCount: totalCount]
+
+        // Get image info...
+        imagesWebService.getImageInfo()
+
+        def occurrenceIds = questions*.occurrenceId
+
+//        occurrenceIds = ["33ffd121-8497-4d7b-a720-849d5b068973"]
+
+
+        Map imageInfoMap = imagesWebService.getImageInfoForMetadata("occurrenceId", occurrenceIds)
+        imageInfoMap.keySet().each {
+            println it + ": ${imageInfoMap[it].size()}"
+        }
+
+        [questions: questions, totalCount: totalCount, imageInfoMap: imageInfoMap]
     }
 
     def delete(int id) {

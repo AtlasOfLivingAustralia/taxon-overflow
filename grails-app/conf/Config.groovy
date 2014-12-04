@@ -37,6 +37,8 @@ biocache.downloads.extra = "dataResourceUid,dataResourceName.p"
 biocache.ajax.useProxy = false
 collections.baseUrl = "http://collections.ala.org.au"
 
+ala.image.service.url = "http://images.ala.org.au"
+
 elasticsearch.location = "/data/${appName}/elasticsearch"
 
 // The ACCEPT header will not be used for content negotiation for user agents containing the following strings (defaults to the 4 major rendering engines)
