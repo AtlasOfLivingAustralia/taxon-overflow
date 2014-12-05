@@ -18,6 +18,8 @@ import org.elasticsearch.index.query.FilterBuilders
 import org.elasticsearch.index.query.QueryBuilders
 
 import javax.annotation.PreDestroy
+import java.util.concurrent.ConcurrentLinkedQueue
+import java.util.concurrent.PriorityBlockingQueue
 import java.util.regex.Pattern
 
 import static org.elasticsearch.node.NodeBuilder.nodeBuilder
@@ -26,7 +28,10 @@ import org.elasticsearch.node.Node
 
 class ElasticSearchService {
 
-    private static final String INDEX_NAME = "TaxonOverflow"
+    private static final String INDEX_NAME = "taxonoverflow"
+
+    // Consider using a priority queue so delete operations can be push through with higher priority?
+    private static Queue<IndexQuestionTask> _backgroundQueue = new ConcurrentLinkedQueue<IndexQuestionTask>()
 
     def grailsApplication
     private Node node
@@ -65,8 +70,23 @@ class ElasticSearchService {
 
     @NotTransactional
     public void indexQuestion(Question question) {
-        IndexResponse response = client.prepareIndex(INDEX_NAME, "question", question.id.toString()).setSource((question as JSON).toString()).execute().actionGet();
-        println response
+        println "Indexing question " + question?.id
+        String json = null
+        JSON.use("deep") {
+            json = (question as JSON).toString()
+        }
+
+        if (json) {
+            IndexResponse response = client.prepareIndex(INDEX_NAME, "question", question.id.toString()).setSource(json).execute().actionGet();
+        }
+    }
+
+    @NotTransactional
+    public void deleteQuestionFromIndex(Question question) {
+        if (question) {
+            println "deleting question from index: ${question.id}"
+            DeleteResponse response = client.prepareDelete(INDEX_NAME, "question", question.id.toString()).execute().actionGet();
+        }
     }
 
     @NotTransactional
@@ -89,4 +109,51 @@ class ElasticSearchService {
     def ping() {
         log.info("ElasticSearch Service is ${node ? '' : 'NOT' } alive.")
     }
+
+    static def scheduleQuestionIndexation(long questionId) {
+        _backgroundQueue.add(new IndexQuestionTask(questionId, IndexOperation.Update))
+    }
+
+    static def scheduleQuestionDeletion(long questionId) {
+        _backgroundQueue.add(new IndexQuestionTask(questionId, IndexOperation.Delete))
+    }
+
+    @NotTransactional
+    def processIndexTaskQueue(int maxQuestions = 10000) {
+        int questionCount = 0
+        IndexQuestionTask jobDescriptor = null
+
+        while (questionCount < maxQuestions && (jobDescriptor = _backgroundQueue.poll()) != null) {
+            if (jobDescriptor) {
+                Question question = Question.get(jobDescriptor.questionId)
+                if (question) {
+                    switch (jobDescriptor.indexOperation) {
+                        case IndexOperation.Delete:
+                            deleteQuestionFromIndex(question)
+                            break;
+                        case IndexOperation.Insert:
+                        case IndexOperation.Update:
+                            indexQuestion(question)
+                            break;
+                        default:
+                            throw new Exception("Unhandled operation type: ${jobDescriptor.indexOperation}")
+                    }
+                }
+                questionCount++
+            }
+        }
+    }
+
+}
+
+public class IndexHelper {
+
+    public static void indexQuestion(long questionId) {
+        ElasticSearchService.scheduleQuestionIndexation(questionId)
+    }
+
+    public static void deleteQuestionFromIndex(long questionId) {
+        ElasticSearchService.scheduleQuestionDeletion(questionId)
+    }
+
 }

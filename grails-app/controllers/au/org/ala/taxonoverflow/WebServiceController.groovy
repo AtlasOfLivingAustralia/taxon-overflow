@@ -20,7 +20,7 @@ class WebServiceController {
         def results = [success:true]
         def body = request.JSON
         if (body) {
-            def tags= body.tags as List<String>
+            def tags = body.tags instanceof String ? body.tags.split(",")?.toList() : body.tags as List<String>
             def occurrenceId = body.occurrenceId as String
             def user = userService.getUserFromUserId(body.userId)
             def questionType = (body.questionType as QuestionType) ?: QuestionType.Identification
@@ -29,9 +29,6 @@ class WebServiceController {
             if (serviceResult) {
                 results.success = true
                 results.questionId = serviceResult.result?.id
-
-                elasticSearchService.indexQuestion(serviceResult.result)
-
             } else {
                 results.success = false
                 results.message = serviceResult.combinedMessages

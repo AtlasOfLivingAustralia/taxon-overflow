@@ -6,7 +6,7 @@ class Question {
     QuestionType questionType
     String occurrenceId
 
-    static hasMany = [comments: QuestionComment, views: QuestionView]
+    static hasMany = [comments: QuestionComment, views: QuestionView, answers: Answer, tags: QuestionTag]
 
     static constraints = {
         user nullable: false
@@ -17,6 +17,18 @@ class Question {
     static mapping = {
         comments sort: 'dateCreated', order: 'asc'
         views sort:'dateCreated', order: 'asc'
+    }
+
+    def afterUpdate() {
+        IndexHelper.indexQuestion(this.id)
+    }
+
+    def afterInsert() {
+        IndexHelper.indexQuestion(this.id)
+    }
+
+    def afterDelete() {
+        IndexHelper.deleteQuestionFromIndex(this.id)
     }
 
 }

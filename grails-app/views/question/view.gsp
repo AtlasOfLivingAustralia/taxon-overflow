@@ -91,9 +91,20 @@
     </head>
     <body class="content">
         <H3>Question ${question.id}&nbsp;<small>[ <a href="http://biocache.ala.org.au/occurrence/${question.occurrenceId}" target="occurrenceDetails">View record in biocache</a> ] Views: ${viewCount}</small></H3>
+        <g:if test="${question.tags.size() > 0}">
+            <div class="row-fluid">
+                <div class="span12">
+                    <g:each in="${question.tags}" var="tag">
+                        <div class="label label-info">${tag.tag}</div>
+                    </g:each>
+                </div>
+            </div>
+        </g:if>
+
         <g:if test="${acceptedAnswer}">
             <div class="label label-success">An identification has been accepted for this occurrence: ${acceptedAnswer.scientificName}</div>
         </g:if>
+
         <div class="row-fluid">
             <div class="span8">
                 <to:occurrencePropertiesTable title="General" section="" names="occurrence.recordedBy, event.eventDate" occurrence="${occurrence}" />

@@ -8,6 +8,8 @@ class Answer {
     boolean accepted
     Date dateAccepted
 
+    static belongsTo = [question: Question]
+
     static hasMany = [votes: AnswerVote, comments: AnswerComment]
 
     // Below is superset of allowable answer fields, depending on question type
@@ -26,4 +28,17 @@ class Answer {
         comments sort: 'dateCreated', order: 'asc'
     }
 
+    def afterUpdate() {
+        IndexHelper.indexQuestion(this.question.id)
+    }
+
+    def afterInsert() {
+        IndexHelper.indexQuestion(this.question.id)
+    }
+
+    def afterDelete() {
+        IndexHelper.indexQuestion(this.question.id)
+    }
+
 }
+

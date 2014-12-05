@@ -10,4 +10,17 @@ class QuestionView {
 
     static constraints = {
     }
+
+    def afterUpdate() {
+        IndexHelper.indexQuestion(this.question.id)
+    }
+
+    def afterInsert() {
+        IndexHelper.indexQuestion(this.question.id)
+    }
+
+    def afterDelete() {
+        IndexHelper.indexQuestion(this.question.id)
+    }
+
 }
