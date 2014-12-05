@@ -1,5 +1,9 @@
 package au.org.ala.taxonoverflow
 
+import org.elasticsearch.action.search.SearchRequestBuilder
+import org.elasticsearch.index.query.FilterBuilders
+import org.elasticsearch.index.query.QueryBuilders
+
 import static grails.async.Promises.*
 
 class QuestionController {
@@ -10,6 +14,7 @@ class QuestionController {
     def authService
     def auditService
     def imagesWebService
+    def elasticSearchService
 
     def index() {
         redirect(action:'list')
@@ -20,18 +25,21 @@ class QuestionController {
         def questions = Question.list(params)
         def totalCount = Question.count()
 
-        // Get image info...
-        imagesWebService.getImageInfo()
-
         def occurrenceIds = questions*.occurrenceId
 
-//        occurrenceIds = ["33ffd121-8497-4d7b-a720-849d5b068973"]
+//        def qq = elasticSearchService.executeSearch(null) { SearchRequestBuilder builder ->
+//            def filter = FilterBuilders.andFilter(
+//                    FilterBuilders.queryFilter(QueryBuilders.simpleQueryString("tag:abc")),
+//                    FilterBuilders.queryFilter(QueryBuilders.simpleQueryString("answers.accepted:true"))
+//            )
+//
+//            builder.setPostFilter(filter)
+//        }
+//
+//        println qq?.totalCount
 
 
         Map imageInfoMap = imagesWebService.getImageInfoForMetadata("occurrenceId", occurrenceIds)
-        imageInfoMap.keySet().each {
-            println it + ": ${imageInfoMap[it].size()}"
-        }
 
         [questions: questions, totalCount: totalCount, imageInfoMap: imageInfoMap]
     }

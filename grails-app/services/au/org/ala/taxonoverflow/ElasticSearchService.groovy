@@ -3,24 +3,18 @@ package au.org.ala.taxonoverflow
 import grails.converters.JSON
 import grails.transaction.NotTransactional
 import groovy.json.JsonSlurper
-import net.sf.ehcache.search.expression.Not
 import org.codehaus.groovy.grails.web.servlet.mvc.GrailsParameterMap
 import org.elasticsearch.action.delete.DeleteResponse
 import org.elasticsearch.action.index.IndexResponse
+
 import org.elasticsearch.action.search.SearchResponse
 import org.elasticsearch.action.search.SearchType
 import org.elasticsearch.client.Client
-import org.elasticsearch.cluster.ClusterState
-import org.elasticsearch.cluster.metadata.IndexMetaData
-import org.elasticsearch.cluster.metadata.MappingMetaData
 import org.elasticsearch.common.settings.ImmutableSettings
-import org.elasticsearch.index.query.FilterBuilders
-import org.elasticsearch.index.query.QueryBuilders
+import org.elasticsearch.search.sort.SortOrder
 
 import javax.annotation.PreDestroy
 import java.util.concurrent.ConcurrentLinkedQueue
-import java.util.concurrent.PriorityBlockingQueue
-import java.util.regex.Pattern
 
 import static org.elasticsearch.node.NodeBuilder.nodeBuilder
 import javax.annotation.PostConstruct
@@ -144,6 +138,42 @@ class ElasticSearchService {
         }
     }
 
+    public QueryResults<Question> executeSearch(GrailsParameterMap params, Closure builderFunc) {
+
+        def searchRequestBuilder = client.prepareSearch(INDEX_NAME).setSearchType(SearchType.QUERY_THEN_FETCH)
+
+        if (params?.offset) {
+            searchRequestBuilder.setFrom(params.int("offset"))
+        }
+
+        if (params?.max) {
+            searchRequestBuilder.setSize(params.int("max"))
+        } else {
+            searchRequestBuilder.setSize(Integer.MAX_VALUE) // probably way too many!
+        }
+
+        if (params?.sort) {
+            def order = params?.order == "asc" ? SortOrder.ASC : SortOrder.DESC
+            searchRequestBuilder.addSort(params.sort as String, order)
+        }
+
+        if (builderFunc) {
+            builderFunc(searchRequestBuilder)
+        }
+
+        SearchResponse searchResponse = searchRequestBuilder.execute().actionGet();
+
+        def resultsList = []
+        if (searchResponse.hits) {
+            searchResponse.hits.each { hit ->
+                resultsList << Question.get(hit.id.toLong())
+            }
+        }
+
+        return new QueryResults<Question>(list: resultsList, totalCount: searchResponse?.hits?.totalHits ?: 0)
+    }
+
+
 }
 
 public class IndexHelper {
@@ -156,4 +186,15 @@ public class IndexHelper {
         ElasticSearchService.scheduleQuestionDeletion(questionId)
     }
 
+}
+
+/**
+ * For when you need to return both a page worth of results and the total count of record (for pagination purposes)
+ *
+ * @param < T > Usually a domain class. The type of objects being returned in the list
+ */
+class QueryResults <T> {
+
+    public List<T> list = []
+    public int totalCount = 0
 }
