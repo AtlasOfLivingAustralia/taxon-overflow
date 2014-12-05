@@ -9,6 +9,7 @@ class WebServiceController {
     def userService
     def grailsApplication
     def questionService
+    def elasticSearchService
 
     def index() {
         render([success: "true", version: grailsApplication.metadata['app.version']])
@@ -28,6 +29,9 @@ class WebServiceController {
             if (serviceResult) {
                 results.success = true
                 results.questionId = serviceResult.result?.id
+
+                elasticSearchService.indexQuestion(serviceResult.result)
+
             } else {
                 results.success = false
                 results.message = serviceResult.combinedMessages

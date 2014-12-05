@@ -64,6 +64,12 @@ class ElasticSearchService {
     }
 
     @NotTransactional
+    public void indexQuestion(Question question) {
+        IndexResponse response = client.prepareIndex(INDEX_NAME, "question", question.id.toString()).setSource((question as JSON).toString()).execute().actionGet();
+        println response
+    }
+
+    @NotTransactional
     def addMappings() {
         log.info("Adding index mappings")
         def mappingJson = '''
