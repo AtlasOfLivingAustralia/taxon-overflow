@@ -1,8 +1,8 @@
 <div class="row-fluid" style="margin-top: 10px">
-    <div class="span10">
+    <div class="span9">
         <g:textArea class="span12" name="comment" rows="2"/>
     </div>
-    <div class="span2">
+    <div class="span3">
         <button type="button" id="btnAddQuestionComment" class="btn btn-small btnAddQuestionComment">Add comment</button>
     </div>
 </div>

@@ -94,6 +94,13 @@
                 });
             });
 
+            function renderTags() {
+                $.ajax("${createLink(action:'questionTagsFragment', id: question.id)}").done(function(content) {
+                    $("#tagsDiv").html(content);
+                });
+
+            }
+
             function renderAnswers() {
                 $.ajax("${createLink(action:'answersListFragment', id: question.id)}").done(function(content) {
                     $("#answersDiv").html(content);
@@ -114,9 +121,9 @@
         <div class="row-fluid header-row">
             <div class="span6">
                 <H3>Question ${question.id}&nbsp;<small>[ <a href="http://biocache.ala.org.au/occurrence/${question.occurrenceId}" target="occurrenceDetails">View record in biocache</a> ] Views: ${viewCount}</small></H3>
-                <g:each in="${question.tags}" var="tag">
-                    <div class="label label-info">${tag.tag}</div>
-                </g:each>
+                <div id="tagsDiv">
+                    <g:render template="tagsFragment" model="${[question: question]}" />
+                </div>
             </div>
             <div class="span6">
                 <h4>${answers?.size() ?: 0} ${question.questionType == au.org.ala.taxonoverflow.QuestionType.Identification ? "Identification(s)" : "Answer(s)" }</h4>

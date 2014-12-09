@@ -152,6 +152,11 @@ class QuestionController {
         render(template:'questionCommentsFragment', model:[question: question])
     }
 
+    def questionTagsFragment(long id) {
+        def question = Question.get(id)
+        render(template:'tagsFragment', model:[question: question])
+    }
+
     def addAnswerCommentFragment(long id) {
         def answer = Answer.get(id)
 

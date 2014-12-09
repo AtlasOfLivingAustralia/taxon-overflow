@@ -4,12 +4,14 @@ class QuestionTag {
 
     Question question
     String tag
+    Date dateCreated
 
     static belongsTo = [question: Question]
 
     static constraints = {
         question nullable: false
         tag nullable: false
+        dateCreated nullable: true
     }
 
     def afterUpdate() {

@@ -120,6 +120,30 @@ class TaxonOverflowTagLib {
     }
 
     /**
+     * @attr question
+     */
+    def ifCanEditQuestion = { attrs, body ->
+        def question = attrs.question as Question
+        if (question) {
+            if (questionService.canUserEditQuestion(question, userService.currentUser)) {
+                out << body()
+            }
+        }
+    }
+
+    /**
+     * @attr question
+     */
+    def ifCannotEditQuestion = { attrs, body ->
+        def question = attrs.question as Question
+        if (question) {
+            if (!questionService.canUserEditQuestion(question, userService.currentUser)) {
+                out << body()
+            }
+        }
+    }
+
+    /**
      * @attr title alt text
      */
     def spinner = { attrs, body ->

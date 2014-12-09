@@ -1,22 +1,25 @@
 <style>
 
   .newAnswerDiv {
-    border: 1px solid #dddddd;
-    border-radius: 4px;
-    padding: 10px;
+      border: 1px solid #dddddd;
+      border-radius: 4px;
+      padding: 10px;
   }
 
   .answer-list li.accepted-answer {
+      border: 2px solid darkgreen;
+      border-radius: 2px;
   }
 
   .answer-list {
-    list-style: none;
-    margin-left: 0;
-    border: 1px solid #dddddd;
+      list-style: none;
+      margin-left: 0;
   }
 
-  .answer-list li {
-    padding: 10px;
+  .answer-list > li {
+      padding: 10px;
+      border: 1px solid #dddddd;
+      margin-bottom: 20px;
   }
 
 </style>
@@ -24,7 +27,7 @@
   <g:if test="${answers?.size() > 0}" >
     <ul class="answer-list">
       <g:each in="${answers}" var="answer" status="i">
-        <g:set var="stripeClass" value="${i % 2 == 0 ? 'striped' : '' }" />
+        <g:set var="stripeClass" value="${i % 2 == 0 ? '' : '' }" />
         <g:set var="acceptedClass" value="${answer.accepted ? 'accepted-answer' : ''}" />
         <li answerId="${answer.id}" class="${acceptedClass} ${stripeClass}">
           <g:render template="answerFragment" model="${[question: question, answer: answer, userVote: userVotes[answer], totalVotes: answerVoteTotals[answer]]}" />

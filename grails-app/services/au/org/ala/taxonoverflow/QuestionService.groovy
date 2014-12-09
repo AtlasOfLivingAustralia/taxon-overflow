@@ -1,5 +1,6 @@
 package au.org.ala.taxonoverflow
 
+import au.org.ala.web.CASRoles
 import grails.transaction.NotTransactional
 import grails.transaction.Transactional
 import org.apache.commons.lang.StringUtils
@@ -9,6 +10,7 @@ import org.codehaus.groovy.grails.web.json.JSONObject
 class QuestionService {
 
     def biocacheService
+    def authService
 
     @NotTransactional
     def boolean questionExists(String occurrenceId) {
@@ -144,9 +146,25 @@ class QuestionService {
             return true
         }
 
+        if (authService.userInRole(CASRoles.ROLE_ADMIN)) {
+            return true
+        }
+
         return false
     }
 
+    def canUserEditQuestion(Question question, User user) {
+        // If the current user is one who asked the question, they can edit the answer
+        if (question.user == user) {
+            return true
+        }
+
+        if (authService.userInRole(CASRoles.ROLE_ADMIN)) {
+            return true
+        }
+
+        return false
+    }
 
     ServiceResult<QuestionComment> addQuestionComment(Question question, User user, String commentText) {
         if (!question) {
@@ -208,6 +226,43 @@ class QuestionService {
 
         comment.delete(flush: true)
         return new ServiceResult<QuestionComment>(result: comment, success: true)
+    }
+
+    ServiceResult<QuestionTag> addQuestionTag(Question question, String tag) {
+        if (!question) {
+            return new ServiceResult<QuestionTag>().fail("No question supplied")
+        }
+        if (!tag) {
+            return new ServiceResult<QuestionTag>().fail("No tag supplied")
+        }
+
+        // Find existing tag...
+        def existing = QuestionTag.findByQuestionAndTag(question, tag)
+        if (!existing) {
+            def tagInstance = new QuestionTag(question: question, tag: tag)
+            tagInstance.save()
+            return new ServiceResult<QuestionTag>(result: tagInstance, success: true)
+        } else {
+            return new ServiceResult<QuestionTag>(result: existing, success: true)
+        }
+    }
+
+    def ServiceResult<QuestionTag> removeQuestionTag(Question question, String tag) {
+        if (!question) {
+            return new ServiceResult<QuestionTag>().fail("No question supplied")
+        }
+        if (!tag) {
+            return new ServiceResult<QuestionTag>().fail("No tag supplied")
+        }
+
+        // Find existing tag...
+        def existing = QuestionTag.findByQuestionAndTag(question, tag)
+        if (!existing) {
+            return new ServiceResult<QuestionTag>().fail("Question does not have tag ${tag}")
+        } else {
+            existing.delete(flush: true)
+            return new ServiceResult<QuestionTag>(result: existing, success: true)
+        }
     }
 
 }

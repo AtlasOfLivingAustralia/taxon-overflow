@@ -21,4 +21,9 @@ class DialogController {
         [answer: answer, user: userService.currentUser]
     }
 
+    def addQuestionTagFragment() {
+        def question = Question.get(params.int("questionId"))
+        [question: question, user: userService.currentUser]
+    }
+
 }

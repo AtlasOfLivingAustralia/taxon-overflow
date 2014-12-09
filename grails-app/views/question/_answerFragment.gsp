@@ -8,7 +8,7 @@
     }
 
     .answerCommentsContainer {
-        border-top: 1px solid lightgray;
+        border-top: 1px dotted #dddddd;
     }
 
     .comment-list {
@@ -18,7 +18,7 @@
 
     .comment-list li {
         padding: 10px;
-        border-bottom: 1px solid #dddddd;
+        border-bottom: 1px dotted #dddddd;
     }
 
     .btnDeleteComment, .btnDeleteComment:hover, .btnDeleteComment:visited {
@@ -57,7 +57,7 @@
     }
 
     .accepted-answer-mark {
-        font-size: 4em;
+        font-size: 3em;
         color: green;
     }
 
@@ -75,6 +75,15 @@
         font-size: 1.2em;
     }
 
+    .accepted-answer-mark {
+        border: 1px solid transparent;
+    }
+
+    .accepted-answer-mark:hover {
+        border: 1px solid green;
+        border-radius: 3px;
+    }
+
     .answer-buttons .btn.btnDeleteAnswer i {
         color: red;
     }
@@ -85,9 +94,32 @@
 
 
 </style>
-<div class="row-fluid">
+<div class="row-fluid" style="margin-bottom: 10px">
 
+    <div class="span9">
+        <div class="whoWhen" style="font-size: 0.8em">
+            <to:userDisplayName user="${answer.user}" />&nbsp;on&nbsp;<g:formatDate date="${answer.dateCreated}" format="yyyy-MM-dd" />
+            <to:ifCanEditAnswer answer="${answer}">
+                <a href="#" title="Edit this answer" class="btnEditAnswer"><i class="fa fa-edit"></i></a>
+                <a href="#" title="Remove this answer" class="btnDeleteAnswer"><i class="fa fa-remove"></i></a>
+            </to:ifCanEditAnswer>
+        </div>
+
+        <div style="font-size: 1.2em">
+            <g:render template="/question/show${question.questionType.toString()}Answer" model="${[answer: answer]}" />
+        </div>
+    </div>
     <div class="span1">
+        <span class="pull-right answer-buttons">
+            <g:if test="${!answer.accepted}">
+                <to:ifCanAcceptAnswer answer="${answer}">
+                    <button type="button" title="Accept this answer" class="btnAcceptAnswer btn btn-small"><i class="fa fa-check"></i></button>
+                </to:ifCanAcceptAnswer>
+            </g:if>
+        </span>
+    </div>
+
+    <div class="span1" style="text-align: center">
         <g:if test="${answer.accepted}">
             <to:ifCanAcceptAnswer answer="${answer}">
                 <a href="#" title="Click to undo acceptance of this answer." class="btnUnacceptAnswer">
@@ -114,35 +146,12 @@
                 <i class="fa fa-thumbs-o-down"></i>
             </a>
         </div>
-
     </div>
 
-    <div class="span2">
-        <to:userDisplayName user="${answer.user}" />
-        <br />
-        <g:formatDate date="${answer.dateCreated}" format="yyyy-MM-dd" />
-    </div>
-    <div class="span5" style="font-size: 1.2em">
-        <g:render template="/question/show${question.questionType.toString()}Answer" model="${[answer: answer]}" />
-    </div>
-    <div class="span3">
-        <span class="pull-right answer-buttons">
-            <to:ifCanEditAnswer answer="${answer}">
-                <button type="button" title="Edit this answer" class="btnEditAnswer btn btn-small"><i class="fa fa-edit"></i></button>
-                <button type="button" title="Remove this answer" class="btnDeleteAnswer btn btn-small"><i class="fa fa-remove"></i></button>
-            </to:ifCanEditAnswer>
-
-            <g:if test="${!answer.accepted}">
-                <to:ifCanAcceptAnswer answer="${answer}">
-                    <button type="button" title="Accept this answer" class="btnAcceptAnswer btn btn-small"><i class="fa fa-check"></i></button>
-                </to:ifCanAcceptAnswer>
-            </g:if>
-        </span>
-    </div>
 </div>
 
 <div class="row-fluid">
-    <div class="span10 offset2 answerCommentsContainer">
+    <div class="span11 offset1 answerCommentsContainer">
         <ul class="comment-list">
             <g:each in="${answer.comments}" var="comment">
                 <li answerCommentId="${comment.id}">

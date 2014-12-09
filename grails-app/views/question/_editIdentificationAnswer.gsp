@@ -12,8 +12,6 @@
             <g:textArea class="span12 answer-field" name="identificationRemarks" value="${answer?.description}" />
         </div>
     </div>
-
-
 </div>
 
 <script>

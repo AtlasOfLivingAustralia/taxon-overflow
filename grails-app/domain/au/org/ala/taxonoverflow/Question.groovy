@@ -16,7 +16,8 @@ class Question {
 
     static mapping = {
         comments sort: 'dateCreated', order: 'asc'
-        views sort:'dateCreated', order: 'asc'
+        views sort: 'dateCreated', order: 'asc'
+        tags sort: 'tag', order:'asc'
     }
 
     def afterUpdate() {

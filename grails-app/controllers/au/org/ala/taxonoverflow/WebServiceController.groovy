@@ -342,4 +342,52 @@ class WebServiceController {
         renderResults(results)
     }
 
+    def addTagToQuestion() {
+
+        def results = [success: false]
+        def requestData = request.JSON
+
+        def question = Question.get(params.int("id")) ?: Question.get(requestData?.questionId)
+        if (!question) {
+            results.message = "Invalid or missing questionId"
+            renderResults(results)
+            return
+        }
+
+        def tag = requestData?.tag as String
+
+        def serviceResults = questionService.addQuestionTag(question, tag)
+        if (serviceResults) {
+            results.success = true
+            results.tagId = serviceResults.get().id
+        } else {
+            results.message = serviceResults.getCombinedMessages()
+        }
+        renderResults(results)
+    }
+
+    def removeTagFromQuestion() {
+
+        def results = [success: false]
+        def requestData = request.JSON
+
+        def question = Question.get(params.int("id")) ?: Question.get(requestData?.questionId)
+        if (!question) {
+            results.message = "Invalid or missing questionId"
+            renderResults(results)
+            return
+        }
+
+        def tag = requestData?.tag as String
+
+        def serviceResults = questionService.removeQuestionTag(question, tag)
+        if (serviceResults) {
+            results.success = true
+            results.tagId = serviceResults.get().id
+        } else {
+            results.message = serviceResults.getCombinedMessages()
+        }
+        renderResults(results)
+    }
+
 }
