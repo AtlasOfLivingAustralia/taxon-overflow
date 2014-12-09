@@ -27,16 +27,16 @@ class QuestionController {
 
         def occurrenceIds = questions*.occurrenceId
 
-//        def qq = elasticSearchService.executeSearch(null) { SearchRequestBuilder builder ->
-//            def filter = FilterBuilders.andFilter(
-//                    FilterBuilders.queryFilter(QueryBuilders.simpleQueryString("tag:abc")),
-//                    FilterBuilders.queryFilter(QueryBuilders.simpleQueryString("answers.accepted:true"))
-//            )
-//
-//            builder.setPostFilter(filter)
-//        }
-//
-//        println qq?.totalCount
+        def qq = elasticSearchService.executeSearch(null) { SearchRequestBuilder builder ->
+            def filter = FilterBuilders.andFilter(
+                    FilterBuilders.queryFilter(QueryBuilders.simpleQueryString("tag:abc")),
+                    FilterBuilders.queryFilter(QueryBuilders.simpleQueryString("answers.accepted:true"))
+            )
+
+            builder.setPostFilter(filter)
+        }
+
+        println qq?.totalCount
 
 
         Map imageInfoMap = imagesWebService.getImageInfoForMetadata("occurrenceId", occurrenceIds)

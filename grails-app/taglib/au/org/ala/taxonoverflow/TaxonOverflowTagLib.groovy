@@ -24,50 +24,24 @@ class TaxonOverflowTagLib {
     }
 
     /**
-     * @attr title
-     * @attr section
-     * @attr names
      * @attr occurrence
+     * @attr name
+     * @attr title
      */
-    def occurrencePropertiesTable = { attrs, body ->
+    def occurrenceProperty = { attrs, body ->
         def occurrence = attrs.occurrence as JSONObject
-        def names = attrs.names?.split(",")?.toList()
-        if (occurrence && names) {
+        def name = attrs.name as String
+        def title = attrs.title as String ?: name
+        def rawValue = Ognl.getValue("raw.${name}", occurrence)
+        def processedValue = Ognl.getValue("processed.${name}", occurrence)
+        if (processedValue || rawValue) {
             def mb = new MarkupBuilder(out)
-
-            def values = []
-
-            names.each {
-                def name = (it as String).trim()
-                def rawValue = Ognl.getValue("raw${attrs.section ? ('.' + attrs.section) : ''}.${name}", occurrence)
-                def processedValue = Ognl.getValue("processed${attrs.section ? ('.' + attrs.section) : ''}.${name}", occurrence)
-                if (processedValue || rawValue) {
-                    values << [name: name, processed: processedValue, raw: rawValue]
+            mb.div(class:'row-fluid') {
+                mb.div(class:'span4 occurrence-property-name') {
+                    mkp.yield(title)
                 }
-            }
-
-
-            if (values) {
-                mb.table(class: 'table table-bordered table-condensed table-striped') {
-                    thead {
-                        tr {
-                            th(colspan: '2') {
-                                mkp.yield(attrs.title ?: attrs.section)
-                            }
-                        }
-                    }
-                    tbody {
-                        values.each { valuemap ->
-                            mb.tr {
-                                td(style: 'width: 200px') {
-                                    mkp.yield(valuemap.name)
-                                }
-                                td {
-                                    mkp.yield(valuemap.processed ?: valuemap.raw ?: '')
-                                }
-                            }
-                        }
-                    }
+                mb.div(class:'span8 occurrence-property-value') {
+                    mkp.yield(processedValue ?: rawValue)
                 }
             }
         }

@@ -15,6 +15,26 @@
                 border-top: 1px solid #dddddd;
             }
 
+            .occurrenceDetails {
+                /*border: 1px solid #dddddd;*/
+                /*border-radius: 4px;*/
+                /*padding: 5px;*/
+                margin-top: 10px;
+            }
+
+            .occurrence-property-value {
+                font-weight: bold;
+            }
+
+            .image-thumbs {
+                margin-top: 10px;
+                height: 125px;
+            }
+
+            .header-row {
+                margin-bottom: 5px;
+            }
+
         </r:style>
         </style>
 
@@ -49,8 +69,8 @@
 
                 renderAnswers();
 
-                $("#mediaThumbs").flexisel({
-                    visibleItems: 3,
+                $("#media-thumb-list").flexisel({
+                    visibleItems: 4,
                     animationSpeed: 200,
                     autoPlay: false,
                     autoPlaySpeed: 3000,
@@ -60,15 +80,15 @@
                     responsiveBreakpoints: {
                         portrait: {
                             changePoint:480,
-                            visibleItems: 1
+                            visibleItems: 2
                         },
                         landscape: {
                             changePoint:640,
-                            visibleItems: 2
+                            visibleItems: 3
                         },
                         tablet: {
                             changePoint:768,
-                            visibleItems: 3
+                            visibleItems: 4
                         }
                     }
                 });
@@ -90,45 +110,45 @@
 
     </head>
     <body class="content">
-        <H3>Question ${question.id}&nbsp;<small>[ <a href="http://biocache.ala.org.au/occurrence/${question.occurrenceId}" target="occurrenceDetails">View record in biocache</a> ] Views: ${viewCount}</small></H3>
-        <g:if test="${question.tags.size() > 0}">
-            <div class="row-fluid">
-                <div class="span12">
-                    <g:each in="${question.tags}" var="tag">
-                        <div class="label label-info">${tag.tag}</div>
-                    </g:each>
-                </div>
-            </div>
-        </g:if>
 
-        <g:if test="${acceptedAnswer}">
-            <div class="label label-success">An identification has been accepted for this occurrence: ${acceptedAnswer.scientificName}</div>
-        </g:if>
+        <div class="row-fluid header-row">
+            <div class="span6">
+                <H3>Question ${question.id}&nbsp;<small>[ <a href="http://biocache.ala.org.au/occurrence/${question.occurrenceId}" target="occurrenceDetails">View record in biocache</a> ] Views: ${viewCount}</small></H3>
+                <g:each in="${question.tags}" var="tag">
+                    <div class="label label-info">${tag.tag}</div>
+                </g:each>
+            </div>
+            <div class="span6">
+                <h4>${answers?.size() ?: 0} ${question.questionType == au.org.ala.taxonoverflow.QuestionType.Identification ? "Identification(s)" : "Answer(s)" }</h4>
+                <g:if test="${acceptedAnswer}">
+                    <div class="label label-success">An identification has been accepted for this occurrence: ${acceptedAnswer.scientificName}</div>
+                </g:if>
+            </div>
+        </div>
 
         <div class="row-fluid">
-            <div class="span8">
-                <to:occurrencePropertiesTable title="General" section="" names="occurrence.recordedBy, event.eventDate" occurrence="${occurrence}" />
-                <to:occurrencePropertiesTable title="Location" section="location" names="locality, decimalLatitude, decimalLongitude" occurrence="${occurrence}" />
-                <to:occurrencePropertiesTable title="Identification" section="classification" names="scientificName" occurrence="${occurrence}" />
-                <to:occurrencePropertiesTable title="Remarks" section="occurrence" names="occurrenceRemarks" occurrence="${occurrence}" />
-                <div id="questionCommentsDiv">
-                    <g:render template="questionCommentsFragment" model="${[question: question]}" />
-                </div>
-                <div id="answersDiv">
-                    <to:spinner />&nbsp;Loading answers...
-                </div>
-            </div>
-            <div class="span4">
+            <div class="span6">
                 <div id="imageViewer"></div>
                 <g:if test="${imageIds?.size() > 1}">
-                    <div style="margin-top: 10px">
-                        <ul id="mediaThumbs">
+                    <div class="image-thumbs">
+                        <ul id="media-thumb-list">
                             <g:each in="${imageIds}" var="imageId">
                                 <li imageId="${imageId}" ><img class="image-thumb" src="http://images.ala.org.au/image/proxyImageThumbnail?imageId=${imageId}" /></li>
                             </g:each>
                         </ul>
                     </div>
                 </g:if>
+                <div class="occurrenceDetails">
+                    <g:render template="questionDetails" model="${[question:question, occurrence: occurrence]}" />
+                </div>
+                <div id="questionCommentsDiv">
+                    <g:render template="questionCommentsFragment" model="${[question: question]}" />
+                </div>
+            </div>
+            <div class="span6">
+                <div id="answersDiv">
+                    <to:spinner />&nbsp;Loading answers...
+                </div>
             </div>
         </div>
     </body>

@@ -21,17 +21,17 @@
 
 </style>
 <div>
-  <h3>${answers?.size() ?: 0} ${question.questionType == au.org.ala.taxonoverflow.QuestionType.Identification ? "Identification(s)" : "Answer(s)" }</h3>
-  <ul class="answer-list">
-    <g:each in="${answers}" var="answer" status="i">
-      <g:set var="stripeClass" value="${i % 2 == 0 ? 'striped' : '' }" />
-      <g:set var="acceptedClass" value="${answer.accepted ? 'accepted-answer' : ''}" />
-      <li answerId="${answer.id}" class="${acceptedClass} ${stripeClass}">
-        <g:render template="answerFragment" model="${[question: question, answer: answer, userVote: userVotes[answer], totalVotes: answerVoteTotals[answer]]}" />
-      </li>
-    </g:each>
-  </ul>
-
+  <g:if test="${answers?.size() > 0}" >
+    <ul class="answer-list">
+      <g:each in="${answers}" var="answer" status="i">
+        <g:set var="stripeClass" value="${i % 2 == 0 ? 'striped' : '' }" />
+        <g:set var="acceptedClass" value="${answer.accepted ? 'accepted-answer' : ''}" />
+        <li answerId="${answer.id}" class="${acceptedClass} ${stripeClass}">
+          <g:render template="answerFragment" model="${[question: question, answer: answer, userVote: userVotes[answer], totalVotes: answerVoteTotals[answer]]}" />
+        </li>
+      </g:each>
+    </ul>
+  </g:if>
 </div>
 <g:if test="${(userAnswers?.size() ?: 0) == 0}">
   <div class="newAnswerDiv">
