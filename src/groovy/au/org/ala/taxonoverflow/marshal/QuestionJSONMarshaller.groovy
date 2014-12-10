@@ -5,7 +5,7 @@ import au.org.ala.taxonoverflow.Question
 class QuestionJSONMarshaller extends AbstractJSONMarshaller<Question> {
 
     @Override
-    protected void registerImpl(Question obj, Map result) {
+    protected void marshalObject(Question obj, Map result) {
         result.id = obj.id
         result.user = obj.user
         result.questionType = obj.questionType?.toString()

@@ -8,7 +8,11 @@ class CustomJSONMarshallers {
         QuestionJSONMarshaller,
         UserJSONMarshaller,
         AnswerJSONMarshaller,
-        AnswerCommentJSONMarshaller
+        AnswerCommentJSONMarshaller,
+        AnswerVoteJSONMarshaller,
+        QuestionCommentJSONMarshaller,
+        QuestionTagJSONMarshaller,
+        QuestionViewJSONMarshaller
     ]
 
     public void register() {

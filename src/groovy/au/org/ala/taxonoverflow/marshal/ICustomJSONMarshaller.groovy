@@ -6,7 +6,7 @@ import java.text.SimpleDateFormat
 
 abstract class AbstractJSONMarshaller<T> implements ICustomJSONMarshaller {
 
-    private SimpleDateFormat _sdf = new SimpleDateFormat("yyyy-MM-dd")
+    private SimpleDateFormat _sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss")
 
     protected String formatDate(Date date) {
         if (date) {
@@ -20,13 +20,13 @@ abstract class AbstractJSONMarshaller<T> implements ICustomJSONMarshaller {
         def cc = getWrappedClass()
         JSON.registerObjectMarshaller(cc) { T t ->
             def data = [:]
-            registerImpl(t, data)
+            marshalObject(t, data)
             return data
         }
 
     }
 
-    protected abstract void registerImpl(T obj, Map result);
+    protected abstract void marshalObject(T obj, Map result);
 
     protected abstract Class<T> getWrappedClass();
 

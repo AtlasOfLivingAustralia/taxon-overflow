@@ -5,7 +5,7 @@ import au.org.ala.taxonoverflow.User
 class UserJSONMarshaller extends AbstractJSONMarshaller<User> {
 
     @Override
-    protected void registerImpl(User user, Map result) {
+    protected void marshalObject(User user, Map result) {
         result.id = user.id
         result.alaUserId = user.alaUserId
     }

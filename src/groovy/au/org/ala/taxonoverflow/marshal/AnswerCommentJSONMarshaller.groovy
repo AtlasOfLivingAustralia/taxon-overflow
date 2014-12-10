@@ -5,7 +5,7 @@ import au.org.ala.taxonoverflow.AnswerComment
 class AnswerCommentJSONMarshaller extends AbstractJSONMarshaller<AnswerComment> {
 
     @Override
-    protected void registerImpl(AnswerComment obj, Map result) {
+    protected void marshalObject(AnswerComment obj, Map result) {
         result.answerId = obj.answerId
         result.user = obj.user
         result.comment = obj.comment

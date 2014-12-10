@@ -63,21 +63,22 @@ class ElasticSearchService {
 
     @NotTransactional
     public void indexQuestion(Question question) {
-        println "Indexing question " + question?.id
+        def ct = new CodeTimer("Indexing question ${question.id}")
         String json = question as JSON
 
         if (json) {
-            deleteQuestionFromIndex(question)
             IndexResponse response = client.prepareIndex(INDEX_NAME, "question", question.id.toString()).setSource(json).execute().actionGet();
         }
+        ct.stop(true)
     }
 
     @NotTransactional
     public void deleteQuestionFromIndex(Question question) {
+        def ct = new CodeTimer("Deleting question from index: ${question.id}")
         if (question) {
-            println "deleting question from index: ${question.id}"
             DeleteResponse response = client.prepareDelete(INDEX_NAME, "question", question.id.toString()).execute().actionGet();
         }
+        ct.stop(true)
     }
 
     @NotTransactional
