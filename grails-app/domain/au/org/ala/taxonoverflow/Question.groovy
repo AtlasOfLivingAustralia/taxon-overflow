@@ -5,6 +5,7 @@ class Question {
     User user
     QuestionType questionType
     String occurrenceId
+    Date dateCreated
 
     static hasMany = [comments: QuestionComment, views: QuestionView, answers: Answer, tags: QuestionTag]
 
@@ -12,6 +13,7 @@ class Question {
         user nullable: false
         questionType nullable: false
         occurrenceId nullable: false
+        dateCreated nullable: true
     }
 
     static mapping = {

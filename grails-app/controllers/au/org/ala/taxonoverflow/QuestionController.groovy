@@ -24,21 +24,7 @@ class QuestionController {
         params.max = params.max ?: 20
         def questions = Question.list(params)
         def totalCount = Question.count()
-
         def occurrenceIds = questions*.occurrenceId
-
-        def qq = elasticSearchService.executeSearch(null) { SearchRequestBuilder builder ->
-            def filter = FilterBuilders.andFilter(
-                    FilterBuilders.queryFilter(QueryBuilders.simpleQueryString("tag:abc")),
-                    FilterBuilders.queryFilter(QueryBuilders.simpleQueryString("answers.accepted:true"))
-            )
-
-            builder.setPostFilter(filter)
-        }
-
-        println qq?.totalCount
-
-
         Map imageInfoMap = imagesWebService.getImageInfoForMetadata("occurrenceId", occurrenceIds)
 
         [questions: questions, totalCount: totalCount, imageInfoMap: imageInfoMap]

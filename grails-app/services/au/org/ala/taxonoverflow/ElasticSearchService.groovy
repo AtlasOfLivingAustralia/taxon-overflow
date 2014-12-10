@@ -6,7 +6,6 @@ import groovy.json.JsonSlurper
 import org.codehaus.groovy.grails.web.servlet.mvc.GrailsParameterMap
 import org.elasticsearch.action.delete.DeleteResponse
 import org.elasticsearch.action.index.IndexResponse
-
 import org.elasticsearch.action.search.SearchResponse
 import org.elasticsearch.action.search.SearchType
 import org.elasticsearch.client.Client
@@ -65,12 +64,10 @@ class ElasticSearchService {
     @NotTransactional
     public void indexQuestion(Question question) {
         println "Indexing question " + question?.id
-        String json = null
-        JSON.use("deep") {
-            json = (question as JSON).toString()
-        }
+        String json = question as JSON
 
         if (json) {
+            deleteQuestionFromIndex(question)
             IndexResponse response = client.prepareIndex(INDEX_NAME, "question", question.id.toString()).setSource(json).execute().actionGet();
         }
     }
@@ -158,8 +155,10 @@ class ElasticSearchService {
         }
 
         if (builderFunc) {
-            builderFunc(searchRequestBuilder)
+            ESFilterDSL.build(searchRequestBuilder, builderFunc)
         }
+
+        println searchRequestBuilder
 
         SearchResponse searchResponse = searchRequestBuilder.execute().actionGet();
 
@@ -173,28 +172,5 @@ class ElasticSearchService {
         return new QueryResults<Question>(list: resultsList, totalCount: searchResponse?.hits?.totalHits ?: 0)
     }
 
-
 }
 
-public class IndexHelper {
-
-    public static void indexQuestion(long questionId) {
-        ElasticSearchService.scheduleQuestionIndexation(questionId)
-    }
-
-    public static void deleteQuestionFromIndex(long questionId) {
-        ElasticSearchService.scheduleQuestionDeletion(questionId)
-    }
-
-}
-
-/**
- * For when you need to return both a page worth of results and the total count of record (for pagination purposes)
- *
- * @param < T > Usually a domain class. The type of objects being returned in the list
- */
-class QueryResults <T> {
-
-    public List<T> list = []
-    public int totalCount = 0
-}

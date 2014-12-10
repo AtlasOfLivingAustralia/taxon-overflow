@@ -40,7 +40,6 @@ class ImagesWebService {
         def url = "${serviceUrl}/ws/findImagesByMetadata"
         def results = postJSON(url, [key: metadataKey, values: values])
         if (results.status == 200) {
-            println results
             return results.content?.images
         } else {
             println results
