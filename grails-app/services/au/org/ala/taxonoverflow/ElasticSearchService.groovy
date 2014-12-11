@@ -5,6 +5,7 @@ import grails.transaction.NotTransactional
 import groovy.json.JsonSlurper
 import org.codehaus.groovy.grails.web.servlet.mvc.GrailsParameterMap
 import org.elasticsearch.action.delete.DeleteResponse
+import org.elasticsearch.action.get.GetRequestBuilder
 import org.elasticsearch.action.index.IndexResponse
 import org.elasticsearch.action.search.SearchResponse
 import org.elasticsearch.action.search.SearchType
@@ -27,6 +28,7 @@ class ElasticSearchService {
     private static Queue<IndexQuestionTask> _backgroundQueue = new ConcurrentLinkedQueue<IndexQuestionTask>()
 
     def grailsApplication
+    def biocacheService
     private Node node
     private Client client
 
@@ -65,7 +67,6 @@ class ElasticSearchService {
     public void indexQuestion(Question question) {
         def ct = new CodeTimer("Indexing question ${question.id}")
         String json = question as JSON
-
         if (json) {
             IndexResponse response = client.prepareIndex(INDEX_NAME, "question", question.id.toString()).setSource(json).execute().actionGet();
         }
@@ -136,7 +137,7 @@ class ElasticSearchService {
         }
     }
 
-    public QueryResults<Question> executeSearch(GrailsParameterMap params, Closure builderFunc) {
+    public QueryResults<Question> questionSearch(GrailsParameterMap params, Closure builderFunc = null) {
 
         def searchRequestBuilder = client.prepareSearch(INDEX_NAME).setSearchType(SearchType.QUERY_THEN_FETCH)
 
@@ -157,20 +158,27 @@ class ElasticSearchService {
 
         if (builderFunc) {
             ESFilterDSL.build(searchRequestBuilder, builderFunc)
+        } else {
+            if (params.q) {
+                ESFilterDSL.build(searchRequestBuilder) {
+                    q(params.q)
+                }
+            }
         }
-
-        println searchRequestBuilder
 
         SearchResponse searchResponse = searchRequestBuilder.execute().actionGet();
 
         def resultsList = []
+        def auxdata = [:]
         if (searchResponse.hits) {
             searchResponse.hits.each { hit ->
                 resultsList << Question.get(hit.id.toLong())
+                def map = hit.sourceAsMap()
+                auxdata[map.occurrenceId] = map.occurrence
             }
         }
 
-        return new QueryResults<Question>(list: resultsList, totalCount: searchResponse?.hits?.totalHits ?: 0)
+        return new QueryResults<Question>(list: resultsList, totalCount: searchResponse?.hits?.totalHits ?: 0, auxdata: auxdata)
     }
 
 }

@@ -1,5 +1,6 @@
 package au.org.ala.taxonoverflow.marshal
 
+import au.org.ala.taxonoverflow.BiocacheService
 import grails.converters.JSON
 
 import java.text.SimpleDateFormat
@@ -7,6 +8,7 @@ import java.text.SimpleDateFormat
 abstract class AbstractJSONMarshaller<T> implements ICustomJSONMarshaller {
 
     private SimpleDateFormat _sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss")
+    private BiocacheService _biocacheService
 
     protected String formatDate(Date date) {
         if (date) {
@@ -26,6 +28,15 @@ abstract class AbstractJSONMarshaller<T> implements ICustomJSONMarshaller {
 
     }
 
+    @Override
+    void setBiocacheService(BiocacheService biocacheService) {
+        _biocacheService = biocacheService
+    }
+
+    protected BiocacheService getBiocacheService() {
+        return _biocacheService
+    }
+
     protected abstract void marshalObject(T obj, Map result);
 
     protected abstract Class<T> getWrappedClass();
@@ -34,6 +45,8 @@ abstract class AbstractJSONMarshaller<T> implements ICustomJSONMarshaller {
 
 interface ICustomJSONMarshaller {
     void register()
+
+    void setBiocacheService(BiocacheService biocacheService)
 }
 
 

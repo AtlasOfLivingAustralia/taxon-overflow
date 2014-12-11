@@ -59,6 +59,7 @@
     .accepted-answer-mark {
         font-size: 3em;
         color: green;
+        border: 1px solid transparent;
     }
 
     .user-upvoted, .user-upvoted:hover {
@@ -73,10 +74,6 @@
 
     .answer-buttons .btn i {
         font-size: 1.2em;
-    }
-
-    .accepted-answer-mark {
-        border: 1px solid transparent;
     }
 
     .accepted-answer-mark:hover {

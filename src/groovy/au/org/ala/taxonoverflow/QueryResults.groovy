@@ -9,4 +9,5 @@ class QueryResults <T> {
 
     public List<T> list = []
     public int totalCount = 0
+    public auxdata = [:]        // extra data that can be associated with each T in list. Map should be keyed by the id of T
 }

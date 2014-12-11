@@ -15,6 +15,13 @@ class QuestionJSONMarshaller extends AbstractJSONMarshaller<Question> {
         result.tags = obj.tags
         result.views = obj.views
         result.dateCreated = obj.dateCreated
+
+        result.viewCount = obj.views?.size() ?: 0
+        result.answerCount = obj.answers?.size() ?: 0
+
+        def occurrenceData = biocacheService.getRecord(obj.occurrenceId)
+        result.occurrence = occurrenceData
+
     }
 
     @Override

@@ -1,9 +1,5 @@
 package au.org.ala.taxonoverflow
 
-import org.elasticsearch.action.search.SearchRequestBuilder
-import org.elasticsearch.index.query.FilterBuilders
-import org.elasticsearch.index.query.QueryBuilders
-
 import static grails.async.Promises.*
 
 class QuestionController {
@@ -21,13 +17,42 @@ class QuestionController {
     }
 
     def list() {
-        params.max = params.max ?: 20
-        def questions = Question.list(params)
-        def totalCount = Question.count()
-        def occurrenceIds = questions*.occurrenceId
-        Map imageInfoMap = imagesWebService.getImageInfoForMetadata("occurrenceId", occurrenceIds)
 
-        [questions: questions, totalCount: totalCount, imageInfoMap: imageInfoMap]
+        params.max = params.max ?: 20
+        params.sort = params.sort ?: 'dateCreated'
+        params.order = params.order ?: 'asc'
+
+        def searchResults = elasticSearchService.questionSearch(params)
+
+        def occurrenceIds = searchResults.list*.occurrenceId
+
+        Map imageInfoMap = [:]
+        def imagesPromise = task {
+            imageInfoMap = imagesWebService.getImageInfoForMetadata("occurrenceId", occurrenceIds)
+        }
+
+//        def occurrenceData = [:]
+
+//        def occurrencePromise = task {
+//            occurrenceData = biocacheService.getRecords(occurrenceIds)
+//        }
+
+        def acceptedAnswers = [:]
+        def c = Answer.createCriteria()
+        if (searchResults.list) {
+            def l = c.list {
+                inList("question", searchResults.list)
+                eq("accepted", true)
+            }
+
+            acceptedAnswers = l?.collectEntries {
+                [(it.question): it]
+            }
+        }
+
+        waitAll(imagesPromise)
+
+        [questions: searchResults.list, totalCount: searchResults.totalCount, imageInfoMap: imageInfoMap, acceptedAnswers: acceptedAnswers, occurrenceData: searchResults.auxdata ]
     }
 
     def delete(int id) {

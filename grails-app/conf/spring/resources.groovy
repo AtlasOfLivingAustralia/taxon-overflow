@@ -4,6 +4,6 @@ import au.org.ala.taxonoverflow.CustomJSONMarshallers
 beans = {
 
     customJSONMarshallers(CustomJSONMarshallers) {
-
+        biocacheService = ref("biocacheService")
     }
 }

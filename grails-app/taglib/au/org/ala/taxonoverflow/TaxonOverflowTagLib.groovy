@@ -30,22 +30,26 @@ class TaxonOverflowTagLib {
      */
     def occurrenceProperty = { attrs, body ->
         def occurrence = attrs.occurrence as JSONObject
-        def name = attrs.name as String
-        def title = attrs.title as String ?: name
-        def rawValue = Ognl.getValue("raw.${name}", occurrence)
-        def processedValue = Ognl.getValue("processed.${name}", occurrence)
-        if (processedValue || rawValue) {
-            def mb = new MarkupBuilder(out)
-            mb.div(class:'row-fluid') {
-                mb.div(class:'span4 occurrence-property-name') {
-                    mkp.yield(title)
-                }
-                mb.div(class:'span8 occurrence-property-value') {
-                    mkp.yield(processedValue ?: rawValue)
+        if (occurrence) {
+            def name = attrs.name as String
+            def title = attrs.title as String ?: name
+
+            def rawValue = occurrence.raw ? Ognl.getValue("raw.${name}", occurrence) : Ognl.getValue("${name}", occurrence)
+
+            def processedValue = occurrence.processed ? Ognl.getValue("processed.${name}", occurrence) : rawValue
+
+            if (processedValue || rawValue) {
+                def mb = new MarkupBuilder(out)
+                mb.div(class: 'row-fluid') {
+                    mb.div(class: 'span4 occurrence-property-name') {
+                        mkp.yield(title)
+                    }
+                    mb.div(class: 'span8 occurrence-property-value') {
+                        mkp.yield(processedValue ?: rawValue)
+                    }
                 }
             }
         }
-
     }
 
     /**

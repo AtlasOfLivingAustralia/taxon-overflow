@@ -19,6 +19,9 @@
             </div>
             <div class="span4">
                 <to:userContext />
+                <auth:ifAnyGranted roles="${au.org.ala.web.CASRoles.ROLE_ADMIN}">
+                    <a href="${createLink(controller:'admin')}">Admin</a>
+                </auth:ifAnyGranted>
             </div>
         </div>
         <g:layoutBody/>
