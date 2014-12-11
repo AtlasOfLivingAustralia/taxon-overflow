@@ -24,8 +24,8 @@
         e.preventDefault();
         tolib.showModal( {
             url: "${createLink(controller:'dialog', action:'addQuestionTagFragment', params:[questionId: question.id])}",
-            title: "",
-            hideHeader: true,
+            title: "Add tag",
+            hideHeader: false,
             onClose: function() {
                 if (renderAnswers instanceof Function) {
                     renderTags();
