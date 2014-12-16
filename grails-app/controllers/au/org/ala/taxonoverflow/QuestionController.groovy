@@ -20,7 +20,7 @@ class QuestionController {
 
         params.max = params.max ?: 20
         params.sort = params.sort ?: 'dateCreated'
-        params.order = params.order ?: 'asc'
+        params.order = params.order ?: 'desc'
 
         def searchResults = elasticSearchService.questionSearch(params)
 

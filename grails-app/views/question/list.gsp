@@ -88,49 +88,50 @@
         </r:script>
 
     </head>
-    <body class="content">
-        <table class="table table-bordered table-condensed question-list">
-            <thead>
-                <tr>
-                    <td>
-                        <g:set var="questionCount" value="${questions.size()}" />
-                        ${questionCount} ${questionCount == 1 ? 'question' : 'questions'}
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <div class="row-fluid">
-                            <g:set var="columns" value="${[ ['answerCount', 'Answers', 'span1'], ['viewCount', 'Views','span1'], ['dateCreated', 'Date', 'span2'] ] }" />
-                            <g:each in="${columns}" var="columnDesc">
-                                <div style="text-align: center" class="${columnDesc[2]} column-sort-btn"><a href="?sort=${columnDesc[0]}&order=${params.sort == columnDesc[0] && params.order != 'desc' ? 'desc' : 'asc'}&offset=0&q=${params.q}" class="btn ${params.sort == columnDesc[0] ? 'active' : ''}">${columnDesc[1]}</a></div>
-                            </g:each>
-                            <div class="span6 offset2">
-                                <div class="pull-right">
-                                    <div class="form-horizontal">
-                                        <g:textField name="txtSearch" value="${params.q}" />
-                                        <button type="button" id="btnQuestionSearch" class="btn"><i class="fa fa-search"></i>&nbsp;Search</button>
+    <body>
+        <div class="content">
+            <table class="table table-bordered table-condensed question-list">
+                <thead>
+                    <tr>
+                        <td>
+                            <g:set var="questionCount" value="${totalCount}" />
+                            ${questionCount} ${questionCount == 1 ? 'question' : 'questions'}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="row-fluid">
+                                <g:set var="columns" value="${[ ['answerCount', 'Answers', 'span1'], ['viewCount', 'Views','span1'], ['dateCreated', 'Date', 'span2'] ] }" />
+                                <g:each in="${columns}" var="columnDesc">
+                                    <div style="text-align: center" class="${columnDesc[2]} column-sort-btn"><a href="?sort=${columnDesc[0]}&order=${params.sort == columnDesc[0] && params.order != 'desc' ? 'desc' : 'asc'}&offset=0&q=${params.q}" class="btn ${params.sort == columnDesc[0] ? 'active' : ''}">${columnDesc[1]}</a></div>
+                                </g:each>
+                                <div class="span6 offset2">
+                                    <div class="pull-right">
+                                        <div class="form-horizontal">
+                                            <g:textField name="txtSearch" value="${params.q}" />
+                                            <button type="button" id="btnQuestionSearch" class="btn"><i class="fa fa-search"></i>&nbsp;Search</button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    </td>
-                </tr>
-
-            </thead>
-            <tbody>
-                <g:each in="${questions}" var="question" status="i">
-                    <tr questionId="${question.id}">
-                        <td>
-                            <div class="question-container">
-                                <g:render template="questionListFragment" model="${[question: question, imageInfo: imageInfoMap[question.occurrenceId]?.get(0), acceptedAnswer: acceptedAnswers[question], occurrence: occurrenceData[question.occurrenceId]]}" />
-                            </div>
                         </td>
                     </tr>
-                </g:each>
-            </tbody>
-        </table>
-        <div class="pagination">
-            <g:paginate total="${totalCount}" />
+                </thead>
+                <tbody>
+                    <g:each in="${questions}" var="question" status="i">
+                        <tr questionId="${question.id}">
+                            <td>
+                                <div class="question-container">
+                                    <g:render template="questionListFragment" model="${[question: question, imageInfo: imageInfoMap[question.occurrenceId]?.get(0), acceptedAnswer: acceptedAnswers[question], occurrence: occurrenceData[question.occurrenceId]]}" />
+                                </div>
+                            </td>
+                        </tr>
+                    </g:each>
+                </tbody>
+            </table>
+            <div class="pagination">
+                <g:paginate total="${totalCount}" />
+            </div>
         </div>
     </body>
 </html>

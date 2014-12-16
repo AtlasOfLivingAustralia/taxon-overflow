@@ -26,13 +26,7 @@
 
 <script>
 
-    $("#btnCancelAddTag").click(function(e) {
-        e.preventDefault();
-        tolib.hideModal();
-    });
-
-    $("#btnAddTag").click(function(e) {
-        e.preventDefault();
+    function addTagToQuestion() {
         var tag = $("#tag").val();
         var data = {
             questionId: ${question.id},
@@ -49,6 +43,24 @@
                 alert(reponse.message);
             }
         });
+    }
+
+    $("#btnCancelAddTag").click(function(e) {
+        e.preventDefault();
+        tolib.hideModal();
     });
+
+    $("#btnAddTag").click(function(e) {
+        e.preventDefault();
+        addTagToQuestion();
+    });
+
+    $("#tag").keydown(function(e) {
+        if (e.keyCode == 13) {
+            addTagToQuestion();
+        }
+    });
+
+    $("#tag").focus();
 
 </script>
