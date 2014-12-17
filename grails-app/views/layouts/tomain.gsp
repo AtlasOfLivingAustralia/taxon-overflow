@@ -7,6 +7,11 @@
                 areYouSureUrl: "${createLink(controller:"dialog", action: "areYouSureFragment")}",
                 pleaseWaitUrl: "${createLink(controller:'dialog', action:'pleaseWaitFragment')}"
             };
+
+            var GSP_VARS = {
+                leafletImagesDir: "${resource(dir:'/js/leaflet/images')}"
+            };
+
         </r:script>
         <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
     </head>

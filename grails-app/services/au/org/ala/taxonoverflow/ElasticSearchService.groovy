@@ -3,6 +3,7 @@ package au.org.ala.taxonoverflow
 import grails.converters.JSON
 import grails.transaction.NotTransactional
 import groovy.json.JsonSlurper
+import net.sf.json.JSONObject
 import org.codehaus.groovy.grails.web.servlet.mvc.GrailsParameterMap
 import org.elasticsearch.action.delete.DeleteResponse
 import org.elasticsearch.action.get.GetRequestBuilder
@@ -179,6 +180,18 @@ class ElasticSearchService {
         }
 
         return new QueryResults<Question>(list: resultsList, totalCount: searchResponse?.hits?.totalHits ?: 0, auxdata: auxdata)
+    }
+
+    public JSONObject getOccurrenceData(String occurrenceId) {
+        def results = questionSearch(null) {
+            q("occurrenceId:${occurrenceId}")
+        }
+
+        if (results.totalCount > 0) {
+            return results.auxdata[occurrenceId] as JSONObject
+        }
+
+        return null
     }
 
 }

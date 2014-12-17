@@ -41,6 +41,7 @@
 
         <r:require module="viewer" />
         <r:require module="flexisel" />
+        <r:require module="leaflet" />
 
         <r:script>
 
@@ -62,6 +63,8 @@
                         imgvwr.viewImage($("#imageViewer"), imageId, {})
                     }
                 });
+
+                renderMap();
 
             });
 
@@ -113,6 +116,12 @@
                 });
             }
 
+            function renderMap() {
+                $.ajax("${createLink(controller: 'question', action:'mapFragment', id: question.id)}").done(function(content) {
+                    $("#mapDiv").html(content);
+                });
+            }
+
         </r:script>
 
     </head>
@@ -151,6 +160,18 @@
                 <div id="questionCommentsDiv">
                     <g:render template="questionCommentsFragment" model="${[question: question]}" />
                 </div>
+
+                <g:set var="coordinates" value="${au.org.ala.taxonoverflow.OccurrenceHelper.getCoordinates(occurrence)}" />
+
+                <g:if test="${coordinates}">
+                    <div class="row-fluid">
+                        <div class="span12">
+                            <div id="mapDiv">
+                            </div>
+                        </div>
+                    </div>
+                </g:if>
+
             </div>
             <div class="span6">
                 <div id="answersDiv">

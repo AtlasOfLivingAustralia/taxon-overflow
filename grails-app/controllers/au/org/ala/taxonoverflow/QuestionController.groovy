@@ -74,7 +74,7 @@ class QuestionController {
         if (question) {
 
             def specimenPromise = task {
-                biocacheService.getRecord(question.occurrenceId)
+                elasticSearchService.getOccurrenceData(question.occurrenceId)
             }
 
             def userId = authService.userId
@@ -177,6 +177,15 @@ class QuestionController {
     def addQuestionCommentFragment(long id) {
         def question = Question.get(id)
         [question: question]
+    }
+
+    def mapFragment(long id) {
+        def question = Question.get(id)
+        if (question) {
+            def occurrence = elasticSearchService.getOccurrenceData(question.occurrenceId)
+            def coordinates = OccurrenceHelper.getCoordinates(occurrence)
+            [question: question, occurrence: occurrence, coordinates: coordinates]
+        }
     }
 
 }
