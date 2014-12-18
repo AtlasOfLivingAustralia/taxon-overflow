@@ -46,8 +46,12 @@
     <div class="span2" style="text-align: center">
         <g:if test="${imageInfo}">
             <a href="${questionUrl}">
-                <img class="question-thumb" src="${imageInfo.squareThumbUrl}_darkGray" />
+                <img class="question-thumb" src="${imageInfo[0].squareThumbUrl}_darkGray" />
             </a>
+            <g:if test="${imageInfo.size() > 1}">
+                <br/>
+                <small>${imageInfo.size()} images</small>
+            </g:if>
         </g:if>
     </div>
     <div class="span6">

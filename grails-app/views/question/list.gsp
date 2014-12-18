@@ -122,7 +122,7 @@
                         <tr questionId="${question.id}">
                             <td>
                                 <div class="question-container">
-                                    <g:render template="questionListFragment" model="${[question: question, imageInfo: imageInfoMap[question.occurrenceId]?.get(0), acceptedAnswer: acceptedAnswers[question], occurrence: occurrenceData[question.occurrenceId]]}" />
+                                    <g:render template="questionListFragment" model="${[question: question, imageInfo: imageInfoMap[question.occurrenceId], acceptedAnswer: acceptedAnswers[question], occurrence: occurrenceData[question.occurrenceId]]}" />
                                 </div>
                             </td>
                         </tr>
