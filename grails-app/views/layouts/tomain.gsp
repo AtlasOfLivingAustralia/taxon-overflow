@@ -16,12 +16,12 @@
     </head>
 
     <body>
-        <div class="pull-right">
-            <to:userContext />
-            <auth:ifAnyGranted roles="${au.org.ala.web.CASRoles.ROLE_ADMIN}">
-                <a href="${createLink(controller:'admin')}">Admin</a>
-            </auth:ifAnyGranted>
-        </div>
+        %{--<div class="pull-right">--}%
+            %{--<to:userContext />--}%
+            %{--<auth:ifAnyGranted roles="${au.org.ala.web.CASRoles.ROLE_ADMIN}">--}%
+               %{--| <a href="${createLink(controller:'admin')}">Admin</a>--}%
+            %{--</auth:ifAnyGranted>--}%
+        %{--</div>--}%
         <g:layoutBody/>
     </body>
 </g:applyLayout>
