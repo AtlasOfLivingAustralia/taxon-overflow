@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <meta name="layout" content="main"/>
+    <meta name="layout" content="toadmin"/>
     <title>Admin Dashboard</title>
     <style type="text/css" media="screen">
     </style>

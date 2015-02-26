@@ -12,14 +12,15 @@
 
   <body>
     <div>
-      <legend>
-        <table style="width: 100%">
-          <tr>
-            <td><g:link uri="/">Home</g:link><to:navSeparator/><g:link controller="admin" action="index">Administration</g:link><to:navSeparator/><g:pageProperty name="page.pageTitle"/></td>
-            <td style="text-align: right"><span><g:pageProperty name="page.adminButtonBar"/></span></td>
-          </tr>
-        </table>
-      </legend>
+
+      <div class="row">
+        <div class="span12">
+          <ul class="breadcrumb">
+            <li><g:link uri="/">Home</g:link> <span class="divider"><i class="fa fa-arrow-right"></i></span><g:link controller="admin" action="index">Administration</g:link><span class="divider"><i class="fa fa-arrow-right"></i></span><g:pageProperty name="page.pageTitle"/></li>
+            <li class="active"><g:pageProperty name="page.adminButtonBar"/></li>
+          </ul>
+        </div>
+      </div>
 
       <div class="row-fluid">
         <div class="span3">
@@ -27,7 +28,6 @@
             <to:menuNavItem href="${createLink(controller: 'admin', action: 'dashboard')}" title="Dashboard" />
             <to:menuNavItem href="${createLink(controller: 'admin', action: 'indexAdmin')}" title="Full text index" />
           </ul>
-
         </div>
         <div class="span9">
           <g:layoutBody/>

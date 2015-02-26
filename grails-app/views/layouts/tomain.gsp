@@ -16,17 +16,11 @@
     </head>
 
     <body>
-        <div class="row-fluid">
-            <div class="span8">
-                %{--<a href="${createLink(controller:'question', action:'list')}">Question list</a>--}%
-                %{--<a href="${createLink(controller:'question', action:'createQuestion')}">Create question</a>--}%
-            </div>
-            <div class="pull-right">
-                <to:userContext />
-                <auth:ifAnyGranted roles="${au.org.ala.web.CASRoles.ROLE_ADMIN}">
-                    <a href="${createLink(controller:'admin')}">Admin</a>
-                </auth:ifAnyGranted>
-            </div>
+        <div class="pull-right">
+            <to:userContext />
+            <auth:ifAnyGranted roles="${au.org.ala.web.CASRoles.ROLE_ADMIN}">
+                <a href="${createLink(controller:'admin')}">Admin</a>
+            </auth:ifAnyGranted>
         </div>
         <g:layoutBody/>
     </body>

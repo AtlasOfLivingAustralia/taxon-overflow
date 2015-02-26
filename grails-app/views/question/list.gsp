@@ -48,6 +48,8 @@
                 font-style: italic;
             }
 
+            .facets ul { list-style: none; margin-left:0;}
+
         </r:style>
         </style>
         <r:script>
@@ -88,14 +90,22 @@
         </r:script>
     </head>
     <body>
-        <h1>Latest questions</h1>
+        <div class="row">
+            <div class="span12">
+                <ul class="breadcrumb">
+                    <li><a href="http://ala.org.au">Home</a> <span class="divider"><i class="fa fa-arrow-right"></i></span></li>
+                    <li class="active">Question list</li>
+                </ul>
+            </div>
+        </div>
+        <h1>Help identify species</h1>
         <p class="lead">
             Here are the latest record needing identification help from the community.
-            Get involved by suggesting an identification.
+            <strong>Get involved</strong> by suggesting an identification.
         </p>
 
         <div class="taxonoverflow-content row-fluid">
-            <div class="span2">
+            <div class="span3 facets">
                 <h3>Question tags</h3>
                 <ul>
                     <li><span class="label tag">Birds</span> × 3222</li>
@@ -107,8 +117,13 @@
                     <li><span class="label tag">ACT</span> × 22</li>
                     <li><span class="label tag">QLD</span> × 22</li>
                 </ul>
+                <h3>Question type</h3>
+                <ul>
+                    <li><span class="label tag">Identification required</span> × 3222</li>
+                    <li><span class="label tag">Coordinates suspect</span> × 3123</li>
+                </ul>
             </div>
-            <div class="span10">
+            <div class="span9">
                 <table class="table table-bordered table-condensed question-list">
                     <thead>
                         <tr>

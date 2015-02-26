@@ -119,6 +119,16 @@
         </r:script>
     </head>
     <body>
+        <div class="row">
+            <div class="span12">
+                <ul class="breadcrumb">
+                    <li><a href="http://ala.org.au">Home</a> <span class="divider"><i class="fa fa-arrow-right"></i></span></li>
+                    <li><g:link controller="question" action="list">Question list</g:link> <span class="divider"><i class="fa fa-arrow-right"></i></span></li>
+                    <li class="active">Question X</li>
+                </ul>
+            </div>
+        </div>
+
         <div class="row-fluid header-row">
             <div class="span6">
                 <H1>Question ${question.id}&nbsp;<small>[ <a href="${question.source.uiBaseUrl}${question.occurrenceId}" target="occurrenceDetails">View record</a> ] Views: ${viewCount}</small></H1>
