@@ -123,16 +123,15 @@
             <div class="span12">
                 <ul class="breadcrumb">
                     <li><a href="http://ala.org.au">Home</a> <span class="divider"><i class="fa fa-arrow-right"></i></span></li>
-                    <li><g:link controller="question" action="list">Question list</g:link> <span class="divider"><i class="fa fa-arrow-right"></i></span></li>
-                    <li class="active">Question X</li>
+                    <li><g:link controller="question" action="list">Help identify species</g:link> <span class="divider"><i class="fa fa-arrow-right"></i></span></li>
+                    <li class="active">Species identification case #${question.id}</li>
                 </ul>
             </div>
         </div>
 
         <div class="row-fluid header-row">
             <div class="span6">
-                <H1>Question ${question.id}&nbsp;<small>[ <a href="${question.source.uiBaseUrl}${question.occurrenceId}" target="occurrenceDetails">View record</a> ] Views: ${viewCount}</small></H1>
-
+                <H1>Species identification case #${question.id}&nbsp;<small>[ <a href="${question.source.uiBaseUrl}${question.occurrenceId}" target="occurrenceDetails">View record</a> ] Views: ${viewCount}</small></H1>
             </div>
             <div class="span6">
                 <h4 class="pull-right">${answers?.size() ?: 0} ${question.questionType == au.org.ala.taxonoverflow.QuestionType.Identification ? "Identification(s)" : "Answer(s)" }</h4>

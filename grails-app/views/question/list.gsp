@@ -94,16 +94,15 @@
             <div class="span12">
                 <ul class="breadcrumb">
                     <li><a href="http://ala.org.au">Home</a> <span class="divider"><i class="fa fa-arrow-right"></i></span></li>
-                    <li class="active">Question list</li>
+                    <li class="active">Help identify species</li>
                 </ul>
             </div>
         </div>
         <h1>Help identify species</h1>
         <p class="lead">
-            Here are the latest record needing identification help from the community.
+            Here are the latest records needing identification help from the community.
             <strong>Get involved</strong> by suggesting an identification.
         </p>
-
         <div class="taxonoverflow-content row-fluid">
             <div class="span3 facets">
                 <h3>Question tags</h3>
