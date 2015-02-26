@@ -89,9 +89,7 @@ class QuestionController {
         }
     }
 
-    def createQuestionFromBiocache() { render view: 'createQuestion', model:[source:'biocache']}
 
-    def createQuestionFromEcodata()  { render view: 'createQuestion', model:[source:'ecodata']}
 
     def answersListFragment(int id) {
         def question = Question.get(id)

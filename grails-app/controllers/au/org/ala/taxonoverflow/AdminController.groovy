@@ -18,6 +18,10 @@ class AdminController {
 
     def indexAdmin() {}
 
+    def createQuestionFromBiocache() { render view: 'createQuestion', model:[source:'biocache']}
+
+    def createQuestionFromEcodata()  { render view: 'createQuestion', model:[source:'ecodata']}
+
     def ajaxReindexAll() {
         def c = Question.createCriteria()
         def questionIds = c.list {

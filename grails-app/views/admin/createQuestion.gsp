@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <meta name="layout" content="main"/>
+    <meta name="layout" content="toadmin"/>
     <title>Create question | Atlas of Living Australia</title>
     <r:require modules="application"/>
   </head>
   <body class="content">
-
+    <content tag="pageTitle">Create question</content>
     <h1>Debug create ${source}  question form (not intended for public use)</h1>
 
     <div class="alert alert-error" style="display: none" id="errorMessageDiv"></div>

@@ -7,7 +7,7 @@
     </style>
   </head>
   <body class="content">
-    <content tag="pageTitle">Dashboard</content>
+    <content tag="pageTitle">Reindex</content>
     <content tag="adminButtonBar" />
     <button type="button" class="btn" id="btnReindexAll">Reindex all questions</button>
   </body>
