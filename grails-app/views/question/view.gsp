@@ -2,9 +2,7 @@
 <html>
     <head>
         <meta name="layout" content="tomain"/>
-        <title>Welcome to Grails</title>
-
-        <style>
+        <title>Question</title>
         <r:style type="text/css">
 
             #imageViewer {
@@ -22,10 +20,6 @@
                 margin-top: 10px;
             }
 
-            .occurrence-property-value {
-                font-weight: bold;
-            }
-
             .image-thumbs {
                 margin-top: 10px;
                 height: 125px;
@@ -36,17 +30,13 @@
             }
 
         </r:style>
-        </style>
-
-
         <r:require module="viewer" />
         <r:require module="flexisel" />
         <r:require module="leaflet" />
-
         <r:script>
 
             var images = [];
-            <g:each in="${imageIds}" var="imageId">
+            <g:each in="${occurrence.imageIds}" var="imageId">
                 images.push("${imageId}");
             </g:each>
 
@@ -123,37 +113,46 @@
             }
 
         </r:script>
-
     </head>
-    <body class="content">
-
+    <body>
         <div class="row-fluid header-row">
             <div class="span6">
-                <H3>Question ${question.id}&nbsp;<small>[ <a href="http://biocache.ala.org.au/occurrence/${question.occurrenceId}" target="occurrenceDetails">View record in biocache</a> ] Views: ${viewCount}</small></H3>
+                <H1>Question ${question.id}&nbsp;<small>[ <a href="${question.source.uiBaseUrl}${question.occurrenceId}" target="occurrenceDetails">View record</a> ] Views: ${viewCount}</small></H1>
                 <div id="tagsDiv">
                     <g:render template="tagsFragment" model="${[question: question]}" />
                 </div>
             </div>
             <div class="span6">
-                <h4>${answers?.size() ?: 0} ${question.questionType == au.org.ala.taxonoverflow.QuestionType.Identification ? "Identification(s)" : "Answer(s)" }</h4>
+                <h4 class="pull-right">${answers?.size() ?: 0} ${question.questionType == au.org.ala.taxonoverflow.QuestionType.Identification ? "Identification(s)" : "Answer(s)" }</h4>
                 <g:if test="${acceptedAnswer}">
                     <div class="label label-success">An identification has been accepted for this occurrence: ${acceptedAnswer.scientificName}</div>
                 </g:if>
             </div>
         </div>
-
         <div class="row-fluid">
             <div class="span6">
                 <div id="imageViewer"></div>
-                <g:if test="${imageIds?.size() > 1}">
+                <g:if test="${occurrence.imageIds?.size() > 1}">
                     <div class="image-thumbs">
                         <ul id="media-thumb-list">
-                            <g:each in="${imageIds}" var="imageId">
-                                <li imageId="${imageId}" ><img class="image-thumb" src="http://images.ala.org.au/image/proxyImageThumbnail?imageId=${imageId}" /></li>
+                            <g:each in="${occurrence.imageIds}" var="imageId">
+                                <li imageId="${occurrence.imageId}" ><img class="image-thumb" src="http://images.ala.org.au/image/proxyImageThumbnail?imageId=${imageId}" /></li>
                             </g:each>
                         </ul>
                     </div>
                 </g:if>
+
+
+                <g:set var="coordinates" value="${au.org.ala.taxonoverflow.OccurrenceHelper.getCoordinates(occurrence)}" />
+
+                <g:if test="${coordinates}">
+                    <br/>
+                    <div id="mapDiv"> </div>
+                </g:if>
+
+            </div>
+            <div class="span6">
+
                 <div class="occurrenceDetails">
                     <g:render template="questionDetails" model="${[question:question, occurrence: occurrence]}" />
                 </div>
@@ -161,20 +160,7 @@
                     <g:render template="questionCommentsFragment" model="${[question: question]}" />
                 </div>
 
-                <g:set var="coordinates" value="${au.org.ala.taxonoverflow.OccurrenceHelper.getCoordinates(occurrence)}" />
-
-                <g:if test="${coordinates}">
-                    <div class="row-fluid">
-                        <div class="span12">
-                            <div id="mapDiv">
-                            </div>
-                        </div>
-                    </div>
-                </g:if>
-
-            </div>
-            <div class="span6">
-                <div id="answersDiv">
+                <div id="answersDiv" style="margin-top:20px;">
                     <to:spinner />&nbsp;Loading answers...
                 </div>
             </div>

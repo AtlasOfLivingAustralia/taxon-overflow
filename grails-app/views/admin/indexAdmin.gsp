@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <meta name="layout" content="toadmin"/>
+    <meta name="layout" content="main"/>
     <title>Admin Dashboard</title>
     <style type="text/css" media="screen">
     </style>
@@ -10,7 +10,6 @@
     <content tag="pageTitle">Dashboard</content>
     <content tag="adminButtonBar" />
     <button type="button" class="btn" id="btnReindexAll">Reindex all questions</button>
-
   </body>
   <r:script>
 

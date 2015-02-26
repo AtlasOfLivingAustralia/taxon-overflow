@@ -22,7 +22,6 @@ if(System.getenv(ENV_NAME) && new File(System.getenv(ENV_NAME)).exists()) {
 
 println "[${appName}] (*) grails.config.locations = ${grails.config.locations}"
 
-headerAndFooter.baseURL = 'http://www2.ala.org.au/commonui'
 ala.baseURL = "http://www.ala.org.au"
 bie.baseURL = "http://bie.ala.org.au"
 bie.searchPath = "/search"
@@ -31,7 +30,22 @@ grails.project.groupId = "au.org.ala" // change this to alter the default packag
 bie.baseUrl = "http://bie.ala.org.au"
 collectory.baseUrl = "http://collections.ala.org.au"
 biocache.apiKey = "api-key-to-use"
-biocache.baseUrl = "http://biocache.ala.org.au/ws"
+
+biocacheService.baseUrl = "http://biocache.ala.org.au/ws"
+biocacheWebapp.baseUrl = "http://biocache.ala.org.au"
+
+ecodata.baseUrl = "http://fielddata.ala.org.au"
+pigeonhole.baseUrl = "http://sightings.ala.org.au"
+
+
+biocacheService.recordUrl = "http://biocache.ala.org.au/ws/occurrence/"
+biocacheWebapp.recordUrl = "http://biocache.ala.org.au/occurrence/"
+
+ecodata.recordUrl = "http://fielddata.ala.org.au/record/"
+pigeonhole.recordUrl = "http://sightings.ala.org.au/edit/"
+
+
+
 biocache.queryContext = "" // datahub uuid - e.g. ozcam  = " data_hub_uid:dh1 || avh = data_hub_uid:dh2"
 biocache.downloads.extra = "dataResourceUid,dataResourceName.p"
 biocache.ajax.useProxy = false

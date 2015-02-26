@@ -11,7 +11,7 @@
 
 </style>
 <div class="row-fluid">
-    <div class="span11 offset1">
+    <div class="span12">
         <ul class="question-comment-list">
             <g:each in="${question.comments}" var="questionComment">
                 <li questionCommentId="${questionComment.id}">
@@ -20,9 +20,8 @@
             </g:each>
         </ul>
         <div id="newQuestionCommentDiv">
-            <a id="btnAddQuestionComment" href="#">Add a comment...</a>
+            <a id="btnAddQuestionComment" href="#" class="btn">Add a comment or question...</a>
         </div>
-
     </div>
 </div>
 

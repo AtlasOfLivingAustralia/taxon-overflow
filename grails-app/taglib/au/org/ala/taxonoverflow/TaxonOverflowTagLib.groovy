@@ -33,19 +33,15 @@ class TaxonOverflowTagLib {
         if (occurrence) {
             def name = attrs.name as String
             def title = attrs.title as String ?: name
-
-            def rawValue = occurrence.raw ? Ognl.getValue("raw.${name}", occurrence) : Ognl.getValue("${name}", occurrence)
-
-            def processedValue = occurrence.processed ? Ognl.getValue("processed.${name}", occurrence) : rawValue
-
-            if (processedValue || rawValue) {
+            def value = occurrence."${name}"
+            if(value){
                 def mb = new MarkupBuilder(out)
                 mb.div(class: 'row-fluid') {
                     mb.div(class: 'span4 occurrence-property-name') {
                         mkp.yield(title)
                     }
                     mb.div(class: 'span8 occurrence-property-value') {
-                        mkp.yield(processedValue ?: rawValue)
+                        mkp.yield(occurrence."${name}")
                     }
                 }
             }
@@ -70,7 +66,10 @@ class TaxonOverflowTagLib {
     }
 
     def userContext = { attrs, body ->
-        out << "Logged in as " + authService.userDetails().userDisplayName
+        def userDetails = authService.userDetails()
+        if(userDetails) {
+            out << "Logged in as " + userDetails.userDisplayName
+        }
     }
 
     /**

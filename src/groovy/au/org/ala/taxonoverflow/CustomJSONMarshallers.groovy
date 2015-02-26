@@ -5,6 +5,7 @@ import au.org.ala.taxonoverflow.marshal.*
 class CustomJSONMarshallers {
 
     BiocacheService biocacheService
+    EcodataService ecodataService
 
     public static List<Class> marshallers = [
         QuestionJSONMarshaller,
@@ -24,6 +25,7 @@ class CustomJSONMarshallers {
                 println "Registering custom JSON marshaller: ${c.name}"
                 def marshaller = c.newInstance() as ICustomJSONMarshaller
                 marshaller.setBiocacheService(biocacheService)
+                marshaller.setEcodataService(ecodataService)
                 marshaller.register()
             } catch (Exception ex) {
                 println "Failed to register custom JSON marshaller ${c.name}: ${ex.message}"
@@ -31,6 +33,5 @@ class CustomJSONMarshallers {
             }
         }
     }
-
 }
 

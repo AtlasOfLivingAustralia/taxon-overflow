@@ -2,19 +2,13 @@ modules = {
 
     core {
         dependsOn 'jquery'
-        resource url: 'js/html5.js', plugin: "ala-web-theme", wrapper: { s -> "<!--[if lt IE 9]>$s<![endif]-->" }, disposition: 'head'
-    }
-
-    bootstrap {
-        dependsOn 'core'
-        resource url:'js/bootstrap.js', plugin: 'ala-web-theme', disposition: 'head'
-        resource url:'css/bootstrap.css', plugin: 'ala-web-theme', attrs:[media:'screen, projection, print']
-        resource url:'css/bootstrap-responsive.css', plugin: 'ala-web-theme', attrs:[media:'screen', id:'responsiveCss']
+//        resource url: 'js/html5.js', plugin: "ala-web-theme", wrapper: { s -> "<!--[if lt IE 9]>$s<![endif]-->" }, disposition: 'head'
     }
 
     application {
         dependsOn('jquery')
         resource url:'js/taxonoverflow.js'
+        resource url:'css/taxonoverflow.css'
     }
 
     flexisel {

@@ -9,10 +9,43 @@ class WebServiceController {
     def userService
     def grailsApplication
     def questionService
-    def elasticSearchService
 
     def index() {
         render([success: "true", version: grailsApplication.metadata['app.version']])
+    }
+
+    def createQuestionFromExternal(){
+        def body = request.JSON
+
+        if(body.source == 'ecodata'){
+          createQuestionFromEcodata()
+        }
+
+        if(body.source == 'biocache'){
+            createQuestionFromBiocache()
+        }
+    }
+
+    def createQuestionFromEcodata(){
+
+        def results = [success:true]
+        def body = request.JSON
+        if (body) {
+            def tags = body.tags instanceof String ? body.tags.split(",")?.toList() : body.tags as List<String>
+            def user = userService.getUserFromUserId(body.userId)
+            def occurrenceId = body.occurrenceId as String
+            def questionType = (body.questionType as QuestionType) ?: QuestionType.Identification
+            def serviceResult = questionService.createQuestionFromEcodataService(occurrenceId, questionType, tags, user)
+
+            if (serviceResult) {
+                results.success = true
+                results.questionId = serviceResult.result?.id
+            } else {
+                results.success = false
+                results.message = serviceResult.combinedMessages
+            }
+        }
+        renderResults(results)
     }
 
     def createQuestionFromBiocache() {

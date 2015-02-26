@@ -173,7 +173,11 @@ class ElasticSearchService {
         def auxdata = [:]
         if (searchResponse.hits) {
             searchResponse.hits.each { hit ->
-                resultsList << Question.get(hit.id.toLong())
+                def question  = Question.get(hit.id.toLong())
+                if(question) {
+                    //if null, DB out of sync with index
+                    resultsList << Question.get(hit.id.toLong())
+                }
                 def map = hit.sourceAsMap()
                 auxdata[map.occurrenceId] = map.occurrence
             }

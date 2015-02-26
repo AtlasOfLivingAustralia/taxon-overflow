@@ -1,17 +1,15 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <meta name="layout" content="tomain"/>
-    <title>Welcome to Grails</title>
-    <style type="text/css" media="screen">
-    </style>
-
+    <meta name="layout" content="main"/>
+    <title>Create question | Atlas of Living Australia</title>
+    <r:require modules="application"/>
   </head>
   <body class="content">
 
-    <div class="alert alert-error" style="display: none" id="errorMessageDiv">
+    <h1>Debug create ${source}  question form (not intended for public use)</h1>
 
-    </div>
+    <div class="alert alert-error" style="display: none" id="errorMessageDiv"></div>
 
     <div class="form-horizontal">
 
@@ -35,6 +33,8 @@
           <g:textField name="tags" class="input-xxlarge" />
         </div>
       </div>
+
+        <g:hiddenField name="source" value="${source}"/>
 
       <div class="control-group">
         <button type="button" class="btn" id="btnCancel">Cancel</button>
@@ -62,11 +62,11 @@
             userId: "<to:currentUserId />",
             occurrenceId: $("#occurrenceId").val(),
             questionType: $("#questionType").val(),
-            tags: $("#tags").val()
-
+            tags: $("#tags").val(),
+            source: $("#source").val()
         };
 
-        tolib.doJsonPost("${createLink(controller:'webService', action:'createQuestionFromBiocache')}", question).done(function(response) {
+        tolib.doJsonPost("${createLink(controller:'webService', action:'createQuestionFromExternal')}", question).done(function(response) {
             if (response.success) {
                 location.href = "${createLink(controller:'question', action:'list')}";
             } else {

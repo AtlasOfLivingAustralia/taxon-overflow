@@ -9,7 +9,7 @@ class User {
     }
 
     static mapping = {
-        table 'vp_user'
+        table 'taxonoverflow_user'
         version false
     }
 

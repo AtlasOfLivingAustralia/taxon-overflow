@@ -5,5 +5,6 @@ beans = {
 
     customJSONMarshallers(CustomJSONMarshallers) {
         biocacheService = ref("biocacheService")
+        ecodataService = ref("ecodataService")
     }
 }

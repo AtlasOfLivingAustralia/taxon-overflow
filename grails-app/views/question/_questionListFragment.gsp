@@ -24,42 +24,32 @@
                 </div>
             </div>
 
-            <div class="row-fluid" style="margin-top: 30px; border-top: 1px dotted #dddddd">
-                <div class="span12">
+            <div class="row-fluid" style="margin-top: 30px; ">
+                <div class="span12 tags">
                     <g:each in="${question.tags}" var="tag">
-                        <div class="label label-info">${tag.tag}</div>
+                        <div class="label label-info tag">${tag.tag}</div>
                     </g:each>
                 </div>
             </div>
-
-
-            %{--<div class="row-fluid">--}%
-                %{--<g:if test="${acceptedAnswer}" >--}%
-                    %{--<div class="span12"  style="text-align: center">--}%
-                        %{--<span class="accepted-answer-text">${acceptedAnswer.scientificName}</span>--}%
-                    %{--</div>--}%
-                %{--</g:if>--}%
-            %{--</div>--}%
-
         </a>
     </div>
     <div class="span2" style="text-align: center">
-        <g:if test="${imageInfo}">
+        <g:if test="${occurrence.imageUrls}">
             <a href="${questionUrl}">
-                <img class="question-thumb" src="${imageInfo[0].squareThumbUrl}_darkGray" />
+                <img class="question-thumb" src="${occurrence.imageUrls[0]}" />
             </a>
-            <g:if test="${imageInfo.size() > 1}">
+            <g:if test="${occurrence.imageUrls.size() > 1}">
                 <br/>
-                <small>${imageInfo.size()} images</small>
+                <small>${occurrence.imageUrls.size()} images</small>
             </g:if>
         </g:if>
     </div>
     <div class="span6">
         <div class="row-fluid">
             <div class="span12">
-                <to:occurrenceProperty name="occurrence.recordedBy" title="Recorded by" occurrence="${occurrence}" />
-                <to:occurrenceProperty name="event.eventDate" title="Event date" occurrence="${occurrence}" />
-                <to:occurrenceProperty name="location.locality" title="Locality" occurrence="${occurrence}" />
+                <to:occurrenceProperty name="recordedBy" title="Recorded by" occurrence="${occurrence}" />
+                <to:occurrenceProperty name="eventDate" title="Event date" occurrence="${occurrence}" />
+                <to:occurrenceProperty name="locality" title="Locality" occurrence="${occurrence}" />
             </div>
         </div>
     </div>

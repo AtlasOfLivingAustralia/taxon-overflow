@@ -14,8 +14,8 @@ class OccurrenceHelper {
     public static Coordinates getCoordinates(JSONObject occurrence) {
         def instance = new OccurrenceHelper(occurrence)
 
-        Double latitude = instance.getDouble("processed.location.decimalLatitude") ?: instance.getDouble("raw.location.decimalLatitude")
-        Double longitude = instance.getDouble("processed.location.decimalLongitude") ?: instance.getDouble("raw.location.decimalLongitude")
+        Double latitude = instance.getDouble("decimalLatitude")
+        Double longitude = instance.getDouble("decimalLongitude")
         if (latitude && longitude) {
             return new Coordinates(latitude: latitude, longitude: longitude)
         }
@@ -30,8 +30,6 @@ class OccurrenceHelper {
         }
         return null
     }
-
-
 }
 
 class Coordinates {

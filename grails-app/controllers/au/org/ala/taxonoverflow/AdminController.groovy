@@ -14,13 +14,9 @@ class AdminController {
         redirect(action:'dashboard')
     }
 
-    def dashboard() {
+    def dashboard() {}
 
-    }
-
-    def indexAdmin() {
-
-    }
+    def indexAdmin() {}
 
     def ajaxReindexAll() {
         def c = Question.createCriteria()

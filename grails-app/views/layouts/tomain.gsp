@@ -1,7 +1,6 @@
 <g:applyLayout name="main" >
     <head>
-        <style type="text/css">
-        </style>
+        <r:require module="application"/>
         <r:script disposition="head">
             var TAXON_OVERFLOW_CONF = {
                 areYouSureUrl: "${createLink(controller:"dialog", action: "areYouSureFragment")}",
@@ -19,10 +18,10 @@
     <body>
         <div class="row-fluid">
             <div class="span8">
-                <a href="${createLink(controller:'question', action:'list')}">Question list</a>
-                <a href="${createLink(controller:'question', action:'createQuestion')}">Create question</a>
+                %{--<a href="${createLink(controller:'question', action:'list')}">Question list</a>--}%
+                %{--<a href="${createLink(controller:'question', action:'createQuestion')}">Create question</a>--}%
             </div>
-            <div class="span4">
+            <div class="pull-right">
                 <to:userContext />
                 <auth:ifAnyGranted roles="${au.org.ala.web.CASRoles.ROLE_ADMIN}">
                     <a href="${createLink(controller:'admin')}">Admin</a>

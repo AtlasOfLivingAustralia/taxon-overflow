@@ -5,11 +5,9 @@ import static grails.async.Promises.*
 class QuestionController {
 
     def questionService
-    def biocacheService
     def userService
     def authService
     def auditService
-    def imagesWebService
     def elasticSearchService
 
     def index() {
@@ -24,18 +22,7 @@ class QuestionController {
 
         def searchResults = elasticSearchService.questionSearch(params)
 
-        def occurrenceIds = searchResults.list*.occurrenceId
-
-        Map imageInfoMap = [:]
-        def imagesPromise = task {
-            imageInfoMap = imagesWebService.getImageInfoForMetadata("occurrenceId", occurrenceIds)
-        }
-
-//        def occurrenceData = [:]
-
-//        def occurrencePromise = task {
-//            occurrenceData = biocacheService.getRecords(occurrenceIds)
-//        }
+        List<String> occurrenceIds = searchResults.list*.occurrenceId
 
         def acceptedAnswers = [:]
         def c = Answer.createCriteria()
@@ -50,7 +37,12 @@ class QuestionController {
             }
         }
 
-        waitAll(imagesPromise)
+        Map imageInfoMap = [:]
+//        def imagesPromise = task {
+//            imageInfoMap = imagesWebService.getImageInfoForMetadata("occurrenceId", occurrenceIds)
+//        }
+//
+//        waitAll(imagesPromise)
 
         [questions: searchResults.list, totalCount: searchResults.totalCount, imageInfoMap: imageInfoMap, acceptedAnswers: acceptedAnswers, occurrenceData: searchResults.auxdata ]
     }
@@ -81,7 +73,6 @@ class QuestionController {
 
             def acceptedAnswer = Answer.findByQuestionAndAccepted(question, true)
 
-
             waitAll(specimenPromise)
 
             def specimen = specimenPromise.get()
@@ -98,9 +89,9 @@ class QuestionController {
         }
     }
 
-    def createQuestion() {
+    def createQuestionFromBiocache() { render view: 'createQuestion', model:[source:'biocache']}
 
-    }
+    def createQuestionFromEcodata()  { render view: 'createQuestion', model:[source:'ecodata']}
 
     def answersListFragment(int id) {
         def question = Question.get(id)
@@ -187,5 +178,4 @@ class QuestionController {
             [question: question, occurrence: occurrence, coordinates: coordinates]
         }
     }
-
 }

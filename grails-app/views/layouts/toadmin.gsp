@@ -1,7 +1,6 @@
 <g:applyLayout name="main" >
   <head>
-    <style type="text/css">
-    </style>
+    <r:require module="application"/>
     <r:script disposition="head">
             var TAXON_OVERFLOW_CONF = {
                 areYouSureUrl: "${createLink(controller:"dialog", action: "areYouSureFragment")}",
@@ -12,7 +11,7 @@
   </head>
 
   <body>
-    <div class="container-fluid">
+    <div>
       <legend>
         <table style="width: 100%">
           <tr>

@@ -6,40 +6,39 @@ class BiocacheService extends AbstractWebService {
 
     def grailsApplication
 
-    def JSONObject getRecord(String id, boolean useApiKey = false) {
+    def getRecord(String id, boolean useApiKey = false) {
         def ct = new CodeTimer("Getting occurrence from biocache")
         try {
-            def url = "${grailsApplication.config.biocache.baseUrl}/occurrence/${id.encodeAsURL()}"
-            if (useApiKey) {
-                url += "?apiKey=${grailsApplication.config.biocache.apiKey ?: ''}"
-            }
-            getJson(url)
-        } finally {
-            ct.stop(true)
-        }
-    }
-
-    def JSONObject getRecords(List<String> ids, boolean useApiKey = false) {
-        def ct = new CodeTimer("Getting ${ids.size()} occurrences from biocache")
-        try {
-            def queryString = URLEncoder.encode("id:(" + ids.join(" OR ") + ")", "utf-8")
-            def url = "${grailsApplication.config.biocache.baseUrl}/occurrences/search?q=${queryString}"
+            def source = Source.findByName("biocache")
+            def url = source.wsBaseUrl + "${id.encodeAsURL()}"
             if (useApiKey) {
                 url += "?apiKey=${grailsApplication.config.biocache.apiKey ?: ''}"
             }
             def json = getJson(url)
 
-            if (json.occurrences) {
-                return json.occurrences.collectEntries {
-                    [ (it.uuid) : it ]
-                }
+            def record = [
+                    occurrenceId: id,
+                    scientificName: json.processed.classification.scientificName ?: json.raw.classification.scientificName,
+                    commonName: json.processed.classification.vernacularName ?: json.raw.classification.vernacularName,
+                    recordedBy: json.raw.occurrence.recordedBy,
+                    userId: json.raw.occurrence.userId,
+                    eventDate: json.processed.event.eventDate,
+                    locality: json.raw.location.locality,
+                    decimalLatitude: json.processed.location.decimalLatitude,
+                    decimalLongitude: json.processed.location.decimalLongitude,
+                    coordinateUncertaintyInMeters: json.processed.location.coordinateUncertaintyInMeters,
+                    occurrenceRemarks: json.raw.occurrence.occurrenceRemarks,
+                    locationRemarks: json.raw.location.locationRemarks,
+                    imageIds:[],
+                    imageUrls:[]
+            ]
+            if(json.images){
+                record.imageIds = json.images.collect { it.filePath }
+                record.imageUrls = json.images.collect { it.alternativeFormats.smallImageUrl }
             }
-
-            return [:]
-
+            record
         } finally {
             ct.stop(true)
         }
     }
-
 }

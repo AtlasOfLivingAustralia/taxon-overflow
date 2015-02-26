@@ -9,5 +9,4 @@ public class IndexHelper {
     public static void deleteQuestionFromIndex(long questionId) {
         ElasticSearchService.scheduleQuestionDeletion(questionId)
     }
-
 }

@@ -6,6 +6,7 @@ class Question {
     QuestionType questionType
     String occurrenceId
     Date dateCreated
+    Source source
 
     static hasMany = [comments: QuestionComment, views: QuestionView, answers: Answer, tags: QuestionTag]
 

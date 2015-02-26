@@ -37,13 +37,19 @@ class ImagesWebService {
     }
 
     public Map getImageInfoForMetadata(String metadataKey, List<String> values) {
-        def url = "${serviceUrl}/ws/findImagesByMetadata"
-        def results = postJSON(url, [key: metadataKey, values: values])
-        if (results.status == 200) {
-            return results.content?.images
-        } else {
-            println results
-        }
+
+//        http://images.ala.org.au/ws/getImageInfo?id=17ddf9b7-85b8-4ba1-a782-e6cf2ae182f1
+
+//        def url = "${serviceUrl}/ws/findImagesByMetadata"
+//        getJSON()
+
+//        def url = "${serviceUrl}/ws/findImagesByMetadata"
+//        def results = postJSON(url, [key: metadataKey, values: values])
+//        if (results.status == 200) {
+//            return results.content?.images
+//        } else {
+//            println results
+//        }
         return null
     }
 

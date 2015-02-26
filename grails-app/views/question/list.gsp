@@ -2,7 +2,7 @@
 <html>
     <head>
         <meta name="layout" content="tomain"/>
-        <title>Welcome to Grails</title>
+        <title>Help identify | Atlas of Living Australia</title>
         <style>
         <r:style>
 
@@ -86,10 +86,15 @@
             }
 
         </r:script>
-
     </head>
     <body>
-        <div class="content">
+        <h1>Latest questions</h1>
+        <p class="lead">
+            Here are the latest record needing identification help from the community.
+            Get involved by suggesting an identification.
+        </p>
+
+        <div class="taxonoverflow-content">
             <table class="table table-bordered table-condensed question-list">
                 <thead>
                     <tr>

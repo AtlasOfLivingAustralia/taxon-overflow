@@ -9,6 +9,7 @@ import org.codehaus.groovy.grails.web.json.JSONObject
 @Transactional
 class QuestionService {
 
+    def ecodataService
     def biocacheService
     def authService
 
@@ -24,20 +25,47 @@ class QuestionService {
         }
     }
 
+    ServiceResult<Question> createQuestionFromEcodataService(String occurrenceId, QuestionType questionType, List<String> tags, User user) {
+
+        def result = new ServiceResult<Question>(success: false)
+
+        def occurrence = ecodataService.getRecord(occurrenceId)
+
+        if(occurrence){
+
+            def source = Source.findByName("ecodata")
+            def question = new Question(user: user, occurrenceId: occurrenceId, questionType: questionType, source: source)
+            question.save(failOnError: true)
+
+            // Save the tags
+            tags?.each {
+                if (!StringUtils.isEmpty(it)) {
+                    def tag = new QuestionTag(question: question, tag: it)
+                    tag.save()
+                }
+            }
+            result.success(question)
+        } else {
+            result.fail("Unable to retrieve occurrence details for ${occurrenceId}")
+        }
+
+        return result
+    }
+
+
     ServiceResult<Question> createQuestionFromOccurrence(String occurrenceId, QuestionType questionType, List<String> tags, User user) {
 
         def result = new ServiceResult<Question>(success: false)
 
         def occurrence = biocacheService.getRecord(occurrenceId)
 
-        if (occurrence && (occurrence.raw?.uuid || occurrence.processed?.uuid)) {
+        if (occurrence) {
 
             // the id used to search for an occurrence may not be canonical, so
             // once we've found an occurrence, use the canonical id from then on...
-            occurrenceId = occurrence.raw?.uuid ?: occurrence.processed?.uuid
-
-            if (validateOccurrenceRecord(occurrenceId, occurrence, result.messages)) {
-                def question = new Question(user: user, occurrenceId: occurrenceId, questionType: questionType)
+            if (validateOccurrenceRecord(occurrenceId, result.messages)) {
+                def source = Source.findByName("biocache")
+                def question = new Question(user: user, occurrenceId: occurrenceId, questionType: questionType, source: source)
                 question.save(failOnError: true)
 
                 // Save the tags
@@ -60,18 +88,12 @@ class QuestionService {
         return result
     }
 
-    public boolean validateOccurrenceRecord(String occurrenceId, JSONObject occurrence, List errors) {
-
+    public boolean validateOccurrenceRecord(String occurrenceId, List errors) {
         // first check if a question already exists for this occurrence
-
         if (questionExists(occurrenceId)) {
             errors << "A question already exists for this occurrence"
             return false
         }
-
-        // TODO: Check that the occurrence record is sufficient to create a question (i.e. contains the minimum set of required fields)
-
-
         return true
     }
 

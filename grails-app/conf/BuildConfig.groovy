@@ -44,10 +44,10 @@ grails.project.dependency.resolution = {
     dependencies {
         // specify dependencies here under either 'build', 'compile', 'runtime', 'test' or 'provided' scopes e.g.
         runtime 'org.postgresql:postgresql:9.3-1101-jdbc41'
-        test "org.grails:grails-datastore-test-support:1.0-grails-2.4"
+
+        test "org.grails:grails-datastore-test-support:1.0.2-grails-2.4"
+
         compile 'net.sf.ehcache:ehcache:2.8.4'
-        compile "javax.validation:validation-api:1.1.0.Final"
-        runtime "org.hibernate:hibernate-validator:5.0.3.Final"
         compile 'com.github.rjeschke:txtmark:0.11'
         compile('ognl:ognl:3.0.8') {
             excludes('javassist:javassist:3.11.0.GA')
@@ -71,7 +71,10 @@ grails.project.dependency.resolution = {
         runtime ":database-migration:1.4.0"
         //runtime ":jquery:1.11.1"
 
-        runtime ":ala-web-theme:1.0.1"
+        runtime ":ala-bootstrap2:2.0-SNAPSHOT"
+        runtime(":ala-auth:1.3-SNAPSHOT") {
+            excludes "servlet-api"
+        }
         runtime ":images-client-plugin:0.2.2"
         runtime ':resources:1.2.8'
 
