@@ -94,48 +94,63 @@
             Get involved by suggesting an identification.
         </p>
 
-        <div class="taxonoverflow-content">
-            <table class="table table-bordered table-condensed question-list">
-                <thead>
-                    <tr>
-                        <td>
-                            <g:set var="questionCount" value="${totalCount}" />
-                            ${questionCount} ${questionCount == 1 ? 'question' : 'questions'}
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <div class="row-fluid">
-                                <g:set var="columns" value="${[ ['answerCount', 'Answers', 'span1'], ['viewCount', 'Views','span1'], ['dateCreated', 'Date', 'span2'] ] }" />
-                                <g:each in="${columns}" var="columnDesc">
-                                    <div style="text-align: center" class="${columnDesc[2]} column-sort-btn"><a href="?sort=${columnDesc[0]}&order=${params.sort == columnDesc[0] && params.order != 'desc' ? 'desc' : 'asc'}&offset=0&q=${params.q}" class="btn ${params.sort == columnDesc[0] ? 'active' : ''}">${columnDesc[1]}</a></div>
-                                </g:each>
-                                <div class="span6 offset2">
-                                    <div class="pull-right">
-                                        <div class="form-horizontal">
-                                            <g:textField name="txtSearch" value="${params.q}" />
-                                            <button type="button" id="btnQuestionSearch" class="btn"><i class="fa fa-search"></i>&nbsp;Search</button>
+        <div class="taxonoverflow-content row-fluid">
+            <div class="span2">
+                <h3>Question tags</h3>
+                <ul>
+                    <li><span class="label tag">Birds</span> × 3222</li>
+                    <li><span class="label tag">Lizards</span> × 3123</li>
+                    <li><span class="label tag">Insects</span> × 322</li>
+                    <li><span class="label tag">Reptiles</span> × 44</li>
+                    <li><span class="label tag">Plants</span> × 44</li>
+                    <li><span class="label tag">NSW</span> × 22</li>
+                    <li><span class="label tag">ACT</span> × 22</li>
+                    <li><span class="label tag">QLD</span> × 22</li>
+                </ul>
+            </div>
+            <div class="span10">
+                <table class="table table-bordered table-condensed question-list">
+                    <thead>
+                        <tr>
+                            <td>
+                                <g:set var="questionCount" value="${totalCount}" />
+                                ${questionCount} ${questionCount == 1 ? 'question' : 'questions'}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="row-fluid">
+                                    <g:set var="columns" value="${[ ['answerCount', 'Answers', 'span1'], ['viewCount', 'Views','span1'], ['dateCreated', 'Date', 'span2'] ] }" />
+                                    <g:each in="${columns}" var="columnDesc">
+                                        <div style="text-align: center" class="${columnDesc[2]} column-sort-btn"><a href="?sort=${columnDesc[0]}&order=${params.sort == columnDesc[0] && params.order != 'desc' ? 'desc' : 'asc'}&offset=0&q=${params.q}" class="btn ${params.sort == columnDesc[0] ? 'active' : ''}">${columnDesc[1]}</a></div>
+                                    </g:each>
+                                    <div class="span6 offset2">
+                                        <div class="pull-right">
+                                            <div class="form-horizontal">
+                                                <g:textField name="txtSearch" value="${params.q}" />
+                                                <button type="button" id="btnQuestionSearch" class="btn"><i class="fa fa-search"></i>&nbsp;Search</button>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                        </td>
-                    </tr>
-                </thead>
-                <tbody>
-                    <g:each in="${questions}" var="question" status="i">
-                        <tr questionId="${question.id}">
-                            <td>
-                                <div class="question-container">
-                                    <g:render template="questionListFragment" model="${[question: question, imageInfo: imageInfoMap[question.occurrenceId], acceptedAnswer: acceptedAnswers[question], occurrence: occurrenceData[question.occurrenceId]]}" />
-                                </div>
                             </td>
                         </tr>
-                    </g:each>
-                </tbody>
-            </table>
-            <div class="pagination">
-                <g:paginate total="${totalCount}" />
+                    </thead>
+                    <tbody>
+                        <g:each in="${questions}" var="question" status="i">
+                            <tr questionId="${question.id}">
+                                <td>
+                                    <div class="question-container">
+                                        <g:render template="questionListFragment" model="${[question: question, imageInfo: imageInfoMap[question.occurrenceId], acceptedAnswer: acceptedAnswers[question], occurrence: occurrenceData[question.occurrenceId]]}" />
+                                    </div>
+                                </td>
+                            </tr>
+                        </g:each>
+                    </tbody>
+                </table>
+                <div class="pagination">
+                    <g:paginate total="${totalCount}" />
+                </div>
             </div>
         </div>
     </body>

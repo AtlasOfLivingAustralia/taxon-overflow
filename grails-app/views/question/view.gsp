@@ -5,6 +5,10 @@
         <title>Question</title>
         <r:style type="text/css">
 
+            #map {
+                margin-left:0px;
+            }
+
             #imageViewer {
                 height: 400px;
             }
@@ -118,9 +122,7 @@
         <div class="row-fluid header-row">
             <div class="span6">
                 <H1>Question ${question.id}&nbsp;<small>[ <a href="${question.source.uiBaseUrl}${question.occurrenceId}" target="occurrenceDetails">View record</a> ] Views: ${viewCount}</small></H1>
-                <div id="tagsDiv">
-                    <g:render template="tagsFragment" model="${[question: question]}" />
-                </div>
+
             </div>
             <div class="span6">
                 <h4 class="pull-right">${answers?.size() ?: 0} ${question.questionType == au.org.ala.taxonoverflow.QuestionType.Identification ? "Identification(s)" : "Answer(s)" }</h4>
@@ -142,16 +144,19 @@
                     </div>
                 </g:if>
 
-
                 <g:set var="coordinates" value="${au.org.ala.taxonoverflow.OccurrenceHelper.getCoordinates(occurrence)}" />
 
                 <g:if test="${coordinates}">
-                    <br/>
-                    <div id="mapDiv"> </div>
+                    %{--<br/>--}%
+                    <div id="mapDiv"></div>
                 </g:if>
 
             </div>
             <div class="span6">
+
+                <div id="tagsDiv">
+                    <g:render template="tagsFragment" model="${[question: question]}" />
+                </div>
 
                 <div class="occurrenceDetails">
                     <g:render template="questionDetails" model="${[question:question, occurrence: occurrence]}" />
