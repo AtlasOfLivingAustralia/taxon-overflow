@@ -23,7 +23,7 @@
       <div class="control-group">
         <label class="control-label">Question type</label>
         <div class="controls">
-          <g:select name="questionType" from="${au.org.ala.taxonoverflow.QuestionType.values()}" value="${au.org.ala.taxonoverflow.QuestionType.Identification}"/>
+          <g:select name="questionType" from="${au.org.ala.taxonoverflow.QuestionType.values()}" optionValue="label"/>
         </div>
       </div>
 

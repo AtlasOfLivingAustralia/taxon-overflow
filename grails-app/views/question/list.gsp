@@ -105,22 +105,8 @@
         </p>
         <div class="taxonoverflow-content row-fluid">
             <div class="span3 facets">
-                <h3>Question tags</h3>
-                <ul>
-                    <li><span class="label tag">Birds</span> × 3222</li>
-                    <li><span class="label tag">Lizards</span> × 3123</li>
-                    <li><span class="label tag">Insects</span> × 322</li>
-                    <li><span class="label tag">Reptiles</span> × 44</li>
-                    <li><span class="label tag">Plants</span> × 44</li>
-                    <li><span class="label tag">NSW</span> × 22</li>
-                    <li><span class="label tag">ACT</span> × 22</li>
-                    <li><span class="label tag">QLD</span> × 22</li>
-                </ul>
-                <h3>Question type</h3>
-                <ul>
-                    <li><span class="label tag">Identification required</span> × 3222</li>
-                    <li><span class="label tag">Coordinates suspect</span> × 3123</li>
-                </ul>
+                <g:include action="showAggregatedTags"/>
+                <g:include action="showAggregatedQuestionTypes"/>
             </div>
             <div class="span9">
                 <table class="table table-bordered table-condensed question-list">

@@ -134,7 +134,7 @@
                 <H1>Species identification case #${question.id}&nbsp;<small>[ <a href="${question.source.uiBaseUrl}${question.occurrenceId}" target="occurrenceDetails">View record</a> ] Views: ${viewCount}</small></H1>
             </div>
             <div class="span6">
-                <h4 class="pull-right">${answers?.size() ?: 0} ${question.questionType == au.org.ala.taxonoverflow.QuestionType.Identification ? "Identification(s)" : "Answer(s)" }</h4>
+                <h4 class="pull-right">${answers?.size() ?: 0} ${question.questionType == au.org.ala.taxonoverflow.QuestionType.IDENTIFICATION ? "IDENTIFICATION(s)" : "Answer(s)" }</h4>
                 <g:if test="${acceptedAnswer}">
                     <div class="label label-success">An identification has been accepted for this occurrence: ${acceptedAnswer.scientificName}</div>
                 </g:if>

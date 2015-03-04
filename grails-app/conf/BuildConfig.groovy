@@ -53,6 +53,7 @@ grails.project.dependency.resolution = {
             excludes('javassist:javassist:3.11.0.GA')
         }
         compile 'org.elasticsearch:elasticsearch:1.4.4'
+        compile 'io.searchbox:jest:0.1.5'
         compile 'com.vividsolutions:jts:1.13'
     }
 

@@ -3,23 +3,27 @@ package au.org.ala.taxonoverflow
 import grails.converters.JSON
 import grails.transaction.NotTransactional
 import groovy.json.JsonSlurper
+import io.searchbox.client.JestClient
+import io.searchbox.client.JestClientFactory
+import io.searchbox.client.config.HttpClientConfig
+import io.searchbox.core.Search
+import io.searchbox.core.SearchResult
 import net.sf.json.JSONObject
 import org.codehaus.groovy.grails.web.servlet.mvc.GrailsParameterMap
 import org.elasticsearch.action.delete.DeleteResponse
-import org.elasticsearch.action.get.GetRequestBuilder
 import org.elasticsearch.action.index.IndexResponse
 import org.elasticsearch.action.search.SearchResponse
 import org.elasticsearch.action.search.SearchType
 import org.elasticsearch.client.Client
 import org.elasticsearch.common.settings.ImmutableSettings
+import org.elasticsearch.node.Node
 import org.elasticsearch.search.sort.SortOrder
 
+import javax.annotation.PostConstruct
 import javax.annotation.PreDestroy
 import java.util.concurrent.ConcurrentLinkedQueue
 
 import static org.elasticsearch.node.NodeBuilder.nodeBuilder
-import javax.annotation.PostConstruct
-import org.elasticsearch.node.Node
 
 class ElasticSearchService {
 
@@ -32,6 +36,7 @@ class ElasticSearchService {
     def biocacheService
     private Node node
     private Client client
+    private JestClient jestClient
 
     @NotTransactional
     @PostConstruct
@@ -42,12 +47,21 @@ class ElasticSearchService {
         node = nodeBuilder().local(true).settings(settings).node();
         client = node.client();
         client.admin().cluster().prepareHealth().setWaitForYellowStatus().execute().actionGet();
+        JestClientFactory factory = new JestClientFactory();
+        factory.setHttpClientConfig(new HttpClientConfig.Builder("http://localhost:9200")
+                .multiThreaded(true)
+                .build());
+        jestClient = factory.getObject();
         log.info("ElasticSearch service initialisation complete.")
+
     }
 
     @NotTransactional
     @PreDestroy
     def destroy() {
+        if (jestClient) {
+            jestClient.shutdownClient();
+        }
         if (node) {
             node.close();
         }
@@ -196,6 +210,55 @@ class ElasticSearchService {
         }
 
         return null
+    }
+
+    @NotTransactional
+    public List<Map> getAggregatedTagsWithCount() {
+        def query =
+"""
+{
+    "size": 0,
+    "aggs": {
+        "tags": {
+            "terms": {"field": "tags.tag"}
+        }
+    }
+}
+"""
+        def tags = search(query)?.jsonObject?.aggregations?.tags?.buckets
+        tags.collect {tag ->
+            [label: tag.key.getAsString(), count: tag.doc_count.getAsInt()]
+        }
+    }
+
+    @NotTransactional
+    public List<Map> getAggregatedQuestionTypesWithCount() {
+        def query =
+"""
+{
+    "size": 0,
+    "aggs": {
+        "questionTypes": {
+            "terms": {"field": "questionType"}
+        }
+    }
+}
+"""
+        def questionTypes = search(query)?.jsonObject?.aggregations?.questionTypes?.buckets
+        questionTypes.collect {questionType ->
+            [label: questionType.key.getAsString(), count: questionType.doc_count.getAsInt()]
+        }
+    }
+
+    /**
+     * Performs a search on elasticsearch using the REST API
+     * @param query
+     * @param indexName [optional] taxonoverlfow index by default
+     * @return
+     */
+    public SearchResult search(String query, String indexName = INDEX_NAME) {
+        Search search = new Search.Builder(query).addIndex(indexName).build()
+        jestClient.execute(search)
     }
 
 }
