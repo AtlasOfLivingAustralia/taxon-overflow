@@ -176,4 +176,14 @@ class QuestionController {
             [question: question, occurrence: occurrence, coordinates: coordinates]
         }
     }
+
+    def showAggregatedTags() {
+        List<Map> tags = elasticSearchService.getAggregatedTagsWithCount()
+        render template: 'aggregatedTags', model: [tags: tags]
+    }
+
+    def showAggregatedQuestionTypes() {
+        List<Map> tags = elasticSearchService.getAggregatedQuestionTypesWithCount()
+        render template: 'aggregatedQuestionTypes', model: [questionTypes: tags]
+    }
 }
