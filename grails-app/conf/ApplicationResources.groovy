@@ -13,14 +13,14 @@ modules = {
 
     flexisel {
         dependsOn 'jquery'
-        resource url:'flexisel/jquery.flexisel.js'
-        resource url:'flexisel/style.css'
+        resource url:'vendor/flexisel/jquery.flexisel.js'
+        resource url:'vendor/flexisel/style.css'
     }
 
     leaflet {
         dependsOn 'jquery'
-        resource url: 'js/leaflet/leaflet.js'
-        resource url: 'js/leaflet/leaflet.css'
+        resource url: 'vendor/leaflet/leaflet.js'
+        resource url: 'vendor/leaflet/leaflet.css'
     }
 
 }

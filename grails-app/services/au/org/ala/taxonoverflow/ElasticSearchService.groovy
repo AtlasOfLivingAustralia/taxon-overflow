@@ -12,6 +12,7 @@ import net.sf.json.JSONObject
 import org.codehaus.groovy.grails.web.servlet.mvc.GrailsParameterMap
 import org.elasticsearch.action.delete.DeleteResponse
 import org.elasticsearch.action.index.IndexResponse
+import org.elasticsearch.action.search.SearchRequestBuilder
 import org.elasticsearch.action.search.SearchResponse
 import org.elasticsearch.action.search.SearchType
 import org.elasticsearch.client.Client
@@ -152,9 +153,9 @@ class ElasticSearchService {
         }
     }
 
-    public QueryResults<Question> questionSearch(GrailsParameterMap params, Closure builderFunc = null) {
+    public QueryResults<Question>     questionSearch(GrailsParameterMap params, Closure builderFunc = null) {
 
-        def searchRequestBuilder = client.prepareSearch(INDEX_NAME).setSearchType(SearchType.QUERY_THEN_FETCH)
+        SearchRequestBuilder searchRequestBuilder = client.prepareSearch(INDEX_NAME).setSearchType(SearchType.QUERY_THEN_FETCH)
 
         if (params?.offset) {
             searchRequestBuilder.setFrom(params.int("offset"))

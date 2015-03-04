@@ -8,7 +8,7 @@
             };
 
             var GSP_VARS = {
-                leafletImagesDir: "${resource(dir:'/js/leaflet/images')}"
+                leafletImagesDir: "${resource(dir:'/vendor/leaflet')}"
             };
 
         </r:script>

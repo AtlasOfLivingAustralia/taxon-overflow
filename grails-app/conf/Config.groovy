@@ -41,7 +41,7 @@ pigeonhole.baseUrl = "http://sightings.ala.org.au"
 biocacheService.recordUrl = "http://biocache.ala.org.au/ws/occurrence/"
 biocacheWebapp.recordUrl = "http://biocache.ala.org.au/occurrence/"
 
-ecodata.recordUrl = "http://fielddata.ala.org.au/record/"
+ecodata.recordUrl = "http://ecodata-sightings-dev.ala.org.au/record/"
 pigeonhole.recordUrl = "http://sightings.ala.org.au/edit/"
 
 
@@ -101,6 +101,9 @@ grails {
     }
 }
 
+// What URL patterns should be processed by the resources plugin
+grails.resources.adhoc.patterns = ['/js/*', '/images/*', '/css/*', '/plugins/*', '/vendor/*']
+grails.resources.adhoc.includes = ['/js/**', '/images/**', '/css/**','/plugins/**', '/vendor/**']
 
 grails.converters.encoding = "UTF-8"
 // scaffolding templates configuration
