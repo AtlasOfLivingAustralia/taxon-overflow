@@ -30,7 +30,7 @@ class WebServiceController {
         def results = [success:true]
         def body = request.JSON
         if (body) {
-            def tags = body.getAggregatedTagsWithCount instanceof String ? body.getAggregatedTagsWithCount.split(",")?.toList() : body.getAggregatedTagsWithCount as List<String>
+            def tags = body.tags instanceof String ? body.tags.split(",")?.toList() : body.tags as List<String>
             def user = userService.getUserFromUserId(body.userId)
             def occurrenceId = body.occurrenceId as String
             def questionType = (body.questionType as QuestionType) ?: QuestionType.IDENTIFICATION
@@ -52,7 +52,7 @@ class WebServiceController {
         def results = [success:true]
         def body = request.JSON
         if (body) {
-            def tags = body.getAggregatedTagsWithCount instanceof String ? body.getAggregatedTagsWithCount.split(",")?.toList() : body.getAggregatedTagsWithCount as List<String>
+            def tags = body.tags instanceof String ? body.tags.split(",")?.toList() : body.tags as List<String>
             def occurrenceId = body.occurrenceId as String
             def user = userService.getUserFromUserId(body.userId)
             def questionType = (body.questionType as QuestionType) ?: QuestionType.IDENTIFICATION
