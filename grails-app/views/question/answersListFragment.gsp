@@ -57,7 +57,7 @@
 </g:else>
 
 
-<r:script>
+<script>
 
   function editAnswer(answerId) {
     if (answerId) {
@@ -253,4 +253,4 @@
 
 
 
-</r:script>
+</script>

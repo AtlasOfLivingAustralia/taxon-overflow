@@ -34,9 +34,7 @@
             }
 
         </r:style>
-        <r:require module="viewer" />
-        <r:require module="flexisel" />
-        <r:require module="leaflet" />
+        <r:require modules="viewer , flexisel, leaflet, application" />
         <r:script>
 
             var GSP_VARS = {

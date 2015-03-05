@@ -18,7 +18,7 @@
     <a href="#" id="btnSaveTag" class="label"><i class="fa fa-plus"></i>&nbsp;Add tag</a>
 </to:ifCanEditQuestion>
 
-<r:script>
+<script>
 
     $("#btnSaveTag").click(function(e) {
         e.preventDefault();
@@ -48,4 +48,4 @@
         });
     });
 
-</r:script>
+</script>

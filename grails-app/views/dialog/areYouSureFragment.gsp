@@ -9,7 +9,7 @@
         </div>
     </div>
 </div>
-<r:script>
+<script>
 
     $("#btnYes").click(function(e) {
         e.preventDefault();
@@ -27,4 +27,4 @@
         tolib.hideModal();
     });
 
-</r:script>
+</script>

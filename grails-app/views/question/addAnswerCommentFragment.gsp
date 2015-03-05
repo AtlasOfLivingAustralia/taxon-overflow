@@ -7,7 +7,7 @@
     </div>
 </div>
 
-<r:script>
+<script>
 
     $("#comment${answer.id}").focus();
 
@@ -35,4 +35,4 @@
 
     });
 
-</r:script>
+</script>

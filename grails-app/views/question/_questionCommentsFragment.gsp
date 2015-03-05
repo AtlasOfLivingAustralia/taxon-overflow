@@ -25,7 +25,7 @@
     </div>
 </div>
 
-<r:script>
+<script>
 
     $("#btnAddQuestionComment").click(function(e) {
         e.preventDefault();
@@ -53,4 +53,4 @@
         }
     });
 
-</r:script>
+</script>
