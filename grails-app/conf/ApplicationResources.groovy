@@ -17,10 +17,4 @@ modules = {
         resource url:'vendor/flexisel/style.css'
     }
 
-    leaflet {
-        dependsOn 'jquery'
-        resource url: 'vendor/leaflet/leaflet.js'
-        resource url: 'vendor/leaflet/leaflet.css'
-    }
-
 }
