@@ -38,7 +38,7 @@
         <r:script>
 
             var GSP_VARS = {
-                leafletImagesDir: "${resource(dir:'/vendor/leaflet')}"
+                leafletImagesDir: "${resource(plugin: 'images-client-plugin', dir: 'js/leaflet/images')}"
             };
 
             var images = [];

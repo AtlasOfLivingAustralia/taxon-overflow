@@ -60,7 +60,7 @@ class TaxonOverflowTagLib {
             return
         }
 
-        def html = render(template: "/question/edit${question.questionType.toString()}Answer", model: [question: question, answer: attrs.answer as Answer])
+        def html = render(template: "/question/editIdentificationAnswer", model: [question: question, answer: attrs.answer as Answer])
 
         out << html
     }
