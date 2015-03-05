@@ -13,7 +13,7 @@
     </div>
 </div>
 
-<script>
+<r:script>
 
     $("#btnCancelEditAnswer").click(function(e) {
         e.preventDefault();
@@ -43,4 +43,4 @@
     });
 
 
-</script>
+</r:script>

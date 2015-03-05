@@ -24,7 +24,7 @@
 
 </div>
 
-<script>
+<r:script>
 
     function addTagToQuestion() {
         var tag = $("#tag").val();
@@ -63,4 +63,4 @@
 
     $("#tag").focus();
 
-</script>
+</r:script>

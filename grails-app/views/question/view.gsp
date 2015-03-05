@@ -39,6 +39,10 @@
         <r:require module="leaflet" />
         <r:script>
 
+            var GSP_VARS = {
+                leafletImagesDir: "${resource(dir:'/vendor/leaflet')}"
+            };
+
             var images = [];
             <g:each in="${occurrence.imageIds}" var="imageId">
                 images.push("${imageId}");
