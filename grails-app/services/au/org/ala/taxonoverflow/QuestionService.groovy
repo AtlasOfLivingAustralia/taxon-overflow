@@ -1,5 +1,6 @@
 package au.org.ala.taxonoverflow
 
+import au.org.ala.taxonoverflow.notification.SendEmailNotification
 import au.org.ala.web.CASRoles
 import grails.transaction.NotTransactional
 import grails.transaction.Transactional
@@ -116,6 +117,7 @@ class QuestionService {
         }
 
         answer.accepted = true
+        // TODO[aruiz] send answer accepted notification
         answer.save()
     }
 
@@ -188,6 +190,7 @@ class QuestionService {
         return false
     }
 
+    @SendEmailNotification
     ServiceResult<QuestionComment> addQuestionComment(Question question, User user, String commentText) {
         if (!question) {
             return new ServiceResult<QuestionComment>().fail("No question supplied")
@@ -219,6 +222,7 @@ class QuestionService {
 
         def comment = new AnswerComment(answer: answer, user: user, comment: commentText)
         comment.save(failOnError: true)
+        // TODO[aruiz] send new answer comment notification
         return new ServiceResult<AnswerComment>(result: comment, success: true)
     }
 
