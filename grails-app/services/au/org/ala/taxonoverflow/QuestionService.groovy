@@ -103,7 +103,23 @@ class QuestionService {
     }
 
     @SendEmailNotification
-    def acceptAnswer(Answer answer) {
+    ServiceResult setAnswer(Answer answer, LinkedHashMap<String, Boolean> results) {
+
+        answer.save(failOnError: true)
+        results.success = true
+
+        return new ServiceResult<Answer>(result: answer, success: true)
+    }
+
+    ServiceResult updateAnswer(Answer answer, LinkedHashMap<String, Boolean> results) {
+        answer.save(failOnError: true, flush: true)
+        results.success = true
+
+        return new ServiceResult<Answer>(result: answer, success: true)
+    }
+
+    @SendEmailNotification
+    ServiceResult acceptAnswer(Answer answer) {
 
         if (!answer) {
             return
@@ -119,6 +135,8 @@ class QuestionService {
 
         answer.accepted = true
         answer.save()
+
+        return new ServiceResult<Answer>(result: answer, success: true)
     }
 
     def unacceptAnswer(Answer answer) {

@@ -110,33 +110,11 @@ class WebServiceController {
 
         def messages = []
         if (setAnswerProperties(answer, answerDetails, messages)) {
-            answer.save(failOnError: true, flush: true)
-            results.success = true
+            questionService.updateAnswer(answer, results)
         } else {
             results.message = messages.join(". ")
         }
         renderResults(results)
-    }
-
-    private static setAnswerProperties(Answer answer, Object answerDetails, List messages) {
-        switch (answer.question.questionType) {
-            case QuestionType.IDENTIFICATION:
-                def scientificName = answerDetails.scientificName
-                def identificationRemarks = answerDetails.identificationRemarks
-
-                if (!scientificName) {
-                    messages << "A scientific name must be supplied"
-                } else {
-                    answer.scientificName = scientificName
-                    answer.description = identificationRemarks
-                    return true
-                }
-                break
-            default:
-                messages << "Unhandled question type: ${answer.question.questionType?.toString()}"
-        }
-
-        return false
     }
 
     def submitAnswer() {
@@ -170,8 +148,7 @@ class WebServiceController {
                 Answer answer = new Answer(question: question, user: user)
                 def messages = []
                 if (setAnswerProperties(answer, answerDetails, messages)) {
-                    answer.save(failOnError: true)
-                    results.success = true
+                    questionService.setAnswer(answer, results)
                 } else {
                     results.success = false
                     results.message = messages.join(". ")
@@ -179,6 +156,27 @@ class WebServiceController {
             }
         }
         renderResults(results)
+    }
+
+    private static setAnswerProperties(Answer answer, Object answerDetails, List messages) {
+        switch (answer.question.questionType) {
+            case QuestionType.IDENTIFICATION:
+                def scientificName = answerDetails.scientificName
+                def identificationRemarks = answerDetails.identificationRemarks
+
+                if (!scientificName) {
+                    messages << "A scientific name must be supplied"
+                } else {
+                    answer.scientificName = scientificName
+                    answer.description = identificationRemarks
+                    return true
+                }
+                break
+            default:
+                messages << "Unhandled question type: ${answer.question.questionType?.toString()}"
+        }
+
+        return false
     }
 
     def deleteAnswer(long id) {

@@ -28,7 +28,8 @@ blockquote:before {
     top: -7px;
 }
 </style>
-<p>${userDetails.displayName} posted the following${comment instanceof AnswerComment ? ' identification' : ''} comment about question #${comment instanceof AnswerComment ? comment.answer.question.id : comment.question.id} on Taxon-Overflow</p>
+<g:set var="questionNumber" value="${comment instanceof AnswerComment ? comment.answer.question.id : comment.question.id}"/>
+<p>${userDetails.displayName} posted the following${comment instanceof AnswerComment ? ' identification' : ''} comment about <a href="${grailsApplication.config.grails.serverURL}/question/view/${questionNumber}">question #${questionNumber} on Taxon-Overflow</a></p>
 <blockquote>
    ${comment.comment}
 </blockquote>

@@ -41,13 +41,33 @@ class NotificationsAspect {
     @AfterReturning(pointcut = "au.org.ala.taxonoverflow.notification.NotificationsAspect.enableEmailNotifications()",
                     returning = "actionedItem")
     public void sendEmailNotification(def actionedItem) {
-        if (actionedItem instanceof ServiceResult) {
-            ServiceResult serviceResult = actionedItem instanceof ServiceResult ? actionedItem as ServiceResult : null
-            if (serviceResult.result) {
-                sendNewCommentNotification(serviceResult.result)
+        ServiceResult serviceResult = actionedItem instanceof ServiceResult ? actionedItem as ServiceResult : null
+        if (serviceResult.success && serviceResult.result instanceof Comment) {
+            sendNewCommentNotification(serviceResult.result)
+        } else if (serviceResult.success && serviceResult.result instanceof Answer) {
+            sendAnswerNotification(serviceResult.result)
+        }
+    }
+
+    private sendAnswerNotification(Answer answer) {
+        Question question = answer.question
+        User actionUser = answer.accepted ? question.user : answer.user
+        log.debug("An identification answer has been ${answer.accepted ? 'accepted' : 'posted'} for question #${question.id} " +
+                "by the user with id: ${actionUser.id}")
+
+        // Find notification addresses
+        HashSet<User> addressees = findAddressees(question, actionUser)
+
+        if (addressees.size() > 0) {
+            // Compose email
+            UserDetails userDetails = authService.getUserForUserId(actionUser.alaUserId)
+            String emailSubject = "(Question #${question.id}) - Identification answer ${answer.accepted ? 'accepted' : 'posted'}"
+            String htmlBody = pageRenderer.render template: '/notifications/answerNotification', model: [answer: answer, userDetails: userDetails]
+            List bccEmailAddresses = addressees.collect { user ->
+                authService.getUserForUserId(user.alaUserId).userName
             }
-        } else if (actionedItem instanceof Answer) {
-            //TODO
+            // Send email
+            sendEmail(bccEmailAddresses, userDetails, emailSubject, htmlBody)
         }
     }
 
