@@ -102,6 +102,7 @@ class QuestionService {
         answer?.delete(flush: true)
     }
 
+    @SendEmailNotification
     def acceptAnswer(Answer answer) {
 
         if (!answer) {
@@ -117,7 +118,6 @@ class QuestionService {
         }
 
         answer.accepted = true
-        // TODO[aruiz] send answer accepted notification
         answer.save()
     }
 
@@ -208,6 +208,7 @@ class QuestionService {
         return new ServiceResult<QuestionComment>(result: comment, success: true)
     }
 
+    @SendEmailNotification
     ServiceResult<AnswerComment> addAnswerComment(Answer answer, User user, String commentText) {
         if (!answer) {
             return new ServiceResult<AnswerComment>().fail("No answer supplied")
@@ -222,7 +223,6 @@ class QuestionService {
 
         def comment = new AnswerComment(answer: answer, user: user, comment: commentText)
         comment.save(failOnError: true)
-        // TODO[aruiz] send new answer comment notification
         return new ServiceResult<AnswerComment>(result: comment, success: true)
     }
 

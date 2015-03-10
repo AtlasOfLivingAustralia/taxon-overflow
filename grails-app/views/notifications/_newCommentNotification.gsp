@@ -1,3 +1,4 @@
+<%@ page import="au.org.ala.taxonoverflow.AnswerComment" %>
 <style>
 body {
     font-family: Arial,sans-serif;
@@ -27,7 +28,7 @@ blockquote:before {
     top: -7px;
 }
 </style>
-<p>${userDetails.displayName} posted the following comment about question #${comment.question.id} on Taxon-Overflow</p>
+<p>${userDetails.displayName} posted the following${comment instanceof AnswerComment ? ' identification' : ''} comment about question #${comment instanceof AnswerComment ? comment.answer.question.id : comment.question.id} on Taxon-Overflow</p>
 <blockquote>
    ${comment.comment}
 </blockquote>
