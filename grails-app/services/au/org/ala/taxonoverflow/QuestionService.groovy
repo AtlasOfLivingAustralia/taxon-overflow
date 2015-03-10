@@ -272,6 +272,7 @@ class QuestionService {
         return new ServiceResult<QuestionComment>(result: comment, success: true)
     }
 
+    @SendEmailNotification
     ServiceResult<QuestionTag> addQuestionTag(Question question, String tag) {
         if (!question) {
             return new ServiceResult<QuestionTag>().fail("No question supplied")

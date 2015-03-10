@@ -5,6 +5,7 @@ import au.org.ala.taxonoverflow.AnswerComment
 import au.org.ala.taxonoverflow.Comment
 import au.org.ala.taxonoverflow.Question
 import au.org.ala.taxonoverflow.QuestionComment
+import au.org.ala.taxonoverflow.QuestionTag
 import au.org.ala.taxonoverflow.ServiceResult
 import au.org.ala.taxonoverflow.User
 import au.org.ala.web.AuthService
@@ -46,7 +47,24 @@ class NotificationsAspect {
             sendNewCommentNotification(serviceResult.result)
         } else if (serviceResult.success && serviceResult.result instanceof Answer) {
             sendAnswerNotification(serviceResult.result)
+        } else if (serviceResult.success && serviceResult.result instanceof QuestionTag) {
+            sendNewTagNotification(serviceResult.result)
         }
+    }
+
+    private sendNewTagNotification(QuestionTag questionTag) {
+        Question question = questionTag.question
+        log.debug("The tag \"${questionTag.tag}\" was added to question #${question.id}")
+
+        User addressee = question.user
+
+        // Compose email
+        UserDetails userDetails = authService.getUserForUserId(addressee.alaUserId)
+        String emailSubject = "(Question #${question.id}) - New tag added"
+        String htmlBody = pageRenderer.render template: '/notifications/newTagNotification', model: [questionTag: questionTag]
+        List bccEmailAddresses = [userDetails.userName]
+        // Send email
+        sendEmail(bccEmailAddresses, userDetails, emailSubject, htmlBody)
     }
 
     private sendAnswerNotification(Answer answer) {
