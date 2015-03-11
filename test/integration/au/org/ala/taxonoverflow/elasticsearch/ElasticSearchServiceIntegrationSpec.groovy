@@ -1,4 +1,4 @@
-package au.org.ala
+package au.org.ala.taxonoverflow.elasticsearch
 
 import au.org.ala.taxonoverflow.ElasticSearchService
 import grails.test.spock.IntegrationSpec

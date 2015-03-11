@@ -183,8 +183,8 @@ class ElasticSearchService {
             }
         }
 
-        if (params.f.tags) {
-            FilterBuilders.andFilter(
+        if (params.f?.tags) {
+            FilterBuilders.orFilter(
 //                    FilterBuilders.termsFilter("tags.tag")
             )
         }
