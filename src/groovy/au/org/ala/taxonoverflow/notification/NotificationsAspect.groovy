@@ -56,15 +56,19 @@ class NotificationsAspect {
         Question question = questionTag.question
         log.debug("The tag \"${questionTag.tag}\" was added to question #${question.id}")
 
-        User addressee = question.user
+        HashSet<User> addressees = findAddressees(question, question.user)
 
-        // Compose email
-        UserDetails userDetails = authService.getUserForUserId(addressee.alaUserId)
-        String emailSubject = "(Question #${question.id}) - New tag added"
-        String htmlBody = pageRenderer.render template: '/notifications/newTagNotification', model: [questionTag: questionTag]
-        List bccEmailAddresses = [userDetails.userName]
-        // Send email
-        sendEmail(bccEmailAddresses, userDetails, emailSubject, htmlBody)
+        if (addressees.size() > 0) {
+            // Compose email
+            UserDetails userDetails = authService.getUserForUserId(question.user.alaUserId)
+            String emailSubject = "(Question #${question.id}) - New tag added"
+            String htmlBody = pageRenderer.render template: '/notifications/newTagNotification', model: [questionTag: questionTag]
+            List bccEmailAddresses = addressees.collect { user ->
+                authService.getUserForUserId(user.alaUserId).userName
+            }
+            // Send email
+            sendEmail(bccEmailAddresses, userDetails, emailSubject, htmlBody)
+        }
     }
 
     private sendAnswerNotification(Answer answer) {
