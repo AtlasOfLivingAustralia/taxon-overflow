@@ -183,10 +183,21 @@ class ElasticSearchService {
             }
         }
 
-        if (params.f?.tags) {
-            FilterBuilders.orFilter(
-//                    FilterBuilders.termsFilter("tags.tag")
-            )
+        // Apply question tags and question types filter
+        if (params?.f?.tags || params?.f?.types) {
+            def filter = FilterBuilders.andFilter()
+            if (params.f?.tags) {
+                filter.add(FilterBuilders.orFilter(
+                        FilterBuilders.termsFilter("tags.tag", params.f.tags.split(','))
+                ))
+            }
+
+            if (params.f?.types) {
+                filter.add(FilterBuilders.orFilter(
+                        FilterBuilders.termsFilter("questionType", params.f.types.split(','))
+                ))
+            }
+            searchRequestBuilder.setPostFilter(filter)
         }
 
         SearchResponse searchResponse = searchRequestBuilder.execute().actionGet();
