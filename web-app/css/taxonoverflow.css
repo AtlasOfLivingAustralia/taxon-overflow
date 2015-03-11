@@ -9,3 +9,7 @@
 #tagsDiv {
     text-transform: uppercase;
 }
+
+div.facets ul li span.label {
+    cursor: pointer;
+}

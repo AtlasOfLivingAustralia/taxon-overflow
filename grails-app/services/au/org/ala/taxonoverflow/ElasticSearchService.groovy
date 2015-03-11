@@ -17,6 +17,7 @@ import org.elasticsearch.action.search.SearchResponse
 import org.elasticsearch.action.search.SearchType
 import org.elasticsearch.client.Client
 import org.elasticsearch.common.settings.ImmutableSettings
+import org.elasticsearch.index.query.FilterBuilders
 import org.elasticsearch.node.Node
 import org.elasticsearch.search.sort.SortOrder
 
@@ -180,6 +181,12 @@ class ElasticSearchService {
                     q(params.q)
                 }
             }
+        }
+
+        if (params.f.tags) {
+            FilterBuilders.andFilter(
+//                    FilterBuilders.termsFilter("tags.tag")
+            )
         }
 
         SearchResponse searchResponse = searchRequestBuilder.execute().actionGet();

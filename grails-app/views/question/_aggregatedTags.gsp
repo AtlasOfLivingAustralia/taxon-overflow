@@ -1,6 +1,6 @@
 <h3>Question tags</h3>
-<ul>
+<ul id="tagsFacet">
     <g:each in="${tags}" var="tag">
-        <li><span class="label tag">${tag.label}</span> × ${tag.count}</li>
+        <li><span class="label ${params.f.tags.contains(tag.label) ? 'label-success' : ''} tag">${tag.label}</span> × ${tag.count}</li>
     </g:each>
 </ul>
