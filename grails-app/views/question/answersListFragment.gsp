@@ -210,6 +210,7 @@
     e.preventDefault();
     var answerId = $(this).closest("[answerId]").attr("answerId");
     if (answerId) {
+        alert(answerId);
       tolib.areYouSure({
         message: 'Are you sure you wish to permanently delete this answer?',
         title: 'Delete your answer?',

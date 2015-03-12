@@ -1,5 +1,6 @@
 package au.org.ala.taxonoverflow
 
+import au.org.ala.taxonoverflow.notification.SendEmailNotification
 import au.org.ala.web.CASRoles
 import grails.transaction.NotTransactional
 import grails.transaction.Transactional
@@ -134,7 +135,24 @@ class QuestionService {
         answer?.delete(flush: true)
     }
 
-    def acceptAnswer(Answer answer) {
+    @SendEmailNotification
+    ServiceResult setAnswer(Answer answer, LinkedHashMap<String, Boolean> results) {
+
+        answer.save(failOnError: true)
+        results.success = true
+
+        return new ServiceResult<Answer>(result: answer, success: true)
+    }
+
+    ServiceResult updateAnswer(Answer answer, LinkedHashMap<String, Boolean> results) {
+        answer.save(failOnError: true, flush: true)
+        results.success = true
+
+        return new ServiceResult<Answer>(result: answer, success: true)
+    }
+
+    @SendEmailNotification
+    ServiceResult acceptAnswer(Answer answer) {
 
         if (!answer) {
             return
@@ -150,6 +168,8 @@ class QuestionService {
 
         answer.accepted = true
         answer.save()
+
+        return new ServiceResult<Answer>(result: answer, success: true)
     }
 
     def unacceptAnswer(Answer answer) {
@@ -221,6 +241,7 @@ class QuestionService {
         return false
     }
 
+    @SendEmailNotification
     ServiceResult<QuestionComment> addQuestionComment(Question question, User user, String commentText) {
         if (!question) {
             return new ServiceResult<QuestionComment>().fail("No question supplied")
@@ -242,6 +263,7 @@ class QuestionService {
         return new ServiceResult<QuestionComment>(result: comment, success: true)
     }
 
+    @SendEmailNotification
     ServiceResult<AnswerComment> addAnswerComment(Answer answer, User user, String commentText) {
         if (!answer) {
             return new ServiceResult<AnswerComment>().fail("No answer supplied")
@@ -287,6 +309,7 @@ class QuestionService {
         return new ServiceResult<QuestionComment>(result: comment, success: true)
     }
 
+    @SendEmailNotification
     ServiceResult<QuestionTag> addQuestionTag(Question question, String tag) {
         if (!question) {
             return new ServiceResult<QuestionTag>().fail("No question supplied")

@@ -17,6 +17,7 @@ import org.elasticsearch.action.search.SearchResponse
 import org.elasticsearch.action.search.SearchType
 import org.elasticsearch.client.Client
 import org.elasticsearch.common.settings.ImmutableSettings
+import org.elasticsearch.index.query.FilterBuilders
 import org.elasticsearch.node.Node
 import org.elasticsearch.search.sort.SortOrder
 
@@ -180,6 +181,23 @@ class ElasticSearchService {
                     q(params.q)
                 }
             }
+        }
+
+        // Apply question tags and question types filter
+        if (params?.f?.tags || params?.f?.types) {
+            def filter = FilterBuilders.andFilter()
+            if (params.f?.tags) {
+                filter.add(FilterBuilders.orFilter(
+                        FilterBuilders.termsFilter("tags.tag", params.f.tags.split(','))
+                ))
+            }
+
+            if (params.f?.types) {
+                filter.add(FilterBuilders.orFilter(
+                        FilterBuilders.termsFilter("questionType", params.f.types.split(','))
+                ))
+            }
+            searchRequestBuilder.setPostFilter(filter)
         }
 
         SearchResponse searchResponse = searchRequestBuilder.execute().actionGet();

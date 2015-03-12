@@ -41,6 +41,11 @@
                 leafletImagesDir: "${resource(plugin: 'images-client-plugin', dir: 'js/leaflet/images')}"
             };
 
+            var TAXON_OVERFLOW_CONF = {
+                areYouSureUrl: "${createLink(controller:"dialog", action: "areYouSureFragment")}",
+                pleaseWaitUrl: "${createLink(controller:'dialog', action:'pleaseWaitFragment')}"
+            };
+
             var images = [];
             <g:each in="${occurrence.imageIds}" var="imageId">
                 images.push("${imageId}");

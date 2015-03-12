@@ -144,7 +144,28 @@ environments {
 
 def loggingDir = (System.getProperty('catalina.base') ? System.getProperty('catalina.base') + '/logs' : './logs')
 
-// log4j configuration
+/* Mail configuration */
+environments {
+    development {
+        grails {
+            mail {
+                // I am using MockSmtp:
+                host = "localhost"
+                port = "1025"
+            }
+        }
+    }
+
+    test {
+
+    }
+
+    production {
+
+    }
+}
+
+/* log4j configuration */
 log4j = {
 // Example of changing the log pattern for the default console
     appenders {
