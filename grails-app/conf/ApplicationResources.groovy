@@ -16,4 +16,5 @@ modules = {
         resource url:'vendor/flexisel/jquery.flexisel.js'
         resource url:'vendor/flexisel/style.css'
     }
+
 }
