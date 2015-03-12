@@ -87,17 +87,19 @@
                     var followURL = "${g.createLink(action: 'follow')}/${question.id}/${to.currentUserId()}";
                     var unfollowURL = "${g.createLink(action: 'unfollow')}/${question.id}/${to.currentUserId()}";
 
-                    console.log($(this).hasClass('following') ? unfollowURL : followURL);
-
                     $.ajax({
                         url: $(this).hasClass('following') ? unfollowURL : followURL,
                         dataType: "json",
                         success: function(returnedData) {
-                            console.log(returnedData)
+                            console.log(returnedData);
                             if($("#followQuestion i").hasClass('following')) {
-                                $("#followQuestion i").removeClass('fa-star following').addClass('fa-star-o')
+                                $("#followQuestion i").removeClass('fa-star following').addClass('fa-star-o');
+                                $('#followingText').hide();
+                                $('#unfollowingText').show();
                             } else {
-                                $("#followQuestion i").removeClass('fa-star-o').addClass('fa-star following')
+                                $("#followQuestion i").removeClass('fa-star-o').addClass('fa-star following');
+                                $('#followingText').show();
+                                $('#unfollowingText').hide();
                             }
                         }
                     });
@@ -207,6 +209,8 @@
             <div class="span6">
                 <div id="followQuestion">
                     <i class="fa ${isFollowing ? 'fa-star following' : 'fa-star-o'} fa-lg"></i>
+                    <span id="followingText" style="${isFollowing ? '' : 'display:none;'}"> Following</span>
+                    <span id="unfollowingText"  style="${isFollowing ? 'display:none' : ''}"> Not following</span>
                 </div>
 
                 <div id="tagsDiv">

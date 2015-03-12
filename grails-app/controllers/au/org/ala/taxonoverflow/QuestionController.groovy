@@ -73,7 +73,7 @@ class QuestionController {
 
             def alsUserId = authService.userId
             User user = User.findByAlaUserId(alsUserId)
-            boolean isFollowing = user.followedQuestions.contains(question)
+            boolean isFollowing = user ? user.followedQuestions.contains(question) : false;
 
             def acceptedAnswer = Answer.findByQuestionAndAccepted(question, true)
 
