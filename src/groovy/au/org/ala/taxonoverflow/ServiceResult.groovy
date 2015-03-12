@@ -15,6 +15,12 @@ public class ServiceResult<T> {
         success = true
     }
 
+    def success(T result, messages) {
+        this.result = result
+        this.messages = messages
+        success = true
+    }
+
     def fail(String message) {
         success = false
         messages << message

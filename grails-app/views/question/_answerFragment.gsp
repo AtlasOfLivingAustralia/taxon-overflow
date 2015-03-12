@@ -103,7 +103,7 @@
         </div>
 
         <div style="font-size: 1.2em">
-            <g:render template="/question/show${question.questionType.toString()}Answer" model="${[answer: answer]}" />
+            <g:render template="/question/show${question.questionType.getCamelCaseName()}Answer" model="${[answer: answer]}" />
         </div>
     </div>
     <div class="span1">

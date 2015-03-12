@@ -9,8 +9,18 @@ public enum QuestionType {
     HABITAT_ISSUE('Habitat Issue')
 
     private String label
+    private String camelCaseName
 
     QuestionType(String label) {
         this.label = label
+        this.camelCaseName = label.replaceAll("\\s","")
+    }
+
+    public String getLabel(){
+        label
+    }
+
+    public String getCamelCaseName(){
+        camelCaseName
     }
 }

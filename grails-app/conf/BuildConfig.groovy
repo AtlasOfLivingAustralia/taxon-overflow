@@ -76,7 +76,7 @@ grails.project.dependency.resolution = {
         runtime(":ala-auth:1.3-SNAPSHOT") {
             excludes "servlet-api"
         }
-        runtime ":images-client-plugin:0.2.2"
+        runtime ":images-client-plugin:0.3"
 
         compile ":quartz:1.0.2"
 

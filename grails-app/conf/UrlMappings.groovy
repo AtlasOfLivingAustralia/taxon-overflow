@@ -7,6 +7,13 @@ class UrlMappings {
             }
         }
 
+        "/question/$id"(controller: "question", action: "view" )
+
+        "/ws/questionType"(controller: "webService", action: "listQuestionTypes" )
+
+        "/ws/question"(controller: "webService", action:"createQuestionFromExternal")
+
+
         "/ws/$action?/$id?(.$format)?"{
             controller = "webService"
             constraints {

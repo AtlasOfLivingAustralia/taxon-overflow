@@ -25,47 +25,23 @@ class QuestionService {
         }
     }
 
-    ServiceResult<Question> createQuestionFromEcodataService(String occurrenceId, QuestionType questionType, List<String> tags, User user) {
+    /**
+     * To be refined to remove duplicate code
+     */
+    ServiceResult<Question> createQuestionFromEcodataService(String occurrenceId, QuestionType questionType, List<String> tags, User user, String comment) {
 
         def result = new ServiceResult<Question>(success: false)
 
         def occurrence = ecodataService.getRecord(occurrenceId)
 
         if(occurrence){
-
             def source = Source.findByName("ecodata")
-            def question = new Question(user: user, occurrenceId: occurrenceId, questionType: questionType, source: source)
-            question.save(failOnError: true)
 
-            // Save the tags
-            tags?.each {
-                if (!StringUtils.isEmpty(it)) {
-                    def tag = new QuestionTag(question: question, tag: it)
-                    tag.save()
-                }
-            }
-            result.success(question)
-        } else {
-            result.fail("Unable to retrieve occurrence details for ${occurrenceId}")
-        }
+            def question = Question.findByOccurrenceId(occurrenceId)
 
-        return result
-    }
+            if (!question) {
 
-
-    ServiceResult<Question> createQuestionFromOccurrence(String occurrenceId, QuestionType questionType, List<String> tags, User user) {
-
-        def result = new ServiceResult<Question>(success: false)
-
-        def occurrence = biocacheService.getRecord(occurrenceId)
-
-        if (occurrence) {
-
-            // the id used to search for an occurrence may not be canonical, so
-            // once we've found an occurrence, use the canonical id from then on...
-            if (validateOccurrenceRecord(occurrenceId, result.messages)) {
-                def source = Source.findByName("biocache")
-                def question = new Question(user: user, occurrenceId: occurrenceId, questionType: questionType, source: source)
+                question = new Question(user: user, occurrenceId: occurrenceId, questionType: questionType, source: source)
                 question.save(failOnError: true)
 
                 // Save the tags
@@ -76,13 +52,70 @@ class QuestionService {
                     }
                 }
 
+                if(comment){
+                    addQuestionComment(question, user, comment)
+                }
+
                 result.success(question)
             } else {
-                result.fail("Failed to validate occurrence record")
+                def messages = ["Question already exists"]
+                if(comment){
+                    addQuestionComment(question, user, comment)
+                    messages  << "User comment added to question"
+                }
+                result.success(question, messages)
             }
 
         } else {
-            result.fail("Unable to retrieve occurrence details for ${occurrenceId}")
+            result.fail("Unable to retrieve occurrence details for ${occurrenceId} from source ecodata")
+        }
+
+        return result
+    }
+
+    /**
+     * To be refined to remove duplicate code
+     */
+    ServiceResult<Question> createQuestionFromOccurrence(String occurrenceId, QuestionType questionType, List<String> tags, User user, String comment) {
+
+        def result = new ServiceResult<Question>(success: false)
+
+        def occurrence = biocacheService.getRecord(occurrenceId)
+
+        if (occurrence) {
+
+            def question = Question.findByOccurrenceId(occurrenceId)
+            // the id used to search for an occurrence may not be canonical, so
+            // once we've found an occurrence, use the canonical id from then on...
+            if (!question) {
+                def source = Source.findByName("biocache")
+                question = new Question(user: user, occurrenceId: occurrenceId, questionType: questionType, source: source)
+                question.save(failOnError: true)
+
+                // Save the tags
+                tags?.each {
+                    if (!StringUtils.isEmpty(it)) {
+                        def tag = new QuestionTag(question: question, tag: it)
+                        tag.save()
+                    }
+                }
+
+                if(comment){
+                    addQuestionComment(question, user, comment)
+                }
+
+                result.success(question)
+            } else {
+                def messages = ["Question already exists"]
+                if(comment){
+                    addQuestionComment(question, user, comment)
+                    messages  << "User comment added to question"
+                }
+                result.success(question, messages)
+            }
+
+        } else {
+            result.fail("Unable to retrieve occurrence details for ${occurrenceId} from source biocache")
         }
 
         return result
@@ -200,8 +233,12 @@ class QuestionService {
             return new ServiceResult<QuestionComment>().fail("No comment text supplied")
         }
 
-        def comment = new QuestionComment(question: question, user: user, comment: commentText)
-        comment.save(failOnError: true)
+        //does this comment already exist ?
+        def comment = QuestionComment.findByQuestionAndUserAndComment(question, user, commentText)
+        if(!comment){
+            comment = new QuestionComment(question: question, user: user, comment: commentText)
+            comment.save(failOnError: true)
+        }
         return new ServiceResult<QuestionComment>(result: comment, success: true)
     }
 

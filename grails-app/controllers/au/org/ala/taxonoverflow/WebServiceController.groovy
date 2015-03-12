@@ -10,31 +10,43 @@ class WebServiceController {
     def questionService
 
     def index() {
-        render([success: "true", version: grailsApplication.metadata['app.version']])
+        def model = [success: "true", version: grailsApplication.metadata['app.version']]
+        renderResults(model)
+    }
+
+    def listQuestionTypes(){
+        renderResults(QuestionType.values().collect { it.name() })
     }
 
     def createQuestionFromExternal(){
         def body = request.JSON
-
-        if(body.source == 'ecodata'){
+        if(body.source && body.source == 'ecodata'){
           createQuestionFromEcodata()
-        }
-
-        if(body.source == 'biocache'){
-            createQuestionFromBiocache()
+        } else if(body.source && body.source == 'biocache'){
+          createQuestionFromBiocache()
+        } else {
+          //send error
+          def result = new ServiceResult<Question>(success: false)
+          if(body.source){
+              result.messages = ["Unrecognised 'source' value"]
+          } else {
+              result.messages = ["Source unspecified"]
+          }
+          renderResults(result)
         }
     }
 
     def createQuestionFromEcodata(){
 
-        def results = [success:true]
+        def results = [success:false]
         def body = request.JSON
         if (body) {
             def tags = body.tags instanceof String ? body.tags.split(",")?.toList() : body.tags as List<String>
+            def comment = body.comment
             def user = userService.getUserFromUserId(body.userId)
             def occurrenceId = body.occurrenceId as String
             def questionType = (body.questionType as QuestionType) ?: QuestionType.IDENTIFICATION
-            def serviceResult = questionService.createQuestionFromEcodataService(occurrenceId, questionType, tags, user)
+            def serviceResult = questionService.createQuestionFromEcodataService(occurrenceId, questionType, tags, user, comment)
 
             if (serviceResult) {
                 results.success = true
@@ -55,8 +67,9 @@ class WebServiceController {
             def tags = body.tags instanceof String ? body.tags.split(",")?.toList() : body.tags as List<String>
             def occurrenceId = body.occurrenceId as String
             def user = userService.getUserFromUserId(body.userId)
+            def comment = body.comment
             def questionType = (body.questionType as QuestionType) ?: QuestionType.IDENTIFICATION
-            def serviceResult = questionService.createQuestionFromOccurrence(occurrenceId, questionType, tags, user)
+            def serviceResult = questionService.createQuestionFromOccurrence(occurrenceId, questionType, tags, user, comment)
 
             if (serviceResult) {
                 results.success = true
