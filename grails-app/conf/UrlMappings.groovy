@@ -7,6 +7,9 @@ class UrlMappings {
             }
         }
 
+        "/question/follow/$questionId/$userId"(controller: "question", action: "follow")
+        "/question/unfollow/$questionId/$userId"(controller: "question", action: "unfollow")
+
         "/question/$id"(controller: "question", action: "view" )
 
         "/ws/questionType"(controller: "webService", action: "listQuestionTypes" )

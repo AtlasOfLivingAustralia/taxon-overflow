@@ -5,7 +5,6 @@ import au.org.ala.web.CASRoles
 import grails.transaction.NotTransactional
 import grails.transaction.Transactional
 import org.apache.commons.lang.StringUtils
-import org.codehaus.groovy.grails.web.json.JSONObject
 
 @Transactional
 class QuestionService {
@@ -347,4 +346,28 @@ class QuestionService {
         }
     }
 
+    ServiceResult<User> followOrUnfollowQuestionByUser(boolean follow, Long questionId, Long alaUserId) {
+        Question question = Question.get(questionId)
+        if (!question) {
+            return new ServiceResult<User>().fail("Question provided with id: ${questionId} is invalid")
+        }
+
+        User user =  User.findByAlaUserId(alaUserId)
+        if (!user) {
+            return new ServiceResult<User>().fail("User provided with id: ${alaUserId} is invalid")
+        }
+
+        if (follow) {
+            user.addToFollowedQuestions(question)
+            question.addToFollowers(user)
+            user.save(flush: true)
+            return new ServiceResult<User>(success: true, messages: ["User with id: ${alaUserId} is now following question with id: ${questionId}"])
+        } else {
+            user.removeFromFollowedQuestions(question)
+            question.removeFromFollowers(user)
+            user.save(flush: true)
+            return new ServiceResult<User>(success: true, messages: ["User with id: ${alaUserId} is now not following question with id: ${questionId}"])
+        }
+
+    }
 }

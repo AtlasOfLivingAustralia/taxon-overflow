@@ -8,13 +8,16 @@ class Question {
     Date dateCreated
     Source source
 
-    static hasMany = [comments: QuestionComment, views: QuestionView, answers: Answer, tags: QuestionTag]
+    static belongsTo = User
+
+    static hasMany = [comments: QuestionComment, views: QuestionView, answers: Answer, tags: QuestionTag, followers: User]
 
     static constraints = {
         user nullable: false
         questionType nullable: false
         occurrenceId nullable: false
         dateCreated nullable: true
+        followers nullable: true
     }
 
     static mapping = {

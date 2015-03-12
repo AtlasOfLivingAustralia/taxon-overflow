@@ -67,6 +67,42 @@
 
                 renderMap();
 
+                $('#followQuestion i').on("mouseover", function(e) {
+                    if ($(this).hasClass('fa-star-o')) {
+                        $(this).removeClass('fa-star-o').addClass('fa-star')
+                    } else {
+                        $(this).removeClass('fa-star').addClass('fa-star-o')
+                    }
+                });
+
+                $('#followQuestion i').on("mouseout", function(e) {
+                    if ($(this).hasClass('fa-star') && !$(this).hasClass('following')) {
+                        $(this).removeClass('fa-star').addClass('fa-star-o')
+                    } else if ($(this).hasClass('fa-star-o') && $(this).hasClass('following')){
+                        $(this).removeClass('fa-star-o').addClass('fa-star')
+                    }
+                });
+
+                $('#followQuestion i').on('click', function() {
+                    var followURL = "${g.createLink(action: 'follow')}/${question.id}/${to.currentUserId()}";
+                    var unfollowURL = "${g.createLink(action: 'unfollow')}/${question.id}/${to.currentUserId()}";
+
+                    console.log($(this).hasClass('following') ? unfollowURL : followURL);
+
+                    $.ajax({
+                        url: $(this).hasClass('following') ? unfollowURL : followURL,
+                        dataType: "json",
+                        success: function(returnedData) {
+                            console.log(returnedData)
+                            if($("#followQuestion i").hasClass('following')) {
+                                $("#followQuestion i").removeClass('fa-star following').addClass('fa-star-o')
+                            } else {
+                                $("#followQuestion i").removeClass('fa-star-o').addClass('fa-star following')
+                            }
+                        }
+                    });
+                }) 
+
             });
 
             $(window).load(function() {
@@ -169,9 +205,13 @@
 
             </div>
             <div class="span6">
+                <div id="followQuestion">
+                    <i class="fa ${isFollowing ? 'fa-star following' : 'fa-star-o'} fa-lg"></i>
+                </div>
 
                 <div id="tagsDiv">
                     <g:render template="tagsFragment" model="${[question: question]}" />
+
                 </div>
 
                 <div class="occurrenceDetails">
