@@ -54,6 +54,11 @@
         </style>
         <r:script>
 
+            var facetsFilter = {
+                tags: [],
+                types: []
+            }
+
             $(document).ready(function() {
 
                 $(".btnDelete").click(function(e) {
@@ -80,11 +85,28 @@
                     }
                 });
 
+                $("div.facets ul li span.label").on("click", function() {
+                    $(this).toggleClass('label-success');
+                    updateFacetsFilter();
+                });
+
             });
+
+            function updateFacetsFilter() {
+                facetsFilter.tags = [];
+                facetsFilter.types = [];
+                $("#tagsFacet li span.label-success").each(function() {
+                    facetsFilter.tags.push($(this).text());
+                });
+                $("#typesFacet li span.label-success").each(function() {
+                    facetsFilter.types.push($(this).text());
+                });
+                doSearch();
+            }
 
             function doSearch() {
                 var q = $("#txtSearch").val();
-                window.location.href = "${raw(createLink(action:'list', params: [sort: params.sort, order: params.order, offset: 0, max: params.max]))}&q=" + encodeURIComponent(q);
+                window.location.href = "${raw(createLink(action:'list', params: [sort: params.sort, order: params.order, offset: 0, max: params.max]))}&q=" + encodeURIComponent(q) + "&f.tags=" + facetsFilter.tags.join(',') + "&f.types=" + facetsFilter.types.join(',');
             }
 
         </r:script>
@@ -122,7 +144,7 @@
                                 <div class="row-fluid">
                                     <g:set var="columns" value="${[ ['answerCount', 'Answers', 'span1'], ['viewCount', 'Views','span1'], ['dateCreated', 'Date', 'span2'] ] }" />
                                     <g:each in="${columns}" var="columnDesc">
-                                        <div style="text-align: center" class="${columnDesc[2]} column-sort-btn"><a href="?sort=${columnDesc[0]}&order=${params.sort == columnDesc[0] && params.order != 'desc' ? 'desc' : 'asc'}&offset=0&q=${params.q}" class="btn ${params.sort == columnDesc[0] ? 'active' : ''}">${columnDesc[1]}</a></div>
+                                        <div style="text-align: center" class="${columnDesc[2]} column-sort-btn"><a href="?sort=${columnDesc[0]}&order=${params.sort == columnDesc[0] && params.order != 'desc' ? 'desc' : 'asc'}&offset=0&q=${params.q}&f.tags=${params.f?.tags}&f.types=${params.f?.types}" class="btn ${params.sort == columnDesc[0] ? 'active' : ''}">${columnDesc[1]}</a></div>
                                     </g:each>
                                     <div class="span6 offset2">
                                         <div class="pull-right">
