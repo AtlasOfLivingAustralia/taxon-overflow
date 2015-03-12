@@ -89,21 +89,21 @@
         color: green;
     }
 
+    .identification-answer h3 { padding-top:0px; margin-top:0px;  }
 
 </style>
 <div class="row-fluid" style="margin-bottom: 10px">
 
     <div class="span9">
-        <div class="whoWhen" style="font-size: 0.8em">
-            <to:userDisplayName user="${answer.user}" />&nbsp;on&nbsp;<g:formatDate date="${answer.dateCreated}" format="yyyy-MM-dd" />
+        <div class="identification-answer">
+            <h3><g:render template="/question/show${question.questionType.getCamelCaseName()}Answer" model="${[answer: answer]}" /></h3>
+        </div>
+        <div class="whoWhen">
+            Suggested by <to:userDisplayName user="${answer.user}" />&nbsp;on&nbsp;<g:formatDate date="${answer.dateCreated}" format="yyyy-MM-dd" />
             <to:ifCanEditAnswer answer="${answer}">
                 <a href="#" title="Edit this answer" class="btnEditAnswer"><i class="fa fa-edit"></i></a>
                 <a href="#" title="Remove this answer" class="btnDeleteAnswer"><i class="fa fa-remove"></i></a>
             </to:ifCanEditAnswer>
-        </div>
-
-        <div style="font-size: 1.2em">
-            <g:render template="/question/show${question.questionType.getCamelCaseName()}Answer" model="${[answer: answer]}" />
         </div>
     </div>
     <div class="span1">

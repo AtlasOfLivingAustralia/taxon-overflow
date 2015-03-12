@@ -18,9 +18,6 @@
             }
 
             .occurrenceDetails {
-                /*border: 1px solid #dddddd;*/
-                /*border-radius: 4px;*/
-                /*padding: 5px;*/
                 margin-top: 10px;
             }
 
@@ -32,6 +29,8 @@
             .header-row {
                 margin-bottom: 5px;
             }
+
+            .identify-header { padding-left:10px;  margin-top:0px; padding-top:0px; background-color: black; color: #FCFCFC;}
 
         </r:style>
         <r:require modules="viewer , flexisel, leaflet, application" />
@@ -138,7 +137,10 @@
 
         <div class="row-fluid header-row">
             <div class="span6">
-                <H1>Species identification case #${question.id}&nbsp;<small>[ <a href="${question.source.uiBaseUrl}${question.occurrenceId}" target="occurrenceDetails">View record</a> ] Views: ${viewCount}</small></H1>
+                <H1>Species identification case #${question.id}&nbsp;
+                    %{--[ <a href="${question.source.uiBaseUrl}${question.occurrenceId}" target="occurrenceDetails">View record</a> ]--}%
+                    <small> Views: ${viewCount}</small>
+                </H1>
             </div>
             <div class="span6">
                 <h4 class="pull-right">${answers?.size() ?: 0} ${question.questionType == au.org.ala.taxonoverflow.QuestionType.IDENTIFICATION ? "IDENTIFICATION(s)" : "Answer(s)" }</h4>

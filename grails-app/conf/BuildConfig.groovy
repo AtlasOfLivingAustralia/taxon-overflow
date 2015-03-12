@@ -79,6 +79,7 @@ grails.project.dependency.resolution = {
             excludes "servlet-api"
         }
         runtime ":images-client-plugin:0.3"
+        compile ":pretty-time:2.1.3.Final-1.0.1"
 
 
 

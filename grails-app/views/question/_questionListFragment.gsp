@@ -17,8 +17,9 @@
                 </div>
                 <div class="span6 view-count-div">
                     <small style="text-align: center">
-                        <g:formatDate date="${question.dateCreated}" format="yyyy-MM-dd HH:mm:ss" />
-                        <br />
+                        %{--<g:formatDate date="${question.dateCreated}" format="yyyy-MM-dd HH:mm:ss" />--}%
+                        Question raised <prettytime:display date="${question.dateCreated}" /> by:
+                        <br/>
                         <to:userDisplayName user="${question.user}" />
                     </small>
                 </div>

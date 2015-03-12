@@ -3,7 +3,7 @@
   .newAnswerDiv {
       border: 1px solid #dddddd;
       border-radius: 4px;
-      padding: 10px;
+      /*padding: 10px;*/
   }
 
   .answer-list li.accepted-answer {
@@ -21,6 +21,7 @@
       border: 1px solid #dddddd;
       margin-bottom: 20px;
   }
+  .identify-form { padding:10px; }
 
 </style>
 <div>
@@ -44,7 +45,7 @@
       </div>
     </div>
     <div class="row-fluid">
-      <div class="span12">
+      <div class="span12 identify-form">
         <button class="btn btn-success pull-right" id="btnSubmitAnswer">Submit identification</button>
       </div>
     </div>
@@ -210,7 +211,7 @@
     e.preventDefault();
     var answerId = $(this).closest("[answerId]").attr("answerId");
     if (answerId) {
-        alert(answerId);
+        //alert(answerId);
       tolib.areYouSure({
         message: 'Are you sure you wish to permanently delete this answer?',
         title: 'Delete your answer?',
