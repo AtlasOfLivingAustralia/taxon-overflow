@@ -154,7 +154,9 @@
                     <div class="image-thumbs">
                         <ul id="media-thumb-list">
                             <g:each in="${occurrence.imageIds}" var="imageId">
-                                <li imageId="${occurrence.imageId}" ><img class="image-thumb" src="http://images.ala.org.au/image/proxyImageThumbnail?imageId=${imageId}" /></li>
+                                <li imageId="${imageId}" >
+                                    <img class="image-thumb" src="http://images.ala.org.au/image/proxyImageThumbnail?imageId=${imageId}" />
+                                </li>
                             </g:each>
                         </ul>
                     </div>
