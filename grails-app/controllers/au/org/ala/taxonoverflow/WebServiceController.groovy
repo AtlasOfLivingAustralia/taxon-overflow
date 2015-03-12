@@ -2,6 +2,7 @@ package au.org.ala.taxonoverflow
 
 import grails.converters.JSON
 import grails.converters.XML
+import groovy.json.JsonSlurper
 
 class WebServiceController {
 
@@ -16,6 +17,17 @@ class WebServiceController {
 
     def listQuestionTypes(){
         renderResults(QuestionType.values().collect { it.name() })
+    }
+
+    /**
+     * A utility to bulk load questions.
+     *
+     * @return
+     */
+    def bulkLoadFromEcodata(){
+        def loadedCount = questionService.bulkLoadFromEcodata()
+        def model = [success:true, loadedCount: loadedCount]
+        renderResults(model)
     }
 
     def createQuestionFromExternal(){

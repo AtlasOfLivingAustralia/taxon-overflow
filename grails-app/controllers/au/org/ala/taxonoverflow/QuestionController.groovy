@@ -38,12 +38,6 @@ class QuestionController {
         }
 
         Map imageInfoMap = [:]
-//        def imagesPromise = task {
-//            imageInfoMap = imagesWebService.getImageInfoForMetadata("occurrenceId", occurrenceIds)
-//        }
-//
-//        waitAll(imagesPromise)
-
         [questions: searchResults.list, totalCount: searchResults.totalCount, imageInfoMap: imageInfoMap, acceptedAnswers: acceptedAnswers, occurrenceData: searchResults.auxdata ]
     }
 
