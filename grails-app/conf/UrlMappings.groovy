@@ -9,6 +9,8 @@ class UrlMappings {
 
         "/question/$id"(controller: "question", action: "view" )
 
+        "/ws/question/bulkLookup"(controller: "webService", action:"questionIdLookup")
+
         "/ws/questionType"(controller: "webService", action: "listQuestionTypes" )
 
         "/ws/question"(controller: "webService", action:"createQuestionFromExternal")

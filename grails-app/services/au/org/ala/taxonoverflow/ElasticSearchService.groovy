@@ -35,7 +35,6 @@ class ElasticSearchService {
     private static Queue<IndexQuestionTask> _backgroundQueue = new ConcurrentLinkedQueue<IndexQuestionTask>()
 
     def grailsApplication
-    def biocacheService
     private Node node
     private Client client
     private JestClient jestClient
@@ -154,7 +153,7 @@ class ElasticSearchService {
         }
     }
 
-    public QueryResults<Question>     questionSearch(GrailsParameterMap params, Closure builderFunc = null) {
+    public QueryResults<Question> questionSearch(GrailsParameterMap params, Closure builderFunc = null) {
 
         SearchRequestBuilder searchRequestBuilder = client.prepareSearch(INDEX_NAME).setSearchType(SearchType.QUERY_THEN_FETCH)
 

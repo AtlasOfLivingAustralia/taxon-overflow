@@ -9,6 +9,7 @@ class WebServiceController {
     def userService
     def grailsApplication
     def questionService
+    def elasticSearchService
 
     def index() {
         def model = [success: "true", version: grailsApplication.metadata['app.version']]
@@ -17,6 +18,21 @@ class WebServiceController {
 
     def listQuestionTypes(){
         renderResults(QuestionType.values().collect { it.name() })
+    }
+
+    def questionIdLookup(){
+        //FIXME move to service and make more efficient
+        def occurrenceIDs = request.JSON
+        def list = []
+        occurrenceIDs.each {
+            def question = Question.findByOccurrenceId(it)
+            if(question){
+                list << question.id
+            } else {
+                list << ""
+            }
+        }
+        renderResults(list)
     }
 
     /**
