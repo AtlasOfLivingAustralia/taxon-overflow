@@ -26,6 +26,7 @@
                     // redraw this answer...
                     if (renderAnswer && renderAnswer instanceof Function) {
                         renderAnswer(answerId);
+                        checkFollowingStatus();
                     }
                 } else {
                     alert(response.message);

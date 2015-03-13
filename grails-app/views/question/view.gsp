@@ -84,14 +84,14 @@
                 });
 
                 $('#followQuestion i').on('click', function() {
-                    var followURL = "${g.createLink(action: 'follow')}/${question.id}/${to.currentUserId()}";
-                    var unfollowURL = "${g.createLink(action: 'unfollow')}/${question.id}/${to.currentUserId()}";
+                    var followURL = "${g.createLink(uri: '/ws/question/follow')}/${question.id}/${to.currentUserId()}";
+                    var unfollowURL = "${g.createLink(uri: '/ws/question/unfollow')}/${question.id}/${to.currentUserId()}";
 
                     $.ajax({
                         url: $(this).hasClass('following') ? unfollowURL : followURL,
                         dataType: "json",
-                        success: function(returnedData) {
-                            console.log(returnedData);
+                        success: function(data) {
+                            //console.log(data);
                             if($("#followQuestion i").hasClass('following')) {
                                 $("#followQuestion i").removeClass('fa-star following').addClass('fa-star-o');
                                 $('#followingText').hide();
@@ -135,6 +135,27 @@
                     }
                 });
             });
+
+            function checkFollowingStatus() {
+                var url = "${g.createLink(uri: '/ws/question/following/status')}/${question.id}/${to.currentUserId()}";
+
+                $.ajax({
+                    url: url,
+                    dataType: "json",
+                    success: function(data) {
+                        console.log("following: " + data.following);
+                        if (data.following && !$("#followQuestion i").hasClass('following')) {
+                            $("#followQuestion i").removeClass('fa-star-o').addClass('fa-star following');
+                            $('#followingText').show();
+                            $('#unfollowingText').hide();
+                        } else if (!data.following && $("#followQuestion i").hasClass('following')) {
+                            $("#followQuestion i").removeClass('fa-star following').addClass('fa-star-o');
+                            $('#followingText').hide();
+                            $('#unfollowingText').show();
+                        }
+                    }
+                });
+            }
 
             function renderTags() {
                 $.ajax("${createLink(action:'questionTagsFragment', id: question.id)}").done(function(content) {

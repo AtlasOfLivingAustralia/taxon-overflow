@@ -26,6 +26,7 @@
                     if (renderQuestionComments && renderQuestionComments instanceof Function) {
                         renderQuestionComments();
                     }
+                    checkFollowingStatus();
                 } else {
                     alert(response.message);
                 }

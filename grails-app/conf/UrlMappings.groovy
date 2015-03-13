@@ -7,9 +7,6 @@ class UrlMappings {
             }
         }
 
-        "/question/follow/$questionId/$userId"(controller: "question", action: "follow")
-        "/question/unfollow/$questionId/$userId"(controller: "question", action: "unfollow")
-
         "/question/$id"(controller: "question", action: "view" )
 
         "/ws/questionType"(controller: "webService", action: "listQuestionTypes" )
@@ -22,6 +19,10 @@ class UrlMappings {
             constraints {
             }
         }
+
+        "/ws/question/follow/$questionId/$userId"(controller: "webService", action: 'follow', method: 'GET')
+        "/ws/question/unfollow/$questionId/$userId"(controller: "webService", action: 'unfollow', method: 'GET')
+        "/ws/question/following/status/$questionId/$userId"(controller: "webService", action: 'followingQuestionStatus', method: 'GET')
 
         "/"( controller: "question", action: "list", view:"/index")
         "500"(view:'/error')

@@ -191,11 +191,4 @@ class QuestionController {
         render template: 'aggregatedQuestionTypes', model: [questionTypes: tags]
     }
 
-    def follow(Long questionId, Long userId) {
-        render questionService.followOrUnfollowQuestionByUser(true, questionId, userId) as JSON
-    }
-
-    def unfollow(Long questionId, Long userId) {
-        render questionService.followOrUnfollowQuestionByUser(false, questionId, userId) as JSON
-    }
 }
