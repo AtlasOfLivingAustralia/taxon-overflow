@@ -17,10 +17,8 @@
                 </div>
                 <div class="span6 view-count-div">
                     <small style="text-align: center">
-                        %{--<g:formatDate date="${question.dateCreated}" format="yyyy-MM-dd HH:mm:ss" />--}%
-                        Question raised <prettytime:display date="${question.dateCreated}" /> by:
-                        <br/>
-                        <to:userDisplayName user="${question.user}" />
+                        Asked by <br/><to:userDisplayName user="${question.user}" /><br/>
+                        <prettytime:display date="${question.dateCreated}" />
                     </small>
                 </div>
             </div>
@@ -34,7 +32,7 @@
             </div>
         </a>
     </div>
-    <div class="span2" style="text-align: center">
+    <div class="span3" style="text-align: center">
         <g:if test="${occurrence.imageUrls}">
             <a href="${questionUrl}">
                 <img class="question-thumb" src="${occurrence.imageUrls[0]}" />
@@ -45,11 +43,11 @@
             </g:if>
         </g:if>
     </div>
-    <div class="span6">
+    <div class="span5">
         <div class="row-fluid">
             <div class="span12">
                 <to:occurrenceProperty name="recordedBy" title="Recorded by" occurrence="${occurrence}" />
-                <to:occurrenceProperty name="eventDate" title="Event date" occurrence="${occurrence}" />
+                <to:occurrenceProperty name="eventDate" title="Date" occurrence="${occurrence}" />
                 <to:occurrenceProperty name="locality" title="Locality" occurrence="${occurrence}" />
             </div>
         </div>

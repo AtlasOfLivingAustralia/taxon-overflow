@@ -46,14 +46,20 @@
     </div>
     <div class="row-fluid">
       <div class="span12 identify-form">
-        <button class="btn btn-success pull-right" id="btnSubmitAnswer">Submit identification</button>
+        <g:if test="${!user}">
+          <div class="pull-left please-login">
+            Please log in to submit an identification.
+          </div>
+        </g:if>
+        <button class="btn btn-success pull-right ${user ? '' : 'disabled'}" id="btnSubmitAnswer" >Submit identification</button>
       </div>
     </div>
+
   </div>
 </g:if>
 <g:else>
   <div class="existing-answer-message">
-    You have already supplied an identification. Click <a href="#" class="editAnswerLink" answerId="${userAnswers[0].id}">here</a> to edit it.
+    You have already supplied an identification. Click <a href="#" class="editAnswerLink  ${user ? '' : 'disabled'}" answerId="${userAnswers[0].id}">here</a> to edit it.
   </div>
 </g:else>
 
@@ -107,7 +113,7 @@
 
   function submitAnswer(options) {
 
-    var answer = { questionId: ${question.id}, userId: "${user.alaUserId}" };
+    var answer = { questionId: ${question.id}, userId: "${user?.alaUserId}" };
 
     $(".newAnswerDiv .answer-field").each(function() {
       answer[$(this).attr("id")] = $(this).val();
@@ -253,6 +259,43 @@
     }
   });
 
-
+  $(".taxon-select").autocomplete('http://bie.ala.org.au/ws/search/auto.jsonp', {
+    extraParams: {limit: 10},
+    dataType: 'jsonp',
+    parse: function(data) {
+      console.log("parsing")
+      var rows = new Array();
+      data = data.autoCompleteList;
+      for(var i=0; i<data.length; i++) {
+        rows[i] = {
+          data: data[i],
+          value: data[i].matchedNames[0],
+          result: data[i].matchedNames[0]
+        };
+      }
+      return rows;
+    },
+    select: function (event, ui) {
+      alert("Selected: " + ui.item.value + " aka " + ui.item.label);
+      console.log('selected ' + ui.item.value);
+      $(this).val(ui.item.label);
+      return false;
+    },
+    matchSubset: false,
+    formatItem: function(row, i, n) {
+      console.log("formatItem")
+      return row.matchedNames[0];
+    },
+    cacheLength: 10,
+    minChars: 3,
+    scroll: false,
+    max: 10
+  }).on('change', function(){
+    //TODO select the taxon...
+  }).keydown(function(event){
+    if(event.keyCode == 13) {
+      //TODO select the taxon...
+    }
+  });
 
 </script>

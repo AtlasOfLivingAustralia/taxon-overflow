@@ -2,7 +2,7 @@
 <html>
     <head>
         <meta name="layout" content="main"/>
-        <title>Question</title>
+        <title>Identification case #${question.id} | Atlas of Living Australia</title>
         <r:style type="text/css">
 
             #map {
@@ -29,11 +29,11 @@
             .header-row {
                 margin-bottom: 5px;
             }
+            .identify-header { padding-left:10px;  margin-top:0px; padding-top:0px; background-color: #f2f2f2; border-bottom: 1px solid #dddddd; }
 
-            .identify-header { padding-left:10px;  margin-top:0px; padding-top:0px; background-color: black; color: #FCFCFC;}
 
         </r:style>
-        <r:require modules="viewer , flexisel, leaflet, application" />
+        <r:require modules="viewer, flexisel, leaflet, taxonoverflow" />
         <r:script>
 
             var GSP_VARS = {
@@ -125,6 +125,7 @@
         </r:script>
     </head>
     <body>
+        %{--<h1>Logged in: ${userId ? "yes" : "no" }</h1>--}%
         <div class="row">
             <div class="span12">
                 <ul class="breadcrumb">

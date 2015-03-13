@@ -27,6 +27,8 @@ import static grails.async.Promises.task
 @Log4j
 class NotificationsAspect {
 
+    def grailsApplication
+
     @Autowired
     MailService mailService
 
@@ -67,6 +69,7 @@ class NotificationsAspect {
                 authService.getUserForUserId(user.alaUserId).userName
             }
             // Send email
+            if(grails)
             sendEmail(bccEmailAddresses, userDetails, emailSubject, htmlBody)
         }
     }
@@ -83,13 +86,17 @@ class NotificationsAspect {
         if (addressees.size() > 0) {
             // Compose email
             UserDetails userDetails = authService.getUserForUserId(actionUser.alaUserId)
-            String emailSubject = "(Question #${question.id}) - Identification answer ${answer.accepted ? 'accepted' : 'posted'}"
-            String htmlBody = pageRenderer.render template: '/notifications/answerNotification', model: [answer: answer, userDetails: userDetails]
-            List bccEmailAddresses = addressees.collect { user ->
-                authService.getUserForUserId(user.alaUserId).userName
+            if(userDetails){
+                String emailSubject = "(Question #${question.id}) - Identification answer ${answer.accepted ? 'accepted' : 'posted'}"
+                String htmlBody = pageRenderer.render template: '/notifications/answerNotification', model: [answer: answer, userDetails: userDetails]
+                List bccEmailAddresses = addressees.collect { user ->
+                    authService.getUserForUserId(user.alaUserId).userName
+                }
+                // Send email
+                sendEmail(bccEmailAddresses, userDetails, emailSubject, htmlBody)
+            } else {
+                log.error("Unable to send notification for answer. User lookup failed. Check authorised system access.")
             }
-            // Send email
-            sendEmail(bccEmailAddresses, userDetails, emailSubject, htmlBody)
         }
     }
 
@@ -103,13 +110,17 @@ class NotificationsAspect {
         if (addressees.size() > 0) {
             // Compose email
             UserDetails userDetails = authService.getUserForUserId(comment.user?.alaUserId)
-            String emailSubject = "${question.comments.size() > 1 ? "RE: " : ""}(Question #${question.id}) - New${comment instanceof AnswerComment ? ' identification' : ''} comment posted"
-            String htmlBody = pageRenderer.render template: '/notifications/newCommentNotification', model: [comment: comment, userDetails: userDetails]
-            List bccEmailAddresses = addressees.collect { user ->
-                authService.getUserForUserId(user.alaUserId).userName
+            if(userDetails){
+                String emailSubject = "${question.comments.size() > 1 ? "RE: " : ""}(Question #${question.id}) - New${comment instanceof AnswerComment ? ' identification' : ''} comment posted"
+                String htmlBody = pageRenderer.render template: '/notifications/newCommentNotification', model: [comment: comment, userDetails: userDetails]
+                List bccEmailAddresses = addressees.collect { user ->
+                    authService.getUserForUserId(user.alaUserId).userName
+                }
+                // Send email
+                sendEmail(bccEmailAddresses, userDetails, emailSubject, htmlBody)
+            } else {
+                log.error("Unable to send notification for comment. User lookup failed. Check authorised system access.")
             }
-            // Send email
-            sendEmail(bccEmailAddresses, userDetails, emailSubject, htmlBody)
         }
     }
 
@@ -124,14 +135,19 @@ class NotificationsAspect {
     private Promise sendEmail(List bccEmailAddresses, userDetails, String emailSubject, String htmlBody) {
         return task {
             try {
-                mailService.sendMail {
-                    bcc bccEmailAddresses.toArray()
-                    from "${userDetails.displayName}<no-reply@ala.org.au>"
-                    subject emailSubject
-                    html htmlBody
+                if(grailsApplication.config.notifications.enabled){
+                    mailService.sendMail {
+                        bcc bccEmailAddresses.toArray()
+                        from "${userDetails.displayName}<no-reply@ala.org.au>"
+                        subject emailSubject
+                        html htmlBody
+                    }
+                    log.debug("A notification email has been sent to the following users:\n" +
+                            "${bccEmailAddresses}")
+                } else {
+                    log.warn("Notifications disabled - A notification email has NOT been sent to the following users:\n" +
+                            "${bccEmailAddresses}")
                 }
-                log.debug("A notification email has been sent to the following users:\n" +
-                        "${bccEmailAddresses}")
             } catch (e) {
                 log.error("There was a problem sending a notification email: ${e}")
             }

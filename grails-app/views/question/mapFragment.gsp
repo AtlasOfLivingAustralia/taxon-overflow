@@ -1,3 +1,4 @@
+<g:if test="${coordinates && coordinates.latitude && coordinates.longitude}">
 <style>
     #map {
         margin-top: 10px;
@@ -5,10 +6,7 @@
         border-radius: 3px;
     }
 </style>
-<div id="map" class="span12" style="height: 400px;">
-
-</div>
-
+<div id="map" class="span12" style="height: 400px;"></div>
 <script>
 
     if (!GSP_VARS) {
@@ -22,7 +20,7 @@
         attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
         '<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
         'Imagery © <a href="http://mapbox.com">Mapbox</a>',
-        id: 'nickdos.kf2g7gpb'  // TODO: we should get an ALA account for mapbox.com
+        id: 'nickdos.kf2g7gpb'
     });
 
     // in case mapbox images start failing... fall back to plain OSM
@@ -63,5 +61,5 @@
 
     var marker = L.marker(pos, {draggable: false}).addTo(map);
 
-
 </script>
+</g:if>

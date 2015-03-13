@@ -221,7 +221,7 @@ class ElasticSearchService {
 
     public JSONObject getOccurrenceData(String occurrenceId) {
         def results = questionSearch(null) {
-            q("occurrenceId:${occurrenceId}")
+            q("occurrenceId:\"${occurrenceId}\"")
         }
 
         if (results.totalCount > 0) {

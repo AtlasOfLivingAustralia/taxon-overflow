@@ -22,8 +22,6 @@ class QuestionController {
 
         def searchResults = elasticSearchService.questionSearch(params)
 
-        List<String> occurrenceIds = searchResults.list*.occurrenceId
-
         def acceptedAnswers = [:]
         def c = Answer.createCriteria()
         if (searchResults.list) {
@@ -83,8 +81,6 @@ class QuestionController {
         }
     }
 
-
-
     def answersListFragment(int id) {
         def question = Question.get(id)
         def user = userService.currentUser
@@ -143,7 +139,7 @@ class QuestionController {
 
     def questionCommentsFragment(long id) {
         def question = Question.get(id)
-        render(template:'questionCommentsFragment', model:[question: question])
+        render(template:'questionCommentsFragment', model:[question: question, userId: authService.userId])
     }
 
     def questionTagsFragment(long id) {
@@ -153,13 +149,12 @@ class QuestionController {
 
     def addAnswerCommentFragment(long id) {
         def answer = Answer.get(id)
-
-        [answer: answer]
+        [answer: answer, userId: authService.userId]
     }
 
     def addQuestionCommentFragment(long id) {
         def question = Question.get(id)
-        [question: question]
+        [question: question, userId: authService.userId]
     }
 
     def mapFragment(long id) {

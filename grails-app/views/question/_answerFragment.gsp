@@ -99,7 +99,7 @@
             <h3><g:render template="/question/show${question.questionType.getCamelCaseName()}Answer" model="${[answer: answer]}" /></h3>
         </div>
         <div class="whoWhen">
-            Suggested by <to:userDisplayName user="${answer.user}" />&nbsp;on&nbsp;<g:formatDate date="${answer.dateCreated}" format="yyyy-MM-dd" />
+            Identified by <to:userDisplayName user="${answer.user}" /> <prettytime:display date="${answer.dateCreated}" />
             <to:ifCanEditAnswer answer="${answer}">
                 <a href="#" title="Edit this answer" class="btnEditAnswer"><i class="fa fa-edit"></i></a>
                 <a href="#" title="Remove this answer" class="btnDeleteAnswer"><i class="fa fa-remove"></i></a>
@@ -157,7 +157,7 @@
             </g:each>
         </ul>
         <div class="newCommentDiv">
-            <a class="btnAddAnswerComment"  href="#">Add a comment...</a>
+            <a class="btnAddAnswerComment btn btn-mini"  href="#">Add a comment on this identification...</a>
         </div>
     </div>
 </div>

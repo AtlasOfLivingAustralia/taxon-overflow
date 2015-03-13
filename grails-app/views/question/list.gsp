@@ -123,6 +123,7 @@
         <h1>Help identify species</h1>
         <p class="lead">
             Here are the latest records needing identification help from the community.
+            <br/>
             <strong>Get involved</strong> by suggesting an identification.
         </p>
         <div class="taxonoverflow-content row-fluid">
