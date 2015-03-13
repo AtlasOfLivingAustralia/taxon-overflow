@@ -6,7 +6,7 @@ import org.springframework.web.client.RestClientException
 
 class AbstractWebService {
 
-    def JSONElement getJson(String url) {
+    static def JSONElement getJson(String url) {
         def conn = new URL(url).openConnection()
         try {
             conn.setConnectTimeout(10000)
@@ -18,6 +18,5 @@ class AbstractWebService {
             throw new RestClientException(error)
         }
     }
-
 }
 

@@ -1,5 +1,5 @@
-<H3>Identify this occurrence</H3>
-<div class="form-horizontal">
+<H3 class="identify-header">Identify this occurrence</H3>
+<div class="identify-form form-horizontal">
     <div class="control-group">
         <label for="scientificName" class="control-label">Scientific Name</label>
         <div class="controls">

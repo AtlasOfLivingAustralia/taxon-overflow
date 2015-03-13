@@ -37,10 +37,10 @@ class TaxonOverflowTagLib {
             if(value){
                 def mb = new MarkupBuilder(out)
                 mb.div(class: 'row-fluid') {
-                    mb.div(class: 'span4 occurrence-property-name') {
+                    mb.div(class: 'span3 occurrence-property-name') {
                         mkp.yield(title)
                     }
-                    mb.div(class: 'span8 occurrence-property-value') {
+                    mb.div(class: 'span9 occurrence-property-value') {
                         mkp.yield(occurrence."${name}")
                     }
                 }

@@ -18,6 +18,8 @@ class AdminController {
 
     def indexAdmin() {}
 
+    def importFromEcodata(){}
+
     def createQuestionFromBiocache() { render view: 'createQuestion', model:[source:'biocache']}
 
     def createQuestionFromEcodata()  { render view: 'createQuestion', model:[source:'ecodata']}

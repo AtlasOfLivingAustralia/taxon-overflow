@@ -5,6 +5,7 @@ import au.org.ala.taxonoverflow.notification.SendEmailNotification
 import au.org.ala.web.CASRoles
 import grails.transaction.NotTransactional
 import grails.transaction.Transactional
+import groovy.json.JsonSlurper
 import org.apache.commons.lang.StringUtils
 
 @Transactional
@@ -13,6 +14,7 @@ class QuestionService {
     def ecodataService
     def biocacheService
     def authService
+    def userService
 
     @NotTransactional
     def boolean questionExists(String occurrenceId) {
@@ -25,6 +27,29 @@ class QuestionService {
             question.delete()
         }
     }
+
+    def bulkLoadFromEcodata(){
+        def questionsLoaded = 0
+        def source = Source.findByName("ecodata")
+        def url = source.wsBaseUrl + "uncertainIdentifications"
+        def listOfIds = AbstractWebService.getJson(url)
+
+        listOfIds.each { occurrenceId ->
+            def occurrence = ecodataService.getRecord(occurrenceId)
+            //only add records with images
+            if(occurrence && occurrence.imageIds) {
+                def question = Question.findByOccurrenceId(occurrenceId)
+                if (!question) {
+                    def user = userService.getUserFromUserId(occurrence.userId)
+                    question = new Question(user: user, occurrenceId: occurrenceId, questionType: QuestionType.IDENTIFICATION, source: source)
+                    question.save(failOnError: true)
+                    questionsLoaded++
+                }
+            }
+        }
+        questionsLoaded
+    }
+
 
     /**
      * To be refined to remove duplicate code
