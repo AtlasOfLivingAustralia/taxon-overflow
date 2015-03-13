@@ -169,10 +169,14 @@ class NotificationsAspect {
         // retrieve addressees
         Set<User> addressees = new HashSet<>()
         // Question creator
-        addressees.add(question.user)
+        if ( question.user.followedQuestions.contains(question)) {
+            addressees.add(question.user)
+        }
         // Question comments creators
         question.comments.each { previousComment ->
-            addressees.add(previousComment.user)
+            if (previousComment.user.followedQuestions.contains(question)) {
+                addressees.add(previousComment.user)
+            }
         }
         // Remove last comment user
         addressees.remove(lastCommentUser)
