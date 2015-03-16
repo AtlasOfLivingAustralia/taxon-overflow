@@ -10,6 +10,8 @@ import io.searchbox.core.Search
 import io.searchbox.core.SearchResult
 import net.sf.json.JSONObject
 import org.codehaus.groovy.grails.web.servlet.mvc.GrailsParameterMap
+import org.elasticsearch.action.admin.indices.delete.DeleteIndexRequest
+import org.elasticsearch.action.admin.indices.delete.DeleteIndexResponse
 import org.elasticsearch.action.delete.DeleteResponse
 import org.elasticsearch.action.index.IndexResponse
 import org.elasticsearch.action.search.SearchRequestBuilder
@@ -86,6 +88,13 @@ class ElasticSearchService {
         if (json) {
             IndexResponse response = client.prepareIndex(INDEX_NAME, "question", question.id.toString()).setSource(json).execute().actionGet();
         }
+        ct.stop(true)
+    }
+
+    @NotTransactional
+    public void deleteAllQuestionsFromIndex() {
+        def ct = new CodeTimer("Deleting questions from index")
+        DeleteIndexResponse delete = client.admin().indices().delete(new DeleteIndexRequest(INDEX_NAME)).actionGet()
         ct.stop(true)
     }
 

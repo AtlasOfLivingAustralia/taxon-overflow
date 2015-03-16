@@ -1,6 +1,6 @@
 <g:applyLayout name="main" >
   <head>
-    <r:require module="application"/>
+    <r:require modules="core,taxonoverflow"/>
     <r:script disposition="head">
             var TAXON_OVERFLOW_CONF = {
                 areYouSureUrl: "${createLink(controller:"dialog", action: "areYouSureFragment")}",
@@ -9,10 +9,8 @@
     </r:script>
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
   </head>
-
   <body>
     <div>
-
       <div class="row">
         <div class="span12">
           <ul class="breadcrumb">
