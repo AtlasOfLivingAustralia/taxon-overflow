@@ -405,4 +405,9 @@ class QuestionService {
 
         return user.followedQuestions.contains(question)
     }
+
+    ServiceResult<List<Question>> searchByTagsAndDatedCriteria(Map searchParams) {
+
+        
+    }
 }

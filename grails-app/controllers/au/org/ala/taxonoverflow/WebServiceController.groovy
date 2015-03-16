@@ -2,7 +2,6 @@ package au.org.ala.taxonoverflow
 
 import grails.converters.JSON
 import grails.converters.XML
-import groovy.json.JsonSlurper
 
 class WebServiceController {
 
@@ -10,6 +9,7 @@ class WebServiceController {
     def grailsApplication
     def questionService
     def elasticSearchService
+
 
     def index() {
         def model = [success: "true", version: grailsApplication.metadata['app.version']]
@@ -471,5 +471,58 @@ class WebServiceController {
 
     def followingQuestionStatus(Long questionId, Long userId) {
         render([following : questionService.followingQuestionStatus(questionId, userId)] as JSON)
+    }
+
+    static final enum QuestionSearchDatedCriteria {
+        dateCreated(['dateCreated']),
+        comments(['comments.dateCreated']),
+        identifications(['answers.dateCreated']),
+        activity(['comments.dateCreated', 'answers.dateCreated', 'answers.comments.dateCreated'])
+
+        List<String> searchFields
+
+        QuestionSearchDatedCriteria( List<String> searchFields) {
+            this.searchFields = searchFields
+        }
+    }
+
+    def questionSearch() {
+
+        Map searchParams = [tags: params.tags]
+        QuestionSearchDatedCriteria criteria = QuestionSearchDatedCriteria.find { criteria ->
+            params[criteria] != null
+        }
+        if (criteria) {
+            searchParams << ["criteria": criteria, "date": params.criteria]
+        }
+
+        ServiceResult<Question> serviceResult = validateQuestionSearchParams(searchParams)
+        if(!serviceResult.success) {
+            render serviceResult as JSON
+        } else {
+            render questionService.searchByTagsAndDatedCriteria(searchParams)
+        }
+    }
+
+    ServiceResult<Question> validateQuestionSearchParams(LinkedHashMap<String, Object> searchParams) {
+        ServiceResult<Question> serviceResult = new ServiceResult<>()
+
+        if (!searchParams.tags) {
+            serviceResult.fail("No parameter \"tags\" provided.")
+        }
+
+        if (!searchParams.criteria) {
+            serviceResult.fail("No valid date criteria provided")
+        }
+
+        if (searchParams.date) {
+            try {
+                Date.parse('yyyy-MM-dd', searchParams.date)
+            } catch (e) {
+                serviceResult.fail("The date provided ${searchParams.date} is not a valid date with format \"yyyy=MM-dd\"")
+            }
+        }
+
+        return serviceResult
     }
 }
