@@ -1,12 +1,12 @@
 package au.org.ala.taxonoverflow
 
+import au.org.ala.taxonoverflow.notification.FollowQuestionByUser
 import au.org.ala.taxonoverflow.notification.SendEmailNotification
 import au.org.ala.web.CASRoles
 import grails.transaction.NotTransactional
 import grails.transaction.Transactional
 import groovy.json.JsonSlurper
 import org.apache.commons.lang.StringUtils
-import org.codehaus.groovy.grails.web.json.JSONObject
 
 @Transactional
 class QuestionService {
@@ -54,6 +54,7 @@ class QuestionService {
     /**
      * To be refined to remove duplicate code
      */
+    @FollowQuestionByUser
     ServiceResult<Question> createQuestionFromEcodataService(String occurrenceId, QuestionType questionType, List<String> tags, User user, String comment) {
 
         def result = new ServiceResult<Question>(success: false)
@@ -102,6 +103,7 @@ class QuestionService {
     /**
      * To be refined to remove duplicate code
      */
+    @FollowQuestionByUser
     ServiceResult<Question> createQuestionFromOccurrence(String occurrenceId, QuestionType questionType, List<String> tags, User user, String comment) {
 
         def result = new ServiceResult<Question>(success: false)
@@ -160,6 +162,7 @@ class QuestionService {
         answer?.delete(flush: true)
     }
 
+    @FollowQuestionByUser
     @SendEmailNotification
     ServiceResult setAnswer(Answer answer, LinkedHashMap<String, Boolean> results) {
 
@@ -266,6 +269,7 @@ class QuestionService {
         return false
     }
 
+    @FollowQuestionByUser
     @SendEmailNotification
     ServiceResult<QuestionComment> addQuestionComment(Question question, User user, String commentText) {
         if (!question) {
@@ -288,6 +292,7 @@ class QuestionService {
         return new ServiceResult<QuestionComment>(result: comment, success: true)
     }
 
+    @FollowQuestionByUser
     @SendEmailNotification
     ServiceResult<AnswerComment> addAnswerComment(Answer answer, User user, String commentText) {
         if (!answer) {
@@ -372,4 +377,32 @@ class QuestionService {
         }
     }
 
+    ServiceResult<User> followOrUnfollowQuestionByUser(boolean follow, Long questionId, Long alaUserId) {
+        Question question = Question.get(questionId)
+        if (!question) {
+            return new ServiceResult<User>().fail("Question provided with id: ${questionId} is invalid")
+        }
+
+        User user =  User.findByAlaUserId(alaUserId)
+        if (!user) {
+            return new ServiceResult<User>().fail("User provided with id: ${alaUserId} is invalid")
+        }
+
+        if (follow) {
+            user.addToFollowedQuestions(question)
+            user.save(flush: true)
+            return new ServiceResult<User>(success: true, messages: ["User with id: ${alaUserId} is now following question with id: ${questionId}"])
+        } else {
+            user.removeFromFollowedQuestions(question)
+            user.save(flush: true)
+            return new ServiceResult<User>(success: true, messages: ["User with id: ${alaUserId} is now not following question with id: ${questionId}"])
+        }
+    }
+
+    Boolean followingQuestionStatus(Long questionId, Long alaUserId) {
+        Question question = Question.get(questionId)
+        User user =  User.findByAlaUserId(alaUserId)
+
+        return user.followedQuestions.contains(question)
+    }
 }

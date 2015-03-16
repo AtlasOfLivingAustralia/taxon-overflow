@@ -1,5 +1,7 @@
 package au.org.ala.taxonoverflow
 
+import grails.converters.JSON
+
 import static grails.async.Promises.*
 
 class QuestionController {
@@ -61,7 +63,9 @@ class QuestionController {
                 elasticSearchService.getOccurrenceData(question.occurrenceId)
             }
 
-            def userId = authService.userId
+            def alsUserId = authService.userId
+            User user = User.findByAlaUserId(alsUserId)
+            boolean isFollowing = user ? user.followedQuestions.contains(question) : false;
 
             def acceptedAnswer = Answer.findByQuestionAndAccepted(question, true)
 
@@ -74,7 +78,7 @@ class QuestionController {
 
             def viewCount = auditService.getQuestionViewCount(question)
 
-            return [question: question, imageIds: imageIds, occurrence: specimen, userId: userId, acceptedAnswer: acceptedAnswer, viewCount: viewCount]
+            return [question: question, imageIds: imageIds, occurrence: specimen, userId: alsUserId, acceptedAnswer: acceptedAnswer, viewCount: viewCount, isFollowing: isFollowing]
         } else {
             flash.message = "No such question, or question not specified"
             redirect(action:'list')
@@ -175,4 +179,5 @@ class QuestionController {
         List<Map> tags = elasticSearchService.getAggregatedQuestionTypesWithCount()
         render template: 'aggregatedQuestionTypes', model: [questionTypes: tags]
     }
+
 }

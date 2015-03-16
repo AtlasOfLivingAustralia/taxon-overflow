@@ -41,6 +41,9 @@ class NotificationsAspect {
     @Pointcut("@annotation(au.org.ala.taxonoverflow.notification.SendEmailNotification)")
     public void enableEmailNotifications() {}
 
+    @Pointcut("@annotation(au.org.ala.taxonoverflow.notification.FollowQuestionByUser)")
+    public void enableFollowQuestionByUser() {}
+
     @AfterReturning(pointcut = "au.org.ala.taxonoverflow.notification.NotificationsAspect.enableEmailNotifications()",
                     returning = "actionedItem")
     public void sendEmailNotification(def actionedItem) {
@@ -52,6 +55,30 @@ class NotificationsAspect {
         } else if (serviceResult.success && serviceResult.result instanceof QuestionTag) {
             sendNewTagNotification(serviceResult.result)
         }
+    }
+
+    @AfterReturning(pointcut = "au.org.ala.taxonoverflow.notification.NotificationsAspect.enableFollowQuestionByUser()",
+            returning = "actionedItem")
+    public void followQuestion(def actionedItem) {
+        ServiceResult serviceResult = actionedItem instanceof ServiceResult ? actionedItem as ServiceResult : null
+        if (serviceResult.success && serviceResult.result instanceof Question) {
+            Question question = serviceResult.result as Question
+            addQuestionToUserFollowingList(question.user, question)
+        } else if (serviceResult.success && serviceResult.result instanceof QuestionComment) {
+            QuestionComment comment = serviceResult.result as QuestionComment
+            addQuestionToUserFollowingList(comment.user, comment.question)
+        } else if (serviceResult.success && serviceResult.result instanceof AnswerComment) {
+            AnswerComment answerComment = serviceResult.result as AnswerComment
+            addQuestionToUserFollowingList(answerComment.user, answerComment.answer.question)
+        } else if (serviceResult.success && serviceResult.result instanceof Answer) {
+            Answer answer = serviceResult.result as Answer
+            addQuestionToUserFollowingList(answer.user, answer.question)
+        }
+    }
+
+    public void addQuestionToUserFollowingList(User user, Question question) {
+        user.addToFollowedQuestions(question)
+        user.save(flush: true)
     }
 
     private sendNewTagNotification(QuestionTag questionTag) {
@@ -158,10 +185,14 @@ class NotificationsAspect {
         // retrieve addressees
         Set<User> addressees = new HashSet<>()
         // Question creator
-        addressees.add(question.user)
+        if ( question.user.followedQuestions.contains(question)) {
+            addressees.add(question.user)
+        }
         // Question comments creators
         question.comments.each { previousComment ->
-            addressees.add(previousComment.user)
+            if (previousComment.user.followedQuestions.contains(question)) {
+                addressees.add(previousComment.user)
+            }
         }
         // Remove last comment user
         addressees.remove(lastCommentUser)

@@ -1,3 +1,9 @@
+
+/* Override Bootstrap */
+
+
+/* Override Bootstrap */
+
 .tag {
     text-transform: uppercase;
 }
@@ -8,4 +14,16 @@
 
 div.facets ul li span.label {
     cursor: pointer;
+}
+
+#followQuestion {
+    margin-bottom: 1em;
+}
+
+#followQuestion i {
+    cursor: pointer;
+}
+
+#followQuestion i.fa-star {
+    color: #e3cf7a;
 }

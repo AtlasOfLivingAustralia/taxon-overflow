@@ -4,8 +4,11 @@ class User {
 
     String alaUserId
 
+    static hasMany = [followedQuestions: Question]
+
     static constraints = {
         alaUserId nullable: false
+        followedQuestions nullable: true
     }
 
     static mapping = {

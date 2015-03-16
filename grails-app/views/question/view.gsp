@@ -66,6 +66,44 @@
 
                 renderMap();
 
+                $('#followQuestion i').on("mouseover", function(e) {
+                    if ($(this).hasClass('fa-star-o')) {
+                        $(this).removeClass('fa-star-o').addClass('fa-star')
+                    } else {
+                        $(this).removeClass('fa-star').addClass('fa-star-o')
+                    }
+                });
+
+                $('#followQuestion i').on("mouseout", function(e) {
+                    if ($(this).hasClass('fa-star') && !$(this).hasClass('following')) {
+                        $(this).removeClass('fa-star').addClass('fa-star-o')
+                    } else if ($(this).hasClass('fa-star-o') && $(this).hasClass('following')){
+                        $(this).removeClass('fa-star-o').addClass('fa-star')
+                    }
+                });
+
+                $('#followQuestion i').on('click', function() {
+                    var followURL = "${g.createLink(uri: '/ws/question/follow')}/${question.id}/${to.currentUserId()}";
+                    var unfollowURL = "${g.createLink(uri: '/ws/question/unfollow')}/${question.id}/${to.currentUserId()}";
+
+                    $.ajax({
+                        url: $(this).hasClass('following') ? unfollowURL : followURL,
+                        dataType: "json",
+                        success: function(data) {
+                            //console.log(data);
+                            if($("#followQuestion i").hasClass('following')) {
+                                $("#followQuestion i").removeClass('fa-star following').addClass('fa-star-o');
+                                $('#followingText').hide();
+                                $('#unfollowingText').show();
+                            } else {
+                                $("#followQuestion i").removeClass('fa-star-o').addClass('fa-star following');
+                                $('#followingText').show();
+                                $('#unfollowingText').hide();
+                            }
+                        }
+                    });
+                }) 
+
             });
 
             $(window).load(function() {
@@ -96,6 +134,27 @@
                     }
                 });
             });
+
+            function checkFollowingStatus() {
+                var url = "${g.createLink(uri: '/ws/question/following/status')}/${question.id}/${to.currentUserId()}";
+
+                $.ajax({
+                    url: url,
+                    dataType: "json",
+                    success: function(data) {
+                        console.log("following: " + data.following);
+                        if (data.following && !$("#followQuestion i").hasClass('following')) {
+                            $("#followQuestion i").removeClass('fa-star-o').addClass('fa-star following');
+                            $('#followingText').show();
+                            $('#unfollowingText').hide();
+                        } else if (!data.following && $("#followQuestion i").hasClass('following')) {
+                            $("#followQuestion i").removeClass('fa-star following').addClass('fa-star-o');
+                            $('#followingText').hide();
+                            $('#unfollowingText').show();
+                        }
+                    }
+                });
+            }
 
             function renderTags() {
                 $.ajax("${createLink(action:'questionTagsFragment', id: question.id)}").done(function(content) {
@@ -174,9 +233,15 @@
 
             </div>
             <div class="span6">
+                <div id="followQuestion">
+                    <i class="fa ${isFollowing ? 'fa-star following' : 'fa-star-o'} fa-lg"></i>
+                    <span id="followingText" style="${isFollowing ? '' : 'display:none;'}"> Following</span>
+                    <span id="unfollowingText"  style="${isFollowing ? 'display:none' : ''}"> Not following</span>
+                </div>
 
                 <div id="tagsDiv">
                     <g:render template="tagsFragment" model="${[question: question]}" />
+
                 </div>
 
                 <div class="occurrenceDetails">

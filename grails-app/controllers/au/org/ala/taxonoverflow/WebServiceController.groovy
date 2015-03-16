@@ -461,4 +461,15 @@ class WebServiceController {
         renderResults(results)
     }
 
+    def follow(Long questionId, Long userId) {
+        render questionService.followOrUnfollowQuestionByUser(true, questionId, userId) as JSON
+    }
+
+    def unfollow(Long questionId, Long userId) {
+        render questionService.followOrUnfollowQuestionByUser(false, questionId, userId) as JSON
+    }
+
+    def followingQuestionStatus(Long questionId, Long userId) {
+        render([following : questionService.followingQuestionStatus(questionId, userId)] as JSON)
+    }
 }
