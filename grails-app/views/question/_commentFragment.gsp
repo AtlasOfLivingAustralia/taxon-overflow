@@ -3,7 +3,7 @@
         ${comment.comment}
         <br/>
         <small>
-            <to:userDisplayName user="${comment.user}" /> - <g:formatDate date="${comment.dateCreated}" format="yyyy-MM-dd HH:mm:ss" />
+            <to:userDisplayName user="${comment.user}" /> - <prettytime:display date="${comment.dateCreated}" />
         </small>
     </div>
     <div class="span1">

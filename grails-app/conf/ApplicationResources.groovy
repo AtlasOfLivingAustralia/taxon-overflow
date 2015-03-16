@@ -1,13 +1,8 @@
 modules = {
 
-    core {
-        dependsOn 'jquery'
-//        resource url: 'js/html5.js', plugin: "ala-web-theme", wrapper: { s -> "<!--[if lt IE 9]>$s<![endif]-->" }, disposition: 'head'
-    }
-
-    application {
+    taxonoverflow {
         dependsOn('jquery')
-        resource url:'js/taxonoverflow.js'
+        resource url:'js/taxonoverflow.js'  //this is temporary
         resource url:'css/taxonoverflow.css'
     }
 

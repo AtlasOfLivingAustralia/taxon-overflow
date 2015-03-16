@@ -23,7 +23,9 @@ class AuditService {
             def session = GrailsWebRequest.lookup().session
             Map sessionViewsMap = (session.getAttribute(SESSION_QUESTION_VIEWS_KEY) as Map) ?: [:]
 
-            if (!sessionViewsMap.containsKey(question.id)) {
+            //dont log anonymous question views
+            if (!sessionViewsMap.containsKey(question.id) &&  userService.currentUser) {
+
                 def questionView = new QuestionView(question: question, user: userService.currentUser)
                 questionView.save(failOnError: true, flush: true)
 

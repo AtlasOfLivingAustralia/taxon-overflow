@@ -1,4 +1,4 @@
-<H3 class="identify-header">Identify this occurrence</H3>
+<H3 class="identify-header">Suggest an alternative identification</H3>
 <div class="identify-form ">
     <div class="control-group">
         <label for="scientificName" class="control-label">Scientific Name</label>

@@ -46,7 +46,9 @@ biocacheWebapp.recordUrl = "http://biocache.ala.org.au/occurrence/"
 ecodata.recordUrl = "http://ecodata-sightings-dev.ala.org.au/record/"
 pigeonhole.recordUrl = "http://sightings.ala.org.au/edit/"
 
+notifications.enabled = false
 
+//grails.resources.debug=true
 
 biocache.queryContext = "" // datahub uuid - e.g. ozcam  = " data_hub_uid:dh1 || avh = data_hub_uid:dh2"
 biocache.downloads.extra = "dataResourceUid,dataResourceName.p"

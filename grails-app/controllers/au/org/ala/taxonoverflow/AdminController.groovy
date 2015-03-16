@@ -4,7 +4,6 @@ import au.org.ala.web.AlaSecured
 import grails.converters.JSON
 import grails.converters.XML
 
-
 @AlaSecured(value = "ROLE_ADMIN", redirectController = "question")
 class AdminController {
 
@@ -25,6 +24,8 @@ class AdminController {
     def createQuestionFromEcodata()  { render view: 'createQuestion', model:[source:'ecodata']}
 
     def ajaxReindexAll() {
+
+        elasticSearchService.deleteAllQuestionsFromIndex()
         def c = Question.createCriteria()
         def questionIds = c.list {
             projections {
@@ -57,5 +58,4 @@ class AdminController {
         response.addHeader("Access-Control-Allow-Origin", "")
         response.status = responseCode
     }
-
 }

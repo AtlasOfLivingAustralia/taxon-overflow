@@ -1,9 +1,7 @@
 <style>
-
     .scientificName {
         font-style: italic;
     }
-
 </style>
 <div>
     <span class="scientificName">${answer.scientificName}</span>

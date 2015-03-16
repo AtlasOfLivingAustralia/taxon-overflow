@@ -10,6 +10,8 @@ import io.searchbox.core.Search
 import io.searchbox.core.SearchResult
 import net.sf.json.JSONObject
 import org.codehaus.groovy.grails.web.servlet.mvc.GrailsParameterMap
+import org.elasticsearch.action.admin.indices.delete.DeleteIndexRequest
+import org.elasticsearch.action.admin.indices.delete.DeleteIndexResponse
 import org.elasticsearch.action.delete.DeleteResponse
 import org.elasticsearch.action.index.IndexResponse
 import org.elasticsearch.action.search.SearchRequestBuilder
@@ -35,7 +37,6 @@ class ElasticSearchService {
     private static Queue<IndexQuestionTask> _backgroundQueue = new ConcurrentLinkedQueue<IndexQuestionTask>()
 
     def grailsApplication
-    def biocacheService
     private Node node
     private Client client
     private JestClient jestClient
@@ -87,6 +88,13 @@ class ElasticSearchService {
         if (json) {
             IndexResponse response = client.prepareIndex(INDEX_NAME, "question", question.id.toString()).setSource(json).execute().actionGet();
         }
+        ct.stop(true)
+    }
+
+    @NotTransactional
+    public void deleteAllQuestionsFromIndex() {
+        def ct = new CodeTimer("Deleting questions from index")
+        DeleteIndexResponse delete = client.admin().indices().delete(new DeleteIndexRequest(INDEX_NAME)).actionGet()
         ct.stop(true)
     }
 
@@ -154,7 +162,7 @@ class ElasticSearchService {
         }
     }
 
-    public QueryResults<Question>     questionSearch(GrailsParameterMap params, Closure builderFunc = null) {
+    public QueryResults<Question> questionSearch(GrailsParameterMap params, Closure builderFunc = null) {
 
         SearchRequestBuilder searchRequestBuilder = client.prepareSearch(INDEX_NAME).setSearchType(SearchType.QUERY_THEN_FETCH)
 
@@ -221,7 +229,7 @@ class ElasticSearchService {
 
     public JSONObject getOccurrenceData(String occurrenceId) {
         def results = questionSearch(null) {
-            q("occurrenceId:${occurrenceId}")
+            q("occurrenceId:\"${occurrenceId}\"")
         }
 
         if (results.totalCount > 0) {

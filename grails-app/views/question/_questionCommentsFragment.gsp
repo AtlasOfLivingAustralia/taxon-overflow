@@ -20,20 +20,22 @@
             </g:each>
         </ul>
         <div id="newQuestionCommentDiv">
-            <a id="btnAddQuestionComment" href="#" class="btn">Add a comment or question...</a>
+            <button id="btnAddQuestionComment" href="#" class="btn ${userId ? '' : 'disabled'}">Add a comment or question...</button>
         </div>
     </div>
 </div>
 
 <script>
 
+    <g:if test="${userId}">
     $("#btnAddQuestionComment").click(function(e) {
         e.preventDefault();
         $.ajax("${createLink(controller:'question', action:'addQuestionCommentFragment', id: question.id)}").done(function(content) {
             $("#newQuestionCommentDiv").html(content);
         });
-
     });
+    </g:if>
+
 
     $(".btnDeleteQuestionComment").click(function(e) {
         e.preventDefault();
