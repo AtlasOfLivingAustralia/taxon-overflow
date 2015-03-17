@@ -19,8 +19,8 @@ environments {
     development {
         dataSource {
             dbCreate = "update" // one of 'create', 'create-drop','update'
-            username="mar759"
-            password=""
+            username="postgres"
+            password="password"
             url = "jdbc:postgresql://localhost/taxonoverflow"
             loggingSql = false
         }
@@ -53,5 +53,4 @@ environments {
             }
         }
     }
-
 }

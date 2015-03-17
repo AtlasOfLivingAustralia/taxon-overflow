@@ -57,8 +57,6 @@ collections.baseUrl = "http://collections.ala.org.au"
 
 ala.image.service.url = "http://images.ala.org.au"
 
-elasticsearch.location = "/data/${appName}/elasticsearch"
-
 // The ACCEPT header will not be used for content negotiation for user agents containing the following strings (defaults to the 4 major rendering engines)
 grails.mime.disable.accept.header.userAgents = ['Gecko', 'WebKit', 'Presto', 'Trident']
 grails.mime.types = [ // the first one is the default format
@@ -146,24 +144,45 @@ environments {
 
 def loggingDir = (System.getProperty('catalina.base') ? System.getProperty('catalina.base') + '/logs' : './logs')
 
-/* Mail configuration */
+/* Environment configuration */
 environments {
     development {
         grails {
+            /*  Mail Configuration */
             mail {
                 // I am using MockSmtp:
                 host = "localhost"
                 port = "1025"
             }
         }
+
+        /*  ElasticSearch Configuration */
+        elasticsearch.location = "/data/${appName}/elasticsearch"
     }
 
     test {
+        grails {
+            /*  Mail Configuration */
+            mail {
+                // TODO
+            }
+        }
 
+
+        /*  ElasticSearch Configuration */
+        elasticsearch.location = "/data/${appName}/elasticsearch-test"
     }
 
     production {
+        grails {
+            /*  Mail Configuration */
+            mail {
+                // TODO
+            }
+        }
 
+        /*  ElasticSearch Configuration */
+        elasticsearch.location = "/data/${appName}/elasticsearch"
     }
 }
 

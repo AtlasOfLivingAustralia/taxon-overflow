@@ -15,6 +15,7 @@ class QuestionService {
     def biocacheService
     def authService
     def userService
+    ElasticSearchService elasticSearchService
 
     @NotTransactional
     def boolean questionExists(String occurrenceId) {
@@ -407,7 +408,7 @@ class QuestionService {
     }
 
     ServiceResult<List<Question>> searchByTagsAndDatedCriteria(Map searchParams) {
-
-        
+        List<String> questionIdList = elasticSearchService.searchByTagsAndDatedCriteria(searchParams)
+        return new ServiceResult<List<Question>>(result: Question.findAllByIdInList(questionIdList), success: true)
     }
 }

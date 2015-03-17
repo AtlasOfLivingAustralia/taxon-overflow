@@ -475,7 +475,7 @@ class WebServiceController {
 
     static final enum QuestionSearchDatedCriteria {
         dateCreated(['dateCreated']),
-        comments(['comments.dateCreated']),
+        comments(['comments.dateCreated', 'answers.comments.dateCreated']),
         identifications(['answers.dateCreated']),
         activity(['comments.dateCreated', 'answers.dateCreated', 'answers.comments.dateCreated'])
 
@@ -490,22 +490,23 @@ class WebServiceController {
 
         Map searchParams = [tags: params.tags]
         QuestionSearchDatedCriteria criteria = QuestionSearchDatedCriteria.find { criteria ->
-            params[criteria] != null
+            params[criteria.toString()] != null
         }
         if (criteria) {
-            searchParams << ["criteria": criteria, "date": params.criteria]
+            searchParams << ["criteria": criteria, "date": params[criteria.toString()]]
         }
 
         ServiceResult<Question> serviceResult = validateQuestionSearchParams(searchParams)
         if(!serviceResult.success) {
             render serviceResult as JSON
         } else {
-            render questionService.searchByTagsAndDatedCriteria(searchParams)
+            render questionService.searchByTagsAndDatedCriteria(searchParams) as JSON
         }
     }
 
     ServiceResult<Question> validateQuestionSearchParams(LinkedHashMap<String, Object> searchParams) {
         ServiceResult<Question> serviceResult = new ServiceResult<>()
+        serviceResult.success = true
 
         if (!searchParams.tags) {
             serviceResult.fail("No parameter \"tags\" provided.")

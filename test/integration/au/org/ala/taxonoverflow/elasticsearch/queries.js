@@ -169,27 +169,29 @@ var query2 = {
 };
 
 var query3 = {
-    "filter": {
-        "and" : [
-            {
-                "terms": {
-                    "tags.tag": ["kangaroo"]
-                }
-            },
-            {
-                "or" : [
-                    {
-                        "range": {
-                            "dateCreated" : {
-                                "gte": "2015-03-02"
+        "fields": [],
+        "filter": {
+            "and": [
+                {
+                    "terms": {
+                        "tags.tag": ["white", "kangaroo"],
+                        "execution": "and"
+                    }
+                },
+                {
+                    "or": [
+                        {
+                            "range": {
+                                "dateCreated": {
+                                    "gte": "2015-03-02"
+                                }
                             }
                         }
-                    }
-                ]
+                    ]
 
-            }
+                }
 
-        ]
+            ]
+        }
     }
-};
-
+    ;
