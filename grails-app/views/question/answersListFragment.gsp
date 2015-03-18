@@ -11,13 +11,15 @@
     border-radius: 2px;
 }
 
+.newCommentDiv { margin-bottom: 10px; }
+
 .answer-list {
     list-style: none;
     margin-left: 0;
 }
 
 .answer-list > li {
-    padding: 10px;
+    /*padding: 10px;*/
     border: 1px solid #dddddd;
     margin-bottom: 20px;
 }

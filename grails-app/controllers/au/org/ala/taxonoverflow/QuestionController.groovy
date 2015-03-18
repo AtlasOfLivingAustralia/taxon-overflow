@@ -1,7 +1,5 @@
 package au.org.ala.taxonoverflow
 
-import grails.converters.JSON
-
 import static grails.async.Promises.*
 
 class QuestionController {

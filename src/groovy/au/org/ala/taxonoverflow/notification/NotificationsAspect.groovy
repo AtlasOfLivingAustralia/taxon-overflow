@@ -77,8 +77,11 @@ class NotificationsAspect {
     }
 
     public void addQuestionToUserFollowingList(User user, Question question) {
-        user.addToFollowedQuestions(question)
-        user.save(flush: true)
+        log.debug("User is currently following questions: ${user.getFollowedQuestions()}")
+        if(!user.getFollowedQuestions() || !user.getFollowedQuestions().collect{ it.id }.contains(question.id)){
+            user.addToFollowedQuestions(question)
+            user.save(flush: true)
+        }
     }
 
     private sendNewTagNotification(QuestionTag questionTag) {

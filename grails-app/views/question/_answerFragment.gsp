@@ -91,73 +91,80 @@
 
     .identification-answer h3 { padding-top:0px; margin-top:0px;  }
 
+    .accepted-answer-header { padding-top:0px; margin-top:0px; background-color: darkgreen; color: #FFF }
+
+    .answer-container { padding:0px; }
+
+    .answer-details { }
+
 </style>
-<div class="row-fluid" style="margin-bottom: 10px">
+<div class="answer-container ${ answer.accepted ? 'accepted-answer' : ''}">
+    <g:if test="${answer.accepted}"><h3 class="accepted-answer-header">Accepted answer</h3></g:if>
+    <div class="answer-details row-fluid" style="margin-bottom: 10px">
+        <div class="span9" style="padding-left:10px;">
+            <div class="identification-answer">
+                <h3><g:render template="/question/show${question.questionType.getCamelCaseName()}Answer" model="${[answer: answer]}" /></h3>
+            </div>
+            <div class="whoWhen">
+                Identified by <to:userDisplayName user="${answer.user}" /> <prettytime:display date="${answer.dateCreated}" />
+                <to:ifCanEditAnswer answer="${answer}">
+                    <a href="#" title="Edit this answer" class="btnEditAnswer"><i class="fa fa-edit"></i></a>
+                    <a href="#" title="Remove this answer" class="btnDeleteAnswer"><i class="fa fa-remove"></i></a>
+                </to:ifCanEditAnswer>
+            </div>
+        </div>
+        <div class="span1">
+            <span class="pull-right answer-buttons">
+                <g:if test="${!answer.accepted}">
+                    <to:ifCanAcceptAnswer answer="${answer}">
+                        <button type="button" title="Accept this answer" class="btnAcceptAnswer btn btn-small"><i class="fa fa-check"></i></button>
+                    </to:ifCanAcceptAnswer>
+                </g:if>
+            </span>
+        </div>
 
-    <div class="span9">
-        <div class="identification-answer">
-            <h3><g:render template="/question/show${question.questionType.getCamelCaseName()}Answer" model="${[answer: answer]}" /></h3>
-        </div>
-        <div class="whoWhen">
-            Identified by <to:userDisplayName user="${answer.user}" /> <prettytime:display date="${answer.dateCreated}" />
-            <to:ifCanEditAnswer answer="${answer}">
-                <a href="#" title="Edit this answer" class="btnEditAnswer"><i class="fa fa-edit"></i></a>
-                <a href="#" title="Remove this answer" class="btnDeleteAnswer"><i class="fa fa-remove"></i></a>
-            </to:ifCanEditAnswer>
-        </div>
-    </div>
-    <div class="span1">
-        <span class="pull-right answer-buttons">
-            <g:if test="${!answer.accepted}">
+        <div class="span1" style="text-align: center; margin-top:10px;">
+            <g:if test="${answer.accepted}">
                 <to:ifCanAcceptAnswer answer="${answer}">
-                    <button type="button" title="Accept this answer" class="btnAcceptAnswer btn btn-small"><i class="fa fa-check"></i></button>
+                    <a href="#" title="Click to undo acceptance of this answer." class="btnUnacceptAnswer">
+                        <i class="accepted-answer-mark fa fa-check"></i>
+                    </a>
                 </to:ifCanAcceptAnswer>
-            </g:if>
-        </span>
-    </div>
-
-    <div class="span1" style="text-align: center">
-        <g:if test="${answer.accepted}">
-            <to:ifCanAcceptAnswer answer="${answer}">
-                <a href="#" title="Click to undo acceptance of this answer." class="btnUnacceptAnswer">
+                <to:ifCannotAcceptAnswer answer="${answer}">
                     <i class="accepted-answer-mark fa fa-check"></i>
+                </to:ifCannotAcceptAnswer>
+            </g:if>
+        </div>
+
+        <div class="span1" style="text-align: center;  margin-top:15px;">
+            <g:set var="upvoteClass" value="${userVote?.voteValue > 0 ? 'user-upvoted' : '' }" />
+            <g:set var="downvoteClass" value="${userVote?.voteValue && userVote?.voteValue < 0 ? 'user-downvoted' : '' }" />
+            <div>
+                <a href="#" class="btnUpVote vote-arrow vote-arrow-up ${upvoteClass}">
+                    <i class="fa fa-thumbs-o-up"></i>
                 </a>
-            </to:ifCanAcceptAnswer>
-            <to:ifCannotAcceptAnswer answer="${answer}">
-                <i class="accepted-answer-mark fa fa-check"></i>
-            </to:ifCannotAcceptAnswer>
-        </g:if>
-    </div>
-
-    <div class="span1" style="text-align: center">
-        <g:set var="upvoteClass" value="${userVote?.voteValue > 0 ? 'user-upvoted' : '' }" />
-        <g:set var="downvoteClass" value="${userVote?.voteValue && userVote?.voteValue < 0 ? 'user-downvoted' : '' }" />
-        <div>
-            <a href="#" class="btnUpVote vote-arrow vote-arrow-up ${upvoteClass}">
-                <i class="fa fa-thumbs-o-up"></i>
-            </a>
+            </div>
+            <div class="voteCount">${totalVotes ?: 0}</div>
+            <div>
+                <a href="#" class="btnDownVote vote-arrow vote-arrow-down ${downvoteClass}">
+                    <i class="fa fa-thumbs-o-down"></i>
+                </a>
+            </div>
         </div>
-        <div class="voteCount">${totalVotes ?: 0}</div>
-        <div>
-            <a href="#" class="btnDownVote vote-arrow vote-arrow-down ${downvoteClass}">
-                <i class="fa fa-thumbs-o-down"></i>
-            </a>
-        </div>
+
     </div>
-
-</div>
-
-<div class="row-fluid">
-    <div class="span11 offset1 answerCommentsContainer">
-        <ul class="comment-list">
-            <g:each in="${answer.comments}" var="comment">
-                <li answerCommentId="${comment.id}">
-                    <g:render template="commentFragment" model="${[comment: comment]}" />
-                </li>
-            </g:each>
-        </ul>
-        <div class="newCommentDiv">
-            <a class="btnAddAnswerComment btn btn-mini"  href="#">Add a comment on this identification...</a>
+    <div class="answer-details row-fluid">
+        <div class="span11 offset1 answerCommentsContainer">
+            <ul class="comment-list">
+                <g:each in="${answer.comments}" var="comment">
+                    <li answerCommentId="${comment.id}">
+                        <g:render template="commentFragment" model="${[comment: comment]}" />
+                    </li>
+                </g:each>
+            </ul>
+            <div class="newCommentDiv">
+                <a class="btnAddAnswerComment btn btn-mini"  href="#">Add a comment on this identification...</a>
+            </div>
         </div>
     </div>
 </div>
