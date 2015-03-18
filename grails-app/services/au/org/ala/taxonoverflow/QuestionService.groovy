@@ -14,6 +14,7 @@ class QuestionService {
     def biocacheService
     def authService
     def userService
+    ElasticSearchService elasticSearchService
 
     @NotTransactional
     def boolean questionExists(String occurrenceId) {
@@ -403,5 +404,10 @@ class QuestionService {
         User user =  User.findByAlaUserId(alaUserId)
 
         return user.followedQuestions.contains(question)
+    }
+
+    ServiceResult<List<Question>> searchByTagsAndDatedCriteria(Map searchParams) {
+        List<String> questionIdList = elasticSearchService.searchByTagsAndDatedCriteria(searchParams)
+        return new ServiceResult<List<Question>>(result: Question.findAllByIdInList(questionIdList), success: true)
     }
 }
