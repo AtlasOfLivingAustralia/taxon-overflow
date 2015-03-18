@@ -69,21 +69,22 @@ class QuestionService {
             if (!question) {
 
                 question = new Question(user: user, occurrenceId: occurrenceId, questionType: questionType, source: source)
-                question.save(failOnError: true)
+
 
                 // Save the tags
                 tags?.each {
                     if (!StringUtils.isEmpty(it)) {
                         def tag = new QuestionTag(question: question, tag: it.trim())
-                        tag.save()
+                        question.addToTags(tag)
                     }
                 }
 
                 if(comment){
-                    addQuestionComment(question, user, comment)
+                    question.addToComments(new QuestionComment(question: question, user: user, comment: comment))
                 }
 
-                result.success(question)
+                question.save(failOnError: true)
+                result.success(Question.load(question.id))
             } else {
                 def messages = ["Question already exists"]
                 if(comment){
@@ -118,20 +119,20 @@ class QuestionService {
             if (!question) {
                 def source = Source.findByName("biocache")
                 question = new Question(user: user, occurrenceId: occurrenceId, questionType: questionType, source: source)
-                question.save(failOnError: true)
 
                 // Save the tags
                 tags?.each {
                     if (!StringUtils.isEmpty(it)) {
                         def tag = new QuestionTag(question: question, tag: it.trim())
-                        tag.save()
+                        question.addToTags(tag)
                     }
                 }
 
                 if(comment){
-                    addQuestionComment(question, user, comment)
+                    question.addToComments(new QuestionComment(question: question, user: user, comment: comment))
                 }
 
+                question.save(failOnError: true)
                 result.success(question)
             } else {
                 def messages = ["Question already exists"]

@@ -1,7 +1,7 @@
 dataSource {
     pooled = true
     jmxExport = true
-    driverClassName = "org.postgresql.Driver"
+
 }
 
 hibernate {
@@ -22,6 +22,7 @@ environments {
             username="postgres"
             password="password"
             url = "jdbc:postgresql://localhost/taxonoverflow"
+            driverClassName = "org.postgresql.Driver"
             loggingSql = false
         }
     }
@@ -29,10 +30,11 @@ environments {
     test {
         dataSource {
             dbCreate = "update" // one of 'create', 'create-drop','update'
-            username="postgres"
-            password="password"
-            url = "jdbc:postgresql://localhost/taxonoverflow"
-            loggingSql = false
+            username="sa"
+            password=""
+            url = "jdbc:h2:mem:testDb:MVCC=TRUE;LOCK_TIMEOUT=10000"
+            driverClassName = "org.h2.Driver"
+            loggingSql = true
         }
     }
 
@@ -41,6 +43,7 @@ environments {
             dbCreate = "update"
             testOnBorrow = true
             url = "jdbc:postgresql://localhost/taxonoverflow"
+            driverClassName = "org.postgresql.Driver"
             properties {
                 maxActive = 10
                 maxIdle = 5
