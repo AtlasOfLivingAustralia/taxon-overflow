@@ -48,6 +48,13 @@ class TaxonOverflowTagLib {
         }
     }
 
+    def switchUserLink = { attrs, body ->
+        def logOutLink = createLink(controller: "logout", action: "logout")
+        def casUrl = grailsApplication.config.casServerUrlPrefix + "/logout"
+        def appUrl = URLEncoder.encode(grailsApplication.config.casServerLoginUrl + "?email=" + attrs.email + "&service=" + grailsApplication.config.serverName + request.forwardURI, "UTF-8")
+        out << """<a href="${logOutLink}?casUrl=${casUrl}&appUrl=${appUrl}">${attrs.email}</a>"""
+    }
+
     /**
      * @attr question
      * @attr answer (optional)
@@ -79,6 +86,14 @@ class TaxonOverflowTagLib {
         def user = attrs.user as User
         def userDetails = authService.getUserForUserId(user?.alaUserId)
         out << userDetails?.displayName ?:  user?.alaUserId
+    }
+
+    def currentUserDisplayName = { attrs, body ->
+        def user = userService.currentUser
+        def userDetails = authService.getUserForUserId(user?.alaUserId)
+        if(userDetails) {
+            out << userDetails?.displayName
+        }
     }
 
     def currentUserId = { attrs, body ->

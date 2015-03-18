@@ -31,6 +31,8 @@
             }
             .identify-header { padding-left:10px;  margin-top:0px; padding-top:0px; background-color: #f2f2f2; border-bottom: 1px solid #dddddd; }
 
+            .accepted-answer-header { padding-left:10px;  margin-top:0px; padding-top:0px; background-color: #f2f2f2; border-bottom: 1px solid #dddddd; }
+
 
         </r:style>
         <r:require modules="viewer, flexisel, leaflet, taxonoverflow" />
@@ -184,7 +186,7 @@
         </r:script>
     </head>
     <body>
-        %{--<h1>Logged in: ${userId ? "yes" : "no" }</h1>--}%
+
         <div class="row">
             <div class="span12">
                 <ul class="breadcrumb">
@@ -194,6 +196,26 @@
                 </ul>
             </div>
         </div>
+
+        <g:if test="${grailsApplication.config.testUsers}">
+        <div class="pull-right" style="position:absolute; top:70px; right:30px;">
+            <ul class="nav nav-pills">
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                        Logged in: ${to.currentUserDisplayName()}, Switch users
+                        <b class="caret"></b>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <g:each in="${grailsApplication.config.testUsers.split(',')}" var="testUser">
+                            <li>
+                                <to:switchUserLink email="${testUser}"/>
+                            </li>
+                        </g:each>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+        </g:if>
 
         <div class="row-fluid header-row">
             <div class="span6">
@@ -205,7 +227,7 @@
             <div class="span6">
                 <h4 class="pull-right">${answers?.size() ?: 0} ${question.questionType == au.org.ala.taxonoverflow.QuestionType.IDENTIFICATION ? "IDENTIFICATION(s)" : "Answer(s)" }</h4>
                 <g:if test="${acceptedAnswer}">
-                    <div class="label label-success">An identification has been accepted for this occurrence: ${acceptedAnswer.scientificName}</div>
+                    <div class="hide label label-success">An identification has been accepted for this occurrence: ${acceptedAnswer.scientificName}</div>
                 </g:if>
             </div>
         </div>

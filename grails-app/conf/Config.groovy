@@ -48,7 +48,8 @@ pigeonhole.recordUrl = "http://sightings.ala.org.au/edit/"
 
 notifications.enabled = false
 
-//grails.resources.debug=true
+//this list should be empty for production
+testUsers="taxonoverflow%2Bmick@gmail.com,taxonoverflow%2Bkeef@gmail.com,taxonoverflow%2Bbasher@gmail.com,taxonoverflow%2Bronnie@gmail.com,taxonoverflow%2Bbill@gmail.com"
 
 biocache.queryContext = "" // datahub uuid - e.g. ozcam  = " data_hub_uid:dh1 || avh = data_hub_uid:dh2"
 biocache.downloads.extra = "dataResourceUid,dataResourceName.p"
