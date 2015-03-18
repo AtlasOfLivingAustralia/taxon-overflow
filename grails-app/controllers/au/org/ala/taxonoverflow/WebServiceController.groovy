@@ -8,7 +8,6 @@ class WebServiceController {
     def userService
     def grailsApplication
     def questionService
-    def elasticSearchService
 
 
     def index() {
@@ -69,7 +68,7 @@ class WebServiceController {
         def results = [success:false]
         def body = request.JSON
         if (body) {
-            def tags = body.tags instanceof String ? body.tags.split(",")?.toList() : body.tags as List<String>
+            def tags = body.tags instanceof String ? body.tags.split(",").collect{it.trim()} : body.tags as List<String>
             def comment = body.comment
             def user = userService.getUserFromUserId(body.userId)
             def occurrenceId = body.occurrenceId as String
@@ -92,7 +91,7 @@ class WebServiceController {
         def results = [success:true]
         def body = request.JSON
         if (body) {
-            def tags = body.tags instanceof String ? body.tags.split(",")?.toList() : body.tags as List<String>
+            def tags = body.tags instanceof String ? body.tags.split(",").collect{it.trim()} : body.tags as List<String>
             def occurrenceId = body.occurrenceId as String
             def user = userService.getUserFromUserId(body.userId)
             def comment = body.comment
