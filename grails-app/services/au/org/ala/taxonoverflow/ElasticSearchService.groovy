@@ -209,6 +209,7 @@ class ElasticSearchService {
         }
 
         SearchResponse searchResponse = searchRequestBuilder.execute().actionGet();
+        log.debug("ElasticSearch Query using Java Client API:\n${searchRequestBuilder.internalBuilder().toString()}")
 
         def resultsList = []
         def auxdata = [:]
@@ -278,6 +279,30 @@ class ElasticSearchService {
     }
 
     /**
+     *
+     * @param searchParams
+     * @return
+     */
+    List<String> searchByTagsAndDatedCriteria(Map searchParams) {
+        SearchRequestBuilder searchRequestBuilder = client.prepareSearch(INDEX_NAME).setSearchType(SearchType.QUERY_THEN_FETCH)
+        .setNoFields()
+        .setPostFilter(
+                FilterBuilders.andFilter(
+                        FilterBuilders.termsFilter("tags.tag", searchParams.tags.split(",").collect{it.trim()}).execution("and"),
+                        FilterBuilders.orFilter(
+                                *searchParams.criteria.searchFields.collect { String searchField ->
+                                    FilterBuilders.rangeFilter(searchField).gte(searchParams.date)
+                                }
+                        )
+                )
+        )
+
+        def hits = searchRequestBuilder.execute().actionGet()?.hits?.hits
+        log.debug("ElasticSearch Query using Java Client API:\n${searchRequestBuilder.internalBuilder().toString()}")
+        return hits.collect {hit -> hit.id}
+    }
+
+    /**
      * Performs a search on elasticsearch using the REST API
      * @param query
      * @param indexName [optional] taxonoverlfow index by default
@@ -285,6 +310,7 @@ class ElasticSearchService {
      */
     public SearchResult search(String query, String indexName = INDEX_NAME) {
         Search search = new Search.Builder(query).addIndex(indexName).build()
+        log.debug("ElasticSearch Query using REST API:\n ${query}")
         jestClient.execute(search)
     }
 

@@ -1,47 +1,151 @@
-var questionSample = {
-    "_index": "taxonoverflow",
-    "_type": "question",
-    "_id": "4",
-    "_version": 6,
-    "found": true,
-    "_source": {
-        "id": 4,
-        "user": {
-            "id": 3,
-            "alaUserId": "11069"
-        },
-        "questionType": "Identification",
-        "occurrenceId": "b185ec97-7155-4207-b8c1-b0f64244f1a7",
-        "source": "biocache",
-        "comments": [],
-        "answers": [],
-        "tags": [
-            {
-                "questionId": 4,
-                "tag": "kangaroo",
-                "dateCreated": "2015-03-03T13:36:38"
+var taxonoverflow_index = {
+    "taxonoverflow": {
+        "aliases": {},
+        "mappings": {
+            "question": {
+                "properties": {
+                    "answerCount": {"type": "long"},
+                    "answers": {
+                        "properties": {
+                            "accepted": {"type": "boolean"},
+                            "comments": {
+                                "properties": {
+                                    "answerId": {"type": "long"},
+                                    "comment": {"type": "string"},
+                                    "dateCreated": {
+                                        "type": "date",
+                                        "format": "dateOptionalTime"
+                                    },
+                                    "user": {
+                                        "properties": {
+                                            "alaUserId": {"type": "string"},
+                                            "id": {"type": "long"}
+                                        }
+                                    }
+                                }
+                            },
+                            "dateCreated": {
+                                "type": "date",
+                                "format": "dateOptionalTime"
+                            },
+                            "description": {"type": "string"},
+                            "id": {"type": "long"},
+                            "questionId": {"type": "long"},
+                            "scientificName": {"type": "string"},
+                            "user": {
+                                "properties": {
+                                    "alaUserId": {"type": "string"},
+                                    "id": {"type": "long"}
+                                }
+                            },
+                            "votes": {
+                                "properties": {
+                                    "answerId": {"type": "long"},
+                                    "dateCreated": {
+                                        "type": "date",
+                                        "format": "dateOptionalTime"
+                                    },
+                                    "user": {
+                                        "properties": {
+                                            "alaUserId": {"type": "string"},
+                                            "id": {"type": "long"}
+                                        }
+                                    },
+                                    "voteValue": {"type": "long"}
+                                }
+                            }
+                        }
+                    },
+                    "comments": {
+                        "properties": {
+                            "comment": {"type": "string"},
+                            "dateCreated": {
+                                "type": "date",
+                                "format": "dateOptionalTime"
+                            },
+                            "questionId": {"type": "long"},
+                            "user": {
+                                "properties": {
+                                    "alaUserId": {"type": "string"},
+                                    "id": {"type": "long"}
+                                }
+                            }
+                        }
+                    },
+                    "dateCreated": {
+                        "type": "date",
+                        "format": "dateOptionalTime"
+                    },
+                    "id": {"type": "long"},
+                    "occurrence": {
+                        "properties": {
+                            "commonName": {"type": "string"},
+                            "coordinateUncertaintyInMeters": {"type": "string"},
+                            "decimalLatitude": {"type": "string"},
+                            "decimalLongitude": {"type": "string"},
+                            "eventDate": {
+                                "type": "date",
+                                "format": "dateOptionalTime"
+                            },
+                            "imageIds": {"type": "string"},
+                            "imageUrls": {"type": "string"},
+                            "locality": {"type": "string"},
+                            "occurrenceId": {"type": "string"},
+                            "occurrenceRemarks": {"type": "string"},
+                            "recordedBy": {"type": "string"},
+                            "scientificName": {"type": "string"},
+                            "userId": {"type": "string"}
+                        }
+                    },
+                    "occurrenceId": {"type": "string"},
+                    "questionType": {"type": "string"},
+                    "source": {"type": "string"},
+                    "tags": {
+                        "properties": {
+                            "dateCreated": {
+                                "type": "date",
+                                "format": "dateOptionalTime"
+                            },
+                            "questionId": {"type": "long"},
+                            "tag": {"type": "string"}
+                        }
+                    },
+                    "user": {
+                        "properties": {
+                            "alaUserId": {"type": "string"},
+                            "id": {"type": "long"}
+                        }
+                    },
+                    "viewCount": {"type": "long"},
+                    "views": {
+                        "properties": {
+                            "dateCreated": {
+                                "type": "date",
+                                "format": "dateOptionalTime"
+                            },
+                            "questionId": {"type": "long"},
+                            "user": {
+                                "properties": {
+                                    "alaUserId": {"type": "string"},
+                                    "id": {"type": "long"}
+                                }
+                            }
+                        }
+                    }
+                }
             }
-        ],
-        "views": [],
-        "dateCreated": "2015-03-03T02:36:38Z",
-        "viewCount": 0,
-        "answerCount": 0,
-        "occurrence": {
-            "occurrenceId": "b185ec97-7155-4207-b8c1-b0f64244f1a7",
-            "scientificName": "Macropus giganteus",
-            "commonName": "Eastern Grey Kangaroo",
-            "recordedBy": "Bernard DUPONT",
-            "userId": null,
-            "eventDate": "2013-09-22",
-            "locality": "Cape Hillsborough",
-            "decimalLatitude": "-20.924385",
-            "decimalLongitude": "149.047629",
-            "coordinateUncertaintyInMeters": "16.0",
-            "occurrenceRemarks": "Cape Hillsborough NP, Central Queensland, AUSTRALIA\n\nScanned Slide from Dec 2000",
-            "locationRemarks": null,
-            "imageIds": ["1adc0b02-726d-4586-a997-13643f3bb66f"],
-            "imageUrls": ["http://images.ala.org.au/image/proxyImageThumbnail?imageId=1adc0b02-726d-4586-a997-13643f3bb66f"]
-        }
+        },
+        "settings": {
+            "index": {
+                "creation_date": "1425433467261",
+                "uuid": "uGIh9yuMQ-yPA_laZ0UwMA",
+                "aggs": {"questionTypes": {"terms": {"field": "questionType"}}},
+                "number_of_replicas": "1",
+                "number_of_shards": "5",
+                "version": {"created": "1040499"}
+            }
+        },
+        "warmers": {}
     }
 };
 
@@ -63,3 +167,31 @@ var query2 = {
         }
     }
 };
+
+var query3 = {
+        "fields": [],
+        "filter": {
+            "and": [
+                {
+                    "terms": {
+                        "tags.tag": ["white", "kangaroo"],
+                        "execution": "and"
+                    }
+                },
+                {
+                    "or": [
+                        {
+                            "range": {
+                                "dateCreated": {
+                                    "gte": "2015-03-02"
+                                }
+                            }
+                        }
+                    ]
+
+                }
+
+            ]
+        }
+    }
+    ;

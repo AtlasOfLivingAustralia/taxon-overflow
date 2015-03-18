@@ -5,7 +5,6 @@ import au.org.ala.taxonoverflow.notification.SendEmailNotification
 import au.org.ala.web.CASRoles
 import grails.transaction.NotTransactional
 import grails.transaction.Transactional
-import groovy.json.JsonSlurper
 import org.apache.commons.lang.StringUtils
 
 @Transactional
@@ -15,6 +14,7 @@ class QuestionService {
     def biocacheService
     def authService
     def userService
+    ElasticSearchService elasticSearchService
 
     @NotTransactional
     def boolean questionExists(String occurrenceId) {
@@ -74,7 +74,7 @@ class QuestionService {
                 // Save the tags
                 tags?.each {
                     if (!StringUtils.isEmpty(it)) {
-                        def tag = new QuestionTag(question: question, tag: it)
+                        def tag = new QuestionTag(question: question, tag: it.trim())
                         tag.save()
                     }
                 }
@@ -123,7 +123,7 @@ class QuestionService {
                 // Save the tags
                 tags?.each {
                     if (!StringUtils.isEmpty(it)) {
-                        def tag = new QuestionTag(question: question, tag: it)
+                        def tag = new QuestionTag(question: question, tag: it.trim())
                         tag.save()
                     }
                 }
@@ -404,5 +404,10 @@ class QuestionService {
         User user =  User.findByAlaUserId(alaUserId)
 
         return user.followedQuestions.contains(question)
+    }
+
+    ServiceResult<List<Question>> searchByTagsAndDatedCriteria(Map searchParams) {
+        List<String> questionIdList = elasticSearchService.searchByTagsAndDatedCriteria(searchParams)
+        return new ServiceResult<List<Question>>(result: Question.findAllByIdInList(questionIdList), success: true)
     }
 }
