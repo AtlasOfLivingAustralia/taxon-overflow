@@ -5,7 +5,6 @@ import au.org.ala.taxonoverflow.notification.SendEmailNotification
 import au.org.ala.web.CASRoles
 import grails.transaction.NotTransactional
 import grails.transaction.Transactional
-import groovy.json.JsonSlurper
 import org.apache.commons.lang.StringUtils
 
 @Transactional
@@ -74,7 +73,7 @@ class QuestionService {
                 // Save the tags
                 tags?.each {
                     if (!StringUtils.isEmpty(it)) {
-                        def tag = new QuestionTag(question: question, tag: it)
+                        def tag = new QuestionTag(question: question, tag: it.trim())
                         tag.save()
                     }
                 }
@@ -123,7 +122,7 @@ class QuestionService {
                 // Save the tags
                 tags?.each {
                     if (!StringUtils.isEmpty(it)) {
-                        def tag = new QuestionTag(question: question, tag: it)
+                        def tag = new QuestionTag(question: question, tag: it.trim())
                         tag.save()
                     }
                 }
