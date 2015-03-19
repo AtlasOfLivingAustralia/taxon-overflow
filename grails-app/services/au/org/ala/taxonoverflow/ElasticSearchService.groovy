@@ -12,6 +12,7 @@ import net.sf.json.JSONObject
 import org.codehaus.groovy.grails.web.servlet.mvc.GrailsParameterMap
 import org.elasticsearch.action.admin.indices.delete.DeleteIndexRequest
 import org.elasticsearch.action.admin.indices.delete.DeleteIndexResponse
+import org.elasticsearch.action.admin.indices.refresh.RefreshRequest
 import org.elasticsearch.action.delete.DeleteResponse
 import org.elasticsearch.action.index.IndexResponse
 import org.elasticsearch.action.search.SearchRequestBuilder
@@ -71,7 +72,12 @@ class ElasticSearchService {
     }
 
     @NotTransactional
-    public reinitialiseIndex() {
+    void refreshIndex() {
+        node.client().admin().indices().refresh(new RefreshRequest(INDEX_NAME))
+    }
+
+    @NotTransactional
+    void reinitialiseIndex() {
         try {
             node.client().admin().indices().prepareDelete(INDEX_NAME).execute().get()
         } catch (Exception ex) {
@@ -82,7 +88,7 @@ class ElasticSearchService {
     }
 
     @NotTransactional
-    public void indexQuestion(Question question) {
+    void indexQuestion(Question question) {
         def ct = new CodeTimer("Indexing question ${question.id}")
         String json = question as JSON
         if (json) {
@@ -92,14 +98,14 @@ class ElasticSearchService {
     }
 
     @NotTransactional
-    public void deleteAllQuestionsFromIndex() {
+    void deleteAllQuestionsFromIndex() {
         def ct = new CodeTimer("Deleting questions from index")
         DeleteIndexResponse delete = client.admin().indices().delete(new DeleteIndexRequest(INDEX_NAME)).actionGet()
         ct.stop(true)
     }
 
     @NotTransactional
-    public void deleteQuestionFromIndex(Question question) {
+    void deleteQuestionFromIndex(Question question) {
         def ct = new CodeTimer("Deleting question from index: ${question.id}")
         if (question) {
             DeleteResponse response = client.prepareDelete(INDEX_NAME, "question", question.id.toString()).execute().actionGet();
@@ -162,7 +168,7 @@ class ElasticSearchService {
         }
     }
 
-    public QueryResults<Question> questionSearch(GrailsParameterMap params, Closure builderFunc = null) {
+    QueryResults<Question> questionSearch(GrailsParameterMap params, Closure builderFunc = null) {
 
         SearchRequestBuilder searchRequestBuilder = client.prepareSearch(INDEX_NAME).setSearchType(SearchType.QUERY_THEN_FETCH)
 
@@ -228,7 +234,7 @@ class ElasticSearchService {
         return new QueryResults<Question>(list: resultsList, totalCount: searchResponse?.hits?.totalHits ?: 0, auxdata: auxdata)
     }
 
-    public JSONObject getOccurrenceData(String occurrenceId) {
+    JSONObject getOccurrenceData(String occurrenceId) {
         def results = questionSearch(null) {
             q("occurrenceId:\"${occurrenceId}\"")
         }
@@ -241,7 +247,7 @@ class ElasticSearchService {
     }
 
     @NotTransactional
-    public List<Map> getAggregatedTagsWithCount() {
+    List<Map> getAggregatedTagsWithCount() {
         def query =
 """
 {
@@ -260,7 +266,7 @@ class ElasticSearchService {
     }
 
     @NotTransactional
-    public List<Map> getAggregatedQuestionTypesWithCount() {
+    List<Map> getAggregatedQuestionTypesWithCount() {
         def query =
 """
 {
@@ -308,7 +314,7 @@ class ElasticSearchService {
      * @param indexName [optional] taxonoverlfow index by default
      * @return
      */
-    public SearchResult search(String query, String indexName = INDEX_NAME) {
+    SearchResult search(String query, String indexName = INDEX_NAME) {
         Search search = new Search.Builder(query).addIndex(indexName).build()
         log.debug("ElasticSearch Query using REST API:\n ${query}")
         jestClient.execute(search)

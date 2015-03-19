@@ -409,6 +409,6 @@ class QuestionService {
 
     ServiceResult<List<Question>> searchByTagsAndDatedCriteria(Map searchParams) {
         List<String> questionIdList = elasticSearchService.searchByTagsAndDatedCriteria(searchParams)
-        return new ServiceResult<List<Question>>(result: Question.findAllByIdInList(questionIdList), success: true)
+        return new ServiceResult<List<Question>>(result: Question.findAllByIdInList(questionIdList) ?: [], success: true)
     }
 }

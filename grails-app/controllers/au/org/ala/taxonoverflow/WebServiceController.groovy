@@ -504,8 +504,9 @@ class WebServiceController {
     }
 
     ServiceResult<Question> validateQuestionSearchParams(LinkedHashMap<String, Object> searchParams) {
-        ServiceResult<Question> serviceResult = new ServiceResult<>()
-        serviceResult.success = true
+        ServiceResult<Question> serviceResult = new ServiceResult<>(
+                success: true,
+                result: [])
 
         if (!searchParams.tags) {
             serviceResult.fail("No parameter \"tags\" provided.")

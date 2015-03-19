@@ -22,8 +22,8 @@ public class ServiceResult<T> {
     }
 
     def fail(String message) {
-        success = false
-        messages << message
+        this.success = false
+        this.messages << message
         return this
     }
 

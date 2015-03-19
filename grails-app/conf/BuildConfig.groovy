@@ -62,7 +62,10 @@ grails.project.dependency.resolution = {
         // plugins for the build system only
         build ":tomcat:7.0.55"
 
+        test ":funky-spock:0.2.2"
+
         // plugins for the compile step
+        compile ":rest-client-builder:2.1.0"
         compile ":scaffolding:2.1.2"
         compile ':cache:1.1.8'
         compile ":quartz:1.0.2"
