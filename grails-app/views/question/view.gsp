@@ -227,9 +227,6 @@
             </div>
             <div class="span6">
                 <h4 class="pull-right">${question.answers?.size() ?: 0} ${question.questionType == au.org.ala.taxonoverflow.QuestionType.IDENTIFICATION ? "IDENTIFICATION(s)" : "Answer(s)" }</h4>
-                <g:if test="${acceptedAnswer}">
-                    <div class="hide label label-success">An identification has been accepted for this occurrence: ${acceptedAnswer.scientificName}</div>
-                </g:if>
             </div>
         </div>
         <div class="row-fluid">

@@ -6,12 +6,12 @@
             <div class="row-fluid">
                 <div class="span3 answer-count-div">
                     <g:set var="answerCount" value="${question.answers?.size()}" />
-                    <span class="question-answer-count ${acceptedAnswer ? 'has-accepted-answer' : ''}">${answerCount}</span>
+                    <div><span class="question-answer-count ${acceptedAnswer ? 'has-accepted-answer' : ''}">${answerCount}</span></div>
                     <br />
                     ${answerCount == 1 ? 'answer' : 'answers'}
                 </div>
                 <div class="span3 view-count-div">
-                    <span class="question-view-count">${question.views?.size()}</span>
+                    <div><span class="question-view-count">${question.views?.size()}</span></div>
                     <br />
                     views
                 </div>

@@ -249,7 +249,7 @@ class QuestionService {
 
         def answerRanking = [:]
         answer.question.answers.each {
-            def score = it.votes.sum { v -> v.voteValue }
+            def score = it.votes.sum { v -> v.voteValue } ?: 0
             answerRanking[it] = score
         }
 

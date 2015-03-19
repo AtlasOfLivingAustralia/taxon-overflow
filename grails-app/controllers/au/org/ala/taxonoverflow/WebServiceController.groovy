@@ -199,24 +199,31 @@ class WebServiceController {
     }
 
     private static setAnswerProperties(Answer answer, Object answerDetails, List messages) {
-        switch (answer.question.questionType) {
-            case QuestionType.IDENTIFICATION:
-                def scientificName = answerDetails.scientificName
-                def identificationRemarks = answerDetails.identificationRemarks
 
-                if (!scientificName) {
-                    messages << "A scientific name must be supplied"
-                } else {
-                    answer.scientificName = scientificName
-                    answer.description = identificationRemarks
-                    return true
-                }
-                break
-            default:
-                messages << "Unhandled question type: ${answer.question.questionType?.toString()}"
+        //retrieve a description, and then any additional properties
+        //are lumped into DwC
+        answer.description = answerDetails.description
+
+        def validRequest = true
+        def darwinCore = [:]
+
+        //required fields
+        answer.question.questionType.getRequiredFields().each {
+            if (!answerDetails[it]) {
+                messages << "A ${it} must be supplied"
+                validRequest = false
+            } else {
+                darwinCore[it] = answerDetails[it]
+            }
+        }
+        //optional fields
+        answer.question.questionType.getOptionalFields().each {
+            darwinCore[it] = answerDetails[it]
         }
 
-        return false
+        answer.darwinCore = (darwinCore as JSON).toString()
+
+        return validRequest
     }
 
     def deleteAnswer(long id) {

@@ -2,10 +2,14 @@ class UrlMappings {
 
 	static mappings = {
 
+        "/admin"(controller: "admin", action:"index")
+
         "/$controller/$action?/$id?(.$format)?"{
             constraints {
             }
         }
+
+
 
         "/question/$id"(controller: "question", action: "view" )
 

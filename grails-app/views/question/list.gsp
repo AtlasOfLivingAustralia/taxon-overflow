@@ -23,10 +23,7 @@
 
             .question-view-count, .question-answer-count {
                 font-size: 1.5em;
-                padding-right: 10px;
-                padding-top: 4px;
-                padding-bottom: 4px;
-                padding-left: 10px;
+                padding: 8px;
             }
 
             .question-answer-count.has-accepted-answer {

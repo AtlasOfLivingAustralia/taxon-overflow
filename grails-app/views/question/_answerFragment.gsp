@@ -114,7 +114,8 @@
                 </to:ifCanEditAnswer>
             </div>
         </div>
-        <div class="span1">
+
+        <div class="span1"style="text-align: center; margin-top:20px;">
             <span class="pull-right answer-buttons">
                 <g:if test="${!answer.accepted}">
                     <to:ifCanAcceptAnswer answer="${answer}">
