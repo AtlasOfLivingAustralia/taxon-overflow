@@ -1,6 +1,7 @@
 package au.org.ala.taxonoverflow
 
 import grails.transaction.Transactional
+import groovy.json.JsonSlurper
 import org.codehaus.groovy.grails.web.json.JSONObject
 
 @Transactional
@@ -10,6 +11,13 @@ class EcodataService extends AbstractWebService {
 
     def serviceMethod() {}
 
+    /**
+     * Retrieve details of this record
+     *
+     * @param id
+     * @param useApiKey
+     * @return
+     */
     def getRecord(String id, boolean useApiKey = false) {
         def ct = new CodeTimer("Getting occurrence from ecodata")
         try {
@@ -39,5 +47,21 @@ class EcodataService extends AbstractWebService {
         } finally {
             ct.stop(true)
         }
+    }
+
+    /**
+     * Send an update to the source system.
+     *
+     * @param occurrenceId
+     * @param json
+     * @return
+     */
+    def updateRecord(String occurrenceId, String json){
+        def source = Source.findByName("ecodata")
+        def url = source.wsBaseUrl + "${occurrenceId.encodeAsURL()}"
+        def map = new JsonSlurper().parseText(json)
+        map.put("updatedFromTaxonoverflow", "true")
+        map.put("lastUpdatedFromTaxonoverflow", new Date())
+        doPost(url, map)
     }
 }

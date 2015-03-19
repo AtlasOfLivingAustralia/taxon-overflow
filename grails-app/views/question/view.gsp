@@ -258,12 +258,10 @@
                     <span id="followingText" style="${isFollowing ? '' : 'display:none;'}"> Following</span>
                     <span id="unfollowingText"  style="${isFollowing ? 'display:none' : ''}"> Not following</span>
                 </div>
-
                 <div id="tagsDiv">
                     <g:render template="tagsFragment" model="${[question: question]}" />
 
                 </div>
-
                 <div class="occurrenceDetails">
                     <g:render template="questionDetails" model="${[question:question, occurrence: occurrence]}" />
                 </div>

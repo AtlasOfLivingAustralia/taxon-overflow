@@ -216,11 +216,22 @@ class QuestionService {
 
     }
 
+    /**
+     * Cast the vote, changing the accepted answer if required.
+     *
+     * @param answer
+     * @param user
+     * @param voteType
+     * @return
+     */
     def castVoteOnAnswer(Answer answer, User user, VoteType voteType) {
 
         if (!answer || !user) {
-            return
+            return false
         }
+
+        def currentAcceptedAnswer = answer.question.answers.find { it.accepted }
+
 
         def vote = AnswerVote.findByAnswerAndUser(answer, user)
 
@@ -244,27 +255,55 @@ class QuestionService {
             vote.save(failOnError: true)
         }
 
-
-        //generate a map [answer: summedVoteValue]
-
+        //generate a map of [answer: vote count]
         def answerRanking = [:]
         answer.question.answers.each {
             def score = it.votes.sum { v -> v.voteValue } ?: 0
             answerRanking[it] = score
         }
 
-        //order by score
+        //order by score, and retrieve top answer
         def topAnswer = answerRanking.sort { it.value * -1 }.take(1).keySet().first()
+
+
+        def newAcceptedAnswer = null
 
         //update the answers
         answer.question.answers.each {
             if(it == topAnswer && answerRanking[topAnswer] >= grailsApplication.config.accepted.answer.threshold){
                 //are there any other answers with a greater number of votes
+                newAcceptedAnswer = it
                 it.accepted = true
             } else {
                 it.accepted = false
             }
             it.save(failOnError: true)
+        }
+
+        //return true if there a change in the accepted answer
+        currentAcceptedAnswer != newAcceptedAnswer
+    }
+
+    /**
+     * Updates the source system with the latest answer.
+     *
+     * @param question
+     */
+    def updateRecordAtSource(questionId){
+
+        def question = Question.get(questionId)
+
+        def acceptedAnswer = question.answers.find { it.accepted }
+        if(acceptedAnswer){
+            //lets to a HTTP POST
+            if(question.source.name == 'ecodata'){
+                ecodataService.updateRecord(question.occurrenceId, acceptedAnswer.darwinCore)
+            } else {
+                log.warn("Updates not supported for source system: " + question.source.name)
+            }
+        } else {
+            //should we revert to highest ranked or the original identification.
+            log.warn("Accepted answer not available, we need to revert to original identification - not implemented ! ")
         }
     }
 

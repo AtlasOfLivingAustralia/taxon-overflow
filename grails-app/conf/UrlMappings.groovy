@@ -29,7 +29,7 @@ class UrlMappings {
             }
         }
 
-        "/"( controller: "question", action: "list", view:"/index")
+        "/"( controller: "question", action: "list")
         "500"(view:'/error')
 	}
 }

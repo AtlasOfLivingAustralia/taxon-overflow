@@ -1,7 +1,9 @@
 package au.org.ala.taxonoverflow
 
+import grails.async.Promise
 import grails.converters.JSON
 import grails.converters.XML
+import static grails.async.Promises.*
 
 class WebServiceController {
 
@@ -45,6 +47,11 @@ class WebServiceController {
         renderResults(model)
     }
 
+    /**
+     * Create a question from an external source.
+     *
+     * @return
+     */
     def createQuestionFromExternal(){
         def body = request.JSON
         if(body.source && body.source == 'ecodata'){
@@ -283,7 +290,16 @@ class WebServiceController {
                 } else if (dir == 0) {
                     voteType = VoteType.Retract
                 }
-                questionService.castVoteOnAnswer(answer, user, voteType)
+                def acceptedAnswerChange = questionService.castVoteOnAnswer(answer, user, voteType)
+                if(acceptedAnswerChange) {
+                    log.debug("Accepted answer for question #${answer.question.id} has changed to #${answer.id} = ${answer.darwinCore}")
+                    Promise p = task {
+                        // Long running task
+                        questionService.updateRecordAtSource(answer.question.id)
+                    }
+                } else {
+                    log.debug("No change in accepted answer for question #${answer.question.id}")
+                }
                 results.success = true
             } else {
                 results.message = "Invalid or missing answer id!"
