@@ -3,7 +3,7 @@
         <g:textArea class="span12" name="comment" rows="2"/>
     </div>
     <div class="span3">
-        <button type="button" id="btnAddQuestionComment" class="btn btn-small btnAddQuestionComment">Add comment</button>
+        <button type="button" id="btnAddQuestionComment" class="btn btn-small btnAddQuestionComment" title="Add comment to this question">Add comment</button>
     </div>
 </div>
 

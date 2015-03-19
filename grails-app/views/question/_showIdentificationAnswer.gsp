@@ -3,9 +3,9 @@
         font-style: italic;
     }
 </style>
-<div>
+<div class="identificationScientificName answer-main">
     <span class="scientificName">${answer.scientificName}</span>
 </div>
-<div class="identificationRemarks">
+<div class="identificationRemarks answer-description">
     ${answer.description}
 </div>

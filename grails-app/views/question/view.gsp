@@ -33,6 +33,7 @@
 
             .accepted-answer-header { padding-left:10px;  margin-top:0px; padding-top:0px; background-color: #f2f2f2; border-bottom: 1px solid #dddddd; }
 
+            .answer-main { font-size: 18px; }
 
         </r:style>
         <r:require modules="viewer, flexisel, leaflet, taxonoverflow" />
@@ -225,7 +226,7 @@
                 </H1>
             </div>
             <div class="span6">
-                <h4 class="pull-right">${answers?.size() ?: 0} ${question.questionType == au.org.ala.taxonoverflow.QuestionType.IDENTIFICATION ? "IDENTIFICATION(s)" : "Answer(s)" }</h4>
+                <h4 class="pull-right">${question.answers?.size() ?: 0} ${question.questionType == au.org.ala.taxonoverflow.QuestionType.IDENTIFICATION ? "IDENTIFICATION(s)" : "Answer(s)" }</h4>
                 <g:if test="${acceptedAnswer}">
                     <div class="hide label label-success">An identification has been accepted for this occurrence: ${acceptedAnswer.scientificName}</div>
                 </g:if>

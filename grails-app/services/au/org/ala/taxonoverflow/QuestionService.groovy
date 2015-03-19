@@ -10,6 +10,8 @@ import org.apache.commons.lang.StringUtils
 @Transactional
 class QuestionService {
 
+    def grailsApplication
+
     def ecodataService
     def biocacheService
     def authService
@@ -228,10 +230,10 @@ class QuestionService {
             voteType = VoteType.Retract
         }
 
-
         if (voteType == VoteType.Retract) {
             if (vote) {
-                vote.delete()
+                answer.votes.remove(vote)
+                vote.delete(failOnError: true)
             }
         } else {
             if (!vote) {
@@ -241,14 +243,33 @@ class QuestionService {
             vote.voteValue = newVoteValue
             vote.save(failOnError: true)
         }
+
+
+        //generate a map [answer: summedVoteValue]
+
+        def answerRanking = [:]
+        answer.question.answers.each {
+            def score = it.votes.sum { v -> v.voteValue }
+            answerRanking[it] = score
+        }
+
+        //order by score
+        def topAnswer = answerRanking.sort { it.value * -1 }.take(1).keySet().first()
+
+        //update the answers
+        answer.question.answers.each {
+            if(it == topAnswer && answerRanking[topAnswer] >= grailsApplication.config.accepted.answer.threshold){
+                //are there any other answers with a greater number of votes
+                it.accepted = true
+            } else {
+                it.accepted = false
+            }
+            it.save(failOnError: true)
+        }
     }
 
     def canUserAcceptAnswer(Answer answer, User user) {
         // If the current user is one who asked the question, they can accept the answer
-        if (answer.question.user == user) {
-            return true
-        }
-
         if (authService.userInRole(CASRoles.ROLE_ADMIN)) {
             return true
         }
