@@ -2,7 +2,7 @@
 <html>
     <head>
         <meta name="layout" content="main"/>
-        <title>Identification case #${question.id} | Atlas of Living Australia</title>
+        <title>Case #${question.id} | Community identification help | Atlas of Living Australia</title>
         <r:style type="text/css">
 
             #map {
@@ -186,13 +186,12 @@
 
         </r:script>
     </head>
-    <body>
 
         <div class="row">
             <div class="span12">
                 <ul class="breadcrumb">
                     <li><a href="http://ala.org.au">Home</a> <span class="divider"><i class="fa fa-arrow-right"></i></span></li>
-                    <li><g:link controller="question" action="list">Help identify species</g:link> <span class="divider"><i class="fa fa-arrow-right"></i></span></li>
+                    <li><g:link controller="question" action="list">Community identification help</g:link> <span class="divider"><i class="fa fa-arrow-right"></i></span></li>
                     <li class="active">Species identification case #${question.id}</li>
                 </ul>
             </div>

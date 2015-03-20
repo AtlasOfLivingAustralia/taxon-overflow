@@ -115,15 +115,15 @@
             <div class="span12">
                 <ul class="breadcrumb">
                     <li><a href="http://ala.org.au">Home</a> <span class="divider"><i class="fa fa-arrow-right"></i></span></li>
-                    <li class="active">Help identify species</li>
+                    <li class="active">Community identification help</li>
                 </ul>
             </div>
         </div>
-        <h1>Help identify species</h1>
+        <h1>Community identification help</h1>
         <p class="lead">
-            Here are the latest records needing identification help from the community.
+            Records contributed by others and needing confirmation of what they are. Can you help to identify any of the species?
             <br/>
-            <strong>Get involved</strong> by suggesting an identification.
+            <strong>Get involved, have fun and contribute to science</strong>.
         </p>
         <div class="taxonoverflow-content row-fluid">
             <div class="span3 facets">
