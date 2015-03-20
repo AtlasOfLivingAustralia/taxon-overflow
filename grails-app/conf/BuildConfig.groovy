@@ -55,10 +55,13 @@ grails.project.dependency.resolution = {
         compile 'org.elasticsearch:elasticsearch:1.4.4'
         compile 'io.searchbox:jest:0.1.5'
         compile 'com.vividsolutions:jts:1.13'
+        compile 'org.codehaus.groovy.modules.http-builder:http-builder:0.7.1'
     }
 
     plugins {
-        build ":release:3.0.1"
+        build(":release:3.1.0") {
+            excludes "rest-client-builder"
+        }
         // plugins for the build system only
         build ":tomcat:7.0.55"
 
@@ -70,6 +73,7 @@ grails.project.dependency.resolution = {
         compile ':cache:1.1.8'
         compile ":quartz:1.0.2"
         compile ":mail:1.0.7"
+        compile ":pretty-time:2.1.3.Final-1.0.1"
         // compile ":asset-pipeline:1.9.9"
 
         // plugins needed at runtime but not for compilation
@@ -82,7 +86,7 @@ grails.project.dependency.resolution = {
             excludes "servlet-api"
         }
         runtime ":images-client-plugin:0.3"
-        compile ":pretty-time:2.1.3.Final-1.0.1"
+
 
 
 

@@ -32,7 +32,7 @@ environments {
             dbCreate = "update" // one of 'create', 'create-drop','update'
             username="sa"
             password=""
-            url = "jdbc:h2:mem:testDb:MVCC=TRUE;LOCK_TIMEOUT=10000"
+            url = "jdbc:h2:mem:testDb:MVCC=true;LOCK_TIMEOUT=5000"
             driverClassName = "org.h2.Driver"
             loggingSql = true
         }

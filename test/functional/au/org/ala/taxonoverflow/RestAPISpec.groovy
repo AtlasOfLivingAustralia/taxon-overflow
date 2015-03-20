@@ -4,7 +4,6 @@ import grails.plugins.rest.client.RestBuilder
 import grails.plugins.rest.client.RestResponse
 import grails.test.spock.IntegrationSpec
 import spock.lang.Shared
-import spock.lang.Specification
 
 /**
  * Created by rui008 on 19/03/15.
@@ -13,22 +12,32 @@ class RestAPISpec extends IntegrationSpec {
 
     static final ISO_8601_DATE_FORMAT = 'yyyy-MM-dd'
 
-    @Shared def grailsApplication
-    @Shared User userMick
-    @Shared User userKeef
-    @Shared QuestionService questionService
-    @Shared UserService userService
-    @Shared ElasticSearchService elasticSearchService
+    @Shared
+    def grailsApplication
+    @Shared
+    def sessionFactory
+    @Shared
+    User userMick
+    @Shared
+    User userKeef
+    @Shared
+    QuestionService questionService
+    @Shared
+    UserService userService
+    @Shared
+    ElasticSearchService elasticSearchService
+    @Shared
+    SourceService sourceService
 
-    def setupSpec() {
-        // Initialize users
-        userMick = userService.getUserFromUserId('11841')
-        userKeef = userService.getUserFromUserId('11842')
-    }
+    static transactional = false
 
     def setup() {
         // Clean elasticsearch index
         elasticSearchService.reinitialiseIndex()
+
+        // Initialize users
+        userMick = userService.getUserFromUserId('11841')
+        userKeef = userService.getUserFromUserId('11842')
 
         // Initialize the DB
         // 1st question
@@ -56,7 +65,19 @@ class RestAPISpec extends IntegrationSpec {
                 '3rd question 1st comment'
         )
 
+        sessionFactory.currentSession.flush()
+        sessionFactory.currentSession.clear()
         elasticSearchService.processIndexTaskQueue()
+    }
+
+    def cleanup() {
+        (grailsApplication.getArtefacts("Domain") as List).each {
+            it.newInstance().list()*.delete()
+        }
+        sessionFactory.currentSession.flush()
+        sessionFactory.currentSession.clear()
+
+        sourceService.init()
     }
 
     void "test DB has been initialized"() {
@@ -69,29 +90,27 @@ class RestAPISpec extends IntegrationSpec {
 
     void "test adding a new question from biocache occurrence"() {
         given:
-        Integer initialNumberOfQuestions = Question.count
         RestBuilder rest = new RestBuilder()
 
         when:
-        RestResponse response = rest.get("http://localhost:8080/${grailsApplication.metadata.'app.name'}/ws/question") {
-            contentType("application/json")
+        RestResponse response = rest.post("http://localhost:8080/${grailsApplication.metadata.'app.name'}/ws/question") {
             json([
+                    source      : 'biocache',
                     occurrenceId: 'f6f8a9b8-4d52-49c3-9352-155f154fc96c',
-                    userId: userKeef.alaUserId,
-                    tags: 'octopus, orange',
-                    comment: 'whatever'
+                    userId      : userKeef.alaUserId,
+                    tags        : 'octopus, orange',
+                    comment     : 'whatever'
             ])
-
         }
 
         then:
-        initialNumberOfQuestions == 3
         response.status == 200
         Question question = Question.findByOccurrenceId('f6f8a9b8-4d52-49c3-9352-155f154fc96c')
-q        question.tags.each {tag ->
+        question.tags.each { tag ->
             ['octopus', 'orange'].contains(tag)
         }
         question.comments[0].comment == 'whatever'
         Question.count == 4
     }
+
 }
