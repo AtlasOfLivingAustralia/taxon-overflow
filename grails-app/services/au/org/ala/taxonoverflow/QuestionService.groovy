@@ -297,7 +297,8 @@ class QuestionService {
         if(acceptedAnswer){
             //lets to a HTTP POST
             if(question.source.name == 'ecodata'){
-                ecodataService.updateRecord(question.occurrenceId, acceptedAnswer.darwinCore)
+                def identifiedBy = authService.getUserForUserId(acceptedAnswer.getUser().alaUserId)
+                ecodataService.updateRecord(question.occurrenceId, acceptedAnswer.darwinCore, identifiedBy, acceptedAnswer.dateCreated)
             } else {
                 log.warn("Updates not supported for source system: " + question.source.name)
             }

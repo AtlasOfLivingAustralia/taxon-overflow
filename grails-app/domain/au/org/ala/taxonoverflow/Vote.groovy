@@ -8,9 +8,8 @@ class Vote {
     Date dateUpdated
 
     static constraints = {
-        user nullable: false
+        user column: "taxonoverflow_user", nullable: false
         dateCreated nullable: true
         dateUpdated nullable: true
     }
-
 }

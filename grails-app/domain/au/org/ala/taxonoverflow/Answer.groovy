@@ -28,7 +28,7 @@ class Answer {
 
     static constraints = {
         question nullable: false
-        user nullable: false
+        user column: "taxonoverflow_user", nullable: false
         description nullable: true
         darwinCore nullable: true
         dateAccepted nullable: true

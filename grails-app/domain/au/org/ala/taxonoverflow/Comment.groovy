@@ -7,7 +7,7 @@ class Comment {
     String comment
 
     static constraints = {
-        user nullable: false
+        user column: "taxonoverflow_user", nullable: false
         comment nullable: false, blank: false
         dateCreated nullable: true
     }
