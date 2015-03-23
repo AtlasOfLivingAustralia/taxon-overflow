@@ -1,15 +1,26 @@
 package au.org.ala.taxonoverflow
 
+import au.org.ala.web.UserDetails
 import grails.transaction.Transactional
-import org.codehaus.groovy.grails.web.json.JSONObject
+import groovy.json.JsonSlurper
+import org.codehaus.groovy.grails.web.mapping.LinkGenerator
 
 @Transactional
 class EcodataService extends AbstractWebService {
 
     def grailsApplication
 
+    LinkGenerator grailsLinkGenerator
+
     def serviceMethod() {}
 
+    /**
+     * Retrieve details of this record
+     *
+     * @param id
+     * @param useApiKey
+     * @return
+     */
     def getRecord(String id, boolean useApiKey = false) {
         def ct = new CodeTimer("Getting occurrence from ecodata")
         try {
@@ -39,5 +50,26 @@ class EcodataService extends AbstractWebService {
         } finally {
             ct.stop(true)
         }
+    }
+
+    /**
+     * Send an update to the source system.
+     *
+     * @param occurrenceId
+     * @param json
+     * @return
+     */
+    def updateRecord(questionId, occurrenceId, json, identifiedBy, dateIdentified){
+        log.debug("Updating occurrence record at source ecodata: " + occurrenceId)
+        def source = Source.findByName("ecodata")
+        def url = source.wsBaseUrl + "${occurrenceId.encodeAsURL()}"
+        def map = new JsonSlurper().parseText(json)
+        map.put("lastUpdatedFromTaxonoverflow", new Date())
+        map.put("identifiedBy", identifiedBy.displayName)
+        map.put("identifiedByUserId", identifiedBy.userId)
+        map.put("dateIdentified", dateIdentified.format("yyyy-MM-dd'T'HH:mm:ssZ"))
+        map.put("taxonoverflowID", questionId)
+        map.put("taxonoverflowURL", grailsApplication.config.serverName + grailsLinkGenerator.link(controller: 'question', action: 'view', id: questionId))
+        doPost(url, map)
     }
 }

@@ -10,6 +10,8 @@ import org.apache.commons.lang.StringUtils
 @Transactional
 class QuestionService {
 
+    def grailsApplication
+
     def ecodataService
     def biocacheService
     def authService
@@ -214,11 +216,22 @@ class QuestionService {
 
     }
 
+    /**
+     * Cast the vote, changing the accepted answer if required.
+     *
+     * @param answer
+     * @param user
+     * @param voteType
+     * @return
+     */
     def castVoteOnAnswer(Answer answer, User user, VoteType voteType) {
 
         if (!answer || !user) {
-            return
+            return false
         }
+
+        def currentAcceptedAnswer = answer.question.answers.find { it.accepted }
+
 
         def vote = AnswerVote.findByAnswerAndUser(answer, user)
 
@@ -228,10 +241,10 @@ class QuestionService {
             voteType = VoteType.Retract
         }
 
-
         if (voteType == VoteType.Retract) {
             if (vote) {
-                vote.delete()
+                answer.votes.remove(vote)
+                vote.delete(failOnError: true)
             }
         } else {
             if (!vote) {
@@ -241,14 +254,62 @@ class QuestionService {
             vote.voteValue = newVoteValue
             vote.save(failOnError: true)
         }
+
+        //generate a map of [answer: vote count]
+        def answerRanking = [:]
+        answer.question.answers.each {
+            def score = it.votes.sum { v -> v.voteValue } ?: 0
+            answerRanking[it] = score
+        }
+
+        //order by score, and retrieve top answer
+        def topAnswer = answerRanking.sort { it.value * -1 }.take(1).keySet().first()
+
+
+        def newAcceptedAnswer = null
+
+        //update the answers
+        answer.question.answers.each {
+            if(it == topAnswer && answerRanking[topAnswer] >= grailsApplication.config.accepted.answer.threshold){
+                //are there any other answers with a greater number of votes
+                newAcceptedAnswer = it
+                it.accepted = true
+            } else {
+                it.accepted = false
+            }
+            it.save(failOnError: true)
+        }
+
+        //return true if there a change in the accepted answer
+        currentAcceptedAnswer != newAcceptedAnswer
+    }
+
+    /**
+     * Updates the source system with the latest answer.
+     *
+     * @param question
+     */
+    def updateRecordAtSource(questionId){
+
+        def question = Question.get(questionId)
+
+        def acceptedAnswer = question.answers.find { it.accepted }
+        if(acceptedAnswer){
+            //lets to a HTTP POST
+            if(question.source.name == 'ecodata'){
+                def identifiedBy = authService.getUserForUserId(acceptedAnswer.getUser().alaUserId)
+                ecodataService.updateRecord(question.id, question.occurrenceId, acceptedAnswer.darwinCore, identifiedBy, acceptedAnswer.dateCreated)
+            } else {
+                log.warn("Updates not supported for source system: " + question.source.name)
+            }
+        } else {
+            //should we revert to highest ranked or the original identification.
+            log.warn("Accepted answer not available, we need to revert to original identification - not implemented ! ")
+        }
     }
 
     def canUserAcceptAnswer(Answer answer, User user) {
         // If the current user is one who asked the question, they can accept the answer
-        if (answer.question.user == user) {
-            return true
-        }
-
         if (authService.userInRole(CASRoles.ROLE_ADMIN)) {
             return true
         }

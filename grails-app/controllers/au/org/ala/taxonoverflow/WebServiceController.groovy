@@ -1,7 +1,9 @@
 package au.org.ala.taxonoverflow
 
+import grails.async.Promise
 import grails.converters.JSON
 import grails.converters.XML
+import static grails.async.Promises.*
 
 class WebServiceController {
 
@@ -45,6 +47,11 @@ class WebServiceController {
         renderResults(model)
     }
 
+    /**
+     * Create a question from an external source.
+     *
+     * @return
+     */
     def createQuestionFromExternal(){
         def body = request.JSON
         if(body.source && body.source == 'ecodata'){
@@ -199,24 +206,31 @@ class WebServiceController {
     }
 
     private static setAnswerProperties(Answer answer, Object answerDetails, List messages) {
-        switch (answer.question.questionType) {
-            case QuestionType.IDENTIFICATION:
-                def scientificName = answerDetails.scientificName
-                def identificationRemarks = answerDetails.identificationRemarks
 
-                if (!scientificName) {
-                    messages << "A scientific name must be supplied"
-                } else {
-                    answer.scientificName = scientificName
-                    answer.description = identificationRemarks
-                    return true
-                }
-                break
-            default:
-                messages << "Unhandled question type: ${answer.question.questionType?.toString()}"
+        //retrieve a description, and then any additional properties
+        //are lumped into DwC
+        answer.description = answerDetails.description
+
+        def validRequest = true
+        def darwinCore = [:]
+
+        //required fields
+        answer.question.questionType.getRequiredFields().each {
+            if (!answerDetails[it]) {
+                messages << "A ${it} must be supplied"
+                validRequest = false
+            } else {
+                darwinCore[it] = answerDetails[it]
+            }
+        }
+        //optional fields
+        answer.question.questionType.getOptionalFields().each {
+            darwinCore[it] = answerDetails[it]
         }
 
-        return false
+        answer.darwinCore = (darwinCore as JSON).toString()
+
+        return validRequest
     }
 
     def deleteAnswer(long id) {
@@ -276,7 +290,16 @@ class WebServiceController {
                 } else if (dir == 0) {
                     voteType = VoteType.Retract
                 }
-                questionService.castVoteOnAnswer(answer, user, voteType)
+                def acceptedAnswerChange = questionService.castVoteOnAnswer(answer, user, voteType)
+                if(acceptedAnswerChange) {
+                    log.debug("Accepted answer for question #${answer.question.id} has changed to #${answer.id} = ${answer.darwinCore}")
+                    Promise p = task {
+                        // Long running task
+                        questionService.updateRecordAtSource(answer.question.id)
+                    }
+                } else {
+                    log.debug("No change in accepted answer for question #${answer.question.id}")
+                }
                 results.success = true
             } else {
                 results.message = "Invalid or missing answer id!"

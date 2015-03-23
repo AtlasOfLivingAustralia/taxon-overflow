@@ -2,7 +2,7 @@
 <html>
     <head>
         <meta name="layout" content="main"/>
-        <title>Identification case #${question.id} | Atlas of Living Australia</title>
+        <title>Case #${question.id} | Community identification help | Atlas of Living Australia</title>
         <r:style type="text/css">
 
             #map {
@@ -33,6 +33,7 @@
 
             .accepted-answer-header { padding-left:10px;  margin-top:0px; padding-top:0px; background-color: #f2f2f2; border-bottom: 1px solid #dddddd; }
 
+            .answer-main { font-size: 18px; }
 
         </r:style>
         <r:require modules="viewer, flexisel, leaflet, taxonoverflow" />
@@ -185,13 +186,12 @@
 
         </r:script>
     </head>
-    <body>
 
         <div class="row">
             <div class="span12">
                 <ul class="breadcrumb">
                     <li><a href="http://ala.org.au">Home</a> <span class="divider"><i class="fa fa-arrow-right"></i></span></li>
-                    <li><g:link controller="question" action="list">Help identify species</g:link> <span class="divider"><i class="fa fa-arrow-right"></i></span></li>
+                    <li><g:link controller="question" action="list">Community identification help</g:link> <span class="divider"><i class="fa fa-arrow-right"></i></span></li>
                     <li class="active">Species identification case #${question.id}</li>
                 </ul>
             </div>
@@ -225,10 +225,7 @@
                 </H1>
             </div>
             <div class="span6">
-                <h4 class="pull-right">${answers?.size() ?: 0} ${question.questionType == au.org.ala.taxonoverflow.QuestionType.IDENTIFICATION ? "IDENTIFICATION(s)" : "Answer(s)" }</h4>
-                <g:if test="${acceptedAnswer}">
-                    <div class="hide label label-success">An identification has been accepted for this occurrence: ${acceptedAnswer.scientificName}</div>
-                </g:if>
+                <h4 class="pull-right">${question.answers?.size() ?: 0} ${question.questionType == au.org.ala.taxonoverflow.QuestionType.IDENTIFICATION ? "IDENTIFICATION(s)" : "Answer(s)" }</h4>
             </div>
         </div>
         <div class="row-fluid">
@@ -260,12 +257,10 @@
                     <span id="followingText" style="${isFollowing ? '' : 'display:none;'}"> Following</span>
                     <span id="unfollowingText"  style="${isFollowing ? 'display:none' : ''}"> Not following</span>
                 </div>
-
                 <div id="tagsDiv">
                     <g:render template="tagsFragment" model="${[question: question]}" />
 
                 </div>
-
                 <div class="occurrenceDetails">
                     <g:render template="questionDetails" model="${[question:question, occurrence: occurrence]}" />
                 </div>

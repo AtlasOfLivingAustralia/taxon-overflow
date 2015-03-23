@@ -14,7 +14,7 @@ class AnswerJSONMarshaller extends AbstractJSONMarshaller<Answer> {
         result.dateAccepted = formatDate(answer.dateAccepted)
         result.votes = answer.votes
         result.comments = answer.comments
-        result.scientificName = answer.scientificName
+        result.darwinCore = answer.darwinCore
         result.description = answer.description
     }
 

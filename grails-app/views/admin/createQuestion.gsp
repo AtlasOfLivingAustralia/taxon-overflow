@@ -3,7 +3,6 @@
   <head>
     <meta name="layout" content="toadmin"/>
     <title>Create question | Atlas of Living Australia</title>
-    <r:require modules="application"/>
   </head>
   <body class="content">
     <content tag="pageTitle">Create question</content>

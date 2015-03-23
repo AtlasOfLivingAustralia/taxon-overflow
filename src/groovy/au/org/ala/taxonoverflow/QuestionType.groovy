@@ -1,19 +1,22 @@
 package au.org.ala.taxonoverflow
 
 public enum QuestionType {
-    IDENTIFICATION('Identification'),
-    GEOCODING_ISSUE('Geocoding Issue'),
-    SUSPECTED_OUTLIER('Suspected Outlier'),
-    TEMPORAL_ISSUE('Temporal Issue'),
-    TAXONOMIC_ISSUE('Taxonomic Issue'),
-    HABITAT_ISSUE('Habitat Issue')
+
+    IDENTIFICATION('Identification', ['scientificName'], ['commonName', 'taxonConceptID']),
+    GEOCODING_ISSUE('Geospatial Issue', ['decimalLatitude','decimalLongitude'],[]),
+    TEMPORAL_ISSUE('Temporal Issue', [], ['year', 'month', 'day']),
+    HABITAT_ISSUE('Habitat Issue', [], [])
 
     private String label
     private String camelCaseName
+    private List<String> requiredFields
+    private List<String> optionalFields
 
-    QuestionType(String label) {
+    QuestionType(String label, List requiredFields, List optionalFields) {
         this.label = label
         this.camelCaseName = label.replaceAll("\\s","")
+        this.requiredFields = requiredFields
+        this.optionalFields = optionalFields
     }
 
     public String getLabel(){
@@ -22,5 +25,13 @@ public enum QuestionType {
 
     public String getCamelCaseName(){
         camelCaseName
+    }
+
+    public List<String> getRequiredFields(){
+        requiredFields
+    }
+
+    public List<String> getOptionalFields(){
+        optionalFields
     }
 }

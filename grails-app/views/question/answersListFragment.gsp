@@ -301,6 +301,12 @@
         minChars: 3,
         scroll: false,
         max: 10
+    }).result(function(event, item) {
+        // user has selected an autocomplete item
+        console.log("item", item);
+        $('.taxon-select-guid').val(item.guid);
+        $('.taxon-select-scientific').val(item.name);
+        $('.taxon-select-common').val(item.commonName);
     }).on('change', function () {
         //TODO select the taxon...
     }).keydown(function (event) {

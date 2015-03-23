@@ -48,6 +48,8 @@ pigeonhole.recordUrl = "http://sightings.ala.org.au/edit/"
 
 notifications.enabled = false
 
+accepted.answer.threshold = 3
+
 //this list should be empty for production
 testUsers="taxonoverflow%2Bmick@gmail.com,taxonoverflow%2Bkeef@gmail.com,taxonoverflow%2Bbasher@gmail.com,taxonoverflow%2Bronnie@gmail.com,taxonoverflow%2Bbill@gmail.com"
 

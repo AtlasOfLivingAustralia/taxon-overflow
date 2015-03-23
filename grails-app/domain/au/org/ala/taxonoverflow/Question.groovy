@@ -13,7 +13,7 @@ class Question {
     static hasMany = [comments: QuestionComment, views: QuestionView, answers: Answer, tags: QuestionTag, followers: User]
 
     static constraints = {
-        user nullable: false
+        user column: "taxonoverflow_user", nullable: false
         questionType nullable: false
         occurrenceId nullable: false
         dateCreated nullable: true

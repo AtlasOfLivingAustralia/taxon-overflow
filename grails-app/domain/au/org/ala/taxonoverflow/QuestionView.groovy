@@ -9,6 +9,7 @@ class QuestionView {
     static belongsTo = [question: Question]
 
     static constraints = {
+        user column: "taxonoverflow_user", nullable: false
     }
 
     def afterUpdate() {
