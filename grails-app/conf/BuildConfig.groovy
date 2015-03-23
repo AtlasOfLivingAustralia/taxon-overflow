@@ -55,7 +55,6 @@ grails.project.dependency.resolution = {
         compile 'org.elasticsearch:elasticsearch:1.4.4'
         compile 'io.searchbox:jest:0.1.5'
         compile 'com.vividsolutions:jts:1.13'
-        compile 'org.codehaus.groovy.modules.http-builder:http-builder:0.7.1'
     }
 
     plugins {

@@ -522,6 +522,8 @@ class WebServiceController {
             } catch (e) {
                 serviceResult.fail("The date provided ${searchParams.date} is not a valid date with format \"yyyy=MM-dd\"")
             }
+        } else {
+            serviceResult.fail("No valid date provided")
         }
 
         return serviceResult

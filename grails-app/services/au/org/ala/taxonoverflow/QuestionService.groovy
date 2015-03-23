@@ -70,7 +70,6 @@ class QuestionService {
 
                 question = new Question(user: user, occurrenceId: occurrenceId, questionType: questionType, source: source)
 
-
                 // Save the tags
                 tags?.each {
                     if (!StringUtils.isEmpty(it)) {
