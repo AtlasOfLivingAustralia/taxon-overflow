@@ -88,6 +88,10 @@ grails.views.default.codec = "html"
 // If unspecified, controllers are prototype scoped.
 grails.controllers.defaultScope = 'singleton'
 
+
+expertRole = 'ROLE_TAXONOVERFLOW_EXPERT'
+
+
 // GSP settings
 grails {
     views {

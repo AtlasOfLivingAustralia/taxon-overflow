@@ -95,11 +95,10 @@ class NotificationsAspect {
             UserDetails userDetails = authService.getUserForUserId(question.user.alaUserId)
             String emailSubject = "(Question #${question.id}) - New tag added"
             String htmlBody = pageRenderer.render template: '/notifications/newTagNotification', model: [questionTag: questionTag]
-            List bccEmailAddresses = addressees.collect { user ->
+            List bccEmailAddresses = addressees.findAll{ it.enableNotifications }.collect { user ->
                 authService.getUserForUserId(user.alaUserId).userName
             }
             // Send email
-            if(grails)
             sendEmail(bccEmailAddresses, userDetails, emailSubject, htmlBody)
         }
     }
@@ -119,7 +118,7 @@ class NotificationsAspect {
             if(userDetails){
                 String emailSubject = "(Question #${question.id}) - Identification answer ${answer.accepted ? 'accepted' : 'posted'}"
                 String htmlBody = pageRenderer.render template: '/notifications/answerNotification', model: [answer: answer, userDetails: userDetails]
-                List bccEmailAddresses = addressees.collect { user ->
+                List bccEmailAddresses = addressees.findAll{ it.enableNotifications }.collect { user ->
                     authService.getUserForUserId(user.alaUserId).userName
                 }
                 // Send email
@@ -143,7 +142,7 @@ class NotificationsAspect {
             if(userDetails){
                 String emailSubject = "${question.comments.size() > 1 ? "RE: " : ""}(Question #${question.id}) - New${comment instanceof AnswerComment ? ' identification' : ''} comment posted"
                 String htmlBody = pageRenderer.render template: '/notifications/newCommentNotification', model: [comment: comment, userDetails: userDetails]
-                List bccEmailAddresses = addressees.collect { user ->
+                List bccEmailAddresses = addressees.findAll{ it.enableNotifications }.collect { user ->
                     authService.getUserForUserId(user.alaUserId).userName
                 }
                 // Send email

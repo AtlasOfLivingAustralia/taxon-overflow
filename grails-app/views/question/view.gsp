@@ -220,7 +220,6 @@
         <div class="row-fluid header-row">
             <div class="span6">
                 <H1>Species identification case #${question.id}&nbsp;
-                    %{--[ <a href="${question.source.uiBaseUrl}${question.occurrenceId}" target="occurrenceDetails">View record</a> ]--}%
                     <small> Views: ${viewCount}</small>
                 </H1>
             </div>
@@ -229,8 +228,12 @@
             </div>
         </div>
         <div class="row-fluid">
+            <g:set var="coordinates" value="${au.org.ala.taxonoverflow.OccurrenceHelper.getCoordinates(occurrence)}" />
+            <g:if test="${occurrence.imageIds || coordinates}">
             <div class="span6">
-                <div id="imageViewer"></div>
+                <g:if test="${occurrence.imageIds}">
+                    <div id="imageViewer"></div>
+                </g:if>
                 <g:if test="${occurrence.imageIds?.size() > 1}">
                     <div class="image-thumbs">
                         <ul id="media-thumb-list">
@@ -242,15 +245,11 @@
                         </ul>
                     </div>
                 </g:if>
-
-                <g:set var="coordinates" value="${au.org.ala.taxonoverflow.OccurrenceHelper.getCoordinates(occurrence)}" />
-
                 <g:if test="${coordinates}">
-                    %{--<br/>--}%
                     <div id="mapDiv"></div>
                 </g:if>
-
             </div>
+            </g:if>
             <div class="span6">
                 <div id="followQuestion">
                     <i class="fa ${isFollowing ? 'fa-star following' : 'fa-star-o'} fa-lg"></i>

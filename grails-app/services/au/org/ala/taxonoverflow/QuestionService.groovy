@@ -199,6 +199,9 @@ class QuestionService {
         answer.accepted = true
         answer.save()
 
+        //TODO redo this with annotations
+        updateRecordAtSource(answer.questionId)
+
         return new ServiceResult<Answer>(result: answer, success: true)
     }
 
@@ -214,6 +217,8 @@ class QuestionService {
             answer.save(failOnError: true)
         }
 
+        //TODO redo this with annotations
+        updateRecordAtSource(answer.questionId)
     }
 
     /**
@@ -287,6 +292,7 @@ class QuestionService {
     /**
      * Updates the source system with the latest answer.
      *
+     * TODO we should be able to generalise this and remove hardcode 'ecodata' references
      * @param question
      */
     def updateRecordAtSource(questionId){
@@ -310,7 +316,7 @@ class QuestionService {
 
     def canUserAcceptAnswer(Answer answer, User user) {
         // If the current user is one who asked the question, they can accept the answer
-        if (authService.userInRole(CASRoles.ROLE_ADMIN)) {
+        if (authService.userInRole(CASRoles.ROLE_ADMIN) || authService.userInRole(grailsApplication.config.expertRole)) {
             return true
         }
 
@@ -323,7 +329,7 @@ class QuestionService {
             return true
         }
 
-        if (authService.userInRole(CASRoles.ROLE_ADMIN)) {
+        if (authService.userInRole(CASRoles.ROLE_ADMIN) || authService.userInRole(grailsApplication.config.expertRole)) {
             return true
         }
 
