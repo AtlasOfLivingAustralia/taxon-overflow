@@ -46,6 +46,7 @@ grails.project.dependency.resolution = {
         runtime 'org.postgresql:postgresql:9.3-1101-jdbc41'
 
         test "org.grails:grails-datastore-test-support:1.0.2-grails-2.4"
+        test "org.gebish:geb-spock:0.10.0"
 
         compile 'net.sf.ehcache:ehcache:2.8.4'
         compile 'com.github.rjeschke:txtmark:0.11'
@@ -53,8 +54,8 @@ grails.project.dependency.resolution = {
             excludes('javassist:javassist:3.11.0.GA')
         }
         compile 'org.elasticsearch:elasticsearch:1.4.4'
-        compile 'io.searchbox:jest:0.1.5'
         compile 'com.vividsolutions:jts:1.13'
+        compile 'io.searchbox:jest:0.1.5'
     }
 
     plugins {
@@ -64,7 +65,7 @@ grails.project.dependency.resolution = {
         // plugins for the build system only
         build ":tomcat:7.0.55"
 
-        test ":funky-spock:0.2.2"
+        test ":geb:0.10.0"
 
         // plugins for the compile step
         compile ":rest-client-builder:2.1.0"

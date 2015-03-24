@@ -158,13 +158,13 @@ class RestAPISpec extends IntegrationSpec {
 
         when:
         // Query for questions with a valid tag and crated after a valid date
-        response = rest.get("http://localhost:8080/${grailsApplication.metadata.'app.name'}/ws/question/search?tags=kangaroo&dateCreated=${new Date().format(ISO_8601_DATE_FORMAT)}")
+        response = rest.get("http://localhost:8080/${grailsApplication.metadata.'app.name'}/ws/question/search?tags=kangaroo&dateCreated=${(new Date() - 1).format(ISO_8601_DATE_FORMAT)}")
 
         then:
         response.json.success == true
         response.json.result.size() == 2
         response.json.result.each {question ->
-            [question2.id, question4.id].contains(question.id)
+            [question1.id, question2.id].contains(question.id)
         }
 
         when:
