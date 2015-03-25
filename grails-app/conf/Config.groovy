@@ -160,7 +160,7 @@ environments {
         }
 
         /*  ElasticSearch Configuration */
-        elasticsearch.path.home = "/data/${appName}/elasticsearch"
+        elasticsearch.path.home = System.getenv(ENV_NAME) ? "${System.getenv(ENV_NAME)}/elasticsearch" : "/data/${appName}/elasticsearch"
     }
 
     test {
@@ -173,7 +173,7 @@ environments {
 
 
         /*  ElasticSearch Configuration */
-        elasticsearch.path.home = "/data/${appName}/elasticsearch-test"
+        elasticsearch.path.home = System.getenv(ENV_NAME) ? "${System.getenv(ENV_NAME)}/elasticsearch-test" : "/data/${appName}/elasticsearch-test"
         elasticsearch.index.store.type = "memory"
         elasticsearch.logging.json = true
     }
@@ -187,7 +187,7 @@ environments {
         }
 
         /*  ElasticSearch Configuration */
-        elasticsearch.path.home = "/data/${appName}/elasticsearch"
+        elasticsearch.path.home = System.getenv(ENV_NAME) ? "${System.getenv(ENV_NAME)}/elasticsearch" : "/data/${appName}/elasticsearch"
     }
 }
 
