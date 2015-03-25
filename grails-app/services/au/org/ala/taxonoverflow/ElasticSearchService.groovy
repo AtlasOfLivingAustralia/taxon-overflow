@@ -41,6 +41,7 @@ class ElasticSearchService {
     private Node node
     private Client client
     private JestClient jestClient
+    private boolean isLoggingEnabled = false
 
     @NotTransactional
     @PostConstruct
@@ -48,8 +49,12 @@ class ElasticSearchService {
         log.info("ElasticSearch service starting...")
         ImmutableSettings.Builder settings = ImmutableSettings.settingsBuilder();
         Map elasticsearchSettings = flatten(grailsApplication.config.elasticsearch)
-        elasticsearchSettings.each {setting, value ->
-            settings.put(setting, value)
+        elasticsearchSettings?.each {setting, value ->
+            if (setting != "logging.json") {
+                settings.put(setting, value)
+            } else {
+                isLoggingEnabled = value
+            }
         }
         node = nodeBuilder().local(true).settings(settings).node();
         client = node.client();
@@ -272,7 +277,7 @@ class ElasticSearchService {
     }
 }
 """
-        def tags = search(query)?.jsonObject?.aggregations?.tags?.buckets
+        def tags = excuteRestApiQuery(query)?.jsonObject?.aggregations?.tags?.buckets
         tags.collect {tag ->
             [label: tag.key.getAsString(), count: tag.doc_count.getAsInt()]
         }
@@ -291,7 +296,7 @@ class ElasticSearchService {
     }
 }
 """
-        def questionTypes = search(query)?.jsonObject?.aggregations?.questionTypes?.buckets
+        def questionTypes = excuteRestApiQuery(query)?.jsonObject?.aggregations?.questionTypes?.buckets
         questionTypes.collect {questionType ->
             [label: questionType.key.getAsString(), count: questionType.doc_count.getAsInt()]
         }
@@ -317,7 +322,9 @@ class ElasticSearchService {
         )
 
         def hits = searchRequestBuilder.execute().actionGet()?.hits?.hits
-        log.debug("ElasticSearch Query using Java Client API:\n${searchRequestBuilder.internalBuilder().toString()}")
+        if (isLoggingEnabled) {
+            log.debug("ElasticSearch Query using Java Client API:\n${searchRequestBuilder.internalBuilder().toString()}")
+        }
         return hits.collect {hit -> hit.id}
     }
 
@@ -327,9 +334,11 @@ class ElasticSearchService {
      * @param indexName [optional] taxonoverlfow index by default
      * @return
      */
-    SearchResult search(String query, String indexName = INDEX_NAME) {
+    SearchResult excuteRestApiQuery(String query, String indexName = INDEX_NAME) {
         Search search = new Search.Builder(query).addIndex(indexName).build()
-        log.debug("ElasticSearch Query using REST API:\n ${query}")
+        if (isLoggingEnabled) {
+            log.debug("ElasticSearch Query using REST API:\n ${query}")
+        }
         jestClient.execute(search)
     }
 

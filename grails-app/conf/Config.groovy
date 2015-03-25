@@ -175,6 +175,7 @@ environments {
         /*  ElasticSearch Configuration */
         elasticsearch.path.home = "/data/${appName}/elasticsearch-test"
         elasticsearch.index.store.type = "memory"
+        elasticsearch.logging.json = true
     }
 
     production {
