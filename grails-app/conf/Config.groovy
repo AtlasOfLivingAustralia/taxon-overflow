@@ -9,9 +9,9 @@ default_config = "/data/${appName}/config/${appName}-config.properties"
 if(!grails.config.locations || !(grails.config.locations instanceof List)) {
     grails.config.locations = []
 }
-if(System.getenv(ENV_NAME) && new File(System.getenv(ENV_NAME)).exists()) {
-    println "[${appName}] Including configuration file specified in environment: " + System.getenv(ENV_NAME);
-    grails.config.locations.add "file:" + System.getenv(ENV_NAME)
+if(System.getProperty(ENV_NAME) && new File(System.getProperty(ENV_NAME)).exists()) {
+    println "[${appName}] Including configuration file specified in environment: " + System.getProperty(ENV_NAME);
+    grails.config.locations.add "file:" + System.getProperty(ENV_NAME)
 } else if(System.getProperty(ENV_NAME) && new File(System.getProperty(ENV_NAME)).exists()) {
     println "[${appName}] Including configuration file specified on command line: " + System.getProperty(ENV_NAME);
     grails.config.locations.add "file:" + System.getProperty(ENV_NAME)
@@ -160,7 +160,7 @@ environments {
         }
 
         /*  ElasticSearch Configuration */
-        elasticsearch.path.home = System.getenv(ENV_NAME) ? "${System.getenv(ENV_NAME)}/elasticsearch" : "/data/${appName}/elasticsearch"
+        elasticsearch.path.home = System.getProperty(ENV_NAME) ? "${System.getProperty(ENV_NAME)}/elasticsearch" : "/data/${appName}/elasticsearch"
     }
 
     test {
@@ -174,8 +174,8 @@ environments {
 
         /*  ElasticSearch Configuration */
         println("************************************************")
-        elasticsearch.path.home = System.getenv(ENV_NAME) ? "${System.getenv(ENV_NAME)}/elasticsearch-test" : "/data/${appName}/elasticsearch-test"
-        println("Resolved index location = " + System.getenv(ENV_NAME) ? "${System.getenv(ENV_NAME)}/elasticsearch-test" : "/data/${appName}/elasticsearch-test")
+        elasticsearch.path.home = System.getProperty(ENV_NAME) ? "${System.getProperty(ENV_NAME)}/elasticsearch-test" : "/data/${appName}/elasticsearch-test"
+        println("Resolved index location = " + System.getProperty(ENV_NAME) ? "${System.getProperty(ENV_NAME)}/elasticsearch-test" : "/data/${appName}/elasticsearch-test")
         println("************************************************")
         elasticsearch.index.store.type = "memory"
         elasticsearch.logging.json = true
@@ -190,7 +190,7 @@ environments {
         }
 
         /*  ElasticSearch Configuration */
-        elasticsearch.path.home = System.getenv(ENV_NAME) ? "${System.getenv(ENV_NAME)}/elasticsearch" : "/data/${appName}/elasticsearch"
+        elasticsearch.path.home = System.getProperty(ENV_NAME) ? "${System.getProperty(ENV_NAME)}/elasticsearch" : "/data/${appName}/elasticsearch"
     }
 }
 
