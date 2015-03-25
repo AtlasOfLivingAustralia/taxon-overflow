@@ -23,7 +23,8 @@ before_install:
 - mkdir ./config
 - git clone https://github.com/AtlasOfLivingAustralia/taxon-overflow.git ./config
 - ls -la ./config
-- git checkout ci-config
+- git checkout ci-config ./config
+- ls -la ./config
 before_script:
 - GRAILS_VERSION_NUMBER=`echo $GRAILS_VERSION | sed -e 's/\.[0-9]*$//g' -e 's/\.//g'
   | tr -d "\r"`
