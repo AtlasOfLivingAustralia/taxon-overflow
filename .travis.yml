@@ -18,13 +18,13 @@ before_install:
   | tr -d "\r"`
 - echo "GRAILS_VERSION:$GRAILS_VERSION"
 - gvm install grails $GRAILS_VERSION || true
-- echo Checkoout Configuration
+- echo "Checkout Configuration"
 - pwd
-- mkdir ./config
-- git clone https://github.com/AtlasOfLivingAustralia/taxon-overflow.git ./config
-- ls -la ./config
-- git checkout ci-config ./config
-- ls -la ./config
+- mkdir config
+- git clone https://github.com/AtlasOfLivingAustralia/taxon-overflow.git config
+- ls -la config
+- git -C config checkout ci-config
+- ls -la config
 before_script:
 - GRAILS_VERSION_NUMBER=`echo $GRAILS_VERSION | sed -e 's/\.[0-9]*$//g' -e 's/\.//g'
   | tr -d "\r"`
