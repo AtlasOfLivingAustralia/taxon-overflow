@@ -18,6 +18,9 @@ before_install:
   | tr -d "\r"`
 - echo "GRAILS_VERSION:$GRAILS_VERSION"
 - gvm install grails $GRAILS_VERSION || true
+- echo checkoout configuration
+- cd / | git clone https://github.com/AtlasOfLivingAustralia/taxon-overflow.git | git checkout ci-config
+-
 before_script:
 - GRAILS_VERSION_NUMBER=`echo $GRAILS_VERSION | sed -e 's/\.[0-9]*$//g' -e 's/\.//g'
   | tr -d "\r"`
@@ -32,7 +35,7 @@ before_script:
   = "1" ]; then MAVEN_REPO="ala-repo-release"; fi;
 - echo "MAVEN_REPO:$MAVEN_REPO"
 script:
-- grails clean && grails refresh-dependencies --non-interactive && grails prod war
+- grails clean && grails refresh-dependencies --non-interactive && grails test-app && grails prod war
   --non-interactive && grails prod maven-install --non-interactive
 after_success: '[ "${TRAVIS_PULL_REQUEST}" = "false" ] && grails prod maven-deploy
   --repository=$MAVEN_REPO --non-interactive'
