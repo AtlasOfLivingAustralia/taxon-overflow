@@ -70,6 +70,7 @@ class RestAPISpec extends IntegrationSpec {
         sessionFactory.currentSession.clear()
         // Get elasticsearch index in sync before executing any test
         elasticSearchService.processIndexTaskQueue()
+        Thread.sleep(2000)
     }
 
     def cleanup() {
@@ -158,7 +159,7 @@ class RestAPISpec extends IntegrationSpec {
 
         when:
         // Query for questions with a valid tag and crated after a valid date
-        response = rest.get("http://localhost:8080/${grailsApplication.metadata.'app.name'}/ws/question/search?tags=kangaroo&dateCreated=${(new Date() - 1).format(ISO_8601_DATE_FORMAT)}")
+        response = rest.get("http://localhost:8080/${grailsApplication.metadata.'app.name'}/ws/question/search?tags=kangaroo&dateCreated=${new Date().format(ISO_8601_DATE_FORMAT)}")
 
         then:
         response.json.success == true

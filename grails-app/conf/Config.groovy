@@ -160,7 +160,7 @@ environments {
         }
 
         /*  ElasticSearch Configuration */
-        elasticsearch.location = "/data/${appName}/elasticsearch"
+        elasticsearch.path.home = "/data/${appName}/elasticsearch"
     }
 
     test {
@@ -173,7 +173,8 @@ environments {
 
 
         /*  ElasticSearch Configuration */
-        elasticsearch.location = "/data/${appName}/elasticsearch-test"
+        elasticsearch.path.home = "/data/${appName}/elasticsearch-test"
+        elasticsearch.index.store.type = "memory"
     }
 
     production {
@@ -185,7 +186,7 @@ environments {
         }
 
         /*  ElasticSearch Configuration */
-        elasticsearch.location = "/data/${appName}/elasticsearch"
+        elasticsearch.path.home = "/data/${appName}/elasticsearch"
     }
 }
 

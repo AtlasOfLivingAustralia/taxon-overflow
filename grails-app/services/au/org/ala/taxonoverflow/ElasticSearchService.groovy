@@ -47,7 +47,10 @@ class ElasticSearchService {
     def initialize() {
         log.info("ElasticSearch service starting...")
         ImmutableSettings.Builder settings = ImmutableSettings.settingsBuilder();
-        settings.put("path.home", grailsApplication.config.elasticsearch.location);
+        Map elasticsearchSettings = flatten(grailsApplication.config.elasticsearch)
+        elasticsearchSettings.each {setting, value ->
+            settings.put(setting, value)
+        }
         node = nodeBuilder().local(true).settings(settings).node();
         client = node.client();
         client.admin().cluster().prepareHealth().setWaitForYellowStatus().execute().actionGet();
@@ -58,6 +61,16 @@ class ElasticSearchService {
         jestClient = factory.getObject();
         log.info("ElasticSearch service initialisation complete.")
 
+    }
+
+    /**
+     * Flatens map entries using dot notation
+     * @param map
+     * @param separator
+     * @return
+     */
+    Map flatten(Map map, String separator = '.') {
+        map.collectEntries { k, v -> v instanceof Map ? flatten(v, separator).collectEntries { q, r -> [(k + separator + q): r] } : [(k): v] }
     }
 
     @NotTransactional
