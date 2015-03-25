@@ -173,7 +173,10 @@ environments {
 
 
         /*  ElasticSearch Configuration */
+        println("************************************************")
         elasticsearch.path.home = System.getenv(ENV_NAME) ? "${System.getenv(ENV_NAME)}/elasticsearch-test" : "/data/${appName}/elasticsearch-test"
+        println("Resolved index location = " + System.getenv(ENV_NAME) ? "${System.getenv(ENV_NAME)}/elasticsearch-test" : "/data/${appName}/elasticsearch-test")
+        println("************************************************")
         elasticsearch.index.store.type = "memory"
         elasticsearch.logging.json = true
     }
