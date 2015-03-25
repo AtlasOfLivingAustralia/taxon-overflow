@@ -63,7 +63,7 @@ grails.project.dependency.resolution = {
             excludes "rest-client-builder"
         }
         // plugins for the build system only
-        build ":tomcat:7.0.55"
+        build ":tomcat:7.0.55.2"
 
         test ":geb:0.10.0"
 
@@ -74,10 +74,10 @@ grails.project.dependency.resolution = {
         compile ":quartz:1.0.2"
         compile ":mail:1.0.7"
         compile ":pretty-time:2.1.3.Final-1.0.1"
-        // compile ":asset-pipeline:1.9.9"
+        // compile ":asset-pipeline:2.1.5"
 
         // plugins needed at runtime but not for compilation
-        runtime ":hibernate4:4.3.6.1"
+        runtime ":hibernate4:4.3.8.1"
         runtime ":database-migration:1.4.0"
         //runtime ":jquery:1.11.1"
 
