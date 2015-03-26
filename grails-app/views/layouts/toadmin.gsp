@@ -28,6 +28,7 @@
             <to:menuNavItem href="${createLink(controller: 'admin', action: 'createQuestionFromBiocache')}" title="Create question from Biocache" />
             <to:menuNavItem href="${createLink(controller: 'admin', action: 'createQuestionFromEcodata')}" title="Create question from Ecodata" />
             <to:menuNavItem href="${createLink(controller: 'admin', action: 'importFromEcodata')}" title="Import all from Ecodata" />
+            <to:menuNavItem href="${createLink(controller: 'admin', action: 'previewNotifications')}" title="Preview Email Notifications" />
           </ul>
         </div>
         <div class="span9">

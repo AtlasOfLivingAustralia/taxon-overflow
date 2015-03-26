@@ -58,4 +58,12 @@ class AdminController {
         response.addHeader("Access-Control-Allow-Origin", "")
         response.status = responseCode
     }
+
+    def previewNotifications() {
+        def comments = Comment.list(sort: 'dateCreated', order: 'desc', max: 5)
+        def answers = Answer.list(sort: 'dateCreated', order: 'desc', max: 5)
+        def tags = QuestionTag.list(sort: 'dateCreated', order: 'desc', max: 5)
+
+        render view: 'previewNotifications', model: [comments: comments, answers: answers, tags: tags]
+    }
 }
