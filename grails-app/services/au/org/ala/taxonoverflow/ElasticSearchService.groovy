@@ -234,7 +234,7 @@ class ElasticSearchService {
 
         SearchResponse searchResponse = searchRequestBuilder.execute().actionGet();
         if (isLoggingEnabled) {
-            log.debug("ElasticSearch Query using Java Client API:\n${searchRequestBuilder.internalBuilder().toString()}")
+            log.debug("ElasticSearch Query using Java Client API:\n${searchRequestBuilder.internalBuilder()}")
         }
 
         def resultsList = []
@@ -325,7 +325,7 @@ class ElasticSearchService {
 
         def hits = searchRequestBuilder.execute().actionGet()?.hits?.hits
         if (isLoggingEnabled) {
-            log.debug("ElasticSearch Query using Java Client API:\n${searchRequestBuilder.internalBuilder().toString()}")
+            log.debug("ElasticSearch Query using Java Client API:\n${searchRequestBuilder.internalBuilder()}")
         }
         return hits.collect {hit -> hit.id}
     }
