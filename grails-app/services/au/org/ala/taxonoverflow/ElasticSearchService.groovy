@@ -233,7 +233,9 @@ class ElasticSearchService {
         }
 
         SearchResponse searchResponse = searchRequestBuilder.execute().actionGet();
-        log.debug("ElasticSearch Query using Java Client API:\n${searchRequestBuilder.internalBuilder().toString()}")
+        if (isLoggingEnabled) {
+            log.debug("ElasticSearch Query using Java Client API:\n${searchRequestBuilder.internalBuilder().toString()}")
+        }
 
         def resultsList = []
         def auxdata = [:]
