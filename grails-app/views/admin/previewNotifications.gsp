@@ -36,7 +36,7 @@
                         <i>${comment.comment.length() > 50 ? "\"${comment.comment.substring(0, 49)}...\"" : "\"${comment.comment}\""}</i>
                     </td>
                     <td>
-                        <a href="#" class="btn btn-ala"> Preview</a>
+                        <a href="#" class="btn btn-ala btn-small"> Preview</a>
                     </td>
                 </tr>
             </g:each>
