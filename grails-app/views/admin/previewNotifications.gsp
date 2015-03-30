@@ -24,6 +24,7 @@
                 <th>Action</th>
             </tr>
             </thead>
+            <tbody>
             <g:each in="${comments}" var="comment">
                 <tr>
                     <td>
@@ -36,15 +37,63 @@
                         <i>${comment.comment.length() > 50 ? "\"${comment.comment.substring(0, 49)}...\"" : "\"${comment.comment}\""}</i>
                     </td>
                     <td>
-                        <a href="#" class="btn btn-ala btn-small"> Preview</a>
+                        <a href="${g.createLink(action: 'previewQuestionCommentNotification', id: comment.id, params: [type: comment instanceof au.org.ala.taxonoverflow.QuestionComment ? '1' : '2'])}" target="_blank" class="btn btn-ala btn-small"> Preview</a>
                     </td>
                 </tr>
             </g:each>
+            </tbody>
         </table>
 
     </div>
-    <div class="tab-pane" id="answers">...</div>
-    <div class="tab-pane" id="tags">...</div>
+    <div class="tab-pane" id="answers">
+        <p>Last 5 answers:</p>
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Answer ID</th>
+                <th>Scientific Name</th>
+                <th>Common Name/s</th>
+                <th>Action</th>
+            </tr>
+            </thead>
+            <tbody>
+                <g:each in="${answers}" var="answer">
+                    <g:set var="answerProperties" value="${answer ? new groovy.json.JsonSlurper().parseText(answer.darwinCore) : [:]}"/>
+                    <tr>
+                        <td>${answer.id}</td>
+                        <td>${answerProperties?.scientificName}</td>
+                        <td>${answerProperties?.commonName}</td>
+                        <td>
+                            <a href="${g.createLink(action: 'previewAnswerNotification', id: answer.id)}" target="_blank" class="btn btn-ala btn-small"> Preview</a>
+                        </td>
+                    </tr>
+                </g:each>
+            </tbody>
+        </table>
+    </div>
+    <div class="tab-pane" id="tags">
+        <p>Last 5 tabs:</p>
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Question ID</th>
+                <th>Tab</th>
+                <th>Action</th>
+            </tr>
+            </thead>
+            <tbody>
+            <g:each in="${tags}" var="tag">
+                <tr>
+                    <td>${tag.questionId}</td>
+                    <td>${tag.tag}</td>
+                    <td>
+                        <a href="${g.createLink(action: 'previewTagNotification', id: tag.id)}" target="_blank" class="btn btn-ala btn-small"> Preview</a>
+                    </td>
+                </tr>
+            </g:each>
+            </tbody>
+        </table>
+    </div>
 </div>
 
 <script>

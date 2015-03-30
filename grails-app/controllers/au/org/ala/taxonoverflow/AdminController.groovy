@@ -1,6 +1,7 @@
 package au.org.ala.taxonoverflow
 
 import au.org.ala.web.AlaSecured
+import au.org.ala.web.UserDetails
 import grails.converters.JSON
 import grails.converters.XML
 
@@ -8,6 +9,7 @@ import grails.converters.XML
 class AdminController {
 
     def elasticSearchService
+    def authService
 
     def index() {
         redirect(action:'dashboard')
@@ -65,5 +67,27 @@ class AdminController {
         def tags = QuestionTag.list(sort: 'dateCreated', order: 'desc', max: 5)
 
         render view: 'previewNotifications', model: [comments: comments, answers: answers, tags: tags]
+    }
+
+    def previewQuestionCommentNotification() {
+        Comment comment;
+        if (params.type == '1') {
+            comment = QuestionComment.get(params.int('id'))
+        } else if (params.type == '2') {
+            comment = AnswerComment.get(params.int('id'))
+        }
+        UserDetails userDetails = authService.getUserForUserId(comment.user?.alaUserId)
+        render template: '/notifications/newCommentNotification', model: [comment: comment, userDetails: userDetails]
+    }
+
+    def previewAnswerNotification() {
+        Answer answer = Answer.get(params.int('id'))
+        UserDetails userDetails = authService.getUserForUserId(answer.user?.alaUserId)
+        render template: '/notifications/answerNotification', model: [answer: answer, userDetails: userDetails]
+    }
+
+    def previewTagNotification() {
+        QuestionTag questionTag = QuestionTag.get(params.int('id'))
+        render template: '/notifications/newTagNotification', model: [questionTag: questionTag]
     }
 }
