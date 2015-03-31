@@ -10,6 +10,7 @@ class UserController {
 
         if (user) {
             user.metaClass.displayName = authService.getDisplayName()
+            user.metaClass.email = authService.getEmail()
             [
                     user: user,
                     myQuestions: addImageMetaData(Question.findAllByUser(user)),

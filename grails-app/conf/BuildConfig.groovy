@@ -59,6 +59,7 @@ grails.project.dependency.resolution = {
         compile ":quartz:1.0.2"
         compile ":mail:1.0.7"
         compile ":pretty-time:2.1.3.Final-1.0.1"
+        compile ":avatar:0.6.3"
         // compile ":asset-pipeline:2.1.5"
 
         // plugins needed at runtime but not for compilation

@@ -23,6 +23,10 @@
         </ul>
     </div>
 </div>
+<div id="avatar">
+    <a href="https://en.gravatar.com/" id="gravatar" title="Your Gravatar image, click to create/edit"><avatar:gravatar email="${user.email}" alt="My Avatar" size="80" gravatarRating="G" defaultGravatarUrl="identicon"/></a>
+</div>
+
 <h1>${(user.displayName) ? user.displayName + "'s" : "My"} Activity Summary</h1>
 <div class="taxonoverflow-content row-fluid">
     <div class="span4">
@@ -38,5 +42,10 @@
         <g:render template="listQuestions" model="[questionList: followedQuestions, questionLabel: 'followed questions']"/>
     </div>
 </div>
+<r:script>
+    $(document).ready(function () {
+        $('#gravatar').tooltip({placement: 'right'});
+    }); // end document.ready
+</r:script>
 </body>
 </html>
