@@ -61,8 +61,8 @@ class QuestionController {
                 elasticSearchService.getOccurrenceData(question.occurrenceId)
             }
 
-            def alsUserId = authService.userId
-            User user = User.findByAlaUserId(alsUserId)
+            def alaUserId = authService.userId
+            User user = User.findByAlaUserId(alaUserId)
             boolean isFollowing = user ? user.followedQuestions.contains(question) : false;
 
             def acceptedAnswer = Answer.findByQuestionAndAccepted(question, true)
@@ -76,7 +76,7 @@ class QuestionController {
 
             def viewCount = auditService.getQuestionViewCount(question)
 
-            return [question: question, imageIds: imageIds, occurrence: specimen, userId: alsUserId, acceptedAnswer: acceptedAnswer, viewCount: viewCount, isFollowing: isFollowing]
+            return [question: question, imageIds: imageIds, occurrence: specimen, userId: alaUserId, acceptedAnswer: acceptedAnswer, viewCount: viewCount, isFollowing: isFollowing]
         } else {
             flash.message = "No such question, or question not specified"
             redirect(action:'list')

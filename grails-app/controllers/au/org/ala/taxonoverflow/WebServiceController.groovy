@@ -10,6 +10,7 @@ class WebServiceController {
     def userService
     def grailsApplication
     def questionService
+    def authService
 
 
     def index() {
@@ -493,6 +494,15 @@ class WebServiceController {
 
     def followingQuestionStatus(Long questionId, Long userId) {
         render([following : questionService.followingQuestionStatus(questionId, userId)] as JSON)
+    }
+
+    def switchUserNotifications() {
+        String alaUserId = authService.userId
+        if (!alaUserId) {
+            render(new ServiceResult<User>().fail("No valied ala user id provided") as JSON)
+        }
+        render(userService.switchUserNotifications(alaUserId, params.enable) as JSON)
+
     }
 
     static final enum QuestionSearchDatedCriteria {

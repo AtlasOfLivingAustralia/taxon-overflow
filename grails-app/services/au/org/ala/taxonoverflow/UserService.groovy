@@ -25,4 +25,19 @@ class UserService {
         }
     }
 
+    /**
+     *
+     * @param alaUserId
+     * @param enableNotifications
+     * @return
+     */
+    ServiceResult<User> switchUserNotifications(String alaUserId, boolean enableNotifications) {
+        User user = User.findByAlaUserId(alaUserId)
+        user.enableNotifications = enableNotifications
+        user.save()
+        ServiceResult<User> result = new ServiceResult<>()
+        result.success(user, ["The notifications for user with alaUserId = ${alaUserId} has been ${enableNotifications? 'enabled' : 'disabled'}"])
+        return result
+    }
+
 }
