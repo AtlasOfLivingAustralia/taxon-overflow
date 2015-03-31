@@ -1,16 +1,14 @@
 dataSource {
     pooled = true
     jmxExport = true
-    driverClassName = "org.postgresql.Driver"
+
 }
 
 hibernate {
     cache.use_second_level_cache = true
     cache.use_query_cache = false
-//    cache.region.factory_class = 'net.sf.ehcache.hibernate.EhCacheRegionFactory' // Hibernate 3
     cache.region.factory_class = 'org.hibernate.cache.ehcache.EhCacheRegionFactory' // Hibernate 4
-    singleSession = true // configure OSIV singleSession mode
-    flush.mode = 'manual' // OSIV session flush mode outside of transactional context
+
 }
 
 // environment specific settings
@@ -22,6 +20,7 @@ environments {
             username="postgres"
             password="password"
             url = "jdbc:postgresql://localhost/taxonoverflow"
+            driverClassName = "org.postgresql.Driver"
             loggingSql = false
         }
     }
@@ -29,10 +28,11 @@ environments {
     test {
         dataSource {
             dbCreate = "update" // one of 'create', 'create-drop','update'
-            username="postgres"
-            password="password"
-            url = "jdbc:postgresql://localhost/taxonoverflow"
-            loggingSql = false
+            username="sa"
+            password=""
+            url = "jdbc:h2:mem:testDb:MVCC=true;LOCK_TIMEOUT=5000"
+            driverClassName = "org.h2.Driver"
+            loggingSql = true
         }
     }
 
@@ -41,6 +41,7 @@ environments {
             dbCreate = "update"
             testOnBorrow = true
             url = "jdbc:postgresql://localhost/taxonoverflow"
+            driverClassName = "org.postgresql.Driver"
             properties {
                 maxActive = 10
                 maxIdle = 5

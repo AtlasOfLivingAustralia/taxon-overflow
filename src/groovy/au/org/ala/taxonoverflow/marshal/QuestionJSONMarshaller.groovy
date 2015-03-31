@@ -15,7 +15,7 @@ class QuestionJSONMarshaller extends AbstractJSONMarshaller<Question> {
         result.answers = obj.answers
         result.tags = obj.tags
         result.views = obj.views
-        result.dateCreated = obj.dateCreated
+        result.dateCreated = formatDate(obj.dateCreated)
 
         result.viewCount = obj.views?.size() ?: 0
         result.answerCount = obj.answers?.size() ?: 0

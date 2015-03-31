@@ -205,5 +205,26 @@ class TaxonOverflowTagLib {
         out << "&nbsp;&#187;&nbsp;"
     }
 
+    /**
+     * Generate the URL to the original|thumb version of the images
+     * based on the imageId
+     *
+     * E.g. http://images.ala.org.au/store/2/5/8/e/e90caa4c-a0b7-4552-b4fb-6df415f6e852/thumbnail_square
+     *
+     * @attr imageId REQUIRED
+     * @attr fallbackUrl - if URL can't be generated use this URL as fallback
+     * @attr imageFormat - one of original|thumbnail|thumbnail_large|thumbnail_square|thumbnail_square_black|thumbnail_square_darkGray|thumbnail_square_white
+     */
+    def getImageUrlForImageId = { attrs, body ->
+        String url = attrs.fallbackUrl?:""
+        def imageId = attrs.imageId
+        def imageFormat = attrs.imageFormat?:'thumbnail' // original
+        if (imageId && imageId.size() > 10) {
+            def directoryList = imageId[-1..-4].split('') //  get first 4 directories
+            url = "${grailsApplication.config.ala.image.service.url}/store" + directoryList.join("/") + "/${imageId}/" + imageFormat
+        }
+        out << url
+    }
+
 }
 

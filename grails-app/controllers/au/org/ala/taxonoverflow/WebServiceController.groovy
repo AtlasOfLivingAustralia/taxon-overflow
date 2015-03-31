@@ -527,8 +527,9 @@ class WebServiceController {
     }
 
     ServiceResult<Question> validateQuestionSearchParams(LinkedHashMap<String, Object> searchParams) {
-        ServiceResult<Question> serviceResult = new ServiceResult<>()
-        serviceResult.success = true
+        ServiceResult<Question> serviceResult = new ServiceResult<>(
+                success: true,
+                result: [])
 
         if (!searchParams.tags) {
             serviceResult.fail("No parameter \"tags\" provided.")
@@ -544,6 +545,8 @@ class WebServiceController {
             } catch (e) {
                 serviceResult.fail("The date provided ${searchParams.date} is not a valid date with format \"yyyy=MM-dd\"")
             }
+        } else {
+            serviceResult.fail("No valid date provided")
         }
 
         return serviceResult

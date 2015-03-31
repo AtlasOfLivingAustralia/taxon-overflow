@@ -9,11 +9,14 @@ default_config = "/data/${appName}/config/${appName}-config.properties"
 if(!grails.config.locations || !(grails.config.locations instanceof List)) {
     grails.config.locations = []
 }
+
 if(System.getenv(ENV_NAME) && new File(System.getenv(ENV_NAME)).exists()) {
-    println "[${appName}] Including configuration file specified in environment: " + System.getenv(ENV_NAME);
+    println "[${appName}] Including configuration file specified in environment: " + "${System.getenv(ENV_NAME)}/${appName}-config.properties";
+    default_config = "${System.getenv(ENV_NAME)}/${appName}-config.properties"
     grails.config.locations.add "file:" + System.getenv(ENV_NAME)
 } else if(System.getProperty(ENV_NAME) && new File(System.getProperty(ENV_NAME)).exists()) {
-    println "[${appName}] Including configuration file specified on command line: " + System.getProperty(ENV_NAME);
+    println "[${appName}] Including configuration file specified on command line: " + "${System.getProperty(ENV_NAME)}/${appName}-config.properties";
+    default_config = "${System.getProperty(ENV_NAME)}/${appName}-config.properties"
     grails.config.locations.add "file:" + System.getProperty(ENV_NAME)
 } else if(new File(default_config).exists()) {
     println "[${appName}] Including default configuration file: " + default_config;
@@ -164,7 +167,7 @@ environments {
         }
 
         /*  ElasticSearch Configuration */
-        elasticsearch.location = "/data/${appName}/elasticsearch"
+        elasticsearch.path.home = System.getProperty(ENV_NAME) ? "${System.getProperty(ENV_NAME)}/elasticsearch" : "/data/${appName}/elasticsearch"
     }
 
     test {
@@ -177,7 +180,9 @@ environments {
 
 
         /*  ElasticSearch Configuration */
-        elasticsearch.location = "/data/${appName}/elasticsearch-test"
+        elasticsearch.path.home = System.getProperty(ENV_NAME) ? "${System.getProperty(ENV_NAME)}/elasticsearch-test" : "/data/${appName}/elasticsearch-test"
+        elasticsearch.index.store.type = "memory"
+        elasticsearch.logging.json = true
     }
 
     production {
@@ -189,7 +194,7 @@ environments {
         }
 
         /*  ElasticSearch Configuration */
-        elasticsearch.location = "/data/${appName}/elasticsearch"
+        elasticsearch.path.home = System.getProperty(ENV_NAME) ? "${System.getProperty(ENV_NAME)}/elasticsearch" : "/data/${appName}/elasticsearch"
     }
 }
 

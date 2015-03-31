@@ -12,6 +12,7 @@ import net.sf.json.JSONObject
 import org.codehaus.groovy.grails.web.servlet.mvc.GrailsParameterMap
 import org.elasticsearch.action.admin.indices.delete.DeleteIndexRequest
 import org.elasticsearch.action.admin.indices.delete.DeleteIndexResponse
+import org.elasticsearch.action.admin.indices.refresh.RefreshRequest
 import org.elasticsearch.action.delete.DeleteResponse
 import org.elasticsearch.action.index.IndexResponse
 import org.elasticsearch.action.search.SearchRequestBuilder
@@ -40,13 +41,21 @@ class ElasticSearchService {
     private Node node
     private Client client
     private JestClient jestClient
+    private boolean isLoggingEnabled = false
 
     @NotTransactional
     @PostConstruct
     def initialize() {
         log.info("ElasticSearch service starting...")
         ImmutableSettings.Builder settings = ImmutableSettings.settingsBuilder();
-        settings.put("path.home", grailsApplication.config.elasticsearch.location);
+        Map elasticsearchSettings = flatten(grailsApplication.config.elasticsearch)
+        elasticsearchSettings?.each {setting, value ->
+            if (setting != "logging.json") {
+                settings.put(setting, value)
+            } else {
+                isLoggingEnabled = value
+            }
+        }
         node = nodeBuilder().local(true).settings(settings).node();
         client = node.client();
         client.admin().cluster().prepareHealth().setWaitForYellowStatus().execute().actionGet();
@@ -57,6 +66,16 @@ class ElasticSearchService {
         jestClient = factory.getObject();
         log.info("ElasticSearch service initialisation complete.")
 
+    }
+
+    /**
+     * Flatens map entries using dot notation
+     * @param map
+     * @param separator
+     * @return
+     */
+    Map flatten(Map map, String separator = '.') {
+        map.collectEntries { k, v -> v instanceof Map ? flatten(v, separator).collectEntries { q, r -> [(k + separator + q): r] } : [(k): v] }
     }
 
     @NotTransactional
@@ -71,7 +90,12 @@ class ElasticSearchService {
     }
 
     @NotTransactional
-    public reinitialiseIndex() {
+    void refreshIndex() {
+        node.client().admin().indices().refresh(new RefreshRequest(INDEX_NAME))
+    }
+
+    @NotTransactional
+    void reinitialiseIndex() {
         try {
             node.client().admin().indices().prepareDelete(INDEX_NAME).execute().get()
         } catch (Exception ex) {
@@ -82,7 +106,7 @@ class ElasticSearchService {
     }
 
     @NotTransactional
-    public void indexQuestion(Question question) {
+    void indexQuestion(Question question) {
         def ct = new CodeTimer("Indexing question ${question.id}")
         String json = question as JSON
         if (json) {
@@ -92,14 +116,14 @@ class ElasticSearchService {
     }
 
     @NotTransactional
-    public void deleteAllQuestionsFromIndex() {
+    void deleteAllQuestionsFromIndex() {
         def ct = new CodeTimer("Deleting questions from index")
         DeleteIndexResponse delete = client.admin().indices().delete(new DeleteIndexRequest(INDEX_NAME)).actionGet()
         ct.stop(true)
     }
 
     @NotTransactional
-    public void deleteQuestionFromIndex(Question question) {
+    void deleteQuestionFromIndex(Question question) {
         def ct = new CodeTimer("Deleting question from index: ${question.id}")
         if (question) {
             DeleteResponse response = client.prepareDelete(INDEX_NAME, "question", question.id.toString()).execute().actionGet();
@@ -162,7 +186,7 @@ class ElasticSearchService {
         }
     }
 
-    public QueryResults<Question> questionSearch(GrailsParameterMap params, Closure builderFunc = null) {
+    QueryResults<Question> questionSearch(GrailsParameterMap params, Closure builderFunc = null) {
 
         SearchRequestBuilder searchRequestBuilder = client.prepareSearch(INDEX_NAME).setSearchType(SearchType.QUERY_THEN_FETCH)
 
@@ -209,7 +233,9 @@ class ElasticSearchService {
         }
 
         SearchResponse searchResponse = searchRequestBuilder.execute().actionGet();
-        log.debug("ElasticSearch Query using Java Client API:\n${searchRequestBuilder.internalBuilder().toString()}")
+        if (isLoggingEnabled) {
+            log.debug("ElasticSearch Query using Java Client API:\n${searchRequestBuilder.internalBuilder()}")
+        }
 
         def resultsList = []
         def auxdata = [:]
@@ -228,7 +254,7 @@ class ElasticSearchService {
         return new QueryResults<Question>(list: resultsList, totalCount: searchResponse?.hits?.totalHits ?: 0, auxdata: auxdata)
     }
 
-    public JSONObject getOccurrenceData(String occurrenceId) {
+    JSONObject getOccurrenceData(String occurrenceId) {
         def results = questionSearch(null) {
             q("occurrenceId:\"${occurrenceId}\"")
         }
@@ -241,7 +267,7 @@ class ElasticSearchService {
     }
 
     @NotTransactional
-    public List<Map> getAggregatedTagsWithCount() {
+    List<Map> getAggregatedTagsWithCount() {
         def query =
 """
 {
@@ -253,14 +279,14 @@ class ElasticSearchService {
     }
 }
 """
-        def tags = search(query)?.jsonObject?.aggregations?.tags?.buckets
+        def tags = excuteRestApiQuery(query)?.jsonObject?.aggregations?.tags?.buckets
         tags.collect {tag ->
             [label: tag.key.getAsString(), count: tag.doc_count.getAsInt()]
         }
     }
 
     @NotTransactional
-    public List<Map> getAggregatedQuestionTypesWithCount() {
+    List<Map> getAggregatedQuestionTypesWithCount() {
         def query =
 """
 {
@@ -272,7 +298,7 @@ class ElasticSearchService {
     }
 }
 """
-        def questionTypes = search(query)?.jsonObject?.aggregations?.questionTypes?.buckets
+        def questionTypes = excuteRestApiQuery(query)?.jsonObject?.aggregations?.questionTypes?.buckets
         questionTypes.collect {questionType ->
             [label: questionType.key.getAsString(), count: questionType.doc_count.getAsInt()]
         }
@@ -298,7 +324,9 @@ class ElasticSearchService {
         )
 
         def hits = searchRequestBuilder.execute().actionGet()?.hits?.hits
-        log.debug("ElasticSearch Query using Java Client API:\n${searchRequestBuilder.internalBuilder().toString()}")
+        if (isLoggingEnabled) {
+            log.debug("ElasticSearch Query using Java Client API:\n${searchRequestBuilder.internalBuilder()}")
+        }
         return hits.collect {hit -> hit.id}
     }
 
@@ -308,9 +336,11 @@ class ElasticSearchService {
      * @param indexName [optional] taxonoverlfow index by default
      * @return
      */
-    public SearchResult search(String query, String indexName = INDEX_NAME) {
+    SearchResult excuteRestApiQuery(String query, String indexName = INDEX_NAME) {
         Search search = new Search.Builder(query).addIndex(indexName).build()
-        log.debug("ElasticSearch Query using REST API:\n ${query}")
+        if (isLoggingEnabled) {
+            log.debug("ElasticSearch Query using REST API:\n ${query}")
+        }
         jestClient.execute(search)
     }
 
