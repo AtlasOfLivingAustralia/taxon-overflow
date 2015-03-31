@@ -13,6 +13,13 @@
     <title>Taxon Overflow - Activity Summary</title>
     <meta name="layout" content="tomain"/>
     <r:require modules="core"/>
+    <r:style type="text/css">
+        #profile-content  {
+            border-top: 1px solid #637073;
+            padding-top: 5px;
+        }
+        
+    </r:style>
 </head>
 <body>
 <div class="row">
@@ -24,12 +31,12 @@
     </div>
 </div>
 <div id="avatar">
-    <a href="https://en.gravatar.com/" id="gravatar" title="Your Gravatar image, click to create/edit"><avatar:gravatar email="${user.email}" alt="My Avatar" size="80" gravatarRating="G" defaultGravatarUrl="identicon"/></a>
+    <a href="https://en.gravatar.com/" id="gravatar" target="_blank" title="Your Gravatar image, click to create/edit"><avatar:gravatar email="${user.email}" alt="My Avatar" size="80" gravatarRating="G" defaultGravatarUrl="identicon"/></a>
 </div>
 
 <h1>${(user.displayName) ? user.displayName + "'s" : "My"} Activity Summary</h1>
-<div class="taxonoverflow-content row-fluid">
-    <div class="span4">
+<div class="taxonoverflow-content row-fluid" id="profile-content">
+    <div class="span4 ">
         <h4>My Questions</h4>
         <g:render template="listQuestions" model="[questionList: myQuestions, questionLabel: 'questions']"/>
     </div>

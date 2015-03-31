@@ -1,4 +1,5 @@
-<g:if test="${questionList}">
+<div class="QuestionBlock">
+    <g:if test="${questionList}">
     %{--<ul>--}%
         <g:each in="${questionList}" var="q">
             <div style="margin-bottom: 5px;">
@@ -8,7 +9,8 @@
             </div>
         </g:each>
     %{--</ul>--}%
-</g:if>
-<g:else>
-    <p>You have no ${questionLabel}</p>
-</g:else>
+    </g:if>
+    <g:else>
+        <p>You have no ${questionLabel}</p>
+    </g:else>
+</div>
