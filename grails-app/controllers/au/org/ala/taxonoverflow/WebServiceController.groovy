@@ -499,7 +499,7 @@ class WebServiceController {
     def switchUserNotifications() {
         String alaUserId = authService.userId
         if (!alaUserId) {
-            render(new ServiceResult<User>().fail("No valied ala user id provided") as JSON)
+            render(new ServiceResult<User>().fail("No valid ala user id provided") as JSON)
         }
         render(userService.switchUserNotifications(alaUserId, params.enable) as JSON)
 

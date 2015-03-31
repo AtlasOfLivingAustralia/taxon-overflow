@@ -32,11 +32,16 @@ class UserService {
      * @return
      */
     ServiceResult<User> switchUserNotifications(String alaUserId, boolean enableNotifications) {
-        User user = User.findByAlaUserId(alaUserId)
-        user.enableNotifications = enableNotifications
-        user.save()
         ServiceResult<User> result = new ServiceResult<>()
-        result.success(user, ["The notifications for user with alaUserId = ${alaUserId} has been ${enableNotifications? 'enabled' : 'disabled'}"])
+        User user = User.findByAlaUserId(alaUserId)
+        if (!user) {
+            result.fail("No valid ala user id provided: ${alaUserId}")
+        } else {
+            user.enableNotifications = enableNotifications
+            user.save()
+            result.success(user, ["The notifications for user with alaUserId = ${alaUserId} has been ${enableNotifications? 'enabled' : 'disabled'}"])
+        }
+
         return result
     }
 
