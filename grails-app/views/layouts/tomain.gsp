@@ -1,5 +1,6 @@
 <g:applyLayout name="main" >
     <head>
+        <title><g:layoutTitle /></title>
         <r:require modules="core,taxonoverflow"/>
         <r:script disposition="head">
             var TAXON_OVERFLOW_CONF = {
