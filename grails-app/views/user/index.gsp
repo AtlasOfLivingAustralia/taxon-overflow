@@ -10,31 +10,53 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Taxon Overflow - Activity Summary</title>
-    <meta name="layout" content="tomain"/>
+    <title>Your Activity Summary</title>
+    <meta name="layout" content="main"/>
     <r:require modules="core"/>
     <r:style type="text/css">
         #profile-content  {
             border-top: 1px solid #637073;
             padding-top: 5px;
         }
-        
+        h1, h2, h3, h4, h5 {
+          font-weight: 400;
+        }
+        #gravatar {
+            margin-right: 15px;
+        }
     </r:style>
 </head>
 <body>
 <div class="row">
     <div class="span12">
         <ul class="breadcrumb">
-            <li><a href="${g.createLink(uri:'/')}">Home</a> <span class="divider"><i class="fa fa-arrow-right"></i></span></li>
+            <li><a href="http://ala.org.au">Home</a> <span class="divider"><i class="fa fa-arrow-right"></i></span></li>
+            <li><g:link controller="question" action="list">Community identification help</g:link> <span class="divider"><i class="fa fa-arrow-right"></i></span></li>
             <li class="active">Activity Summary</li>
         </ul>
     </div>
 </div>
-<div id="avatar">
-    <a href="https://en.gravatar.com/" id="gravatar" target="_blank" title="Your Gravatar image, click to create/edit"><avatar:gravatar email="${user.email}" alt="My Avatar" size="80" gravatarRating="G" defaultGravatarUrl="identicon"/></a>
+<div class="row">
+    <div class="span6">
+        <h2>Activity Summary</h2>
+        <div id="avatar">
+            <a href="https://en.gravatar.com/" id="gravatar" target="_blank" title="Your Gravatar image, click to edit"><avatar:gravatar email="${user.email}" alt="My Avatar" size="70" gravatarRating="G" defaultGravatarUrl="identicon"/></a>
+            <h4 style="display: inline-block">${raw((user.displayName) ? user.displayName : "")}</h4>
+        </div>
+        &nbsp;
+    </div>
+    <div class="span6" style="padding-top:20px;">
+        <div class="well well-small">
+            <h3>Manage my alerts</h3>
+            <label class="checkbox">
+                <g:checkBox name="alertsStatus" value="${alertsStatus?:true}"/>
+                Send me emails for all my activity updates
+            </label>
+        </div>
+
+    </div>
 </div>
 
-<h1>${(user.displayName) ? user.displayName + "'s" : "My"} Activity Summary</h1>
 <div class="taxonoverflow-content row-fluid" id="profile-content">
     <div class="span4 ">
         <h4>My Questions</h4>

@@ -188,17 +188,18 @@
     </head>
 
         <div class="row">
-            <div class="span12">
+            <div class="span9">
                 <ul class="breadcrumb">
                     <li><a href="http://ala.org.au">Home</a> <span class="divider"><i class="fa fa-arrow-right"></i></span></li>
                     <li><g:link controller="question" action="list">Community identification help</g:link> <span class="divider"><i class="fa fa-arrow-right"></i></span></li>
                     <li class="active">Species identification case #${question.id}</li>
                 </ul>
             </div>
+            <div class="span3" style="text-align: right;"><a href="${g.createLink(uri:'/user')}">Your activity summary</a></div>
         </div>
 
         <g:if test="${grailsApplication.config.testUsers}">
-        <div class="pull-right" style="position:absolute; top:70px; right:30px;">
+        <div class="pull-right" style="position:absolute; top:85px; right:30px;">
             <ul class="nav nav-pills">
                 <li class="dropdown">
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#">

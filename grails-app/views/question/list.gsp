@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <meta name="layout" content="tomain"/>
+        <meta name="layout" content="main"/>
         <title>Help identify | Atlas of Living Australia</title>
         <style>
         <r:style>
@@ -112,12 +112,13 @@
     </head>
     <body>
         <div class="row">
-            <div class="span12">
+            <div class="span9">
                 <ul class="breadcrumb">
                     <li><a href="http://ala.org.au">Home</a> <span class="divider"><i class="fa fa-arrow-right"></i></span></li>
                     <li class="active">Community identification help</li>
                 </ul>
             </div>
+            <div class="span3" style="text-align: right;"><a href="${g.createLink(uri:'/user')}">Your activity summary</a></div>
         </div>
         <h1>Community identification help</h1>
         <p class="lead">
