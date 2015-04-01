@@ -7,6 +7,11 @@ grails.project.target.level = 1.6
 grails.project.source.level = 1.6
 grails.project.war.file = "target/${appName}.war"
 
+grails.project.fork = [
+        test: false,
+        run: false
+]
+
 // grails.plugin.location.'ala-web-theme' = "../ala-web-theme"
 grails.project.dependency.resolver = "maven" // or ivy
 grails.project.dependency.resolution = {

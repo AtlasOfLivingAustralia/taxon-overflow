@@ -1,13 +1,6 @@
 package au.org.ala.taxonoverflow.notification
 
-import au.org.ala.taxonoverflow.Answer
-import au.org.ala.taxonoverflow.AnswerComment
-import au.org.ala.taxonoverflow.Comment
-import au.org.ala.taxonoverflow.Question
-import au.org.ala.taxonoverflow.QuestionComment
-import au.org.ala.taxonoverflow.QuestionTag
-import au.org.ala.taxonoverflow.ServiceResult
-import au.org.ala.taxonoverflow.User
+import au.org.ala.taxonoverflow.*
 import au.org.ala.web.AuthService
 import au.org.ala.web.UserDetails
 import grails.async.Promise
@@ -17,6 +10,7 @@ import groovy.util.logging.Log4j
 import org.aspectj.lang.annotation.AfterReturning
 import org.aspectj.lang.annotation.Aspect
 import org.aspectj.lang.annotation.Pointcut
+import org.codehaus.groovy.grails.commons.GrailsApplication
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 
@@ -27,7 +21,8 @@ import static grails.async.Promises.task
 @Log4j
 class NotificationsAspect {
 
-    def grailsApplication
+    @Autowired
+    GrailsApplication grailsApplication
 
     @Autowired
     MailService mailService
@@ -45,7 +40,7 @@ class NotificationsAspect {
     public void enableFollowQuestionByUser() {}
 
     @AfterReturning(pointcut = "au.org.ala.taxonoverflow.notification.NotificationsAspect.enableEmailNotifications()",
-                    returning = "actionedItem")
+            returning = "actionedItem")
     public void sendEmailNotification(def actionedItem) {
         ServiceResult serviceResult = actionedItem instanceof ServiceResult ? actionedItem as ServiceResult : null
         if (serviceResult.success && serviceResult.result instanceof Comment) {
@@ -78,7 +73,7 @@ class NotificationsAspect {
 
     public void addQuestionToUserFollowingList(User user, Question question) {
         log.debug("User is currently following questions: ${user.getFollowedQuestions()}")
-        if(!user.getFollowedQuestions() || !user.getFollowedQuestions().collect{ it.id }.contains(question.id)){
+        if (!user.getFollowedQuestions() || !user.getFollowedQuestions().collect { it.id }.contains(question.id)) {
             user.addToFollowedQuestions(question)
             user.save(flush: true)
         }
@@ -95,7 +90,7 @@ class NotificationsAspect {
             UserDetails userDetails = authService.getUserForUserId(question.user.alaUserId)
             String emailSubject = "(Question #${question.id}) - New tag added"
             String htmlBody = pageRenderer.render template: '/notifications/newTagNotification', model: [questionTag: questionTag]
-            List bccEmailAddresses = addressees.findAll{ it.enableNotifications }.collect { user ->
+            List bccEmailAddresses = addressees.findAll { it.enableNotifications }.collect { user ->
                 authService.getUserForUserId(user.alaUserId).userName
             }
             // Send email
@@ -115,10 +110,10 @@ class NotificationsAspect {
         if (addressees.size() > 0) {
             // Compose email
             UserDetails userDetails = authService.getUserForUserId(actionUser.alaUserId)
-            if(userDetails){
+            if (userDetails) {
                 String emailSubject = "(Question #${question.id}) - Identification answer ${answer.accepted ? 'accepted' : 'posted'}"
                 String htmlBody = pageRenderer.render template: '/notifications/answerNotification', model: [answer: answer, userDetails: userDetails]
-                List bccEmailAddresses = addressees.findAll{ it.enableNotifications }.collect { user ->
+                List bccEmailAddresses = addressees.findAll { it.enableNotifications }.collect { user ->
                     authService.getUserForUserId(user.alaUserId).userName
                 }
                 // Send email
@@ -139,10 +134,10 @@ class NotificationsAspect {
         if (addressees.size() > 0) {
             // Compose email
             UserDetails userDetails = authService.getUserForUserId(comment.user?.alaUserId)
-            if(userDetails){
+            if (userDetails) {
                 String emailSubject = "${question.comments.size() > 1 ? "RE: " : ""}(Question #${question.id}) - New${comment instanceof AnswerComment ? ' identification' : ''} comment posted"
                 String htmlBody = pageRenderer.render template: '/notifications/newCommentNotification', model: [comment: comment, userDetails: userDetails]
-                List bccEmailAddresses = addressees.findAll{ it.enableNotifications }.collect { user ->
+                List bccEmailAddresses = addressees.findAll { it.enableNotifications }.collect { user ->
                     authService.getUserForUserId(user.alaUserId).userName
                 }
                 // Send email
@@ -162,9 +157,11 @@ class NotificationsAspect {
      * @return
      */
     private Promise sendEmail(List bccEmailAddresses, userDetails, String emailSubject, String htmlBody) {
+        log.debug("I was here 1")
         return task {
             try {
-                if(grailsApplication.config.notifications.enabled){
+                log.debug("I was here 2")
+                if (grailsApplication.config.notifications.enabled) {
                     mailService.sendMail {
                         bcc bccEmailAddresses.toArray()
                         from "${userDetails.displayName}<no-reply@ala.org.au>"
@@ -187,7 +184,7 @@ class NotificationsAspect {
         // retrieve addressees
         Set<User> addressees = new HashSet<>()
         // Question creator
-        if ( question.user.followedQuestions.contains(question)) {
+        if (question.user.followedQuestions.contains(question)) {
             addressees.add(question.user)
         }
         // Question comments creators

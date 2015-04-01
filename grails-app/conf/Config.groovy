@@ -49,8 +49,6 @@ biocacheWebapp.recordUrl = "http://biocache.ala.org.au/occurrence/"
 ecodata.recordUrl = "http://ecodata-sightings-dev.ala.org.au/record/"
 pigeonhole.recordUrl = "http://sightings.ala.org.au/edit/"
 
-notifications.enabled = false
-
 accepted.answer.threshold = 3
 
 //this list should be empty for production
@@ -142,17 +140,7 @@ grails.hibernate.pass.readonly = false
 // configure passing read-only to OSIV session by default, requires "singleSession = false" OSIV mode
 grails.hibernate.osiv.readonly = false
 
-environments {
-    development {
-        grails.logging.jul.usebridge = true
-    }
-    production {
-        grails.logging.jul.usebridge = false
-        // TODO: grails.serverURL = "http://www.changeme.com"
-    }
-}
 
-def loggingDir = (System.getProperty('catalina.base') ? System.getProperty('catalina.base') + '/logs' : './logs')
 
 /* Environment configuration */
 environments {
@@ -166,17 +154,14 @@ environments {
             }
         }
 
+        notifications.enabled = false
+
         /*  ElasticSearch Configuration */
         elasticsearch.path.home = System.getProperty(ENV_NAME) ? "${System.getProperty(ENV_NAME)}/elasticsearch" : "/data/${appName}/elasticsearch"
     }
 
     test {
-        grails {
-            /*  Mail Configuration */
-            mail {
-                // TODO
-            }
-        }
+        notifications.enabled = false
 
 
         /*  ElasticSearch Configuration */
@@ -189,15 +174,28 @@ environments {
         grails {
             /*  Mail Configuration */
             mail {
-                // TODO
+                host: grails.config.mail.host
             }
         }
+
+        notifications.enabled = true
 
         /*  ElasticSearch Configuration */
         elasticsearch.path.home = System.getProperty(ENV_NAME) ? "${System.getProperty(ENV_NAME)}/elasticsearch" : "/data/${appName}/elasticsearch"
     }
 }
 
+environments {
+    development {
+        grails.logging.jul.usebridge = true
+    }
+    production {
+        grails.logging.jul.usebridge = false
+        // TODO: grails.serverURL = "http://www.changeme.com"
+    }
+}
+
+def loggingDir = (System.getProperty('catalina.base') ? System.getProperty('catalina.base') + '/logs' : './logs')
 /* log4j configuration */
 log4j = {
 // Example of changing the log pattern for the default console

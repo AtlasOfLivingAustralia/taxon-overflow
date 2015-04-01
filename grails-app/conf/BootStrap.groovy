@@ -8,6 +8,8 @@ class BootStrap {
     def sourceService
 
     def init = { servletContext ->
+        log.info("System Notifications are ${grailsApplication.config.notifications.enabled ? 'ENABLED' : 'DISABLED'}")
+
         // Reference the service to make sure it's loaded and initialised
         elasticSearchService.ping()
         customJSONMarshallers.register()
