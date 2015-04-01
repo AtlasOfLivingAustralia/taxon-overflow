@@ -192,11 +192,7 @@ class NotificationsAspect {
     private HashSet<User> findAddressees(Question question, User lastCommentUser) {
         // retrieve addressees
         Set<User> addressees = new HashSet<>()
-        // Question creator
-        if (question.user.followedQuestions.contains(question)) {
-            addressees.add(question.user)
-        }
-        // Question comments creators
+        // Add followers
         question.followers.each { follower ->
             addressees.add(follower)
         }
