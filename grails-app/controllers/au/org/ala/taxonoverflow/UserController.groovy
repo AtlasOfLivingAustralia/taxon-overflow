@@ -5,8 +5,6 @@ class UserController {
 
     def index() {
         def user = userService.currentUser
-        //def searchResults = elasticSearchService.getOccurrenceData()
-        log.debug "User controller: ${user}"
 
         if (user) {
             user.metaClass.displayName = authService.getDisplayName()

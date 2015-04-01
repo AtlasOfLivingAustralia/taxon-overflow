@@ -46,10 +46,10 @@
         &nbsp;
     </div>
     <div class="span6" style="padding-top:20px;">
-        <div class="well well-small">
+        <div class="well well-small" style="padding-left: 20px;">
             <h3>Manage my alerts</h3>
             <label class="checkbox">
-                <g:checkBox name="alertsStatus" value="${alertsStatus?:true}"/>
+                <g:checkBox name="alertsStatus" id="alertsStatus" value="${user.enableNotifications}"/>
                 Send me emails for all my activity updates
             </label>
         </div>
@@ -74,6 +74,26 @@
 <r:script>
     $(document).ready(function () {
         $('#gravatar').tooltip({placement: 'right'});
+
+        var eventStatusBool = $('#alertsStatus').is(':checked');
+        $('#alertsStatus').on('change', function(e) {
+            e.preventDefault();
+            eventStatusBool = $('#alertsStatus').is(':checked');
+            var action = (eventStatusBool) ? 'enable' : 'disable';
+            $.get("${g.createLink(uri:'/ws/user/notifications/')}" + action)
+            .done(function(data) {
+                if (data.success) {
+                    alert('Your settings have been changed');
+                } else {
+                    alert('Error. Your settings were NOT saved. ' + data.message);
+                    $('#alertsStatus').attr('checked', !eventStatusBool); // reset back to original value
+                }
+            })
+            .fail(function( jqXHR, textStatus, errorThrown ) {
+                alert("Error: " + textStatus + " - " + errorThrown);
+                $('#alertsStatus').attr('checked', !eventStatusBool); // reset back to original value
+            });
+        });
     }); // end document.ready
 </r:script>
 </body>
