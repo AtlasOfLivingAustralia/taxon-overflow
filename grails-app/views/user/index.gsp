@@ -35,17 +35,27 @@
             <li class="active">Activity Summary</li>
         </ul>
     </div>
-</div>
+</div><h2>Activity Summary</h2>
+
 <div class="row">
-    <div class="span6">
-        <h2>Activity Summary</h2>
+    <div class="span3">
+        <h4 style="display: inline-block">${raw((user.displayName) ? user.displayName : "")}</h4>
         <div id="avatar">
             <a href="https://en.gravatar.com/" id="gravatar" target="_blank" title="Your Gravatar image, click to edit"><avatar:gravatar email="${user.email}" alt="My Avatar" size="70" gravatarRating="G" defaultGravatarUrl="identicon"/></a>
-            <h4 style="display: inline-block">${raw((user.displayName) ? user.displayName : "")}</h4>
+            ${'INST_NOT_AVAIL'}
+            ${'EXPERT_IN_AREA'}
         </div>
         &nbsp;
     </div>
-    <div class="span6" style="padding-top:20px;">
+    <div class="span5" style="padding-top:20px;">
+        <table class="table table-condensed table-bordered table-striped">
+            <tr><td>Member since</td><td><g:formatDate date="${new Date()}" format="yyyy-MM-dd"/></td></tr>
+            <tr><td>Number of identifications provided</td><td>${0}</td></tr>
+            <tr><td>Number of identifications accepted</td><td>${0}</td></tr>
+            <tr><td>Tags of interest</td><td>${['birds','mammals','sharks']}</td></tr>
+        </table>
+    </div>
+    <div class="span4" style="padding-top:20px;">
         <div class="well well-small" style="padding-left: 20px;">
             <h3>Manage my alerts</h3>
             <label class="checkbox">
