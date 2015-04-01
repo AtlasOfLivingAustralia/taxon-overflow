@@ -81,7 +81,8 @@ class NotificationsAspect {
 
     private sendNewTagNotification(QuestionTag questionTag) {
         Question question = questionTag.question
-        log.debug("The tag \"${questionTag.tag}\" was added to question #${question.id}")
+        log.debug("The tag \"${questionTag.tag}\" was added to question #${question.id}. " +
+                "Checking if notification emails need to be sent...")
 
         HashSet<User> addressees = findAddressees(question, question.user)
 
@@ -104,7 +105,8 @@ class NotificationsAspect {
         Question question = answer.question
         User actionUser = answer.accepted ? question.user : answer.user
         log.debug("An identification answer has been ${answer.accepted ? 'accepted' : 'posted'} for question #${question.id} " +
-                "by the user with id: ${actionUser.id}")
+                "by the user with id: ${actionUser.id}. " +
+                "Checking if notification emails need to be sent...")
 
         // Find notification addresses
         HashSet<User> addressees = findAddressees(question, actionUser)
@@ -130,7 +132,8 @@ class NotificationsAspect {
 
     private sendNewCommentNotification(Comment comment) {
         Question question = comment instanceof AnswerComment ? (comment as AnswerComment).answer.question : (comment as QuestionComment).question
-        log.debug("A new${comment instanceof AnswerComment ? ' identification' : ''} comment for question: ${question.id} has been posted by user with id: ${comment.userId}. Sending notification email...")
+        log.debug("A new${comment instanceof AnswerComment ? ' identification' : ''} comment for question: ${question.id} has been posted by user with id: ${comment.userId}. " +
+                "Checking if notification emails need to be sent...")
 
         // Find notification addresses
         HashSet<User> addressees = findAddressees(question, comment.user)
@@ -194,10 +197,8 @@ class NotificationsAspect {
             addressees.add(question.user)
         }
         // Question comments creators
-        question.comments.each { previousComment ->
-            if (previousComment.user.followedQuestions.contains(question)) {
-                addressees.add(previousComment.user)
-            }
+        question.followers.each { follower ->
+            addressees.add(follower)
         }
         // Remove last comment user
         addressees.remove(lastCommentUser)
