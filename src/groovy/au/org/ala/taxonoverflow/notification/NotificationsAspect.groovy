@@ -95,6 +95,8 @@ class NotificationsAspect {
             }
             // Send email
             sendEmail(bccEmailAddresses, userDetails, emailSubject, htmlBody)
+        } else {
+            log.debug("There is no need to send emails. No addressees found.")
         }
     }
 
@@ -121,6 +123,8 @@ class NotificationsAspect {
             } else {
                 log.error("Unable to send notification for answer. User lookup failed. Check authorised system access.")
             }
+        } else {
+            log.debug("There is no need to send emails. No addressees found.")
         }
     }
 
@@ -145,6 +149,8 @@ class NotificationsAspect {
             } else {
                 log.error("Unable to send notification for comment. User lookup failed. Check authorised system access.")
             }
+        } else {
+            log.debug("There is no need to send emails. No addressees found.")
         }
     }
 
