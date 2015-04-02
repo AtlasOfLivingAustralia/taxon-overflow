@@ -174,7 +174,7 @@ class NotificationsAspect {
                     mailService.sendMail {
                         bcc bccEmailAddresses.toArray()
                         from "${userDetails.displayName}<no-reply@ala.org.au>"
-                        subject emailSubject
+                        subject "${grailsApplication.config.grails.mail.subjectPrefix ? grailsApplication.config.grails.mail.subjectPrefix + ' - ': ''}emailSubject"
                         html htmlBody
                     }
                     log.debug("A notification email has been sent to the following users:\n" +

@@ -151,6 +151,7 @@ environments {
                 // I am using MockSmtp:
                 host = "localhost"
                 port = "1025"
+                subjectPrefix = "[local]"
             }
         }
 
@@ -171,13 +172,6 @@ environments {
     }
 
     production {
-        grails {
-            /*  Mail Configuration */
-            mail {
-                host: grails.config.mail.host
-            }
-        }
-
         notifications.enabled = true
 
         /*  ElasticSearch Configuration */
