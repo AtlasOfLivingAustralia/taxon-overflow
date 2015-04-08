@@ -113,7 +113,7 @@
                         <g:set var="sortingValues" value="${[['dateCreated', 'date'], ['viewCount', 'views'],['answerCount', 'answers']]}"/>
                         <g:each in="${sortingValues}" var="sortingValue">
                             <a class="btn btn-default ${params.sort == sortingValue[0] ? 'active' : ''}"
-                               href="?sort=${sortingValue[0]}&order=${params.sort == sortingValue[0] && params.order != 'desc' ? 'desc' : 'asc'}&offset=0&q=${params.q}&f.tags=${params.f?.tags}&f.types=${params.f?.types}">
+                               href="?sort=${sortingValue[0]}&order=${params.sort == sortingValue[0] && params.order == 'desc' ? 'asc' : 'desc'}&offset=0&q=${params.q}&f.tags=${params.f?.tags}&f.types=${params.f?.types}">
                                 <i class="fa ${params.sort == sortingValue[0] && params.order == 'asc' ? 'fa-chevron-up' : 'fa-chevron-down'}"></i> <span class="hidden-xs">Sort by ${sortingValue[1]}</span>
                             </a>
                         </g:each>
