@@ -49,10 +49,15 @@
     </div>
     <div class="span5" style="padding-top:20px;">
         <table class="table table-condensed table-bordered table-striped">
-            <tr><td>Member since</td><td><g:formatDate date="${new Date()}" format="yyyy-MM-dd"/></td></tr>
+            %{--<tr><td>Member since</td><td><g:formatDate date="${new Date()}" format="yyyy-MM-dd"/></td></tr>--}%
             <tr><td>Number of identifications provided</td><td>${0}</td></tr>
             <tr><td>Number of identifications accepted</td><td>${0}</td></tr>
-            <tr><td>Tags of interest</td><td>${['birds','mammals','sharks']}</td></tr>
+            <tr><td>Tags of interest</td>
+                <td>
+                    <g:each in="${user.tags}" var="tag" status="s">
+                        <span class="label tag"><a href="${g.createLink(uri:'/', params:['f.tags': tag])}" title="view all question with this tag" style="color: white;">${tag}</a></span>
+                    </g:each>
+                </td></tr>
         </table>
     </div>
     <div class="span4" style="padding-top:20px;">

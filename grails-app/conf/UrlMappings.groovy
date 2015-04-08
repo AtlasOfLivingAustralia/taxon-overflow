@@ -22,6 +22,10 @@ class UrlMappings {
         "/ws/question/follow/$questionId/$userId"(controller: "webService", action: 'follow', method: 'GET')
         "/ws/question/unfollow/$questionId/$userId"(controller: "webService", action: 'unfollow', method: 'GET')
         "/ws/question/following/status/$questionId/$userId"(controller: "webService", action: 'followingQuestionStatus', method: 'GET')
+        "/ws/tag/follow/$tag/$userId?"(controller: "webService", action: 'followTag', method: 'GET')
+        "/ws/tag/unfollow/$tag/$userId?"(controller: "webService", action: 'unfollowTag', method: 'GET')
+        "/ws/tag/following/$userId?"(controller: "webService", action: 'getFollowedTagsForUserId', method: 'GET')
+
 
         "/ws/user/notifications/enable"(controller: 'webService', action: 'switchUserNotifications', method: 'GET') {
             enable = true
