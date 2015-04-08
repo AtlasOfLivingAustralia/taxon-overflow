@@ -12,6 +12,16 @@
     text-transform: uppercase;
 }
 
+div.facets ul {
+    list-style-type: none;
+    padding-left: .5em;
+    margin-bottom: 1.5em;
+}
+
+div.facets li {
+    font-size: .8em;
+}
+
 div.facets ul li span.label {
     cursor: pointer;
 }

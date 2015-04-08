@@ -1,41 +1,28 @@
 <g:set var="questionUrl" value="${createLink(controller:'question', action:'view', id: question.id)}" />
-<div class="row-fluid" style="margin-top: 10px">
-    <div class="span4 question-meta-panel">
-        <a href="${questionUrl}">
-
-            <div class="row-fluid">
-                <div class="span3 answer-count-div">
-                    <g:set var="answerCount" value="${question.answers?.size()}" />
-                    <div><span class="question-answer-count ${acceptedAnswer ? 'has-accepted-answer' : ''}">${answerCount}</span></div>
-                    <br />
-                    ${answerCount == 1 ? 'answer' : 'answers'}
-                </div>
-                <div class="span3 view-count-div">
-                    <div><span class="question-view-count">${question.views?.size()}</span></div>
-                    <br />
-                    views
-                </div>
-                <div class="span6 view-count-div">
-                    <small style="text-align: center">
-                        Asked by <br/><to:userDisplayName user="${question.user}" /><br/>
-                        <prettytime:display date="${question.dateCreated}" />
-                    </small>
-                </div>
-            </div>
-
-            <div class="row-fluid" style="margin-top: 30px; ">
-                <div class="span12 tags">
-                    <g:each in="${question.tags}" var="tag">
-                        <div class="label label-info tag">${tag.tag}</div>
-                    </g:each>
-                </div>
-            </div>
-        </a>
+<div class="body" questionId="${question.id}">
+    <div class="col-md-6">
+        <div class="contrib-question">
+            <a href="${questionUrl}">
+                ${question.questionType.label} - #${question.id} <span class="question-answer-count ${acceptedAnswer ? 'has-accepted-answer' : ''}">${answerCount}</span>
+            </a>
+        </div>
+        <div class="contrib-time">
+            <g:set var="askedBy" value="${to.userDisplayName(user:question.user)}"/>
+            <g:set var="askedBy" value="${askedBy?:'user not identified'}"/>
+            <prettytime:display date="${question.dateCreated}" /> by <a href="#">${askedBy}</a>
+        </div>
+        <div class="btn-group">
+            <p class="font-xxsmall">Tags:
+                <g:each in="${question.tags}" var="tag">
+                <a href="#" class="label label-primary">${tag.tag}</a>
+                </g:each>
+            </p>
+        </div>
     </div>
-    <div class="span3" style="text-align: center">
+    <div class="col-md-2">
         <g:if test="${occurrence.imageUrls}">
             <a href="${questionUrl}">
-                <img class="question-thumb" src="${occurrence.imageUrls[0]}" />
+                <img class="img-responsive question-thumb" src="${occurrence.imageUrls[0]}" />
             </a>
             <g:if test="${occurrence.imageUrls.size() > 1}">
                 <br/>
@@ -43,13 +30,30 @@
             </g:if>
         </g:if>
     </div>
-    <div class="span5">
-        <div class="row-fluid">
-            <div class="span12">
-                <to:occurrenceProperty name="recordedBy" title="Recorded by" occurrence="${occurrence}" />
-                <to:occurrenceProperty name="eventDate" title="Date" occurrence="${occurrence}" />
-                <to:occurrenceProperty name="locality" title="Locality" occurrence="${occurrence}" />
+    <div class="col-md-4">
+
+        <div class="contrib-stats">
+            <div class="cp">
+                <div class="votes">
+                    <div class="contrib-number">${question.views?.size()}</div>
+                    <div class="contrib-details"><a href="#">Views</a></div>
+                </div>
+            </div>
+
+            <div class="cp">
+                <div class="votes">
+                    <div class="contrib-number">${question.answers?.size()}</div>
+                    <div class="contrib-details"><a href="#">Answers</a></div>
+                </div>
+            </div>
+
+            <div class="cp">
+                <div class="votes">
+                    <div class="contrib-number">${question.answers?.size() > 0 ? question.answers?.collect({it.votes?.size()}).sum() : 0}</div>
+                    <div class="contrib-details"><a href="#">Votes</a></div>
+                </div>
             </div>
         </div>
+
     </div>
 </div>

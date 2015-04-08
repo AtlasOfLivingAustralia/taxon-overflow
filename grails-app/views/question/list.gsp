@@ -1,57 +1,9 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta name="layout" content="main"/>
-        <title>Help identify | Atlas of Living Australia</title>
-        <style>
-        <r:style>
-
-            .question-thumb {
-                height: 100px;
-                max-height: 100px;
-            }
-
-            .question-list > thead {
-                background-color: #F0F0E8;
-            }
-
-            .question-list .accepted-answer-mark {
-                font-size: 3em;
-                color: green;
-                border: 1px solid transparent;
-            }
-
-            .question-view-count, .question-answer-count {
-                font-size: 1.5em;
-                padding: 8px;
-            }
-
-            .question-answer-count.has-accepted-answer {
-                color: white;
-                background-color: darkolivegreen;
-            }
-
-            .answer-count-div, .view-count-div {
-                text-align: center;
-            }
-
-            .view-count-div {
-                color: #888888;
-            }
-
-            .question-meta-panel a, .question-meta-panel a:hover {
-                text-decoration: none;
-            }
-
-            .accepted-answer-text {
-                font-style: italic;
-            }
-
-            .facets ul { list-style: none; margin-left:0;}
-
-        </r:style>
-        </style>
-        <r:script>
+<head>
+    <meta name="layout" content="main"/>
+    <title>Help identify | Atlas of Living Australia</title>
+    <r:script>
 
             var facetsFilter = {
                 tags: [],
@@ -67,7 +19,7 @@
                         tolib.areYouSure({
                             title: "Delete question", message: "Are you sure you wish to delete this question?",
                             affirmativeAction: function() {
-                                window.location = "${createLink(action:'delete')}/" + questionId;
+                                window.location = "${createLink(action: 'delete')}/" + questionId;
                             }
                         })
                     }
@@ -105,76 +57,89 @@
 
             function doSearch() {
                 var q = $("#txtSearch").val();
-                window.location.href = "${raw(createLink(action:'list', params: [sort: params.sort, order: params.order, offset: 0, max: params.max]))}&q=" + encodeURIComponent(q) + "&f.tags=" + facetsFilter.tags.join(',') + "&f.types=" + facetsFilter.types.join(',');
+                window.location.href = "${raw(createLink(action: 'list', params: [sort: params.sort, order: params.order, offset: 0, max: params.max]))}&q=" + encodeURIComponent(q) + "&f.tags=" + facetsFilter.tags.join(',') + "&f.types=" + facetsFilter.types.join(',');
             }
 
-        </r:script>
-    </head>
-    <body>
-        <div class="row">
-            <div class="span9">
-                <ul class="breadcrumb">
-                    <li><a href="http://ala.org.au">Home</a> <span class="divider"><i class="fa fa-arrow-right"></i></span></li>
-                    <li class="active">Community identification help</li>
-                </ul>
-            </div>
-            <div class="span3" style="text-align: right;"><a href="${g.createLink(uri:'/user')}">Your activity summary</a></div>
-        </div>
-        <h1>Community identification help</h1>
-        <p class="lead">
-            Records contributed by others and needing confirmation of what they are. Can you help to identify any of the species?
-            <br/>
-            <strong>Get involved, have fun and contribute to science</strong>.
-        </p>
-        <div class="taxonoverflow-content row-fluid">
-            <div class="span3 facets">
-                <g:include action="showAggregatedTags"/>
-                <g:include action="showAggregatedQuestionTypes"/>
-            </div>
-            <div class="span9">
-                <table class="table table-bordered table-condensed question-list">
-                    <thead>
-                        <tr>
-                            <td>
-                                <g:set var="questionCount" value="${totalCount}" />
-                                ${questionCount} ${questionCount == 1 ? 'question' : 'questions'}
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <div class="row-fluid">
-                                    <g:set var="columns" value="${[ ['answerCount', 'Answers', 'span1'], ['viewCount', 'Views','span1'], ['dateCreated', 'Date', 'span2'] ] }" />
-                                    <g:each in="${columns}" var="columnDesc">
-                                        <div style="text-align: center" class="${columnDesc[2]} column-sort-btn"><a href="?sort=${columnDesc[0]}&order=${params.sort == columnDesc[0] && params.order != 'desc' ? 'desc' : 'asc'}&offset=0&q=${params.q}&f.tags=${params.f?.tags}&f.types=${params.f?.types}" class="btn ${params.sort == columnDesc[0] ? 'active' : ''}">${columnDesc[1]}</a></div>
-                                    </g:each>
-                                    <div class="span6 offset2">
-                                        <div class="pull-right">
-                                            <div class="form-horizontal">
-                                                <g:textField name="txtSearch" value="${params.q}" />
-                                                <button type="button" id="btnQuestionSearch" class="btn"><i class="fa fa-search"></i>&nbsp;Search</button>
-                                            </div>
-                                        </div>
-                                    </div>
+    </r:script>
+    <r:require module="taxonoverflow"/>
+</head>
+<body>
+<div class="row-fluid">
+    <div class="col-md-9">
+        <ul class="breadcrumb">
+            <li><a class="font-xxsmall" href="http://ala.org.au">Home</a> <span class="divider"></span></li>
+            <li class="active font-xxsmall">Community identification help</li>
+        </ul>
+    </div>
+
+    <div class="col-md-3 text-right">
+        <a href="${g.createLink(uri: '/user')}">Your activity summary</a>
+    </div>
+</div>
+
+<div class="col-md-12">
+    <h2 class="heading-medium">Taxonoverflow: Community identification help</h2>
+</div>
+
+<div class="row-fluid">
+    <div class="col-md-12">
+        <div class="panel panel-default">
+
+            <div class="panel-body row">
+                <div class="col-md-12">
+                    <div class="word-limit">
+                        <p class="lead">Welcome to Taxonoverflow!</p>
+                        <p>On this page you will find records contributed by others that need confirmation of what they are. Help us identify these species.  Every little bit helps.</p>
+                        <p>And most importantly, get involved, have fun and contribute to science.</p>
+                    </div>
+
+                    <!-- Row search -->
+                    <div class="row control-group">
+                        <div class="col-xs-12">
+                            <form action="" method="POST" role="form">
+                                <label for="txtSearch">Search for name, description or author</label>
+                                <div class="input-group">
+                                    <input type="text" id="txtSearch" name="txtSearch" value="${params.q}" class="form-control input-lg" placeholder="Enter name, description or author">
+                                    <span class="input-group-btn">
+                                        <button class="btn btn-primary btn-lg" type="button" id="btnQuestionSearch">Search</button>
+                                    </span>
                                 </div>
-                            </td>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <g:each in="${questions}" var="question" status="i">
-                            <tr questionId="${question.id}">
-                                <td>
-                                    <div class="question-container">
-                                        <g:render template="questionListFragment" model="${[question: question, imageInfo: imageInfoMap[question.occurrenceId], acceptedAnswer: acceptedAnswers[question], occurrence: occurrenceData[question.occurrenceId]]}" />
-                                    </div>
-                                </td>
-                            </tr>
+                            </form>
+                            <span id="helpBlock" class="help-block">E.g. a street address, place name, postcode or GPS coordinates (as lat, long)</span>
+                        </div>
+                    </div><!-- End row control-group -->
+
+                    <div class="btn-group padding-bottom-1">
+                        <g:set var="sortingValues" value="${[['dateCreated', 'date'], ['viewCount', 'views'],['answerCount', 'answers']]}"/>
+                        <g:each in="${sortingValues}" var="sortingValue">
+                            <a class="btn btn-default ${params.sort == sortingValue[0] ? 'active' : ''}"
+                               href="?sort=${sortingValue[0]}&order=${params.sort == sortingValue[0] && params.order != 'desc' ? 'desc' : 'asc'}&offset=0&q=${params.q}&f.tags=${params.f?.tags}&f.types=${params.f?.types}">
+                                <i class="fa ${params.sort == sortingValue[0] && params.order == 'asc' ? 'fa-chevron-up' : 'fa-chevron-down'}"></i> <span class="hidden-xs">Sort by ${sortingValue[1]}</span>
+                            </a>
                         </g:each>
-                    </tbody>
-                </table>
-                <div class="pagination">
-                    <g:paginate total="${totalCount}" />
+                    </div>
+                </div>
+                <div class="col-md-10">
+                    <!-- <p>Tab panel content here - tab 1</p> -->
+                    <div class="comment public_comment">
+                        <g:each in="${questions}" var="question" status="i">
+                        <div class="comment-wrapper push">
+                            <g:render template="questionListFragment"
+                                      model="${[question: question, imageInfo: imageInfoMap[question.occurrenceId], acceptedAnswer: acceptedAnswers[question], occurrence: occurrenceData[question.occurrenceId]]}"/>
+
+                        </div>
+                        </g:each>
+                    </div>
+                </div>
+
+                <div class="col-md-2 facets">
+                    <g:include action="showAggregatedTags"/>
+                    <g:include action="showAggregatedQuestionTypes"/>
                 </div>
             </div>
         </div>
-    </body>
+    </div>
+</div>
+
+</body>
 </html>
