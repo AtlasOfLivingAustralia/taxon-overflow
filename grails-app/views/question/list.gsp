@@ -96,15 +96,13 @@
                     <!-- Row search -->
                     <div class="row control-group">
                         <div class="col-xs-12">
-                            <form action="" method="POST" role="form">
-                                <label for="txtSearch">Search for name, description or author</label>
-                                <div class="input-group">
-                                    <input type="text" id="txtSearch" name="txtSearch" value="${params.q}" class="form-control input-lg" placeholder="Enter name, description or author">
-                                    <span class="input-group-btn">
-                                        <button class="btn btn-primary btn-lg" type="button" id="btnQuestionSearch">Search</button>
-                                    </span>
-                                </div>
-                            </form>
+                            <label for="txtSearch">Search for name, description or author</label>
+                            <div class="input-group">
+                                <input type="text" id="txtSearch" name="txtSearch" value="${params.q}" class="form-control input-lg" placeholder="Enter name, description or author">
+                                <span class="input-group-btn">
+                                    <button class="btn btn-primary btn-lg" type="button" id="btnQuestionSearch">Search</button>
+                                </span>
+                            </div>
                             <span id="helpBlock" class="help-block">E.g. a street address, place name, postcode or GPS coordinates (as lat, long)</span>
                         </div>
                     </div><!-- End row control-group -->
