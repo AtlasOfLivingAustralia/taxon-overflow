@@ -249,40 +249,7 @@
 
                     <g:render template="tagsFragment" model="${[question: question]}" />
 
-                    <!-- Tabular data -->
-                    <div class="table-responsive">
-                        <table class="table table-striped table-hover">
-                            <thead>
-                            <tr>
-                                <th>List name</th>
-                                <th>List type</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr>
-                                <td>Recorded by:</td>
-                                <td>Paul Flemons</td>
-                            </tr>
-                            <tr>
-                                <td>Event date:</td>
-                                <td>2013-12-19T09:13:00Z</td>
-                            </tr>
-                            <tr>
-                                <td>Locality:</td>
-                                <td>Bourke Street, Turvey Park, Wagga Wagga, New South Wales, 2650, Australia</td>
-                            </tr>
-                            <tr>
-                                <td>Scientific name:</td>
-                                <td>Homo sapiens</td>
-                            </tr>
-                            <tr>
-                                <td>Common name:</td>
-                                <td>Human, Man</td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <!-- End Tabular data -->
+                    <g:render template="questionDetails" model="${[question:question, occurrence: occurrence]}" />
 
 
 
@@ -505,11 +472,11 @@
                     <span id="unfollowingText"  style="${isFollowing ? 'display:none' : ''}"> Not following</span>
                 </div>
                 <div id="tagsDiv">
-                    <g:render template="tagsFragment" model="${[question: question]}" />
+                    // Tags
 
                 </div>
                 <div class="occurrenceDetails">
-                    <g:render template="questionDetails" model="${[question:question, occurrence: occurrence]}" />
+                    // question details
                 </div>
                 <div id="questionCommentsDiv">
                     <g:render template="questionCommentsFragment" model="${[question: question]}" />
