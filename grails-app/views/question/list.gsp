@@ -73,7 +73,7 @@
     </div>
 
     <div class="col-md-3 text-right">
-        <a href="${g.createLink(uri: '/user')}">Your activity summary</a>
+        <a class="btn btn-primary" href="${g.createLink(uri: '/user')}">Your activity summary</a>
     </div>
 </div>
 
@@ -84,7 +84,6 @@
 <div class="row-fluid">
     <div class="col-md-12">
         <div class="panel panel-default">
-
             <div class="panel-body row">
                 <div class="col-md-12">
                     <div class="word-limit">
@@ -137,6 +136,10 @@
             </div>
         </div>
     </div>
+</div>
+
+<div class="pagination">
+    <g:paginate total="${totalCount}" />
 </div>
 
 </body>

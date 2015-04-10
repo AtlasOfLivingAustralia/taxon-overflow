@@ -1,6 +1,8 @@
 
 /* Override Bootstrap */
-
+.label {
+    padding: 0.4em 0.6em 0.3em;
+}
 
 /* Override Bootstrap */
 
@@ -37,3 +39,30 @@ div.facets ul li span.label {
 #followQuestion i.fa-star {
     color: #e3cf7a;
 }
+
+/** Question Detail **/
+
+#imageViewer {
+    height: 350px;
+    margin-bottom: 1em;
+}
+
+#map {
+    height: 350px;
+}
+
+#tags-group {
+    margin-top: 1em;
+}
+
+.btnRemoveTag {
+    color: white;
+}
+
+.btnRemoveTag:hover {
+    color: darkgrey;
+}
+
+/*#btnSaveTag span {*/
+    /*color: white;*/
+/*}*/

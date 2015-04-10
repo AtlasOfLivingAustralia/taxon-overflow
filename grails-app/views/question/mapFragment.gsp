@@ -6,7 +6,7 @@
         border-radius: 3px;
     }
 </style>
-<div id="map" class="span12" style="height: 400px;"></div>
+<div id="map" class="span12"></div>
 <script>
 
     if (!GSP_VARS) {

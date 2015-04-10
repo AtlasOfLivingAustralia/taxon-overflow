@@ -1,4 +1,4 @@
-<h3class="font-xxsmall">Filter by question</h3>
+<h3 class="font-xxsmall">Filter by question</h3>
 <ul id="typesFacet">
     <g:each in="${questionTypes}" var="questionType">
         <g:set var="selectedTypes" value="${params.f?.types?: []}"/>
