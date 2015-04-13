@@ -2,56 +2,6 @@ var tolib = {};
 
 (function(lib) {
 
-    lib.showModal = function(options) {
-
-        var opts = {
-            backdrop: options.backdrop ? options.backdrop : true,
-            keyboard: options.keyboard ? options.keyboard: true,
-            url: options.url ? options.url : false,
-            id: options.id ? options.id : 'modal_element_id',
-            height: options.height ? options.height : 500,
-            width: options.width ? options.width : 600,
-            title: options.title ? options.title : 'Modal Title',
-            hideHeader: options.hideHeader ? options.hideHeader : false,
-            onClose: options.onClose ? options.onClose : null,
-            onShown: options.onShown ? options.onShown : null
-        };
-
-        var html = "<div id='" + opts.id + "' class='modal hide' role='dialog' aria-labelledby='modal_label_" + opts.id + "' aria-hidden='true' style='width: " + opts.width + "px; margin-left: -" + opts.width / 2 + "px;overflow: hidden'>";
-        if (!opts.hideHeader) {
-            html += "<div class='modal-header'><button type='button' class='close' data-dismiss='modal' aria-hidden='true'>x</button><h3 id='modal_label_" + opts.id + "'>" + opts.title + "</h3></div>";
-        }
-        html += "<div class='modal-body' style='max-height: " + opts.height + "px'>Loading...</div></div>";
-
-        $("body").append(html);
-
-        var selector = "#" + opts.id;
-
-        $(selector).on("hidden", function() {
-            if (opts.onClose) {
-                opts.onClose();
-            }
-            $(selector).remove();
-        });
-
-        $(selector).on("shown", function() {
-            if (opts.onShown) {
-                opts.onShown();
-            }
-        });
-
-        $(selector).modal({
-            remote: opts.url,
-            keyboard: opts.keyboard,
-            backdrop: opts.backdrop
-        });
-
-    };
-
-    lib.hideModal = function() {
-        $("#modal_element_id").modal('hide');
-    };
-
     lib.areYouSureOptions = {};
 
     lib.areYouSure = function(options) {
@@ -135,6 +85,32 @@ var tolib = {};
             contentType:'application/json',
             data: dataStr
         });
+    };
+
+    lib.doAjaxRequest = function(url, data, method) {
+        var dataStr = JSON.stringify(data);
+        return $.ajax({
+            type: method ? method : 'POST',
+            url: url,
+            contentType:'application/json',
+            data: dataStr
+        });
+    };
+
+    lib.serializeFormJSON = function(form) {
+        var o = {};
+        var a = form.serializeArray();
+        $.each(a, function() {
+            if (o[this.name]) {
+                if (!o[this.name].push) {
+                    o[this.name] = [o[this.name]];
+                }
+                o[this.name].push(this.value || '');
+            } else {
+                o[this.name] = this.value || '';
+            }
+        });
+        return o;
     };
 
     lib.bindTooltips = function(selector, width) {

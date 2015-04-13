@@ -449,6 +449,7 @@ class WebServiceController {
         }
 
         def tag = requestData?.tag as String
+        tag = tag ?: params.tag
 
         def serviceResults = questionService.addQuestionTag(question, tag)
         if (serviceResults) {
@@ -473,6 +474,7 @@ class WebServiceController {
         }
 
         def tag = requestData?.tag as String
+        tag = tag ?: params.tag
 
         def serviceResults = questionService.removeQuestionTag(question, tag)
         if (serviceResults) {

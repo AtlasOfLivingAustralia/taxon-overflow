@@ -6,6 +6,11 @@ modules = {
         resource url:'css/taxonoverflow.css'
     }
 
+    bootbox {
+        dependsOn 'jquery'
+        resource url: 'vendor/bootbox/bootbox.js'
+    }
+
     flexisel {
         dependsOn 'jquery'
         resource url:'vendor/flexisel/jquery.flexisel.js'

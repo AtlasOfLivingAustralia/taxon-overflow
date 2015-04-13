@@ -3,7 +3,7 @@
 <head>
     <meta name="layout" content="main"/>
     <title>Case #${question.id} | Community identification help | Atlas of Living Australia</title>
-    <r:require modules="viewer, flexisel, leaflet, taxonoverflow" />
+    <r:require modules="viewer, flexisel, leaflet, taxonoverflow, ajaxanywhere, bootbox" />
     <r:script>
 
         var GSP_VARS = {
@@ -69,20 +69,6 @@
                             $("#followQuestion i").removeClass('fa-star-o').addClass('fa-star following');
                             $('#followingText').show();
                             $('#unfollowingText').hide();
-                        }
-                    }
-                });
-            });
-
-            $("#btnSaveTag").click(function(e) {
-                e.preventDefault();
-                tolib.showModal( {
-                    url: "${createLink(controller: 'dialog', action: 'addQuestionTagFragment', params: [questionId: question.id])}",
-                    title: "Add tag",
-                    hideHeader: false,
-                    onClose: function() {
-                        if (renderAnswers instanceof Function) {
-                            renderTags();
                         }
                     }
                 });
@@ -159,13 +145,6 @@
             });
         }
 
-        function renderTags() {
-            $.ajax("${createLink(action:'questionTagsFragment', id: question.id)}").done(function(content) {
-                $("#tagsDiv").html(content);
-            });
-
-        }
-
         function renderAnswers() {
             $.ajax("${createLink(action:'answersListFragment', id: question.id)}").done(function(content) {
                 $("#answersDiv").html(content);
@@ -213,13 +192,16 @@
                     <div class="btn-group padding-bottom-1">
                         <a class="btn btn-default active togglePlaceholder" href="#"><i class="fa fa-picture-o"></i> <span class="hidden-xs">Toggle image</span></a>
                         <a class="btn btn-default togglePlaceholder" href="#"><i class="fa fa-map-marker"></i> <span class="hidden-xs">Toggle map</span></a>
+                        <a class="btn btn-default " href="#"><i class="fa fa-star following"></i> <span class="hidden-xs">Following</span></a>
                     </div>
 
                     <div class="btn-group padding-bottom-1 pull-right">
                         <to:ifCanEditQuestion question="${question}">
-                            <button type="button" class="btn btn-primary" id="btnSaveTag"><i class="fa fa-tag"></i> Add Tag</button>
+                            <a class="btn btn-primary" href="${g.createLink(controller: 'dialog', action: 'addQuestionTagFragment', params: [questionId: question.id])}"
+                               aa-refresh-zones="addTagDialogZone" id="btnSaveTag"
+                               aa-js-after="$('#addTagModalDialog').modal('show')">
+                                <i class="fa fa-tag"></i> Add Tag</a>
                         </to:ifCanEditQuestion>
-
                     </div>
 
                     <g:set var="coordinates" value="${au.org.ala.taxonoverflow.OccurrenceHelper.getCoordinates(occurrence)}" />
@@ -247,12 +229,11 @@
                         </g:if>
                     </g:if>
 
-                    <g:render template="tagsFragment" model="${[question: question]}" />
+                    <aa:zone id="tagsZone">
+                        <g:render template="tagsFragment" model="${[question: question]}" />
+                    </aa:zone>
 
                     <g:render template="questionDetails" model="${[question:question, occurrence: occurrence]}" />
-
-
-
 
                 </div>
                 <div class="col-xs-12 col-sm-7 col-md-6">
@@ -267,20 +248,6 @@
                                 <!-- <p class="help-block">Example block-level help text here.</p> -->
                             </div>
                         </div>
-                        <!-- <div class="form-group">
-                  <label for="inputEmail3" class="col-sm-2 control-label">Email</label>
-                  <div class="col-sm-9">
-                    <input type="email" class="form-control" id="inputEmail3" placeholder="Email">
-                    <p class="help-block">Provide your email address if you would like to be contacted.</p>
-                  </div>
-                </div> -->
-                        <!-- <div class="form-group">
-                  <label for="inputPassword3" class="col-sm-2 control-label">Website</label>
-                  <div class="col-sm-9">
-                    <input type="website" class="form-control" id="inputPassword3" placeholder="Website address">
-                    <p class="help-block">I have no idea why we want your email address ...</p>
-                  </div>
-                </div> -->
                         <div class="form-group">
                             <label for="" class="col-sm-3 control-label">Comments or questions</label>
                             <div class="col-sm-8">
@@ -487,5 +454,7 @@
                 </div>
             </div>
         </div>
+
+        <aa:zone id="addTagDialogZone"></aa:zone>
     </body>
 </html>
