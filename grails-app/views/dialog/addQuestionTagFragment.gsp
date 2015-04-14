@@ -32,6 +32,13 @@
         $("#tag").focus();
     });
 
+    $('#addTagForm input').on('keypress', function(e){
+        if (e.which == 13) {
+            e.preventDefault();
+            $('#submitTagButton').click();
+        }
+    });
+
     $('#submitTagButton').on('click', function(e) {
         e.preventDefault();
         var response = tolib.doAjaxRequest($("#addTagForm").attr('action'), tolib.serializeFormJSON($("#addTagForm")));
