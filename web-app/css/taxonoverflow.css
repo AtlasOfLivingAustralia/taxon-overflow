@@ -81,4 +81,10 @@ div.facets ul li span.label {
     color: darkgrey;
 }
 
+#userSwitch {
+    position: absolute;
+    right: 15px;
+    top: -5px;
+}
+
 

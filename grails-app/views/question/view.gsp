@@ -122,7 +122,7 @@
     <h2 class="heading-medium">
         Species identification case #${question.id}
         <g:if test="${grailsApplication.config.testUsers}">
-            <ul class="nav nav-pills pull-right">
+            <ul class="nav nav-pills pull-right" id="userSwitch">
                 <li class="dropdown">
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                         Logged in: ${to.currentUserDisplayName()}, Switch users
