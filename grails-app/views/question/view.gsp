@@ -58,10 +58,6 @@
                     map.invalidateSize();
                 }
             }); 
-
-            renderMap();
-            $('#map').addClass('hidden');
-
         });
 
         $(window).load(function() {
@@ -92,26 +88,6 @@
                 }
             });
         });
-
-        function renderAnswers() {
-            $.ajax("${createLink(action:'answersListFragment', id: question.id)}").done(function(content) {
-                $("#answersDiv").html(content);
-            });
-        }
-
-        function renderQuestionComments() {
-            $.ajax("${createLink(action:'questionCommentsFragment', id: question.id)}").done(function(content) {
-                $("#questionCommentsDiv").html(content);
-            });
-        }
-
-        function renderMap() {
-            $.ajax("${createLink(controller: 'question', action:'mapFragment', id: question.id)}").done(function(content) {
-                $("#map").html(content);
-            });
-        }
-
-
     </r:script>
 </head>
 <body>
@@ -123,7 +99,26 @@
         <li><a class="font-xxsmall" href="${g.createLink(controller:"question", action:"list")}">Community identification help</a></li>
         <li class="font-xxsmall active">Species identification case #${question.id}</li>
     </ol>
-    <h2 class="heading-medium">Species identification case #${question.id}</h2>
+    <h2 class="heading-medium">
+        Species identification case #${question.id}
+        <g:if test="${grailsApplication.config.testUsers}">
+            <ul class="nav nav-pills pull-right">
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                        Logged in: ${to.currentUserDisplayName()}, Switch users
+                        <b class="caret"></b>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <g:each in="${grailsApplication.config.testUsers.split(',')}" var="testUser">
+                            <li>
+                                <to:switchUserLink email="${testUser}"/>
+                            </li>
+                        </g:each>
+                    </ul>
+                </li>
+            </ul>
+        </g:if>
+    </h2>
 </div>
 
 <!-- Panel content -->
@@ -133,6 +128,7 @@
             <div class="panel-heading">
                 <h3 class="heading-underlined">Application Overview</h3>
             </div>
+
             <div class="panel-body row">
                 <div class="col-md-6">
                     <!-- <h3 class="heading-medium">Content</h3> -->
@@ -166,8 +162,8 @@
                             </g:if>
                         </div>
                         <g:if test="${coordinates}">
-                        <div id="map" class="placeholder img-responsive">
-
+                        <div id="map" class="placeholder img-responsive hidden">
+                            <aa:zone id="mapzone" fragmentUrl="${g.createLink(action: 'mapFragment', id: question.id)}"></aa:zone>
                         </div>
                         </g:if>
                     </g:if>
@@ -183,13 +179,13 @@
 
                     <!-- Tab navigation -->
                     <ul class="nav nav-tabs">
-                        <li class="active font-xxsmall"><a href="#tab3" data-toggle="tab">Add Answers</a></li>
-                        <li class="font-xxsmall"><a href="#tab4" data-toggle="tab">Add Comments</a></li>
+                        <li class="font-xxsmall ${question.answers ? 'active' : ''}"><a href="#answersPane" data-toggle="tab">Add Answers</a></li>
+                        <li class="font-xxsmall ${!question.answers ? 'active' : ''}"><a href="#commentsPane" data-toggle="tab">Add Comments</a></li>
                     </ul>
 
                     <!-- Tab sections -->
                     <div class="tab-content">
-                        <div class="tab-pane active" id="tab3">
+                        <div class="tab-pane ${question.answers ? 'active' : ''}" id="answersPane">
 
                             <div class="btn-group padding-bottom-1">
                                 <p>Help the ALA by adding an answer or comments to existing answers.</p>
@@ -329,7 +325,7 @@
 
                         </div>
 
-                        <div class="tab-pane" id="tab4">
+                        <div class="tab-pane ${!question.answers ? 'active' : ''}" id="commentsPane">
                             <!-- This is the additional comments tab content -->
 
                             <!-- <h3 class="heading-medium">Answers</h3> -->
@@ -430,25 +426,7 @@
             <div class="span3" style="text-align: right;"><a href="${g.createLink(uri:'/user')}">Your activity summary</a></div>
         </div>
 
-        <g:if test="${grailsApplication.config.testUsers}">
-        <div class="pull-right" style="position:absolute; top:85px; right:30px;">
-            <ul class="nav nav-pills">
-                <li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                        Logged in: ${to.currentUserDisplayName()}, Switch users
-                        <b class="caret"></b>
-                    </a>
-                    <ul class="dropdown-menu">
-                        <g:each in="${grailsApplication.config.testUsers.split(',')}" var="testUser">
-                            <li>
-                                <to:switchUserLink email="${testUser}"/>
-                            </li>
-                        </g:each>
-                    </ul>
-                </li>
-            </ul>
-        </div>
-        </g:if>
+
 
         <div class="row-fluid header-row">
             <div class="span6">
@@ -470,9 +448,7 @@
             </g:if>
             <div class="span6">
                 <div id="followQuestion">
-                    <i class="fa ${isFollowing ? 'fa-star following' : 'fa-star-o'} fa-lg"></i>
-                    <span id="followingText" style="${isFollowing ? '' : 'display:none;'}"> Following</span>
-                    <span id="unfollowingText"  style="${isFollowing ? 'display:none' : ''}"> Not following</span>
+                    // Following
                 </div>
                 <div id="tagsDiv">
                     // Tags
