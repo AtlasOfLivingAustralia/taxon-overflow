@@ -1,6 +1,6 @@
-<div class="modal fade" id="addTagModalDialog" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <g:form name="addTagForm" controller="webService" action="addTagToQuestion" class="form-horizontal">
-        <g:hiddenField name="questionId" value="${question.id}"/>
+<g:form name="addTagForm" controller="webService" action="addTagToQuestion" class="form-horizontal">
+    <g:hiddenField name="questionId" value="${question.id}"/>
+    <div class="modal fade" id="addTagModalDialog" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -25,8 +25,8 @@
                 </div>
             </div>
         </div>
-    </g:form>
-</div>
+    </div>
+</g:form>
 <script>
     $('#addTagModalDialog').on('shown.bs.modal', function () {
         $("#tag").focus();

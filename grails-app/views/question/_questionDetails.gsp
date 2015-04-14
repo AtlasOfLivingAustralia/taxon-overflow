@@ -3,8 +3,8 @@
     <table class="table table-striped table-hover">
         <thead>
         <tr>
-            <th>List name</th>
-            <th>List type</th>
+            <th>Category</th>
+            <th>Details</th>
         </tr>
         </thead>
         <tbody>

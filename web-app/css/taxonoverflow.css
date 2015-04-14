@@ -5,6 +5,23 @@
     margin-right: .5em;
 }
 
+.modal {
+    text-align: center;
+}
+
+.modal:before {
+    display: inline-block;
+    vertical-align: middle;
+    content: " ";
+    height: 100%;
+}
+
+.modal-dialog {
+    display: inline-block;
+    text-align: left;
+    vertical-align: middle;
+}
+
 /* Override Bootstrap */
 
 .tag {
@@ -63,3 +80,5 @@ div.facets ul li span.label {
 .btnRemoveTag:hover {
     color: darkgrey;
 }
+
+
