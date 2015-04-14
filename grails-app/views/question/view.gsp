@@ -104,13 +104,21 @@
 </head>
 <body>
 
+<div class="row-fluid">
+    <div class="col-md-9">
+        <ol class="breadcrumb">
+            <li><a class="font-xxsmall" href="http://ala.org.au">Home</a></li>
+            <li><a class="font-xxsmall" href="${g.createLink(controller:"question", action:"list")}">Community identification help</a></li>
+            <li class="font-xxsmall active">Species identification case #${question.id}</li>
+        </ol>
+    </div>
+
+    <div class="col-md-3 text-right">
+        <a class="btn btn-primary" href="${g.createLink(uri: '/user')}">Your activity summary</a>
+    </div>
+</div>
+
 <div class="col-md-12">
-    <h1 class="hidden">Welcome the Atlas of Living Australia</h1>
-    <ol class="breadcrumb">
-        <li><a class="font-xxsmall" href="http://ala.org.au">Home</a></li>
-        <li><a class="font-xxsmall" href="${g.createLink(controller:"question", action:"list")}">Community identification help</a></li>
-        <li class="font-xxsmall active">Species identification case #${question.id}</li>
-    </ol>
     <h2 class="heading-medium">
         Species identification case #${question.id}
         <g:if test="${grailsApplication.config.testUsers}">
@@ -415,72 +423,11 @@
 
                         </div>
                     </div>
-
-
-
                 </div>
             </div>
         </div>
     </div>
 </div>
-
-
-<hr/>
-
-        <div class="row">
-            <div class="span9">
-                <ul class="breadcrumb">
-                    <li><a href="http://ala.org.au">Home</a> <span class="divider"><i class="fa fa-arrow-right"></i></span></li>
-                    <li><g:link controller="question" action="list">Community identification help</g:link> <span class="divider"><i class="fa fa-arrow-right"></i></span></li>
-                    <li class="active">Species identification case #${question.id}</li>
-                </ul>
-            </div>
-            <div class="span3" style="text-align: right;"><a href="${g.createLink(uri:'/user')}">Your activity summary</a></div>
-        </div>
-
-
-
-        <div class="row-fluid header-row">
-            <div class="span6">
-                <H1>Species identification case #${question.id}&nbsp;
-                    <small> Views: ${viewCount}</small>
-                </H1>
-            </div>
-            <div class="span6">
-                <h4 class="pull-right">${question.answers?.size() ?: 0} ${question.questionType == au.org.ala.taxonoverflow.QuestionType.IDENTIFICATION ? "IDENTIFICATION(s)" : "Answer(s)" }</h4>
-            </div>
-        </div>
-        <div class="row-fluid">
-
-            <g:if test="${occurrence.imageIds || coordinates}">
-            <div class="span6">
-                // Images
-                // Map
-            </div>
-            </g:if>
-            <div class="span6">
-                <div id="followQuestion">
-                    // Following
-                </div>
-                <div id="tagsDiv">
-                    // Tags
-
-                </div>
-                <div class="occurrenceDetails">
-                    // question details
-                </div>
-                <div id="questionCommentsDiv">
-                    <g:render template="questionCommentsFragment" model="${[question: question]}" />
-                </div>
-
-                <div id="answersDiv" style="margin-top:20px;">
-                    <to:spinner />&nbsp;Loading answers...
-                </div>
-            </div>
-        </div>
-
-        <aa:zone id="addTagDialogZone">
-            <g:include controller="dialog" action="addQuestionTagFragment"/>
-        </aa:zone>
-    </body>
+<aa:zone id="addTagDialogZone"></aa:zone>
+</body>
 </html>
