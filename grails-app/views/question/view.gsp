@@ -88,6 +88,18 @@
                 }
             });
         });
+
+        function renderAnswers() {
+            $.ajax("${createLink(action:'answersListFragment', id: question.id)}").done(function(content) {
+                $("#answersDiv").html(content);
+            });
+        }
+
+        function renderQuestionComments() {
+            $.ajax("${createLink(action:'questionCommentsFragment', id: question.id)}").done(function(content) {
+                $("#questionCommentsDiv").html(content);
+            });
+        }
     </r:script>
 </head>
 <body>
