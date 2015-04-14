@@ -60,7 +60,9 @@ grails.project.dependency.resolution = {
         // plugins for the compile step
         compile ":rest-client-builder:2.1.0"
         compile ":scaffolding:2.1.2"
-        compile ':cache:1.1.8'
+        compile(':cache:1.1.8') {
+            excludes "webxml"
+        }
         compile ":quartz:1.0.2"
         compile ":mail:1.0.7"
         compile ":pretty-time:2.1.3.Final-1.0.1"

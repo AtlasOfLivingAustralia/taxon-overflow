@@ -34,42 +34,16 @@
                 }
             });
 
-
-
-            $('#followQuestion i').on("mouseover", function(e) {
-                if ($(this).hasClass('fa-star-o')) {
-                    $(this).removeClass('fa-star-o').addClass('fa-star')
-                } else {
-                    $(this).removeClass('fa-star').addClass('fa-star-o')
-                }
-            });
-
-            $('#followQuestion i').on("mouseout", function(e) {
-                if ($(this).hasClass('fa-star') && !$(this).hasClass('following')) {
-                    $(this).removeClass('fa-star').addClass('fa-star-o')
-                } else if ($(this).hasClass('fa-star-o') && $(this).hasClass('following')){
-                    $(this).removeClass('fa-star-o').addClass('fa-star')
-                }
-            });
-
-            $('#followQuestion i').on('click', function() {
+            $(document).on('click', '#followQuestionButton', function() {
+                alert(1);
                 var followURL = "${g.createLink(uri: '/ws/question/follow')}/${question.id}/${to.currentUserId()}";
                 var unfollowURL = "${g.createLink(uri: '/ws/question/unfollow')}/${question.id}/${to.currentUserId()}";
 
                 $.ajax({
-                    url: $(this).hasClass('following') ? unfollowURL : followURL,
+                    url: $(this).hasClass('active') ? unfollowURL : followURL,
                     dataType: "json",
                     success: function(data) {
-                        //console.log(data);
-                        if($("#followQuestion i").hasClass('following')) {
-                            $("#followQuestion i").removeClass('fa-star following').addClass('fa-star-o');
-                            $('#followingText').hide();
-                            $('#unfollowingText').show();
-                        } else {
-                            $("#followQuestion i").removeClass('fa-star-o').addClass('fa-star following');
-                            $('#followingText').show();
-                            $('#unfollowingText').hide();
-                        }
+                        $('#refreshFollowingZoneLink').click();
                     }
                 });
             });
@@ -124,27 +98,6 @@
             });
         });
 
-        function checkFollowingStatus() {
-            var url = "${g.createLink(uri: '/ws/question/following/status')}/${question.id}/${to.currentUserId()}";
-
-            $.ajax({
-                url: url,
-                dataType: "json",
-                success: function(data) {
-                    console.log("following: " + data.following);
-                    if (data.following && !$("#followQuestion i").hasClass('following')) {
-                        $("#followQuestion i").removeClass('fa-star-o').addClass('fa-star following');
-                        $('#followingText').show();
-                        $('#unfollowingText').hide();
-                    } else if (!data.following && $("#followQuestion i").hasClass('following')) {
-                        $("#followQuestion i").removeClass('fa-star following').addClass('fa-star-o');
-                        $('#followingText').hide();
-                        $('#unfollowingText').show();
-                    }
-                }
-            });
-        }
-
         function renderAnswers() {
             $.ajax("${createLink(action:'answersListFragment', id: question.id)}").done(function(content) {
                 $("#answersDiv").html(content);
@@ -188,21 +141,16 @@
             <div class="panel-body row">
                 <div class="col-md-6">
                     <!-- <h3 class="heading-medium">Content</h3> -->
-                    <p>Instructions here.</p>
+                    <p>Please provide an identification for this observation, or agree, disagree or comment on identifications provided by other users.</p>
                     <div class="btn-group padding-bottom-1">
-                        <a class="btn btn-default active togglePlaceholder" href="#"><i class="fa fa-picture-o"></i> <span class="hidden-xs">Toggle image</span></a>
-                        <a class="btn btn-default togglePlaceholder" href="#"><i class="fa fa-map-marker"></i> <span class="hidden-xs">Toggle map</span></a>
-                        <a class="btn btn-default " href="#"><i class="fa fa-star following"></i> <span class="hidden-xs">Following</span></a>
+                        <a class="btn btn-default active togglePlaceholder" title="Show Image" href="#"><i class="fa fa-picture-o"></i> <span class="hidden-xs">Toggle image</span></a>
+                        <a class="btn btn-default togglePlaceholder" title="Show Map" href="#"><i class="fa fa-map-marker"></i> <span class="hidden-xs">Toggle map</span></a>
+
                     </div>
 
-                    <div class="btn-group padding-bottom-1 pull-right">
-                        <to:ifCanEditQuestion question="${question}">
-                            <a class="btn btn-primary" href="${g.createLink(controller: 'dialog', action: 'addQuestionTagFragment', params: [questionId: question.id])}"
-                               aa-refresh-zones="addTagDialogZone" id="btnSaveTag"
-                               aa-js-after="$('#addTagModalDialog').modal('show')">
-                                <i class="fa fa-tag"></i> Add Tag</a>
-                        </to:ifCanEditQuestion>
-                    </div>
+                    <aa:zone id="followingZone">
+                        <g:include action="followingFragment" id="${question.id}"/>
+                    </aa:zone>
 
                     <g:set var="coordinates" value="${au.org.ala.taxonoverflow.OccurrenceHelper.getCoordinates(occurrence)}" />
                     <g:if test="${occurrence.imageIds || coordinates}">

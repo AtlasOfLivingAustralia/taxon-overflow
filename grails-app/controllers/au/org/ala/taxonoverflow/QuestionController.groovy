@@ -1,5 +1,7 @@
 package au.org.ala.taxonoverflow
 
+import com.nerderg.ajaxanywhere.AAUtils
+
 import static grails.async.Promises.*
 
 class QuestionController {
@@ -62,8 +64,6 @@ class QuestionController {
             }
 
             def alaUserId = authService.userId
-            User user = User.findByAlaUserId(alaUserId)
-            boolean isFollowing = user ? user.followedQuestions.contains(question) : false;
 
             def acceptedAnswer = Answer.findByQuestionAndAccepted(question, true)
 
@@ -75,8 +75,8 @@ class QuestionController {
             auditService.logQuestionView(question)
 
             def viewCount = auditService.getQuestionViewCount(question)
+            return [question: question, imageIds: imageIds, occurrence: specimen, userId: alaUserId, acceptedAnswer: acceptedAnswer, viewCount: viewCount]
 
-            return [question: question, imageIds: imageIds, occurrence: specimen, userId: alaUserId, acceptedAnswer: acceptedAnswer, viewCount: viewCount, isFollowing: isFollowing]
         } else {
             flash.message = "No such question, or question not specified"
             redirect(action:'list')
@@ -176,6 +176,15 @@ class QuestionController {
     def showAggregatedQuestionTypes() {
         List<Map> tags = elasticSearchService.getAggregatedQuestionTypesWithCount()
         render template: 'aggregatedQuestionTypes', model: [questionTypes: tags]
+    }
+
+    def followingFragment(int id) {
+        Question question = Question.get(id)
+        def alaUserId = authService.userId
+        User user = User.findByAlaUserId(alaUserId)
+        boolean isFollowing = user ? user.followedQuestions.contains(question) : false;
+
+        render template: 'followingFragment', model: [question: question, isFollowing: isFollowing]
     }
 
 }
