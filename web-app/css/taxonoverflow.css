@@ -87,4 +87,8 @@ div.facets ul li span.label {
     top: -5px;
 }
 
+.public_comment button.close {
+    text-align: left;
+}
+
 

@@ -3,7 +3,7 @@
 <head>
     <meta name="layout" content="main"/>
     <title>Case #${question.id} | Community identification help | Atlas of Living Australia</title>
-    <r:require modules="viewer, flexisel, leaflet, taxonoverflow, ajaxanywhere, bootbox" />
+    <r:require modules="taxonoverflow, viewer, flexisel, leaflet, ajaxanywhere, bootbox" />
     <r:script>
 
         var GSP_VARS = {
@@ -346,81 +346,7 @@
                         </div>
 
                         <div class="tab-pane ${!question.answers ? 'active' : ''}" id="commentsPane">
-                            <!-- This is the additional comments tab content -->
-
-                            <!-- <h3 class="heading-medium">Answers</h3> -->
-                            <p>Add a comment or question below.</p>
-
-                            <form class="form-horizontal padding-bottom-2">
-                                <!-- <div class="form-group">
-                      <label for="inputEmail3" class="col-sm-3 control-label">Name</label>
-                      <div class="col-sm-8">
-                        <input type="email" class="form-control" id="inputEmail3" placeholder="Full name">
-                      </div>
-                    </div> -->
-                                <div class="form-group">
-                                    <label for="" class="col-sm-3 control-label">Comments or questions</label>
-                                    <div class="col-sm-8">
-                                        <textarea class="form-control" rows="4" placeholder="Enter your comments or questions"></textarea>
-                                        <!-- <p class="help-block">Example block-level help text here.</p> -->
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="col-sm-offset-3 col-sm-8">
-                                        <button type="submit" class="btn btn-primary btn-lg">Submit comment</button>
-                                    </div>
-                                </div>
-                            </form>
-
-                            <div class="comment public_comment">
-
-                                <div class="alert push">
-                                    <div class="body">
-                                        <span class="comment-icon"><i class="fa fa-comment"></i></span>
-                                        <div class="time">27 minutes ago</div>
-                                        <div class="author">aatteia published a comment</div>
-                                        <div class="details">Do aliens really exist? And if not, then what is up with Christopher Pine?</div>
-                                    </div>
-                                </div>
-
-                                <div class="alert push">
-                                    <div class="body">
-                                        <span class="comment-icon"><i class="fa fa-comment"></i></span>
-                                        <div class="time">27 minutes ago</div>
-                                        <div class="author">aatteia published a comment</div>
-                                        <div class="details">Do aliens really exist? And if not, then what is up with Christopher Pine?</div>
-                                    </div>
-                                </div>
-
-                                <div class="alert push">
-                                    <div class="body">
-                                        <span class="comment-icon"><i class="fa fa-comment"></i></span>
-                                        <div class="time">27 minutes ago</div>
-                                        <div class="author">aatteia published a comment</div>
-                                        <div class="details">Do aliens really exist? And if not, then what is up with Christopher Pine?</div>
-                                    </div>
-                                </div>
-
-                                <div class="alert push">
-                                    <div class="body">
-                                        <span class="comment-icon"><i class="fa fa-comment"></i></span>
-                                        <div class="time">27 minutes ago</div>
-                                        <div class="author">aatteia published a comment</div>
-                                        <div class="details">Do aliens really exist? And if not, then what is up with Christopher Pine?</div>
-                                    </div>
-                                </div>
-
-                                <div class="alert push">
-                                    <div class="body">
-                                        <span class="comment-icon"><i class="fa fa-comment"></i></span>
-                                        <div class="time">27 minutes ago</div>
-                                        <div class="author">aatteia published a comment</div>
-                                        <div class="details">Do aliens really exist? And if not, then what is up with Christopher Pine?</div>
-                                    </div>
-                                </div>
-
-                            </div>
-
+                            <g:include action="questionCommentsFragment" id="${question.id}"/>
                         </div>
                     </div>
                 </div>
