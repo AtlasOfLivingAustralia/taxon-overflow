@@ -8,6 +8,7 @@
     </p>
     <a aa-refresh-zones="tagsZone" href="${g.createLink(action:'questionTagsFragment', id: question.id)}" id="refreshTagsLink" class="hidden"></a>
 </div>
+
 <script>
     $('.btnRemoveTag').on('click', function(e) {
         e.preventDefault();

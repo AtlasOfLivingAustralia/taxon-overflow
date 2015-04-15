@@ -5,10 +5,11 @@
         <span class="hidden-xs" style="${isFollowing ? 'display:none' : ''}"> Follow</span>
     </a>
     <to:ifCanEditQuestion question="${question}">
-        <a class="btn btn-default" href="${g.createLink(controller: 'dialog', action: 'addQuestionTagFragment', params: [questionId: question.id])}"
+        <a class="btn btn-default" href="${g.createLink(controller: 'dialog', action: 'addQuestionTagDialog', params: [questionId: question.id])}"
            aa-refresh-zones="addTagDialogZone" id="btnSaveTag"
            aa-js-after="$('#addTagModalDialog').modal('show')">
             <i class="fa fa-tag"></i> Add Tag</a>
+        <aa:zone id="addTagDialogZone"></aa:zone>
     </to:ifCanEditQuestion>
 </div>
 <a aa-refresh-zones="followingZone" href="${createLink(controller:'question', action:'followingFragment', id: question.id)}" id="refreshFollowingZoneLink" style="display: none;">Refresh</a>

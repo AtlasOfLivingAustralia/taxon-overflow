@@ -1,8 +1,7 @@
 package au.org.ala.taxonoverflow
 
-import com.nerderg.ajaxanywhere.AAUtils
-
-import static grails.async.Promises.*
+import static grails.async.Promises.task
+import static grails.async.Promises.waitAll
 
 class QuestionController {
 
@@ -83,62 +82,6 @@ class QuestionController {
         }
     }
 
-    def answersListFragment(int id) {
-        def question = Question.get(id)
-        def user = userService.currentUser
-        List answers = []
-        if (question) {
-            def c = Answer.createCriteria()
-            answers = c.list {
-                eq("question", question)
-                and {
-                    order("accepted", "desc")
-                    order("dateCreated", "asc")
-                }
-            }
-
-            def votes = []
-            if (answers) {
-                c = AnswerVote.createCriteria()
-                votes = c {
-                    inList("answer", answers)
-                    projections {
-                        property("answer")
-                        sum("voteValue")
-                        groupProperty("answer")
-                    }
-                }
-            }
-
-            def answerVoteTotals = votes?.collectEntries { [ (it[0]) : it[1]] }
-            def userVotes = AnswerVote.findAllByUserAndAnswerInList(user, answers)?.collectEntries { [ (it.answer) : it]}
-            def userAnswers = Answer.findAllByQuestionAndUser(question, user)
-
-            [answers: answers, question: question, user: user, answerVoteTotals: answerVoteTotals, userVotes: userVotes, userAnswers: userAnswers]
-        }
-
-    }
-
-    def answerFragment(long id) {
-        def answer = Answer.get(id)
-
-        if (answer) {
-            def user = userService.currentUser
-            def userVote = AnswerVote.findByUserAndAnswer(user, answer)
-
-            def c = AnswerVote.createCriteria()
-            def totalVotes = c {
-                eq("answer", answer)
-                projections {
-                    groupProperty("answer")
-                    sum("voteValue")
-                }
-            }
-
-            render(template: "answerFragment", model: [question: answer?.question, answer: answer, userVote: userVote, totalVotes: totalVotes ? totalVotes[0][1] : 0])
-        }
-    }
-
     def questionCommentsFragment(long id) {
         def question = Question.get(id)
         render(template:'questionCommentsFragment', model:[question: question, userId: authService.userId])
@@ -149,22 +92,12 @@ class QuestionController {
         render(template:'tagsFragment', model:[question: question])
     }
 
-    def addAnswerCommentFragment(long id) {
-        def answer = Answer.get(id)
-        [answer: answer, userId: authService.userId]
-    }
-
-    def addQuestionCommentFragment(long id) {
-        def question = Question.get(id)
-        [question: question, userId: authService.userId]
-    }
-
     def mapFragment(long id) {
         def question = Question.get(id)
         if (question) {
             def occurrence = elasticSearchService.getOccurrenceData(question.occurrenceId)
             def coordinates = OccurrenceHelper.getCoordinates(occurrence)
-            [question: question, occurrence: occurrence, coordinates: coordinates]
+            render template:'mapFragment', model: [question: question, occurrence: occurrence, coordinates: coordinates]
         }
     }
 
@@ -185,6 +118,41 @@ class QuestionController {
         boolean isFollowing = user ? user.followedQuestions.contains(question) : false;
 
         render template: 'followingFragment', model: [question: question, isFollowing: isFollowing]
+    }
+
+    def answers(int id) {
+        def question = Question.get(id)
+        def user = userService.currentUser
+        List answers = []
+        if (question) {
+            def criteria = Answer.createCriteria()
+            answers = criteria.list {
+                eq("question", question)
+                and {
+                    order("accepted", "desc")
+                    order("dateCreated", "asc")
+                }
+            }
+
+            def votes = []
+            if (answers) {
+                criteria = AnswerVote.createCriteria()
+                votes = criteria {
+                    inList("answer", answers)
+                    projections {
+                        property("answer")
+                        sum("voteValue")
+                        groupProperty("answer")
+                    }
+                }
+            }
+
+            def answerVoteTotals = votes?.collectEntries { [(it[0]): it[1]] }
+            def userVotes = AnswerVote.findAllByUserAndAnswerInList(user, answers)?.collectEntries { [(it.answer): it] }
+            def userAnswers = Answer.findAllByQuestionAndUser(question, user)
+
+            render template: 'answers', model: [answers: answers, question: question, user: user, answerVoteTotals: answerVoteTotals, userVotes: userVotes, userAnswers: userAnswers]
+        }
     }
 
 }
