@@ -15,7 +15,7 @@
                     <div class="form-group">
                         <label for="tag" class="col-md-2 control-label">Tag</label>
                         <div class="col-sm-10">
-                            <g:textField class="form-control" name="tag" />
+                            <g:textField class="form-control" name="tag" placeholder="Enter a tag"/>
                         </div>
                     </div>
                 </div>

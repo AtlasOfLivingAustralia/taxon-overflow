@@ -9,8 +9,9 @@ class DialogController {
         [question: question, user: userService.currentUser]
     }
 
-    def addAnswerDialog() {
-
+    def addAnswerDialog(int id) {
+        def question = Question.get(id)
+        render template: 'answerDialog2', model: [question: question]
     }
 
 }
