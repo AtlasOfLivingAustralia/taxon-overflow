@@ -1,8 +1,11 @@
 <div id="tags-group" class="btn-group">
     <p class="font-xxsmall">Tags:
     <g:each in="${question.tags}" var="tag">
-        <span class="label label-primary">${tag.tag}<to:ifCanEditQuestion question="${question}">&nbsp;
-            <a class="btnRemoveTag" href="${g.createLink(controller: 'webService', action: 'removeTagFromQuestion')}" tag="${tag.tag}"><i class="fa fa-remove"></i></a></to:ifCanEditQuestion>
+        <span class="label label-primary">
+            ${tag.tag}
+            <to:ifCanEditQuestion question="${question}">
+                &nbsp;<a class="btnRemoveTag" href="${g.createLink(controller: 'webService', action: 'removeTagFromQuestion')}" tag="${tag.tag}"><i class="fa fa-remove"></i></a>
+            </to:ifCanEditQuestion>
         </span>
     </g:each>
     </p>
