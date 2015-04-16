@@ -4,14 +4,19 @@ class DialogController {
 
     def userService
 
-    def addQuestionTagDialog() {
-        def question = Question.get(params.int("questionId"))
-        [question: question, user: userService.currentUser]
+    def addQuestionTagDialog(long id) {
+        def question = Question.get(id)
+        render template: 'questionTagDialog', model: [question: question, user: userService.currentUser]
     }
 
-    def addAnswerDialog(int id) {
+    def addAnswerDialog(long id) {
         def question = Question.get(id)
-        render template: 'answerDialog2', model: [question: question]
+        render template: 'answerDialog', model: [question: question]
+    }
+
+    def addAnswerCommentDialog  (long id) {
+        def answer = Answer.get(id)
+        render template: 'answerCommentDialog', model: [answer: answer]
     }
 
 }

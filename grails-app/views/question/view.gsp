@@ -17,6 +17,30 @@
 
         $(document).ready(function() {
 
+            $("#media-thumb-list").flexisel({
+                visibleItems: 4,
+                animationSpeed: 200,
+                autoPlay: false,
+                autoPlaySpeed: 3000,
+                pauseOnHover: true,
+                clone:false,
+                enableResponsiveBreakpoints: true,
+                responsiveBreakpoints: {
+                    portrait: {
+                        changePoint:480,
+                        visibleItems: 2
+                    },
+                    landscape: {
+                        changePoint:640,
+                        visibleItems: 3
+                    },
+                    tablet: {
+                        changePoint:768,
+                        visibleItems: 4
+                    }
+                }
+            });
+
             if (images.length > 0) {
                 imgvwr.viewImage($("#imageViewer"), images[0], {})
             }
@@ -57,35 +81,9 @@
                 if(!$("#map").hasClass("hidden")) {
                     map.invalidateSize();
                 }
-            }); 
-        });
-
-        $(window).load(function() {
-
-            $("#media-thumb-list").flexisel({
-                visibleItems: 4,
-                animationSpeed: 200,
-                autoPlay: false,
-                autoPlaySpeed: 3000,
-                pauseOnHover: true,
-                clone:false,
-                enableResponsiveBreakpoints: true,
-                responsiveBreakpoints: {
-                    portrait: {
-                        changePoint:480,
-                        visibleItems: 2
-                    },
-                    landscape: {
-                        changePoint:640,
-                        visibleItems: 3
-                    },
-                    tablet: {
-                        changePoint:768,
-                        visibleItems: 4
-                    }
-                }
             });
         });
+
     </r:script>
 </head>
 <body>
@@ -132,7 +130,7 @@
     <div class="col-md-12">
         <div class="panel panel-default">
             <div class="panel-heading">
-                <h3 class="heading-underlined">Application Overview</h3>
+                <h3 class="heading-underlined">Information Overview</h3>
             </div>
 
             <div class="panel-body row">

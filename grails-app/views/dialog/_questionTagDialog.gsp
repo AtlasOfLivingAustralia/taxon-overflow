@@ -8,8 +8,7 @@
                     <h4 class="modal-title" id="myModalLabel">Add Tag</h4>
                 </div>
                 <div class="modal-body">
-                    <div class="alert alert-danger alert-dismissable" role="alert" style="display: none;">
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <div class="alert alert-danger" role="alert" style="display: none;">
                         <span class="alertText"></span>
                     </div>
                     <div class="form-group">

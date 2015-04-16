@@ -91,4 +91,21 @@ div.facets ul li span.label {
     text-align: left;
 }
 
+.votes {
+    margin-top: 1em;
+}
+
+.comment.question_comment {
+    border-top: 1px solid #ddd;
+    padding-top: 1em;
+}
+
+.comment.question_comment .alert {
+    padding-bottom: .5em;
+}
+
+.answer .panel-body {
+    padding-top: 0;
+}
+
 

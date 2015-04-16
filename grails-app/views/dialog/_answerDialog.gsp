@@ -9,8 +9,7 @@
                     <h4 class="modal-title" id="myModalLabel">Add an Identification</h4>
                 </div>
                 <div class="modal-body">
-                    <div class="alert alert-danger alert-dismissable" role="alert" style="display: none;">
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <div class="alert alert-danger" role="alert" style="display: none;">
                         <span class="alertText"></span>
                     </div>
                     <div class="form-group">
@@ -46,7 +45,7 @@
         $("#scientificName").focus();
     });
 
-    $('#answerForm input, #answerForm textarea').on('keypress', function(e){
+    $('#answerForm input').on('keypress', function(e){
         if (e.which == 13) {
             e.preventDefault();
             $('#submitAnswerButton').click();
@@ -72,7 +71,7 @@
         extraParams: {limit: 10},
         dataType: 'jsonp',
         parse: function (data) {
-            console.log("parsing")
+//            console.log("parsing")
             var rows = new Array();
             data = data.autoCompleteList;
             for (var i = 0; i < data.length; i++) {
@@ -86,13 +85,13 @@
         },
         select: function (event, ui) {
             alert("Selected: " + ui.item.value + " aka " + ui.item.label);
-            console.log('selected ' + ui.item.value);
+//            console.log('selected ' + ui.item.value);
             $(this).val(ui.item.label);
             return false;
         },
         matchSubset: false,
         formatItem: function (row, i, n) {
-            console.log("formatItem")
+//            console.log("formatItem");
             return row.matchedNames[0];
         },
         cacheLength: 10,
@@ -101,7 +100,7 @@
         max: 10
     }).result(function(event, item) {
         // user has selected an autocomplete item
-        console.log("item", item);
+//        console.log("item", item);
         $('.taxon-select-guid').val(item.guid);
         $('.taxon-select-scientific').val(item.name);
         $('.taxon-select-common').val(item.commonName);

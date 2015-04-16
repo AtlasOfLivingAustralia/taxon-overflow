@@ -30,7 +30,7 @@
         <p>No comments posted yet.</p>
     </g:if>
     <g:each in="${question.comments}" var="questionComment">
-    <div class="comment public_comment">
+    <div class="comment question_comment">
         <div class="alert push">
             <div class="body">
                 <span class="comment-icon">
@@ -45,7 +45,7 @@
                 </span>
                 <div class="time"><prettytime:display date="${questionComment.dateCreated}"/></div>
                 <div class="author">
-                    <to:userDisplayName user="${questionComment.user}" /> published a comment&nbsp;
+                    by <to:userDisplayName user="${questionComment.user}" />
                 </div>
                 <div class="details">${questionComment.comment}</div>
             </div>
