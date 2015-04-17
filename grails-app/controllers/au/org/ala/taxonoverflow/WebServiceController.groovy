@@ -282,7 +282,7 @@ class WebServiceController {
             results.message = "You cannot vote on your own answer!"
         } else {
 
-            def dir = params.int("dir") ?: 1 // positive is up, negative is down and 0 is retract existing vote
+            int dir = params.int("dir")
 
             if (answer && user) {
                 def voteType = VoteType.Up

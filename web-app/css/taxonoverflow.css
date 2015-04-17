@@ -109,4 +109,12 @@ div.facets ul li span.label {
     padding-top: 0;
 }
 
+.voting-group .fa-thumbs-up {
+    color: green;
+}
+
+.voting-group .fa-thumbs-down {
+    color: red;
+}
+
 
