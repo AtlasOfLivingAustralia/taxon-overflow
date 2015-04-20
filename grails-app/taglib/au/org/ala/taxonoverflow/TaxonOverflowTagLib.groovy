@@ -107,7 +107,7 @@ class TaxonOverflowTagLib {
     def ifCanEditAnswer = { attrs, body ->
         def answer = attrs.answer as Answer
         if (answer) {
-            if (answer.user == userService.currentUser) {
+            if (answer.user == userService.currentUser && !answer.accepted) {
                 out << body()
             }
         }
