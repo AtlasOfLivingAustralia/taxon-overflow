@@ -77,4 +77,21 @@
             }
         });
     });
+
+    $(document).on('click', '.delete-answer-btn', function(e) {
+        e.preventDefault();
+        var url = $(this).attr('href');
+        bootbox.confirm("Are you sure you want to removed the selected answer?", function(result){
+            if (result) {
+                var response = tolib.doAjaxRequest(url, {}, 'DELETE');
+                response.done(function(data) {
+                    if (data.success) {
+                        $("#refreshAnswersLink").click();
+                    } else {
+                        bootbox.alert(data.message);
+                    }
+                });
+            }
+        });
+    });
 </script>

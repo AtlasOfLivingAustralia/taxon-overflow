@@ -10,7 +10,11 @@
                     <i class="fa fa-edit" title="Edit answer"></i>
                 </a>
             </li>
-            <li class=" font-xsmall"><a href="#"><i class="fa fa-trash" title="Delete answer"></i></a></li>
+            <li class=" font-xsmall">
+                <a href="${g.createLink(controller: 'webService', action: 'deleteAnswer', id: answer.id)}" class="delete-answer-btn">
+                    <i class="fa fa-trash" title="Delete answer"></i>
+                </a>
+            </li>
         </ul>
         </to:ifCanEditAnswer>
         <h4>${answer.accepted ? 'Accepted answer' : 'Answer'}</h4>
