@@ -59,16 +59,3 @@
     <g:render template="answerComments" model="[answer: answer]"/>
 </div>
 <aa:zone id="answerCommentDialogZone"></aa:zone>
-<script>
-    $(".thumbs").on('click', function(e) {
-        e.preventDefault();
-        $(this).find('i').removeClass(function (index, css) {
-            return (css.match (/(^|\s)fa-thumbs-\S+/g) || []).join(' ');
-        }).addClass('fa-cog fa-spin');
-        $.get($(this).attr('href'), function(data){
-            if (data.success) {
-                $("#refreshAnswersLink").click();
-            }
-        })
-    });
-</script>
