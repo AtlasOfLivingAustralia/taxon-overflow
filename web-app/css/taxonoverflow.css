@@ -125,10 +125,6 @@ div.facets ul li span.label {
     color: #333;
 }
 
-.answer-comments {
-    background-color: white;
-}
-
 .answer-comments .comment .body{
     margin: 0 1em;
     padding-bottom: .5em;
@@ -138,5 +134,31 @@ div.facets ul li span.label {
 .answer-comments .comment .body div[class^='col-'] {
     padding: 0;
 }
+
+.accept-answer-btn {
+    float: right;
+    margin-top: 7px;
+}
+
+.panel-success {
+    border-color: #d6e9c6;
+}
+
+.panel-success > .panel-heading {
+    background-color: #dff0d8;
+    border-color: #d6e9c6;
+    color: #3c763d;
+}
+
+.panel-success > .panel-footer {
+    background-color: #f2faef;
+    border-color: #d6e9c6;
+}
+
+.panel-footer.answer-comments {
+    background-color: white !important;
+}
+
+
 
 

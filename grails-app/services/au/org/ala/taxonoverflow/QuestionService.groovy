@@ -316,6 +316,10 @@ class QuestionService {
 
     def canUserAcceptAnswer(Answer answer, User user) {
         // If the current user is one who asked the question, they can accept the answer
+        if (user == answer.question.user) {
+            return true
+        }
+
         if (authService.userInRole(CASRoles.ROLE_ADMIN) || authService.userInRole(grailsApplication.config.expertRole)) {
             return true
         }

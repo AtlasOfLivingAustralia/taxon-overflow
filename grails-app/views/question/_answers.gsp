@@ -59,4 +59,22 @@
             }
         });
     });
+
+    $(document).on('click', '.accept-answer-btn', function(e) {
+        e.preventDefault();
+        var url = $(this).attr('href');
+        var text = url.indexOf('unaccept') < 0 ? 'mark' : 'unmark';
+        bootbox.confirm("Are you sure you want to <strong>" + text + "</strong> this answer as the correct one?", function(result){
+            if (result) {
+                var response = tolib.doAjaxRequest(url, {}, 'PUT');
+                response.done(function(data) {
+                    if (data.success) {
+                        $("#refreshAnswersLink").click();
+                    } else {
+                        bootbox.alert(data.message);
+                    }
+                });
+            }
+        });
+    });
 </script>

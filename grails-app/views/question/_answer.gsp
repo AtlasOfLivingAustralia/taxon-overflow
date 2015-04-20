@@ -13,7 +13,7 @@
             <li class=" font-xsmall"><a href="#"><i class="fa fa-trash" title="Delete answer"></i></a></li>
         </ul>
         </to:ifCanEditAnswer>
-        <h4 class="heading-underlined">${answer.accepted ? 'Accepted answer' : 'Answer'}</h4>
+        <h4>${answer.accepted ? 'Accepted answer' : 'Answer'}</h4>
     </div>
     <div class="panel-body">
         <div class="row">
@@ -53,8 +53,13 @@
             <g:set var="isDownVote" value="${userVote?.voteValue && userVote?.voteValue < 0}"/>
             <a class="btn btn-default thumbs ${isDownVote ? 'active' : ''}" href="${g.createLink(controller: 'webService', action: 'castVoteOnAnswer', params: [id: answer.id, dir: isDownVote ? 0 : -1, userId: to.currentUserId()])}">
                 <i class="fa ${isDownVote ? 'fa-thumbs-down' : 'fa-thumbs-o-down'}"></i>
-        </a>
+            </a>
         </div>
+        <to:ifCanAcceptAnswer answer="${answer}">
+            <a class="btn ${answer.accepted ? 'btn-default' : 'btn-success'} accept-answer-btn" href="${g.createLink(controller: 'webService', action: answer.accepted ? 'unacceptAnswer' : 'acceptAnswer', id: answer.id)}">
+                ${answer.accepted ? 'Unaccept' : 'Accept'} answer
+            </a>
+        </to:ifCanAcceptAnswer>
     </div>
     <g:render template="answerComments" model="[answer: answer]"/>
 </div>
