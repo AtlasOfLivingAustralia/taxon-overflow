@@ -14,6 +14,11 @@ class DialogController {
         render template: 'answerDialog', model: [question: question]
     }
 
+    def editAnswerDialog(long id) {
+        def answer = Answer.get(id)
+        render template: 'answerDialog', model: [question: answer.question, answer: answer]
+    }
+
     def addAnswerCommentDialog  (long id) {
         def answer = Answer.get(id)
         render template: 'answerCommentDialog', model: [answer: answer]

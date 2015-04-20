@@ -117,4 +117,26 @@ div.facets ul li span.label {
     color: red;
 }
 
+.answer-panel a i, .answer-comments a i {
+    color: #DA644E;
+}
+
+.answer-panel a i:hover, .answer-comments a i:hover {
+    color: #333;
+}
+
+.answer-comments {
+    background-color: white;
+}
+
+.answer-comments .comment .body{
+    margin: 0 1em;
+    padding-bottom: .5em;
+    border-bottom: 1px solid #efefef;
+}
+
+.answer-comments .comment .body div[class^='col-'] {
+    padding: 0;
+}
+
 
