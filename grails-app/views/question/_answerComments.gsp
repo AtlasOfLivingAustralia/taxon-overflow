@@ -27,25 +27,3 @@
         </g:each>
     </div>
 </g:if>
-<script>
-    $('.removeAnswerCommentButton').on('click', function(e) {
-        e.preventDefault();
-        var params = {
-            'userId': '${to.currentUserId()}',
-            'commentId': $(this).attr('comment-id')
-        };
-        var url = $(this).attr('href');
-        bootbox.confirm("Are you sure you want to delete the comment?", function(result){
-            if (result) {
-                var response = tolib.doAjaxRequest(url, params, 'DELETE');
-                response.done(function(data) {
-                    if (data.success) {
-                        $("#refreshAnswersLink").click();
-                    } else {
-                        bootbox.alert(data.message);
-                    }
-                });
-            }
-        });
-    });
-</script>
