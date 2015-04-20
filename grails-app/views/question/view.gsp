@@ -113,7 +113,7 @@
                         </div>
 
                         <div class="tab-pane ${!question.answers ? 'active' : ''}" id="commentsPane">
-                            <g:include action="questionCommentsFragment" id="${question.id}"/>
+                            <g:include action="questionComments" id="${question.id}"/>
                         </div>
                     </div>
                 </div>

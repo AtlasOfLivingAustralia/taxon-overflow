@@ -7,7 +7,7 @@
                         <div class="body">
                             <div class="col-md-10">
                                 <div class="ident-question">${comment.comment}</div>
-                                <div class="contrib-time"><prettytime:display date="${comment.dateCreated}"/> by <to:userDisplayName user="${comment.user}"/></div>
+                                <div class="contrib-time"><prettytime:display date="${comment.dateCreated}"/> by <span class="comment-author"><to:userDisplayName user="${comment.user}"/></span></div>
                             </div>
                             <div class="col-md-2">
                                 <ul class="list-inline pull-right">

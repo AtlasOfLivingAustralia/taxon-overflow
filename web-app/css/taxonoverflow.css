@@ -96,15 +96,6 @@ div.facets ul li span.label {
     margin-top: 1em;
 }
 
-.comment.question_comment {
-    border-top: 1px solid #ddd;
-    padding-top: 1em;
-}
-
-.comment.question_comment .alert {
-    padding-bottom: .5em;
-}
-
 .answer .panel-body {
     padding-top: 0;
 }
@@ -162,6 +153,10 @@ div.facets ul li span.label {
 .question-heading {
     border: none;
     background-color: white !important;
+}
+
+.comment-author {
+    color: #c44d34;
 }
 
 

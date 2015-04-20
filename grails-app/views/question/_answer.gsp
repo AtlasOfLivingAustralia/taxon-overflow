@@ -33,7 +33,7 @@
                     <g:if test="${answerProperties.description}">
                         <p class="font-xsmall">${answerProperties.description}</p>
                     </g:if>
-                    <small>Posted by <to:userDisplayName user="${answer.user}"/> <prettytime:display date="${answer.dateCreated}"/></small>
+                    <small>Posted by <span class="comment-author"><to:userDisplayName user="${answer.user}"/></span> <prettytime:display date="${answer.dateCreated}"/></small>
                 </div>
             </div>
             <div class="col-md-offset-1 col-md-3 votes">

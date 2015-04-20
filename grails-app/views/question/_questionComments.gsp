@@ -24,34 +24,31 @@
         </div>
     </g:form>
 
-    <a aa-refresh-zones="commentsZone" id="refreshCommentsLink" href="${g.createLink(controller: 'question', action: 'questionCommentsFragment', id: question.id)}" class="hidden"></a>
+    <a aa-refresh-zones="commentsZone" id="refreshCommentsLink" href="${g.createLink(controller: 'question', action: 'questionComments', id: question.id)}" class="hidden"></a>
 
     <g:if test="${!question.comments}">
         <p>No comments posted yet.</p>
     </g:if>
+    <div class="comment public_comment">
     <g:each in="${question.comments}" var="questionComment">
-    <div class="comment question_comment">
-        <div class="alert push">
+        <div class="comment-wrapper push">
             <div class="body">
-                <span class="comment-icon">
-                    <g:set var="hideCommentIcon" value="${false}"/>
-                    <to:ifCanEditComment comment="${questionComment}">
-                        <a class="btnRemoveComment" href="${g.createLink(controller: 'webService', action: 'deleteQuestionComment')}" title="Delete comment" comment-id="${questionComment.id}"><i class="fa fa-remove"></i></a>
-                        <g:set var="hideCommentIcon" value="${true}"/>
-                    </to:ifCanEditComment>
-                    <g:if test="${!hideCommentIcon}">
-                        <i class="fa fa-comment"></i>
-                    </g:if>
-                </span>
-                <div class="time"><prettytime:display date="${questionComment.dateCreated}"/></div>
-                <div class="author">
-                    by <to:userDisplayName user="${questionComment.user}" />
+                <!-- <span class="comment-icon"><i class="fa fa-comment"></i></span> -->
+                <div class="col-xs-9 margin-bottom-1">
+                    <div class="ident-question">${questionComment.comment}</div>
+                    <div class="contrib-time"><prettytime:display date="${questionComment.dateCreated}"/> by <span class="comment-author"><to:userDisplayName user="${questionComment.user}" /></span></div>
                 </div>
-                <div class="details">${questionComment.comment}</div>
+                <div class="col-md-3">
+                    <to:ifCanEditComment comment="${questionComment}">
+                    <ul class="list-inline pull-right">
+                        <li class=" font-xsmall"><a class="btnRemoveComment" href="${g.createLink(controller: 'webService', action: 'deleteQuestionComment')}" title="Delete comment" comment-id="${questionComment.id}"><i class="fa fa-trash" title="Delete comment"></a></i></li>
+                    </ul>
+                    </to:ifCanEditComment>
+                </div>
             </div>
         </div>
-    </div>
     </g:each>
+    </div>
 
     <script>
         $('#addTagForm textarea').on('keypress', function(e){

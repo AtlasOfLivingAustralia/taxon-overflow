@@ -82,9 +82,9 @@ class QuestionController {
         }
     }
 
-    def questionCommentsFragment(long id) {
+    def questionComments(long id) {
         def question = Question.get(id)
-        render(template:'questionCommentsFragment', model:[question: question, userId: authService.userId])
+        render(template:'questionComments', model:[question: question, userId: authService.userId])
     }
 
     def questionTagsFragment(long id) {
