@@ -1,5 +1,6 @@
 package au.org.ala.taxonoverflow
 
+import au.org.ala.web.CASRoles
 import groovy.xml.MarkupBuilder
 import net.sf.json.JSONObject
 import ognl.Ognl
@@ -76,6 +77,12 @@ class TaxonOverflowTagLib {
         def userDetails = authService.userDetails()
         if(userDetails) {
             out << "Logged in as " + userDetails.userDisplayName
+        }
+    }
+
+    def canShowUserSwitch = {attrs, body ->
+        if (authService.userInRole(CASRoles.ROLE_ADMIN) && grailsApplication.config.testUsers) {
+            out << body()
         }
     }
 
@@ -159,14 +166,6 @@ class TaxonOverflowTagLib {
                 out << body()
             }
         }
-    }
-
-    /**
-     * @attr title alt text
-     */
-    def spinner = { attrs, body ->
-        def url = "${createLink(uri:'/images/spinner.gif')}"
-        out << "<img src=\"${url}\" alt=\"${attrs.title ?: "Loading..."}\" />"
     }
 
     /**

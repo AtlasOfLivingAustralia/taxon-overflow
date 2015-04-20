@@ -24,7 +24,7 @@
 <div class="col-md-12">
     <h2 class="heading-medium">
         Species identification case #${question.id}
-        <g:if test="${grailsApplication.config.testUsers}">
+        <to:canShowUserSwitch>
             <ul class="nav nav-pills pull-right" id="userSwitch">
                 <li class="dropdown">
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#">
@@ -40,7 +40,7 @@
                     </ul>
                 </li>
             </ul>
-        </g:if>
+        </to:canShowUserSwitch>
     </h2>
 </div>
 
