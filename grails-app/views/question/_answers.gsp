@@ -16,7 +16,6 @@
            aa-js-after="$('#answerModalDialog').modal('show')">
             Add an identification
         </a>
-        <aa:zone id="answerDialogZone"></aa:zone>
     </div>
 
     <g:if test="${!answers || answers.size == 0}">
@@ -26,6 +25,7 @@
         <g:render template="answer" model="[answer: answer, userVotes: userVotes, answerVoteTotals: answerVoteTotals]"/>
     </g:each>
 </aa:zone>
+<aa:zone id="answerDialogZone"></aa:zone>
 <script>
     $(document).on('click', '.thumbs', function(e) {
         e.preventDefault();
