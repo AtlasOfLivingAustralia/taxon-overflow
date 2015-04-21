@@ -498,6 +498,30 @@ class WebServiceController {
         render([following : questionService.followingQuestionStatus(questionId, userId)] as JSON)
     }
 
+    def followTag(String tag, String userId) {
+        if (!userId) {
+            def user = userService.getCurrentUser()
+            userId = user.alaUserId
+        }
+        render userService.followOrUnfollowTagByUser(true, tag, userId) as JSON
+    }
+
+    def unfollowTag(String tag, String userId) {
+        if (!userId) {
+            def user = userService.getCurrentUser()
+            userId = user.alaUserId
+        }
+        render userService.followOrUnfollowTagByUser(false, tag, userId) as JSON
+    }
+
+    def getFollowedTagsForUserId(String userId) {
+        if (!userId) {
+            def user = userService.getCurrentUser()
+            userId = user.alaUserId
+        }
+        render userService.getFollowedTagsForUserId(userId) as JSON
+    }
+
     def switchUserNotifications() {
         String alaUserId = authService.userId
         if (!alaUserId) {

@@ -45,4 +45,51 @@ class UserService {
         return result
     }
 
+    /**
+     * Add/remove tags that user is following
+     *
+     * @param follow
+     * @param tagId
+     * @param alaUserId
+     * @return
+     */
+    ServiceResult<User> followOrUnfollowTagByUser(boolean follow, String tag, String alaUserId) {
+        if (!tag) {
+            return new ServiceResult<User>().fail("Tag provided with value: ${tag} is invalid")
+        }
+
+        User user =  User.findByAlaUserId(alaUserId)
+        if (!user) {
+            return new ServiceResult<User>().fail("User provided with id: ${alaUserId} is invalid")
+        }
+
+        if (follow) {
+            user.addToTags(tag)
+            user.save(flush: true)
+            return new ServiceResult<User>(success: true, messages: ["User with id: ${alaUserId} is now following tag with id: ${tag}"])
+        } else {
+            user.removeFromTags(tag)
+            user.save(flush: true)
+            return new ServiceResult<User>(success: true, messages: ["User with id: ${alaUserId} is now not following tag with id: ${tag}"])
+        }
+    }
+
+    /**
+     * Get list of tags for ALA userId
+     *
+     * @param alaUserId
+     * @return
+     */
+    ServiceResult<User> getFollowedTagsForUserId(String alaUserId) {
+        User user =  User.findByAlaUserId(alaUserId)
+        if (!user) {
+            return new ServiceResult<User>().fail("User provided with id: ${alaUserId} is invalid")
+        }
+
+        Set<String> tags = user.tags
+
+        return new ServiceResult<LinkedHashMap>(result: tags, success: true, messages: ["User with id: ${alaUserId} is following ${tags.size()} tags"])
+    }
+
+
 }

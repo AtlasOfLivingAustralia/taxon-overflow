@@ -4,8 +4,9 @@ class User {
 
     String alaUserId
     Boolean enableNotifications = true
+    SortedSet<String> tags // populated from elasticsearch TODO fix QuestionTags to be used here
 
-    static hasMany = [followedQuestions: Question]
+    static hasMany = [followedQuestions: Question, tags: String]
 
     static constraints = {
         alaUserId nullable: false
