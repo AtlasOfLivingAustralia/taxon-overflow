@@ -1,6 +1,6 @@
-<g:applyLayout name="main" >
+<g:applyLayout name="main">
   <head>
-    <r:require modules="core,taxonoverflow"/>
+    <r:require modules="core,taxonoverflow-common"/>
     <r:script disposition="head">
             var TAXON_OVERFLOW_CONF = {
                 areYouSureUrl: "${createLink(controller:"dialog", action: "areYouSureFragment")}",

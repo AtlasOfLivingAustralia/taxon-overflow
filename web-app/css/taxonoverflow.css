@@ -22,6 +22,10 @@
     vertical-align: middle;
 }
 
+.panel-default > .panel-heading {
+    border: none;
+}
+
 /* Override Bootstrap */
 
 .tag {

@@ -1,12 +1,3 @@
-<style>
-.label.tag {
-    cursor: pointer;
-}
-.popover-title, .popover-content {
-    font-size: 12px;
-    padding: 6px 9px;
-}
-</style>
 <r:script>
     /**
      * Extend BS popover to keep popover active on hover when mouse is over popover
