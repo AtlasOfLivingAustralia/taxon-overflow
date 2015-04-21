@@ -3,7 +3,7 @@
 <head>
     <meta name="layout" content="main"/>
     <title>Case #${question.id} | Community identification help | Atlas of Living Australia</title>
-    <r:require modules="taxonoverflow, viewer, flexisel, leaflet, ajaxanywhere, bootbox" />
+    <r:require modules="taxonoverflow-common, viewer, flexisel, leaflet, ajaxanywhere, bootbox" />
 </head>
 <body>
 
@@ -54,8 +54,13 @@
 
             <div class="panel-body row">
                 <div class="col-md-6">
-                    <!-- <h3 class="heading-medium">Content</h3> -->
-                    <p>Please provide an identification for this observation, or agree, disagree or comment on identifications provided by other users.</p>
+
+                    <div id="infoAlert2" class="alert alert-info alert-dismissible" role="alert">
+                        <button info-alert="infoAlert2" type="button" class="close info-alert-close-btn" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <strong>Welcome to the Species Identification page.</strong>
+                        On this page you will find information related to the topic question, including images, map information, author, date and location. As well as accepted answers and comments relating to the question topic.
+                    </div>
+
                     <div class="btn-group padding-bottom-1">
                         <a class="btn btn-default active togglePlaceholder" title="Show Image" href="#"><i class="fa fa-picture-o"></i> <span class="hidden-xs">Toggle image</span></a>
                         <a class="btn btn-default togglePlaceholder" title="Show Map" href="#"><i class="fa fa-map-marker"></i> <span class="hidden-xs">Toggle map</span></a>

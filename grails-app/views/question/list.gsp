@@ -4,64 +4,12 @@
     <meta name="layout" content="main"/>
     <title>Help identify | Atlas of Living Australia</title>
     <r:script>
-
-            var facetsFilter = {
-                tags: [],
-                types: []
-            }
-
-            $(document).ready(function() {
-
-                $(".btnDelete").click(function(e) {
-                    e.preventDefault();
-                    var questionId = $(this).closest("[questionId]").attr("questionId");
-                    if (questionId) {
-                        tolib.areYouSure({
-                            title: "Delete question", message: "Are you sure you wish to delete this question?",
-                            affirmativeAction: function() {
-                                window.location = "${createLink(action: 'delete')}/" + questionId;
-                            }
-                        })
-                    }
-                });
-
-                $("#btnQuestionSearch").click(function(e) {
-                    e.preventDefault();
-                    doSearch();
-                });
-
-                $("#txtSearch").keydown(function(e) {
-                    if (e.keyCode == 13) {
-                        doSearch();
-                    }
-                });
-
-                $("div.facets ul li span.label").on("click", function() {
-                    $(this).toggleClass('label-success');
-                    updateFacetsFilter();
-                });
-
-            });
-
-            function updateFacetsFilter() {
-                facetsFilter.tags = [];
-                facetsFilter.types = [];
-                $("#tagsFacet li span.label-success").each(function() {
-                    facetsFilter.tags.push($(this).text());
-                });
-                $("#typesFacet li span.label-success").each(function() {
-                    facetsFilter.types.push($(this).text());
-                });
-                doSearch();
-            }
-
-            function doSearch() {
-                var q = $("#txtSearch").val();
-                window.location.href = "${raw(createLink(action: 'list', params: [sort: params.sort, order: params.order, offset: 0, max: params.max]))}&q=" + encodeURIComponent(q) + "&f.tags=" + facetsFilter.tags.join(',') + "&f.types=" + facetsFilter.types.join(',');
-            }
+            var q = $("#txtSearch").val();
+            var searchUrl = "${raw(createLink(action: 'list', params: [sort: params.sort, order: params.order, offset: 0, max: params.max]))}&q=" + encodeURIComponent(q);
+            taxonoverflow.init({searchUrl: searchUrl});
 
     </r:script>
-    <r:require module="taxonoverflow"/>
+    <r:require module="taxonoverflow-list"/>
 </head>
 <body>
 <div class="row-fluid">
@@ -84,12 +32,16 @@
 <div class="row-fluid">
     <div class="col-md-12">
         <div class="panel panel-default">
+            <div class="panel-heading question-heading">
+                <h3 class="heading-underlined">Welcome to Taxonoverflow!</h3>
+            </div>
             <div class="panel-body row">
                 <div class="col-md-12">
-                    <div class="word-limit">
-                        <p class="lead">Welcome to Taxonoverflow!</p>
-                        <p>On this page you will find records contributed by others that need confirmation of what they are. Help us identify these species.  Every little bit helps.</p>
-                        <p>And most importantly, get involved, have fun and contribute to science.</p>
+                    <div id="infoAlert1" class="alert alert-info alert-dismissible" role="alert">
+                        <button info-alert="infoAlert1" type="button" class="close info-alert-close-btn" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <strong>Welcome to the Community identification help page.</strong>
+                        On this page you will find records contributed by others that need confirmation of what they are. Help us identify these species. Every little bit helps.
+                        And most importantly, get involved, have fun and contribute to science.
                     </div>
 
                     <!-- Row search -->

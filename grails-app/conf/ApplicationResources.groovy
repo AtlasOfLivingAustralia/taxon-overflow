@@ -1,8 +1,13 @@
 modules = {
 
-    taxonoverflow {
-        dependsOn('jquery')
-        resource url:'js/taxonoverflow.js'  //this is temporary
+    'taxonoverflow-list' {
+        dependsOn 'taxonoverflow-common'
+        resource url: 'js/taxonoverflow-list.js'
+    }
+
+    'taxonoverflow-common' {
+        dependsOn 'jquery', 'jquery.cookie'
+        resource url:'js/taxonoverflow-common.js'  //this is temporary
         resource url:'css/taxonoverflow.css'
     }
 
@@ -15,6 +20,11 @@ modules = {
         dependsOn 'jquery'
         resource url:'vendor/flexisel/jquery.flexisel.js'
         resource url:'vendor/flexisel/style.css'
+    }
+
+    'jquery.cookie' {
+        dependsOn 'jquery'
+        resource url: 'vendor/jquery.cookie/jquery.cookie.js'
     }
 
 }

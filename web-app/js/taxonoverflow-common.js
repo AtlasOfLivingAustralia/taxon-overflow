@@ -173,5 +173,24 @@ var tolib = {};
 
 })(tolib);
 
+$(function() {
+    if ($.cookie('taxonoverflow-alertInfo')) {
+        JSON.parse($.cookie('taxonoverflow-alertInfo')).forEach(function(id) {
+            $('#' + id).hide();
+        });
+    }
+
+
+
+    $(".info-alert-close-btn").on('click', function() {
+        if (!$.cookie('taxonoverflow-alertInfo')) {
+            $.cookie('taxonoverflow-alertInfo', JSON.stringify([]), {expires: 365 * 1, path: '/'});
+        }
+        var alertInfoList = JSON.parse($.cookie('taxonoverflow-alertInfo'));
+        alertInfoList.push($(this).attr('info-alert'));
+        $.cookie('taxonoverflow-alertInfo', JSON.stringify(alertInfoList), {expires: 365 * 1, path: '/'});
+    })
+});
+
 
 

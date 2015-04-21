@@ -1,6 +1,9 @@
 <aa:zone id="commentsZone">
-    <!-- <h3 class="heading-medium">Answers</h3> -->
-    <p>Add a comment or question below.</p>
+    <div id="infoAlert4" class="alert alert-info alert-dismissible" role="alert">
+        <button info-alert="infoAlert4" type="button" class="close info-alert-close-btn" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <strong>Add comments or questions.</strong>
+        Add comments to the existing topic question answers.
+    </div>
 
     <g:form name="addCommentForm" controller="webService" action="addQuestionComment" class="form-horizontal padding-bottom-2">
         <g:hiddenField name="userId" value="${to.currentUserId()}"/>
@@ -41,7 +44,7 @@
                 <div class="col-md-3">
                     <to:ifCanEditComment comment="${questionComment}">
                     <ul class="list-inline pull-right">
-                        <li class=" font-xsmall"><a class="btnRemoveComment" href="${g.createLink(controller: 'webService', action: 'deleteQuestionComment')}" title="Delete comment" comment-id="${questionComment.id}"><i class="fa fa-trash" title="Delete comment"></a></i></li>
+                        <li class=" font-xsmall"><a class="btnRemoveComment" href="${g.createLink(controller: 'webService', action: 'deleteQuestionComment')}" title="Delete comment" comment-id="${questionComment.id}"><i class="fa fa-trash" title="Delete comment"></i></a></li>
                     </ul>
                     </to:ifCanEditComment>
                 </div>

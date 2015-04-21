@@ -24,10 +24,10 @@
             <a href="${questionUrl}">
                 <img class="img-responsive question-thumb" src="${occurrence.imageUrls[0]}" />
             </a>
-            <g:if test="${occurrence.imageUrls.size() > 1}">
-                <br/>
-                <small>${occurrence.imageUrls.size()} images</small>
-            </g:if>
+            %{--<g:if test="${occurrence.imageUrls.size() > 1}">--}%
+                %{--<br/>--}%
+                %{--<small>${occurrence.imageUrls.size()} images</small>--}%
+            %{--</g:if>--}%
         </g:if>
     </div>
     <div class="col-md-4">
