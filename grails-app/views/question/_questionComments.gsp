@@ -1,9 +1,9 @@
+<div id="infoAlert4" class="alert alert-info alert-dismissible" role="alert">
+    <button info-alert="infoAlert4" type="button" class="close info-alert-close-btn" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+    <strong>Add comments or questions.</strong>
+    Add comments to the existing topic question answers.
+</div>
 <aa:zone id="commentsZone">
-    <div id="infoAlert4" class="alert alert-info alert-dismissible" role="alert">
-        <button info-alert="infoAlert4" type="button" class="close info-alert-close-btn" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <strong>Add comments or questions.</strong>
-        Add comments to the existing topic question answers.
-    </div>
     <to:ifUserIsLoggedIn>
         <g:form name="addCommentForm" controller="webService" action="addQuestionComment" class="form-horizontal padding-bottom-1">
             <g:hiddenField name="userId" value="${to.currentUserId()}"/>
