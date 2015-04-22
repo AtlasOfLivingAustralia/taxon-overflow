@@ -72,13 +72,8 @@
                 <div class="col-md-10">
                     <!-- <p>Tab panel content here - tab 1</p> -->
                     <div class="comment public_comment">
-                        <g:each in="${questions}" var="question" status="i">
-                        <div class="comment-wrapper push">
-                            <g:render template="questionListFragment"
-                                      model="${[question: question, imageInfo: imageInfoMap[question.occurrenceId], acceptedAnswer: acceptedAnswers[question], occurrence: occurrenceData[question.occurrenceId]]}"/>
-
-                        </div>
-                        </g:each>
+                        <g:render template="questionList"
+                                  model="${[questions: questions, imageInfoMap: imageInfoMap, acceptedAnswers: acceptedAnswers, occurrenceData: occurrenceData]}"/>
                     </div>
                 </div>
 

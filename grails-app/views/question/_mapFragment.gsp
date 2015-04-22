@@ -1,11 +1,4 @@
 <g:if test="${coordinates && coordinates.latitude && coordinates.longitude}">
-<style>
-    #map {
-        margin-top: 10px;
-        margin-bottom: 10px;
-        border-radius: 3px;
-    }
-</style>
 <div id="actual-map" class="span12"></div>
 <script>
 
