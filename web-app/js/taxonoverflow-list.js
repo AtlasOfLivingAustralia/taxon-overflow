@@ -1,51 +1,57 @@
-var taxonoverflow = {
-    facetsFilter: {},
-    searchUrl: ''
+"use strict";
 
-};
+var taxonoverflow = function() {
+    var facetsFilter = {};
+    var searchUrl = '';
 
-taxonoverflow.init = function(options) {
-    taxonoverflow.facetsFilter = {
-        tags: [],
-        types: []
+    initEventHandlers = function() {
+        $(document).on('click', "#btnQuestionSearch", function(e) {
+            e.preventDefault();
+            doSearch();
+        });
+
+        $(document).on('keydown', "#txtSearch", function(e) {
+            if (e.keyCode == 13) {
+                doSearch();
+            }
+        });
+
+        $("div.facets ul li span.label").on("click", function() {
+            $(this).toggleClass('label-success');
+            $(this).toggleClass('label-default');
+            updateFacetsFilter();
+        });
     };
 
-    taxonoverflow.searchUrl = options.searchUrl
+    updateFacetsFilter = function() {
+        facetsFilter.tags = [];
+        facetsFilter.types = [];
+        $("#tagsFacet li span.label-success").each(function() {
+            facetsFilter.tags.push($(this).text());
+        });
+        $("#typesFacet li span.label-success").each(function() {
+            facetsFilter.types.push($(this).text());
+        });
+        doSearch();
+    };
 
-    taxonoverflow.initEventHandlers();
-};
+    doSearch = function() {
+        window.location.href = searchUrl + "&f.tags=" + facetsFilter.tags.join(',') + "&f.types=" + facetsFilter.types.join(',');;
+    };
 
-taxonoverflow.initEventHandlers = function() {
-    $(document).on('click', "#btnQuestionSearch", function(e) {
-        e.preventDefault();
-        taxonoverflow.doSearch();
-    });
+    return {
+        init: function(options) {
+            facetsFilter = {
+                tags: [],
+                types: []
+            };
 
-    $(document).on('keydown', "#txtSearch", function(e) {
-        if (e.keyCode == 13) {
-            taxonoverflow.doSearch();
+            searchUrl = options.searchUrl;
+
+            initEventHandlers();
         }
-    });
+    };
+}();
 
-    $("div.facets ul li span.label").on("click", function() {
-        $(this).toggleClass('label-success');
-        $(this).toggleClass('label-default');
-        taxonoverflow.updateFacetsFilter();
-    });
-};
 
-taxonoverflow.updateFacetsFilter = function() {
-    taxonoverflow.facetsFilter.tags = [];
-    taxonoverflow.facetsFilter.types = [];
-    $("#tagsFacet li span.label-success").each(function() {
-        taxonoverflow.facetsFilter.tags.push($(this).text());
-    });
-    $("#typesFacet li span.label-success").each(function() {
-        taxonoverflow.facetsFilter.types.push($(this).text());
-    });
-    taxonoverflow.doSearch();
-};
 
-taxonoverflow.doSearch = function() {
-    window.location.href = taxonoverflow.searchUrl + "&f.tags=" + taxonoverflow.facetsFilter.tags.join(',') + "&f.types=" + taxonoverflow.facetsFilter.types.join(',');;
-};

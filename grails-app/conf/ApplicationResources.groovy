@@ -1,5 +1,10 @@
 modules = {
 
+    'taxonoverflow-view' {
+        dependsOn 'taxonoverflow-common'
+        resource url: 'js/taxonoverflow-view.js'
+    }
+
     'taxonoverflow-list' {
         dependsOn 'taxonoverflow-common'
         resource url: 'js/taxonoverflow-list.js'

@@ -3,7 +3,25 @@
 <head>
     <meta name="layout" content="main"/>
     <title>Case #${question.id} | Community identification help | Atlas of Living Australia</title>
-    <r:require modules="taxonoverflow-common, viewer, flexisel, leaflet, ajaxanywhere, bootbox" />
+    <r:script>
+        var GSP_VARS = {
+            leafletImagesDir: "${resource(plugin: 'images-client-plugin', dir: 'js/leaflet/images')}"
+        };
+
+        var images = [];
+        <g:each in="${occurrence.imageIds}" var="imageId">
+            images.push("${imageId}");
+        </g:each>
+
+        $(function() {
+            taxonoverflow.init({
+                images: images,
+                followURL: "${g.createLink(uri: '/ws/question/follow')}/${question.id}/${to.currentUserId()}",
+                unfollowURL: "${g.createLink(uri: '/ws/question/unfollow')}/${question.id}/${to.currentUserId()}"
+            });
+        });
+    </r:script>
+    <r:require modules="taxonoverflow-view, viewer, flexisel, leaflet, ajaxanywhere, bootbox" />
 </head>
 <body>
 
@@ -126,77 +144,5 @@
         </div>
     </div>
 </div>
-
-<r:script>
-        var GSP_VARS = {
-            leafletImagesDir: "${resource(plugin: 'images-client-plugin', dir: 'js/leaflet/images')}"
-        };
-
-        var images = [];
-    <g:each in="${occurrence.imageIds}" var="imageId">
-        images.push("${imageId}");
-    </g:each>
-
-    $(document).ready(function() {
-
-        $("#media-thumb-list").flexisel({
-            visibleItems: 4,
-            animationSpeed: 200,
-            autoPlay: false,
-            autoPlaySpeed: 3000,
-            pauseOnHover: true,
-            clone:false,
-            enableResponsiveBreakpoints: true,
-            responsiveBreakpoints: {
-                portrait: {
-                    changePoint:480,
-                    visibleItems: 2
-                },
-                landscape: {
-                    changePoint:640,
-                    visibleItems: 3
-                },
-                tablet: {
-                    changePoint:768,
-                    visibleItems: 4
-                }
-            }
-        });
-
-        if (images.length > 0) {
-            imgvwr.viewImage($("#imageViewer"), images[0], {})
-        }
-
-        $(document).on('click', '#followQuestionButton', function() {
-            $(this).find('i').removeClass('fa-star fa-star-o').addClass('fa-cog fa-spin')
-            var followURL = "${g.createLink(uri: '/ws/question/follow')}/${question.id}/${to.currentUserId()}";
-            var unfollowURL = "${g.createLink(uri: '/ws/question/unfollow')}/${question.id}/${to.currentUserId()}";
-
-            $.ajax({
-                url: $(this).hasClass('active') ? unfollowURL : followURL,
-                dataType: "json",
-                success: function(data) {
-                    $('#refreshFollowingZoneLink').click();
-                }
-            });
-        });
-
-        $(".togglePlaceholder").on("click", function() {
-            if (!$(this).hasClass("active")) {
-                $(".togglePlaceholder").each(function() {
-                    $(this).toggleClass("active");
-                });
-                $(".placeholder").each(function() {
-                    $(this).toggleClass("hidden");
-                });
-            }
-
-            // This is needed to refresh the map when it is actually shown so it fits the available size
-            if(!$("#map").hasClass("hidden")) {
-                map.invalidateSize();
-            }
-        });
-    });
-</r:script>
 </body>
 </html>

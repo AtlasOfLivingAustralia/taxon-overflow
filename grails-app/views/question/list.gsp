@@ -4,10 +4,11 @@
     <meta name="layout" content="main"/>
     <title>Help identify | Atlas of Living Australia</title>
     <r:script>
+        $(function() {
             var q = $("#txtSearch").val();
             var searchUrl = "${raw(createLink(action: 'list', params: [sort: params.sort, order: params.order, offset: 0, max: params.max]))}&q=" + encodeURIComponent(q);
             taxonoverflow.init({searchUrl: searchUrl});
-
+        });
     </r:script>
     <r:require module="taxonoverflow-list"/>
 </head>
