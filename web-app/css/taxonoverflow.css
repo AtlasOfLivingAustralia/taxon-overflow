@@ -92,6 +92,10 @@ div.facets ul li span.label {
     top: -5px;
 }
 
+#commentsPane {
+    margin-top: 1em;
+}
+
 .public_comment button.close {
     text-align: left;
 }

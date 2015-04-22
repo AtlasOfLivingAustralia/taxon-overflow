@@ -5,7 +5,7 @@
         Add comments to the existing topic question answers.
     </div>
     <to:ifUserIsLoggedIn>
-        <g:form name="addCommentForm" controller="webService" action="addQuestionComment" class="form-horizontal padding-bottom-2">
+        <g:form name="addCommentForm" controller="webService" action="addQuestionComment" class="form-horizontal padding-bottom-1">
             <g:hiddenField name="userId" value="${to.currentUserId()}"/>
             <g:hiddenField name="questionId" value="${question.id}"/>
 
