@@ -4,7 +4,7 @@ var taxonoverflow = function() {
     var facetsFilter = {};
     var searchUrl = '';
 
-    initEventHandlers = function() {
+    var initEventHandlers = function() {
         $(document).on('click', "#btnQuestionSearch", function(e) {
             e.preventDefault();
             doSearch();
@@ -23,7 +23,7 @@ var taxonoverflow = function() {
         });
     };
 
-    updateFacetsFilter = function() {
+    var updateFacetsFilter = function() {
         facetsFilter.tags = [];
         facetsFilter.types = [];
         $("#tagsFacet li span.label-success").each(function() {
@@ -35,7 +35,7 @@ var taxonoverflow = function() {
         doSearch();
     };
 
-    doSearch = function() {
+    var doSearch = function() {
         window.location.href = searchUrl + "&f.tags=" + facetsFilter.tags.join(',') + "&f.types=" + facetsFilter.types.join(',');;
     };
 
