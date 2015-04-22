@@ -109,7 +109,7 @@ class TaxonOverflowTagLib {
     }
 
 
-    def ifUserIsLoggedIn = {body ->
+    def ifUserIsLoggedIn = {attrs, body ->
         if (userService.currentUser) {
             out << body()
         }
