@@ -6,6 +6,6 @@
   </head>
   <body class="content">
     <content tag="pageTitle">Dashboard</content>
-    <content tag="adminButtonBar" />
+    <content tag="adminButtonBar">Dashboard</content>
   </body>
 </html>

@@ -1,40 +1,42 @@
 <g:applyLayout name="main">
-  <head>
-    <r:require modules="core,taxonoverflow-common"/>
-    <r:script disposition="head">
-            var TAXON_OVERFLOW_CONF = {
-                areYouSureUrl: "${createLink(controller:"dialog", action: "areYouSureFragment")}",
-                pleaseWaitUrl: "${createLink(controller:'dialog', action:'pleaseWaitFragment')}"
-            };
-    </r:script>
-    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
-  </head>
-  <body>
-    <div>
-      <div class="row">
-        <div class="span12">
-          <ul class="breadcrumb">
-            <li><g:link uri="/">Home</g:link> <span class="divider"><i class="fa fa-arrow-right"></i></span><g:link controller="admin" action="index">Administration</g:link><span class="divider"><i class="fa fa-arrow-right"></i></span><g:pageProperty name="page.pageTitle"/></li>
-            <li class="active"><g:pageProperty name="page.adminButtonBar"/></li>
-          </ul>
-        </div>
-      </div>
+    <head>
+        <r:require modules="taxonoverflow-common"/>
+    </head>
 
-      <div class="row-fluid">
-        <div class="span3">
-          <ul class="nav nav-list nav-stacked nav-tabs">
-            <to:menuNavItem href="${createLink(controller: 'admin', action: 'dashboard')}" title="Dashboard" />
-            <to:menuNavItem href="${createLink(controller: 'admin', action: 'indexAdmin')}" title="Full text index" />
-            <to:menuNavItem href="${createLink(controller: 'admin', action: 'createQuestionFromBiocache')}" title="Create question from Biocache" />
-            <to:menuNavItem href="${createLink(controller: 'admin', action: 'createQuestionFromEcodata')}" title="Create question from Ecodata" />
-            <to:menuNavItem href="${createLink(controller: 'admin', action: 'importFromEcodata')}" title="Import all from Ecodata" />
-            <to:menuNavItem href="${createLink(controller: 'admin', action: 'previewNotifications')}" title="Preview Email Notifications" />
-          </ul>
+    <body>
+
+    <div class="row-fluid">
+        <div class="col-md-12">
+            <ul class="breadcrumb">
+                <li><a class="font-xxsmall" href="http://ala.org.au">Home</a></li>
+                <li><a class="font-xxsmall" href="${g.createLink(controller:"question", action:"list")}">Community identification help</a></li>
+                <li><a class="font-xxsmall" href="#">Administration</a></li>
+                <li class="font-xxsmall active"><g:pageProperty name="page.adminButtonBar"/></li>
+            </ul>
         </div>
-        <div class="span9">
-          <g:layoutBody/>
-        </div>
-      </div>
     </div>
-  </body>
+
+
+    <div class="row-fluid">
+        <div class="col-md-3">
+            <ul class="nav nav-list nav-stacked nav-tabs">
+                <to:menuNavItem href="${createLink(controller: 'admin', action: 'dashboard')}" title="Dashboard"/>
+                <to:menuNavItem href="${createLink(controller: 'admin', action: 'indexAdmin')}"
+                                title="Full text index"/>
+                <to:menuNavItem href="${createLink(controller: 'admin', action: 'createQuestionFromBiocache')}"
+                                title="Create question from Biocache"/>
+                <to:menuNavItem href="${createLink(controller: 'admin', action: 'createQuestionFromEcodata')}"
+                                title="Create question from Ecodata"/>
+                <to:menuNavItem href="${createLink(controller: 'admin', action: 'importFromEcodata')}"
+                                title="Import all from Ecodata"/>
+                <to:menuNavItem href="${createLink(controller: 'admin', action: 'previewNotifications')}"
+                                title="Preview Email Notifications"/>
+            </ul>
+        </div>
+
+        <div class="col-md-9">
+            <g:layoutBody/>
+        </div>
+    </div>
+    </body>
 </g:applyLayout>
