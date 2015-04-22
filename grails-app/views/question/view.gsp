@@ -21,12 +21,12 @@
             });
         });
     </r:script>
-    <r:require modules="taxonoverflow-view, viewer, flexisel, leaflet, ajaxanywhere, bootbox" />
+    <r:require modules="taxonoverflow-view" />
 </head>
 <body>
 
 <div class="row-fluid">
-    <div class="col-md-9">
+    <div class="col-sm-9">
         <ol class="breadcrumb">
             <li><a class="font-xxsmall" href="http://ala.org.au">Home</a></li>
             <li><a class="font-xxsmall" href="${g.createLink(controller:"question", action:"list")}">Community identification help</a></li>
@@ -34,32 +34,34 @@
         </ol>
     </div>
 
-    <div class="col-md-3 text-right">
+    <div class="col-sm-3 activity-summary">
         <a class="btn btn-primary" href="${g.createLink(uri: '/user')}">Your activity summary</a>
     </div>
 </div>
 
-<div class="col-md-12">
-    <h2 class="heading-medium">
-        Species identification case #${question.id}
-        <to:canShowUserSwitch>
-            <ul class="nav nav-pills pull-right" id="userSwitch">
-                <li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                        Logged in: ${to.currentUserDisplayName()}, Switch users
-                        <b class="caret"></b>
-                    </a>
-                    <ul class="dropdown-menu">
-                        <g:each in="${grailsApplication.config.testUsers.split(',')}" var="testUser">
-                            <li>
-                                <to:switchUserLink email="${testUser}"/>
-                            </li>
-                        </g:each>
-                    </ul>
-                </li>
-            </ul>
-        </to:canShowUserSwitch>
-    </h2>
+<div class="row-fluid">
+    <div class="col-md-7">
+        <h2 class="heading-medium">Species identification case #${question.id}</h2>
+    </div>
+    <to:canShowUserSwitch>
+    <div class="col-md-5">
+        <ul class="nav nav-pills pull-right" id="userSwitch">
+            <li class="dropdown">
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                    Logged in: ${to.currentUserDisplayName()}, Switch users
+                    <b class="caret"></b>
+                </a>
+                <ul class="dropdown-menu">
+                    <g:each in="${grailsApplication.config.testUsers.split(',')}" var="testUser">
+                        <li>
+                            <to:switchUserLink email="${testUser}"/>
+                        </li>
+                    </g:each>
+                </ul>
+            </li>
+        </ul>
+    </div>
+    </to:canShowUserSwitch>
 </div>
 
 <!-- Panel content -->
@@ -71,7 +73,7 @@
             </div>
 
             <div class="panel-body row">
-                <div class="col-md-6">
+                <div class="col-xs-12 col-sm-12 col-md-6">
 
                     <div id="infoAlert2" class="alert alert-info alert-dismissible" role="alert">
                         <button info-alert="infoAlert2" type="button" class="close info-alert-close-btn" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -121,7 +123,7 @@
                     <g:render template="questionDetails" model="${[question:question, occurrence: occurrence]}" />
 
                 </div>
-                <div class="col-xs-12 col-sm-7 col-md-6">
+                <div class="col-xs-12 col-sm-12 col-md-6">
 
                     <!-- Tab navigation -->
                     <ul class="nav nav-tabs">

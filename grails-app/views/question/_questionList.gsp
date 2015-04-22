@@ -5,7 +5,7 @@
     <g:set var="occurrence" value="${occurrenceData[question.occurrenceId]}" />
     <div class="comment-wrapper push">
         <div class="body" questionId="${question.id}">
-            <div class="col-md-6">
+            <div class="col-sm-6">
                 <div class="contrib-question">
                     <a href="${questionUrl}">
                         ${question.questionType.label} - #${question.id} <span class="question-answer-count ${acceptedAnswer ? 'has-accepted-answer' : ''}">${answerCount}</span>
@@ -24,7 +24,7 @@
                     </p>
                 </div>
             </div>
-            <div class="col-md-2">
+            <div class="col-sm-2">
                 <g:if test="${occurrence.imageUrls}">
                     <a href="${questionUrl}">
                         <img class="img-responsive question-thumb" src="${occurrence.imageUrls[0]}" />
@@ -35,7 +35,7 @@
                     %{--</g:if>--}%
                 </g:if>
             </div>
-            <div class="col-md-4">
+            <div class="col-sm-4">
 
                 <div class="contrib-stats">
                     <div class="cp">

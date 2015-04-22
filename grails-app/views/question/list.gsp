@@ -13,21 +13,24 @@
     <r:require module="taxonoverflow-list"/>
 </head>
 <body>
+
 <div class="row-fluid">
-    <div class="col-md-9">
+    <div class="col-sm-9">
         <ul class="breadcrumb">
             <li><a class="font-xxsmall" href="http://ala.org.au">Home</a> <span class="divider"></span></li>
             <li class="active font-xxsmall">Community identification help</li>
         </ul>
     </div>
 
-    <div class="col-md-3 text-right">
+    <div class="col-sm-3 activity-summary">
         <a class="btn btn-primary" href="${g.createLink(uri: '/user')}">Your activity summary</a>
     </div>
 </div>
 
-<div class="col-md-12">
-    <h2 class="heading-medium">Taxonoverflow: Community identification help</h2>
+<div class="row-fluid">
+    <div class="col-md-12">
+        <h2 class="heading-medium">Taxonoverflow: Community identification help</h2>
+    </div>
 </div>
 
 <div class="row-fluid">
@@ -59,12 +62,12 @@
                         </div>
                     </div><!-- End row control-group -->
 
-                    <div class="btn-group padding-bottom-1">
+                    <div class="btn-group padding-bottom-1 sorting-buttons">
                         <g:set var="sortingValues" value="${[['dateCreated', 'date'], ['viewCount', 'views'],['answerCount', 'answers']]}"/>
                         <g:each in="${sortingValues}" var="sortingValue">
                             <a class="btn btn-default ${params.sort == sortingValue[0] ? 'active' : ''}"
                                href="?sort=${sortingValue[0]}&order=${params.sort == sortingValue[0] && params.order == 'desc' ? 'asc' : 'desc'}&offset=0&q=${params.q}&f.tags=${params.f?.tags}&f.types=${params.f?.types}">
-                                <i class="fa ${params.sort == sortingValue[0] && params.order == 'asc' ? 'fa-chevron-up' : 'fa-chevron-down'}"></i> <span class="hidden-xs">Sort by ${sortingValue[1]}</span>
+                                <i class="fa ${params.sort == sortingValue[0] && params.order == 'asc' ? 'fa-chevron-up' : 'fa-chevron-down'}"></i> <span>Sort by ${sortingValue[1]}</span>
                             </a>
                         </g:each>
                     </div>

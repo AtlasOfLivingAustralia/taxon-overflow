@@ -26,10 +26,18 @@
     border: none;
 }
 
+.heading-medium {
+    margin-top: 0 !important;
+}
+
 /* Override Bootstrap */
 
 .tag {
     text-transform: uppercase;
+}
+
+.activity-summary {
+    text-align: right;
 }
 
 #tagsDiv {
@@ -60,6 +68,10 @@ div.facets ul li span.label {
 
 #followQuestion i.fa-star {
     color: #e3cf7a;
+}
+
+.question-thumb {
+    width: 150px;
 }
 
 /** Question Detail **/
@@ -124,10 +136,14 @@ div.facets ul li span.label {
     color: #333;
 }
 
-.answer-comments .comment .body{
+.answer-comments .row .comment .body{
     margin: 0 1em;
     padding-bottom: .5em;
-    border-bottom: 1px solid #efefef;
+    border-top: 1px solid #efefef;
+}
+
+.answer-comments .row:first-child .comment .body{
+    border-top: none;
 }
 
 .answer-comments .comment .body div[class^='col-'] {
@@ -165,6 +181,42 @@ div.facets ul li span.label {
 
 .comment-author {
     color: #c44d34;
+}
+
+/** Media Queries **/
+
+@media only screen and (min-width : 768px) and (max-width: 1200px) {
+    .votes > .contrib-number {
+        margin-top: 0;
+    }
+}
+
+@media only screen and (min-width : 768px) and (max-width: 992px) {
+    .heading-medium {
+        margin-top: 2em !important;
+    }
+}
+
+@media only screen and (max-width : 768px) {
+    .heading-medium {
+        margin-top: 1em !important;
+    }
+}
+
+@media only screen and (max-width: 992px) {
+    .facets {
+        margin: 1.5em
+    }
+
+    .activity-summary {
+        text-align: left;
+    }
+}
+
+@media only screen and (max-width: 468px) {
+    .sorting-buttons a > span {
+        display: none;
+    }
 }
 
 

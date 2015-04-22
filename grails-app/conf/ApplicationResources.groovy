@@ -1,7 +1,7 @@
 modules = {
 
     'taxonoverflow-view' {
-        dependsOn 'taxonoverflow-common'
+        dependsOn 'viewer', 'flexisel', 'leaflet', 'ajaxanywhere', 'bootbox', 'taxonoverflow-common'
         resource url: 'js/taxonoverflow-view.js'
     }
 

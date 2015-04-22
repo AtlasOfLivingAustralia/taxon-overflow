@@ -9,7 +9,7 @@
         <a class="btn btn-default" href="${g.createLink(controller: 'dialog', action: 'addQuestionTagDialog', id: question.id)}"
            aa-refresh-zones="addTagDialogZone" id="btnSaveTag"
            aa-js-after="$('#addTagModalDialog').modal('show')">
-            <i class="fa fa-tag"></i> Add Tag</a>
+            <i class="fa fa-tag"></i><span class="hidden-xs"> Add Tag</span></a>
         <aa:zone id="addTagDialogZone"></aa:zone>
     </to:ifCanEditQuestion>
 </div>
