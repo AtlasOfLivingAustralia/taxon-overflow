@@ -43,6 +43,7 @@
         </div>
     </div>
     <div class="panel-footer">
+        <to:ifUserIsLoggedIn>
         <a class="btn btn-primary" href="${g.createLink(controller: 'dialog', action: 'addAnswerCommentDialog', id: answer.id)}"
            aa-refresh-zones="answerCommentDialogZone"
            aa-js-after="$('#answerCommentModalDialog').modal('show')">
@@ -59,6 +60,7 @@
                 <i class="fa ${isDownVote ? 'fa-thumbs-down' : 'fa-thumbs-o-down'}"></i>
             </a>
         </div>
+        </to:ifUserIsLoggedIn>
         <to:ifCanAcceptAnswer answer="${answer}">
             <a class="btn ${answer.accepted ? 'btn-default' : 'btn-success'} accept-answer-btn" href="${g.createLink(controller: 'webService', action: answer.accepted ? 'unacceptAnswer' : 'acceptAnswer', id: answer.id)}">
                 ${answer.accepted ? 'Unaccept' : 'Accept'} answer

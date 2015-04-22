@@ -1,3 +1,4 @@
+<to:ifUserIsLoggedIn>
 <div class="btn-group padding-bottom-1 pull-right">
     <a class="btn btn-default ${isFollowing ? 'active' : ''}" title="${isFollowing ? 'Click to unfollow' : 'Click to follow'}" href="#" id="followQuestionButton">
         <i class="fa ${isFollowing ? 'fa-star' : 'fa-star-o'}"></i>
@@ -13,3 +14,4 @@
     </to:ifCanEditQuestion>
 </div>
 <a aa-refresh-zones="followingZone" href="${createLink(controller:'question', action:'followingFragment', id: question.id)}" id="refreshFollowingZoneLink" style="display: none;">Refresh</a>
+</to:ifUserIsLoggedIn>

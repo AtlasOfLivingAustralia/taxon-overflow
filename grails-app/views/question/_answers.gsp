@@ -9,6 +9,7 @@
         </div>
         <!-- End alert page information -->
     </div>
+    <to:ifUserIsLoggedIn>
     <div class="btn-group padding-bottom-1">
         <!-- <p>Help the ALA by adding an answer or comments to existing answers.</p> -->
         <a class="btn btn-primary btn-lg" href="${g.createLink(controller: 'dialog', action: 'addAnswerDialog', id: question.id)}"
@@ -17,6 +18,7 @@
             Add an identification
         </a>
     </div>
+    </to:ifUserIsLoggedIn>
 
     <g:if test="${!answers || answers.size == 0}">
         <p>No answers posted yet.</p>

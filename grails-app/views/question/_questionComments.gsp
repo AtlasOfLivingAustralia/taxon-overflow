@@ -4,31 +4,31 @@
         <strong>Add comments or questions.</strong>
         Add comments to the existing topic question answers.
     </div>
+    <to:ifUserIsLoggedIn>
+        <g:form name="addCommentForm" controller="webService" action="addQuestionComment" class="form-horizontal padding-bottom-2">
+            <g:hiddenField name="userId" value="${to.currentUserId()}"/>
+            <g:hiddenField name="questionId" value="${question.id}"/>
 
-    <g:form name="addCommentForm" controller="webService" action="addQuestionComment" class="form-horizontal padding-bottom-2">
-        <g:hiddenField name="userId" value="${to.currentUserId()}"/>
-        <g:hiddenField name="questionId" value="${question.id}"/>
-
-        <div class="alert alert-danger alert-dismissable" role="alert" style="display: none;">
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            <span class="alertText"></span>
-        </div>
-
-        <div class="form-group">
-            <label for="comment" class="col-sm-3 control-label">Comments or questions</label>
-            <div class="col-sm-8">
-                <g:textArea name="comment" class="form-control" rows="4" placeholder="Enter your comments or questions"></g:textArea>
+            <div class="alert alert-danger alert-dismissable" role="alert" style="display: none;">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <span class="alertText"></span>
             </div>
-        </div>
-        <div class="form-group">
-            <div class="col-sm-offset-3 col-sm-8">
-                <button type="button" class="btn btn-primary btn-lg" id="submitCommentButton"><i class="fa fa-gear fa-spin hidden fa-2x"></i> Submit comment</button>
+
+            <div class="form-group">
+                <label for="comment" class="col-sm-3 control-label">Comments or questions</label>
+                <div class="col-sm-8">
+                    <g:textArea name="comment" class="form-control" rows="4" placeholder="Enter your comments or questions"></g:textArea>
+                </div>
             </div>
-        </div>
-    </g:form>
+            <div class="form-group">
+                <div class="col-sm-offset-3 col-sm-8">
+                    <button type="button" class="btn btn-primary btn-lg" id="submitCommentButton"><i class="fa fa-gear fa-spin hidden fa-2x"></i> Submit comment</button>
+                </div>
+            </div>
+        </g:form>
 
-    <a aa-refresh-zones="commentsZone" id="refreshCommentsLink" href="${g.createLink(controller: 'question', action: 'questionComments', id: question.id)}" class="hidden"></a>
-
+        <a aa-refresh-zones="commentsZone" id="refreshCommentsLink" href="${g.createLink(controller: 'question', action: 'questionComments', id: question.id)}" class="hidden"></a>
+    </to:ifUserIsLoggedIn>
     <g:if test="${!question.comments}">
         <p>No comments posted yet.</p>
     </g:if>
