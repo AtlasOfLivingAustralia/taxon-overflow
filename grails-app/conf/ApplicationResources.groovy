@@ -1,7 +1,7 @@
 modules = {
 
     'taxonoverflow-view' {
-        dependsOn 'viewer', 'flexisel', 'leaflet', 'ajaxanywhere', 'bootbox', 'taxonoverflow-common'
+        dependsOn 'viewer', 'flexisel', 'leaflet', 'ajaxanywhere', 'taxonoverflow-common'
         resource url: 'js/taxonoverflow-view.js'
     }
 
@@ -11,7 +11,7 @@ modules = {
     }
 
     'taxonoverflow-common' {
-        dependsOn 'jquery', 'jquery.cookie'
+        dependsOn 'jquery', 'jquery.cookie', 'bootbox'
         resource url:'js/taxonoverflow-common.js'  //this is temporary
         resource url:'css/taxonoverflow.css'
     }

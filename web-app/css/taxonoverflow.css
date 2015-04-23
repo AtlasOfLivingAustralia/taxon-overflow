@@ -30,6 +30,11 @@
     margin-top: 0 !important;
 }
 
+.nav-pills.nav-stacked li a:hover {
+    background-color: #DA644E;
+    color: white;
+}
+
 /* Override Bootstrap */
 
 .tag {
@@ -51,7 +56,8 @@ div.facets ul {
 }
 
 div.facets li {
-    font-size: .8em;
+    font-size: 1em;
+    margin-bottom: .5em;
 }
 
 div.facets ul li span.label {

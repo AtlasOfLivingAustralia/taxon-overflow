@@ -7,9 +7,11 @@
   </style>
 </head>
 <body class="content">
-<content tag="pageTitle">Import from Ecodata</content>
-<content tag="adminButtonBar" />
-<button type="button" class="btn" id="btnImportEcodata">Import from ecodata questions</button>
+<content tag="menuItemId">import-ecodata</content>
+
+<h2 class="heading-medium">Import all questions from ecodata records)</h2>
+
+<button type="button" class="btn btn-primary" id="btnImportEcodata">Import</button>
 </body>
 <r:script>
 

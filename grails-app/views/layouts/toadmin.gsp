@@ -10,8 +10,7 @@
             <ul class="breadcrumb">
                 <li><a class="font-xxsmall" href="http://ala.org.au">Home</a></li>
                 <li><a class="font-xxsmall" href="${g.createLink(controller:"question", action:"list")}">Community identification help</a></li>
-                <li><a class="font-xxsmall" href="#">Administration</a></li>
-                <li class="font-xxsmall active"><g:pageProperty name="page.adminButtonBar"/></li>
+                <li><span class="font-xxsmall">Administration</span></li>
             </ul>
         </div>
     </div>
@@ -19,18 +18,25 @@
 
     <div class="row-fluid">
         <div class="col-md-3">
-            <ul class="nav nav-list nav-stacked nav-tabs">
-                <to:menuNavItem href="${createLink(controller: 'admin', action: 'dashboard')}" title="Dashboard"/>
-                <to:menuNavItem href="${createLink(controller: 'admin', action: 'indexAdmin')}"
-                                title="Full text index"/>
-                <to:menuNavItem href="${createLink(controller: 'admin', action: 'createQuestionFromBiocache')}"
-                                title="Create question from Biocache"/>
-                <to:menuNavItem href="${createLink(controller: 'admin', action: 'createQuestionFromEcodata')}"
-                                title="Create question from Ecodata"/>
-                <to:menuNavItem href="${createLink(controller: 'admin', action: 'importFromEcodata')}"
-                                title="Import all from Ecodata"/>
-                <to:menuNavItem href="${createLink(controller: 'admin', action: 'previewNotifications')}"
-                                title="Preview Email Notifications"/>
+            <ul class="nav nav-pills nav-stacked">
+                <li class="${pageProperty(name: 'page.menuItemId')?.toLowerCase() == 'dashboard' ? 'active' : ''}">
+                    <a href="${createLink(controller: 'admin', action: 'dashboard')}">Dashboard</a>
+                </li>
+                <li class="${pageProperty(name: 'page.menuItemId')?.toLowerCase() == 're-index' ? 'active' : ''}">
+                    <a href="${createLink(controller: 'admin', action: 'indexAdmin')}">Reindex questions</a>
+                </li>
+                <li class="${pageProperty(name: 'page.menuItemId')?.toLowerCase() == 'question-biocache' ? 'active' : ''}">
+                    <a href="${createLink(controller: 'admin', action: 'createQuestionFromBiocache')}">Create question from Biocache</a>
+                </li>
+                <li class="${pageProperty(name: 'page.menuItemId')?.toLowerCase() == 'question-ecodata' ? 'active' : ''}">
+                    <a href="${createLink(controller: 'admin', action: 'createQuestionFromEcodata')}">Create question from Ecodata</a>
+                </li>
+                <li class="${pageProperty(name: 'page.menuItemId')?.toLowerCase() == 'import-ecodata' ? 'active' : ''}">
+                    <a href="${createLink(controller: 'admin', action: 'importFromEcodata')}">Import all from Ecodata</a>
+                </li>
+                <li class="${pageProperty(name: 'page.menuItemId')?.toLowerCase() == 'preview-notifications' ? 'active' : ''}">
+                    <a href="${createLink(controller: 'admin', action: 'previewNotifications')}">Preview Email Notifications</a>
+                </li>
             </ul>
         </div>
 

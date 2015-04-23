@@ -2,10 +2,10 @@
 <html>
   <head>
     <meta name="layout" content="toadmin"/>
-    <title>Admin Dashboard | Taxonoverflow | Atlas of Living Australia</title>
+    <title>Dashboard</title>
   </head>
   <body class="content">
-    <content tag="pageTitle">Dashboard</content>
-    <content tag="adminButtonBar">Dashboard</content>
+    <content tag="menuItemId">dashboard</content>
+    <h2 class="heading-medium">Dashboard</h2>
   </body>
 </html>

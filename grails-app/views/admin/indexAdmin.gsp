@@ -2,27 +2,33 @@
 <html>
 <head>
     <meta name="layout" content="toadmin"/>
-    <title>Admin Dashboard</title>
-    <style type="text/css" media="screen">
-    </style>
+    <title>Admin Dashboard - Reindex question</title>
 </head>
-
 <body class="content">
-<content tag="pageTitle">Reindex</content>
-<content tag="adminButtonBar"/>
-<button type="button" class="btn" id="btnReindexAll">Reindex all questions</button>
+<content tag="menuItemId">re-index</content>
+<h2 class="heading-medium">Rebuild Full-Text index</h2>
+<p>Click the button bellow to initiate the process. It might take a while to complete it.</p>
+<button type="button" class="btn btn-primary" id="btnReindexAll">Reindex all questions</button>
+<br/>
+<br/>
+<div class="alert alert-success" role="alert" style="display: none;"></div>
+
 </body>
 <r:script>
 
-    $(document).ready(function(e) {
+    $(function() {
 
         $("#btnReindexAll").click(function(e) {
-          e.preventDefault();
-          $.ajax("${createLink(controller: 'admin', action: 'ajaxReindexAll')}").done(function(results) {
-            if (results.success) {
-                alert("" + results.questionCount + " questions scheduled");
-            }
-          });
+            e.preventDefault();
+            bootbox.confirm("Are you sure you want to rebuild the index?", function(result){
+            if (result) {
+                $.ajax("${createLink(controller: 'admin', action: 'ajaxReindexAll')}").done(function(results) {
+                      if (results.success) {
+                          $(".alert-success").text(results.questionCount + " questions scheduled");
+                          $(".alert-success").show();
+                      }
+                });
+            }});
         });
 
     });

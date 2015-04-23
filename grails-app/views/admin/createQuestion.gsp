@@ -1,54 +1,49 @@
 <!DOCTYPE html>
 <html>
-  <head>
+<head>
     <meta name="layout" content="toadmin"/>
     <title>Create question | Atlas of Living Australia</title>
-  </head>
-  <body class="content">
-    <content tag="pageTitle">Create question</content>
-    <h1>Debug create ${source}  question form (not intended for public use)</h1>
+</head>
 
-    <div class="alert alert-error" style="display: none" id="errorMessageDiv"></div>
+<body class="content">
+<content tag="menuItemId">question-${source}</content>
 
-    <div class="form-horizontal">
+<h2 class="heading-medium">Debug create ${source} question form (not intended for public use)</h2>
 
-      <div class="control-group">
+<div class="alert alert-error" style="display: none" id="errorMessageDiv"></div>
+
+<form class="col-md-9">
+
+    <div class="form-group">
         <label class="control-label">Occurrence Id</label>
-        <div class="controls">
-          <g:textField name="occurrenceId" class="input-xlarge" />
-        </div>
-      </div>
-
-      <div class="control-group">
-        <label class="control-label">Question type</label>
-        <div class="controls">
-          <g:select name="questionType" from="${au.org.ala.taxonoverflow.QuestionType.values()}" optionValue="label"/>
-        </div>
-      </div>
-
-      <div class="control-group">
-        <label class="control-label">Tags (comma separated)</label>
-        <div class="controls">
-          <g:textField name="tags" class="input-xxlarge" />
-        </div>
-      </div>
-
-        <g:hiddenField name="source" value="${source}"/>
-
-      <div class="control-group">
-        <button type="button" class="btn" id="btnCancel">Cancel</button>
-        <button type="button" class="btn btn-primary" id="btnSubmit">Create question</button>
-      </div>
+        <g:textField name="occurrenceId" class="form-control"/>
     </div>
-  </body>
 
-  <r:script>
+    <div class="form-group">
+        <label class="control-label">Question type</label>
+        <g:select name="questionType" class="form-control" from="${au.org.ala.taxonoverflow.QuestionType.values()}" optionValue="label"/>
+    </div>
+
+    <div class="form-group">
+        <label class="control-label">Tags (comma separated)</label>
+        <g:textField name="tags" class="form-control"/>
+    </div>
+
+    <g:hiddenField name="source" value="${source}"/>
+
+    <div class="control-group">
+        <button type="button" class="btn btn-primary" id="btnSubmit">Create question</button>
+    </div>
+</form>
+</body>
+
+<r:script>
 
     $(document).ready(function() {
 
       $("#btnCancel").click(function(e) {
         e.preventDefault();
-        location.href = "${createLink(controller:'question', action:'list')}";
+        location.href = "${createLink(controller: 'question', action: 'list')}";
       });
 
       $("#btnSubmit").click(function(e) {
@@ -58,16 +53,16 @@
         hideError();
 
         var question = {
-            userId: "<to:currentUserId />",
+            userId: "<to:currentUserId/>",
             occurrenceId: $("#occurrenceId").val(),
             questionType: $("#questionType").val(),
             tags: $("#tags").val(),
             source: $("#source").val()
         };
 
-        tolib.doJsonPost("${createLink(controller:'webService', action:'createQuestionFromExternal')}", question).done(function(response) {
+        tolib.doJsonPost("${createLink(controller: 'webService', action: 'createQuestionFromExternal')}", question).done(function(response) {
             if (response.success) {
-                location.href = "${createLink(controller:'question', action:'list')}";
+                location.href = "${createLink(controller: 'question', action: 'list')}";
             } else {
                 displayError(response.message);
             }
@@ -101,6 +96,6 @@
         div.css('display', 'none');
     }
 
-  </r:script>
+</r:script>
 
 </html>

@@ -5,7 +5,8 @@
     <title>Preview Email Notifications | Atlas of Living Australia</title>
 </head>
 <body class="content">
-<content tag="pageTitle">Preview Email Notifications</content>
+<content tag="menuItemId">preview-notifications</content>
+
 <ul class="nav nav-tabs" id="notifications">
     <li class="active"><a href="#comments" data-toggle="tab">Comments</a></li>
     <li><a href="#answers" data-toggle="tab">Answers</a></li>
@@ -14,14 +15,15 @@
 
 <div class="tab-content">
     <div class="tab-pane active" id="comments">
+        <br/>
         <p>Last 5 comments:</p>
-        <table class="table">
+        <table class="table table-striped table-hover">
             <thead>
             <tr>
                 <th>Comment Type</th>
                 <th>Question/Answer ID</th>
                 <th>Comment</th>
-                <th>Action</th>
+                <th style="width:10%;">Action</th>
             </tr>
             </thead>
             <tbody>
@@ -37,7 +39,7 @@
                         <i>${comment.comment.length() > 50 ? "\"${comment.comment.substring(0, 49)}...\"" : "\"${comment.comment}\""}</i>
                     </td>
                     <td>
-                        <a href="${g.createLink(action: 'previewQuestionCommentNotification', id: comment.id, params: [type: comment instanceof au.org.ala.taxonoverflow.QuestionComment ? '1' : '2'])}" target="_blank" class="btn btn-ala btn-small"> Preview</a>
+                        <a class="btn btn-primary btn-sm" href="${g.createLink(action: 'previewQuestionCommentNotification', id: comment.id, params: [type: comment instanceof au.org.ala.taxonoverflow.QuestionComment ? '1' : '2'])}" target="_blank" class="btn btn-ala btn-small"> Preview</a>
                     </td>
                 </tr>
             </g:each>
@@ -46,14 +48,15 @@
 
     </div>
     <div class="tab-pane" id="answers">
+        <br/>
         <p>Last 5 answers:</p>
-        <table class="table">
+        <table class="table table-striped table-hover">
             <thead>
             <tr>
                 <th>Answer ID</th>
                 <th>Scientific Name</th>
                 <th>Common Name/s</th>
-                <th>Action</th>
+                <th style="width:10%;">Action</th>
             </tr>
             </thead>
             <tbody>
@@ -64,7 +67,7 @@
                         <td>${answerProperties?.scientificName}</td>
                         <td>${answerProperties?.commonName}</td>
                         <td>
-                            <a href="${g.createLink(action: 'previewAnswerNotification', id: answer.id)}" target="_blank" class="btn btn-ala btn-small"> Preview</a>
+                            <a class="btn btn-primary btn-sm" href="${g.createLink(action: 'previewAnswerNotification', id: answer.id)}" target="_blank" class="btn btn-ala btn-small"> Preview</a>
                         </td>
                     </tr>
                 </g:each>
@@ -72,13 +75,14 @@
         </table>
     </div>
     <div class="tab-pane" id="tags">
+        <br/>
         <p>Last 5 tabs:</p>
-        <table class="table">
+        <table class="table table-striped table-hover">
             <thead>
             <tr>
                 <th>Question ID</th>
                 <th>Tab</th>
-                <th>Action</th>
+                <th style="width:10%;">Action</th>
             </tr>
             </thead>
             <tbody>
@@ -87,7 +91,7 @@
                     <td>${tag.questionId}</td>
                     <td>${tag.tag}</td>
                     <td>
-                        <a href="${g.createLink(action: 'previewTagNotification', id: tag.id)}" target="_blank" class="btn btn-ala btn-small"> Preview</a>
+                        <a class="btn btn-primary btn-sm" href="${g.createLink(action: 'previewTagNotification', id: tag.id)}" target="_blank" class="btn btn-ala btn-small"> Preview</a>
                     </td>
                 </tr>
             </g:each>
