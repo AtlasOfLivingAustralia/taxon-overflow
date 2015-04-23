@@ -17,7 +17,7 @@ import org.springframework.stereotype.Component
 import static grails.async.Promises.task
 
 @Aspect
-@Component("refreshUserAspect")
+@Component("notificationsAspect")
 @Log4j
 class NotificationsAspect {
 
