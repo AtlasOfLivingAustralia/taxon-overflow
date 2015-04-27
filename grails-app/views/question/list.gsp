@@ -75,7 +75,7 @@
                 <div class="col-md-10">
                     <!-- <p>Tab panel content here - tab 1</p> -->
                     <div class="comment public_comment">
-                        <g:render template="questionList"
+                        <g:render template="questionsList"
                                   model="${[questions: questions, imageInfoMap: imageInfoMap, acceptedAnswers: acceptedAnswers, occurrenceData: occurrenceData]}"/>
                     </div>
                 </div>
@@ -92,6 +92,8 @@
 <div class="pagination">
     <g:paginate total="${totalCount}" />
 </div>
+
+<a aa-refresh-zones="aggregatedTagsZone" id="refreshAggregatedTagsLink" href="${g.createLink(action: 'showAggregatedTags')}" class="hidden">Refresh</a>
 
 </body>
 </html>

@@ -1,5 +1,7 @@
 package au.org.ala.taxonoverflow
 
+import com.nerderg.ajaxanywhere.AAUtils
+
 import static grails.async.Promises.task
 import static grails.async.Promises.waitAll
 
@@ -37,7 +39,14 @@ class QuestionController {
         }
 
         Map imageInfoMap = [:]
-        [questions: searchResults.list, totalCount: searchResults.totalCount, imageInfoMap: imageInfoMap, acceptedAnswers: acceptedAnswers, occurrenceData: searchResults.auxdata ]
+        Map model = [questions: searchResults.list, totalCount: searchResults.totalCount, imageInfoMap: imageInfoMap,
+                     acceptedAnswers: acceptedAnswers, occurrenceData: searchResults.auxdata, tagsFollowing: userService.currentUser?.tags?.toList() ]
+        if (AAUtils.isAjaxAnywhereRequest(request)) {
+            render template: 'questionsList', model: model
+        } else {
+            return model
+        }
+
     }
 
     def delete(int id) {

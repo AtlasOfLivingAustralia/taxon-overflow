@@ -4,6 +4,7 @@ var taxonoverflow = function() {
     var facetsFilter = {};
     var searchUrl = '';
     var activePopoverTag = '';
+    var counter;
 
     var initEventHandlers = function() {
         $(document).on('click', "#btnQuestionSearch", function(e) {
@@ -23,6 +24,7 @@ var taxonoverflow = function() {
             response.done(function (data) {
                 if (data.success) {
                     taxonoverflow.hideActivePopoverTag();
+                    $("#refreshQuestionsListLink").click();
                     $("#refreshAggregatedTagsLink").click();
 
                 }
@@ -53,6 +55,8 @@ var taxonoverflow = function() {
     };
 
     return {
+        counter: counter,
+
         init: function(options) {
             facetsFilter = {
                 tags: [],
@@ -87,6 +91,31 @@ var taxonoverflow = function() {
         clearActivePopoverTag: function() {
             activePopoverTag: null;
         },
+
+        enableTagPopovers: function() {
+            $('.follow-tag').popover({}).on("mouseenter", function () {
+                var _this = this;
+                taxonoverflow.setActivePopoverTag($(this).attr('id'));
+                clearTimeout(taxonoverflow.counter);
+                taxonoverflow.counter = setTimeout(function () {
+                    $(_this).popover("show");
+                    $(".popover").on("mouseleave", function () {
+                        $(_this).popover('hide');
+                        taxonoverflow.clearActivePopoverTag();
+                    });
+                }, 400);
+            }).on("mouseleave", function () {
+                var _this = this;
+                setTimeout(function () {
+                    if (!$(".popover:hover").length) {
+                        $(_this).popover("hide");
+                        taxonoverflow.clearActivePopoverTag();
+                    }
+                }, 300);
+            });
+
+            taxonoverflow.showActivePopoverTag();
+        }
 
     };
 }();

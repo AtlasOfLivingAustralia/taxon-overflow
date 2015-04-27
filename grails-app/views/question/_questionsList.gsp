@@ -20,7 +20,11 @@
                 <div class="btn-group">
                     <p class="font-xxsmall">Tags:
                         <g:each in="${question.tags}" var="tag">
-                        <a href="#" class="label label-primary">${tag.tag}</a>
+                            <g:set var="isFollowingTag" value="${tagsFollowing?.contains(tag.tag)}"/>
+                            <a href="#" id="question-${tag.tag}" class="label label-primary follow-tag"
+                               data-trigger="manual" data-html="true" data-placement="bottom"
+                               data-container="body" data-toggle="popover"
+                               data-content="<a href='${g.createLink(controller: 'webService', action: isFollowingTag ? 'unfollowTag': 'followTag', params: [tag: tag.tag])}' class='btn tag-follow-button'><i class='fa ${isFollowingTag ? 'fa-star' : 'fa-star-o'}'></i> ${isFollowingTag ? 'Following' : 'Follow'}</a>">${tag.tag}</a>
                         </g:each>
                     </p>
                 </div>
@@ -60,9 +64,15 @@
                         </div>
                     </div>
                 </div>
-
             </div>
         </div>
     </div>
 </g:each>
+<script>
+    $(function() {
+        taxonoverflow.enableTagPopovers();
+    });
+</script>
 </aa:zone>
+
+<a aa-refresh-zones="questionsListZone" id="refreshQuestionsListLink" href="#" aa-js-before="href=taxonoverflow.searchUrl" class="hidden">Refresh</a>
