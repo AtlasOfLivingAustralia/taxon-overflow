@@ -91,6 +91,10 @@ div.facets ul li span.label {
     margin-bottom: 1em;
 }
 
+.image-thumbs img {
+    margin-top: 10px !important;
+}
+
 #map {
     height: 350px;
 }
@@ -137,14 +141,6 @@ div.facets ul li span.label {
 .voting-group .fa-thumbs-down {
     color: red;
 }
-
-/*.answer-panel a i, .answer-comments a i {*/
-    /*color: #DA644E;*/
-/*}*/
-
-/*.answer-panel a i:hover, .answer-comments a i:hover {*/
-    /*color: #333;*/
-/*}*/
 
 .answer-comments .row .comment .body{
     margin: 0 1em;
