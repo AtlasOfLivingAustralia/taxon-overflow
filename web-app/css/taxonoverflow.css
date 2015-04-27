@@ -41,8 +41,8 @@
     text-transform: uppercase;
 }
 
-a.btn:hover {
-    color: #da644e;
+.tag-follow-button:hover {
+    color: #da644e !important;
 }
 
 .activity-summary {

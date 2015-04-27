@@ -70,6 +70,7 @@
 </g:each>
 <script>
     $(function() {
+        //This has to b eexecuted every time the zone is refreshed with new content. That is why it is inside the zone
         taxonoverflow.enableTagPopovers();
     });
 </script>
