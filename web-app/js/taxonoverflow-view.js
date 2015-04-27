@@ -63,6 +63,14 @@ var taxonoverflow = function() {
         if (images.length > 0) {
             imgvwr.viewImage($("#imageViewer"), images[0], {})
         }
+
+        $(".image-thumb").click(function(e) {
+            e.preventDefault();
+            var imageId = $(this).closest("[imageId]").attr("imageId");
+            if (imageId) {
+                imgvwr.viewImage($("#imageViewer"), imageId, {})
+            }
+        });
     };
 
     return {
