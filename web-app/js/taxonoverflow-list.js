@@ -3,6 +3,7 @@
 var taxonoverflow = function() {
     var facetsFilter = {};
     var searchUrl = '';
+    var activePopoverTag = '';
 
     var initEventHandlers = function() {
         $(document).on('click', "#btnQuestionSearch", function(e) {
@@ -16,7 +17,19 @@ var taxonoverflow = function() {
             }
         });
 
-        $("div.facets ul li span.label").on("click", function() {
+        $(document).on('click', '.tag-follow-button', function (e) {
+            e.preventDefault();
+            var response = tolib.doAjaxRequest($(this).attr('href'), {}, 'GET');
+            response.done(function (data) {
+                if (data.success) {
+                    taxonoverflow.hideActivePopoverTag();
+                    $("#refreshAggregatedTagsLink").click();
+
+                }
+            });
+        });
+
+        $(document).on("click", 'div.facets ul li span.label', function() {
             $(this).toggleClass('label-success');
             $(this).toggleClass('label-default');
             updateFacetsFilter();
@@ -49,7 +62,32 @@ var taxonoverflow = function() {
             searchUrl = options.searchUrl;
 
             initEventHandlers();
-        }
+        },
+
+        setActivePopoverTag: function(tagId) {
+            activePopoverTag = tagId
+        },
+
+        showActivePopoverTag: function() {
+            if (activePopoverTag) {
+                $('#' + activePopoverTag).popover('show');
+                $(".popover").on("mouseleave", function () {
+                    $(this).popover('hide');
+                    taxonoverflow.clearActivePopoverTag();
+                });
+            }
+        },
+
+        hideActivePopoverTag: function() {
+            if (activePopoverTag) {
+                $('#' + activePopoverTag).popover('hide');
+            }
+        },
+
+        clearActivePopoverTag: function() {
+            activePopoverTag: null;
+        },
+
     };
 }();
 

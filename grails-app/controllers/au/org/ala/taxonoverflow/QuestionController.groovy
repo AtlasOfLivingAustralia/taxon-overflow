@@ -103,7 +103,7 @@ class QuestionController {
 
     def showAggregatedTags() {
         List<Map> tags = elasticSearchService.getAggregatedTagsWithCount()
-        render template: 'aggregatedTags', model: [tags: tags]
+        render template: 'aggregatedTags', model: [tags: tags, tagsFollowing: userService.currentUser?.tags?.toList()]
     }
 
     def showAggregatedQuestionTypes() {

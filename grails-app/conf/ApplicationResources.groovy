@@ -6,7 +6,7 @@ modules = {
     }
 
     'taxonoverflow-list' {
-        dependsOn 'taxonoverflow-common'
+        dependsOn 'taxonoverflow-common', 'ajaxanywhere'
         resource url: 'js/taxonoverflow-list.js'
     }
 

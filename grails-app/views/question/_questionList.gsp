@@ -1,3 +1,4 @@
+<aa:zone id="questionsListZone">
 <g:each in="${questions}" var="question" status="i">
     <g:set var="questionUrl" value="${createLink(controller:'question', action:'view', id: question.id)}" />
     <g:set var="imageInfo" value="${imageInfoMap[question.occurrenceId]}" />
@@ -64,3 +65,4 @@
         </div>
     </div>
 </g:each>
+</aa:zone>

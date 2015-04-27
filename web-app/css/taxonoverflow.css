@@ -41,6 +41,10 @@
     text-transform: uppercase;
 }
 
+a.btn:hover {
+    color: #da644e;
+}
+
 .activity-summary {
     text-align: right;
 }
@@ -134,13 +138,13 @@ div.facets ul li span.label {
     color: red;
 }
 
-.answer-panel a i, .answer-comments a i {
-    color: #DA644E;
-}
+/*.answer-panel a i, .answer-comments a i {*/
+    /*color: #DA644E;*/
+/*}*/
 
-.answer-panel a i:hover, .answer-comments a i:hover {
-    color: #333;
-}
+/*.answer-panel a i:hover, .answer-comments a i:hover {*/
+    /*color: #333;*/
+/*}*/
 
 .answer-comments .row .comment .body{
     margin: 0 1em;
