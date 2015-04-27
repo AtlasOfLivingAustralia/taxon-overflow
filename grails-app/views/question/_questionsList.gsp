@@ -15,8 +15,9 @@
                 <div class="contrib-time">
                     <g:set var="askedBy" value="${to.userDisplayName(user:question.user)}"/>
                     <g:set var="askedBy" value="${askedBy?:'user not identified'}"/>
-                    <prettytime:display date="${question.dateCreated}" /> by <a href="#">${askedBy}</a>
+                    <prettytime:display date="${question.dateCreated}" /> by <span class="comment-author">${askedBy}</span>
                 </div>
+                <g:if test="${question.tags && question.tags.size() > 0}">
                 <div class="btn-group">
                     <p class="font-xxsmall">Tags:
                         <g:each in="${question.tags}" var="tag">
@@ -28,16 +29,13 @@
                         </g:each>
                     </p>
                 </div>
+                </g:if>
             </div>
             <div class="col-sm-2">
                 <g:if test="${occurrence.imageUrls}">
                     <a href="${questionUrl}">
                         <img class="img-responsive question-thumb" src="${occurrence.imageUrls[0]}" />
                     </a>
-                    %{--<g:if test="${occurrence.imageUrls.size() > 1}">--}%
-                        %{--<br/>--}%
-                        %{--<small>${occurrence.imageUrls.size()} images</small>--}%
-                    %{--</g:if>--}%
                 </g:if>
             </div>
             <div class="col-sm-4">

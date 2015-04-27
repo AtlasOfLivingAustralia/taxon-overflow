@@ -1,16 +1,15 @@
-<div id="tags-group" class="btn-group">
-    <p class="font-xxsmall">Tags:
-    <g:each in="${question.tags}" var="tag">
-        <span class="label label-primary">
-            ${tag.tag}
-            <to:ifCanEditQuestion question="${question}">
-                &nbsp;<a class="btnRemoveTag" href="${g.createLink(controller: 'webService', action: 'removeTagFromQuestion')}" tag="${tag.tag}"><i class="fa fa-remove"></i></a>
-            </to:ifCanEditQuestion>
-        </span>
-    </g:each>
-    </p>
-    <a aa-refresh-zones="tagsZone" href="${g.createLink(action:'questionTagsFragment', id: question.id)}" id="refreshTagsLink" class="hidden"></a>
-</div>
+<g:if test="${question.tags && question.tags.size() > 0}">
+
+<p class="font-xxsmall">Tags:
+<g:each in="${question.tags}" var="tag">
+    <span class="label label-primary">
+        ${tag.tag}
+        <to:ifCanEditQuestion question="${question}">
+            &nbsp;<a class="btnRemoveTag" href="${g.createLink(controller: 'webService', action: 'removeTagFromQuestion')}" tag="${tag.tag}"><i class="fa fa-remove"></i></a>
+        </to:ifCanEditQuestion>
+    </span>
+</g:each>
+</p>
 
 <script>
     $('.btnRemoveTag').on('click', function(e) {
@@ -34,3 +33,4 @@
         });
     });
 </script>
+</g:if>

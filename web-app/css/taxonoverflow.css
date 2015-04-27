@@ -95,6 +95,11 @@ div.facets ul li span.label {
     margin-top: 10px !important;
 }
 
+.image-thumbs .nbs-flexisel-inner {
+    float: none;
+    margin-bottom: 1em;
+}
+
 #map {
     height: 350px;
 }
@@ -102,6 +107,7 @@ div.facets ul li span.label {
 #tags-group span {
     margin-top: 1em;
     display: inline-block;
+    padding: 4px 3px 3px;
 }
 
 .btnRemoveTag {

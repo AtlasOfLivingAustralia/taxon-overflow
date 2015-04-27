@@ -111,16 +111,20 @@
                         </div>
                         <g:if test="${coordinates}">
                         <div id="map" class="placeholder img-responsive hidden">
-                            <aa:zone id="mapzone" fragmentUrl="${g.createLink(action: 'mapFragment', id: question.id)}"></aa:zone>
+                            <aa:zone id="mapzone" fragmentUrl="${g.createLink(action: 'mapFragment', id: question.id)}">
+                            </aa:zone>
                         </div>
                         </g:if>
                     </g:if>
 
-                    <aa:zone id="tagsZone">
-                        <g:render template="tagsFragment" model="${[question: question]}" />
-                    </aa:zone>
+                    <div id="tags-group" class="btn-group">
+                        <aa:zone id="tagsZone">
+                            <g:render template="tagsFragment" model="${[question: question]}" />
+                        </aa:zone>
+                        <a aa-refresh-zones="tagsZone" href="${g.createLink(action:'questionTagsFragment', id: question.id)}" id="refreshTagsLink" class="hidden"></a>
+                    </div>
 
-                    <g:render template="questionDetails" model="${[question:question, occurrence: occurrence]}" />
+                     <g:render template="questionDetails" model="${[question:question, occurrence: occurrence]}" />
 
                 </div>
                 <div class="col-xs-12 col-sm-12 col-md-6">
