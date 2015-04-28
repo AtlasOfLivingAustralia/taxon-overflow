@@ -25,36 +25,38 @@
 </div>
 
 <div class="row-fluid">
-    <div class="col-md-3">
-        <div id="avatar">
-            <a href="https://en.gravatar.com/" id="gravatar" target="_blank" title="Your Gravatar image, click to edit"><avatar:gravatar email="${user.email}" alt="My Avatar" size="70" gravatarRating="G" defaultGravatarUrl="identicon"/></a>
-            ${'INST_NOT_AVAIL'}
-            ${'EXPERT_IN_AREA'}
+    <div class="col-md-12">
+        <div class="col-md-3">
+            <div id="avatar">
+                <a href="https://en.gravatar.com/" id="gravatar" target="_blank" title="Your Gravatar image, click to edit"><avatar:gravatar email="${user.email}" alt="My Avatar" size="70" gravatarRating="G" defaultGravatarUrl="identicon"/></a>
+                ${'INST_NOT_AVAIL'}
+                ${'EXPERT_IN_AREA'}
+            </div>
+            &nbsp;
         </div>
-        &nbsp;
-    </div>
-    <div class="col-md-5">
-        <table class="table table-condensed table-bordered table-striped">
-            %{--<tr><td>Member since</td><td><g:formatDate date="${new Date()}" format="yyyy-MM-dd"/></td></tr>--}%
-            <tr><td>Number of identifications provided</td><td>${0}</td></tr>
-            <tr><td>Number of identifications accepted</td><td>${0}</td></tr>
-            <tr><td>Tags of interest</td>
-                <td>
-                    <g:each in="${user.tags}" var="tag" status="s">
-                        <span class="label tag"><a href="${g.createLink(uri:'/', params:['f.tags': tag])}" title="view all question with this tag" style="color: white;">${tag}</a></span>
-                    </g:each>
-                </td></tr>
-        </table>
-    </div>
-    <div class="col-md-4">
-        <div class="well well-small">
-            <h3>Manage my alerts</h3>
-            <label class="checkbox">
-                <g:checkBox name="alertsStatus" id="alertsStatus" value="${user.enableNotifications}"/>
-                Send me emails for all my activity updates
-            </label>
+        <div class="col-md-5">
+            <table class="table table-condensed table-bordered table-striped">
+                %{--<tr><td>Member since</td><td><g:formatDate date="${new Date()}" format="yyyy-MM-dd"/></td></tr>--}%
+                <tr><td>Number of identifications provided</td><td>${0}</td></tr>
+                <tr><td>Number of identifications accepted</td><td>${0}</td></tr>
+                <tr><td>Tags of interest</td>
+                    <td>
+                        <g:each in="${user.tags}" var="tag" status="s">
+                            <span class="label label-primary"><a href="${g.createLink(uri:'/', params:['f.tags': tag])}" title="view all question with this tag" style="color: white;">${tag}</a></span>
+                        </g:each>
+                    </td></tr>
+            </table>
         </div>
+        <div class="col-md-4">
+            <div class="well well-small">
+                <h3>Manage my alerts</h3>
+                <label class="checkbox">
+                    <g:checkBox name="alertsStatus" id="alertsStatus" value="${user.enableNotifications}"/>
+                    Send me emails for all my activity updates
+                </label>
+            </div>
 
+        </div>
     </div>
 </div>
 
