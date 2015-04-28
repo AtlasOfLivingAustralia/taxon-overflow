@@ -84,6 +84,16 @@ div.facets ul li span.label {
     width: 150px;
 }
 
+.contrib-stats .cp {
+    padding-bottom: .5em;
+}
+
+.contrib-stats .cp.accepted {
+    background-color: #dff0d8;
+    border-color: #d6e9c6;
+}
+
+
 /** Question Detail **/
 
 #imageViewer {

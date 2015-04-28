@@ -9,7 +9,7 @@
             <div class="col-sm-6">
                 <div class="contrib-question">
                     <a href="${questionUrl}">
-                        ${question.questionType.label} - #${question.id} <span class="question-answer-count ${acceptedAnswer ? 'has-accepted-answer' : ''}">${answerCount}</span>
+                        ${question.questionType.label} - #${question.id}</span>
                     </a>
                 </div>
                 <div class="contrib-time">
@@ -48,7 +48,7 @@
                         </div>
                     </div>
 
-                    <div class="cp">
+                    <div class="cp ${acceptedAnswer ? 'accepted' : ''}">
                         <div class="votes">
                             <div class="contrib-number">${question.answers?.size()}</div>
                             <div class="contrib-details"><a href="#">Answers</a></div>
