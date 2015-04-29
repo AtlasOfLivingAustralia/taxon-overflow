@@ -103,7 +103,7 @@ class NotificationsAspect {
 
     private sendAnswerNotification(Answer answer) {
         Question question = answer.question
-        User actionUser = answer.accepted ? question.user : answer.user
+        User actionUser = answer.user
         log.debug("An identification answer has been ${answer.accepted ? 'accepted' : 'posted'} for question #${question.id} " +
                 "by the user with id: ${actionUser.id}. " +
                 "Checking if notification emails need to be sent...")
