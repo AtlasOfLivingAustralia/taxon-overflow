@@ -124,7 +124,7 @@ class QuestionController {
         Question question = Question.get(id)
         def alaUserId = authService.userId
         User user = User.findByAlaUserId(alaUserId)
-        boolean isFollowing = user ? user.followedQuestions.contains(question) : false;
+        boolean isFollowing = user ? user.followedQuestions?.contains(question) : false;
 
         render template: 'followingFragment', model: [question: question, isFollowing: isFollowing]
     }

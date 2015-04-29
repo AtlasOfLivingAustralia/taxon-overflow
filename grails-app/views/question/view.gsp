@@ -30,7 +30,7 @@
         <ol class="breadcrumb">
             <li><a class="font-xxsmall" href="http://ala.org.au">Home</a></li>
             <li><a class="font-xxsmall" href="${g.createLink(controller:"question", action:"list")}">Community identification help</a></li>
-            <li class="font-xxsmall active">Species identification case #${question.id}</li>
+            <li class="font-xxsmall active">${question.questionType.label} - #${question.id}</li>
         </ol>
     </div>
 
@@ -41,7 +41,7 @@
 
 <div class="row-fluid">
     <div class="col-md-7">
-        <h2 class="heading-medium">Species identification case #${question.id}</h2>
+        <h2 class="heading-medium">${question.questionType.label} - #${question.id}</h2>
     </div>
     <to:canShowUserSwitch>
     <div class="col-md-5">

@@ -1,7 +1,9 @@
 package au.org.ala.taxonoverflow
 
 import au.org.ala.taxonoverflow.marshal.*
+import groovy.util.logging.Log4j
 
+@Log4j
 class CustomJSONMarshallers {
 
     BiocacheService biocacheService
@@ -22,13 +24,13 @@ class CustomJSONMarshallers {
 
         marshallers.each { Class c ->
             try {
-                println "Registering custom JSON marshaller: ${c.name}"
+                log.info("Registering custom JSON marshaller: ${c.name}")
                 def marshaller = c.newInstance() as ICustomJSONMarshaller
                 marshaller.setBiocacheService(biocacheService)
                 marshaller.setEcodataService(ecodataService)
                 marshaller.register()
             } catch (Exception ex) {
-                println "Failed to register custom JSON marshaller ${c.name}: ${ex.message}"
+                log.error("Failed to register custom JSON marshaller ${c.name}: ${ex.message}")
                 ex.printStackTrace()
             }
         }

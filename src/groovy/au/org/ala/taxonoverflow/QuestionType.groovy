@@ -3,7 +3,7 @@ package au.org.ala.taxonoverflow
 public enum QuestionType {
 
     IDENTIFICATION('Identification', ['scientificName'], ['commonName', 'taxonConceptID', 'description']),
-    GEOCODING_ISSUE('Geospatial Issue', ['decimalLatitude','decimalLongitude'],[]),
+    GEOCODING_ISSUE('Geospatial Issue', ['decimalLatitude','decimalLongitude'],['description']),
     TEMPORAL_ISSUE('Temporal Issue', [], ['year', 'month', 'day']),
     HABITAT_ISSUE('Habitat Issue', [], [])
 

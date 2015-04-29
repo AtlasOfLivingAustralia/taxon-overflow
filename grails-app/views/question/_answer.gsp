@@ -1,3 +1,4 @@
+<%@ page import="au.org.ala.taxonoverflow.QuestionType" %>
 <g:set var="answerProperties" value="${new groovy.json.JsonSlurper().parseText(answer.darwinCore)}"/>
 <div class="panel ${answer.accepted ? 'panel-success' : 'panel-default'} answer">
     <div class="panel-heading answer-panel">
@@ -23,16 +24,11 @@
         <div class="row">
             <div class="col-md-8">
                 <div class="padding-bottom-1">
-                    <g:if test="${answerProperties.taxonConceptID}">
-                        <a href="http://bie.ala.org.au/species/${answerProperties.taxonConceptID}">
-                    </g:if>
-                    <h4>${answerProperties.commonName && answerProperties.scientificName ? "${answerProperties.scientificName} : ${answerProperties.commonName}" : "${answerProperties.scientificName}"}</h4>
-                    <g:if test="${answerProperties.taxonConceptID}">
-                        </a>
-                    </g:if>
-                    <g:if test="${answerProperties.description}">
-                        <p class="font-xsmall">${answerProperties.description}</p>
-                    </g:if>
+                    <g:set var="questionTypeTemplate" value="${[
+                            (QuestionType.IDENTIFICATION): 'questionType/identificationIssue',
+                            (QuestionType.GEOCODING_ISSUE): 'questionType/geospatialIssue'
+                    ]}"/>
+                    <g:render template="${questionTypeTemplate[answer.question.questionType]}" model="${[answerProperties: answerProperties]}"/>
                     <small>Posted by <span class="comment-author"><to:userDisplayName user="${answer.user}"/></span> <prettytime:display date="${answer.dateCreated}"/></small>
                 </div>
             </div>

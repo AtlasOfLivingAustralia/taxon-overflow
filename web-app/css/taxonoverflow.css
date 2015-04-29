@@ -138,6 +138,14 @@ div.facets ul li span.label {
     margin-top: 1em;
 }
 
+.panel.panel-default.answer h4 {
+    padding-bottom: 10px;
+}
+
+.panel.panel-default.answer .panel-heading.answer-panel ul.list-inline {
+    margin-top: 5px;
+}
+
 .public_comment button.close {
     text-align: left;
 }

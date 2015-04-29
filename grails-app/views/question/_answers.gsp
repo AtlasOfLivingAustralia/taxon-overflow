@@ -1,3 +1,4 @@
+<%@ page import="au.org.ala.taxonoverflow.QuestionType" %>
 <a aa-refresh-zones="answersZone" id="refreshAnswersLink" href="${g.createLink(controller: 'question', action: 'answers', id: question.id)}" class="hidden">Refresh</a>
 <div class="padding-bottom-1">
     <!-- Alert page information -->
@@ -9,13 +10,15 @@
     <!-- End alert page information -->
 </div>
 <aa:zone id="answersZone">
+    <g:set var="questionTypeBtnLabels" value="[(QuestionType.IDENTIFICATION): 'Add and identification',
+                                               (QuestionType.GEOCODING_ISSUE): 'Add a location']"/>
     <to:ifUserIsLoggedIn>
     <div class="btn-group padding-bottom-1">
         <!-- <p>Help the ALA by adding an answer or comments to existing answers.</p> -->
         <a class="btn btn-primary btn-lg" href="${g.createLink(controller: 'dialog', action: 'addAnswerDialog', id: question.id)}"
            aa-refresh-zones="answerDialogZone"
            aa-js-after="$('#answerModalDialog').modal('show')">
-            Add an identification
+            ${questionTypeBtnLabels[question.questionType]}
         </a>
     </div>
     </to:ifUserIsLoggedIn>
