@@ -420,9 +420,9 @@ class QuestionService {
         }
 
         // Find existing tag...
-        def existing = QuestionTag.findByQuestionAndTag(question, tag)
+        def existing = QuestionTag.findByQuestionAndTagIlike(question, tag.toLowerCase())
         if (!existing) {
-            def tagInstance = new QuestionTag(question: question, tag: tag)
+            def tagInstance = new QuestionTag(question: question, tag: tag.toLowerCase())
             tagInstance.save()
             return new ServiceResult<QuestionTag>(result: tagInstance, success: true)
         } else {
