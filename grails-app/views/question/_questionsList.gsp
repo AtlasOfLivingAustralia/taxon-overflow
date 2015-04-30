@@ -20,9 +20,13 @@
                 <g:if test="${question.tags && question.tags.size() > 0}">
                 <div class="btn-group">
                     <p class="font-xxsmall">Tags:
+                        <g:set var="disableTagFollow" value="${true}"/>
+                        <to:ifUserIsLoggedIn>
+                            <g:set var="disableTagFollow" value="${false}"/>
+                        </to:ifUserIsLoggedIn>
                         <g:each in="${question.tags}" var="tag">
                             <g:set var="isFollowingTag" value="${tagsFollowing?.contains(tag.tag)}"/>
-                            <a href="#" id="question-${tag.tag}" class="label label-primary follow-tag"
+                            <a href="#" id="question-${tag.tag}" class="label label-primary ${disableTagFollow ? '' : 'follow-tag'}"
                                data-trigger="manual" data-html="true" data-placement="bottom"
                                data-container="body" data-toggle="popover"
                                data-content="<a href='${g.createLink(controller: 'webService', action: isFollowingTag ? 'unfollowTag': 'followTag', params: [tag: tag.tag])}' class='btn tag-follow-button'><i class='fa ${isFollowingTag ? 'fa-star' : 'fa-star-o'}'></i> ${isFollowingTag ? 'Following' : 'Follow'}</a>">${tag.tag}</a>
