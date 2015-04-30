@@ -7,8 +7,6 @@ $(function() {
         });
     }
 
-
-
     $(".info-alert-close-btn").on('click', function() {
         if (!$.cookie('taxonoverflow-alertInfo')) {
             $.cookie('taxonoverflow-alertInfo', JSON.stringify([]), {expires: 365 * 1, path: '/'});
@@ -16,6 +14,14 @@ $(function() {
         var alertInfoList = JSON.parse($.cookie('taxonoverflow-alertInfo'));
         alertInfoList.push($(this).attr('info-alert'));
         $.cookie('taxonoverflow-alertInfo', JSON.stringify(alertInfoList), {expires: 365 * 1, path: '/'});
+    });
+
+    // Initialize tooltips for disable buttons or linkss
+    console.log('Tooltips = ' + $('.disable-btn-tooltip').length);
+    $('body').tooltip({
+        selector: '.disable-btn-tooltip',
+        container: 'body',
+        title: 'Log in to enable this feature'
     })
 });
 

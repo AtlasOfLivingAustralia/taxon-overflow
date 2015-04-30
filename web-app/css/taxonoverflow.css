@@ -53,6 +53,10 @@
     text-transform: uppercase;
 }
 
+.disable-btn-tooltip {
+    display: inline-block;
+}
+
 div.facets ul {
     list-style-type: none;
     padding-left: .5em;

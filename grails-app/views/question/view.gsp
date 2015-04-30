@@ -34,9 +34,7 @@
         </ol>
     </div>
 
-    <div class="col-sm-3 activity-summary">
-        <a class="btn btn-primary" href="${g.createLink(uri: '/user')}">Your activity summary</a>
-    </div>
+    <g:render template="activitySummary"/>
 </div>
 
 <div class="row-fluid">
