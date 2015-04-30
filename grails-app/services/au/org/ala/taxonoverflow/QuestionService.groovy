@@ -3,6 +3,7 @@ package au.org.ala.taxonoverflow
 import au.org.ala.taxonoverflow.notification.FollowQuestionByUser
 import au.org.ala.taxonoverflow.notification.SendEmailNotification
 import au.org.ala.web.CASRoles
+import grails.converters.JSON
 import grails.transaction.NotTransactional
 import grails.transaction.Transactional
 import org.apache.commons.lang.StringUtils
@@ -85,6 +86,9 @@ class QuestionService {
                 }
 
                 question.save(failOnError: true)
+
+                checkIfUserProvidesPossibleAnswer(question, occurrence, user)
+
                 result.success(Question.load(question.id))
             } else {
                 def messages = ["Question already exists"]
@@ -100,6 +104,26 @@ class QuestionService {
         }
 
         return result
+    }
+
+    /**
+     *
+     * @param question
+     * @param occurrence
+     * @param user
+     */
+    public void checkIfUserProvidesPossibleAnswer(Question question, LinkedHashMap<String, Serializable> occurrence, User user) {
+        if (question.questionType == QuestionType.IDENTIFICATION && occurrence['scientificName']) {
+            Answer answer = new Answer(question: question, user: user)
+            def answerDetails = [
+                    scientificName   : occurrence['scientificName'],
+                    commonName       : occurrence['commonName'],
+                    occurrenceRemarks: occurrence['occurrenceRemarks']
+            ]
+            if (QuestionService.setAnswerProperties(answer, answerDetails, [])) {
+                answer.save()
+            }
+        }
     }
 
     /**
@@ -134,6 +158,9 @@ class QuestionService {
                 }
 
                 question.save(failOnError: true)
+
+                checkIfUserProvidesPossibleAnswer(question, occurrence, user)
+
                 result.success(question)
             } else {
                 def messages = ["Question already exists"]
@@ -149,15 +176,6 @@ class QuestionService {
         }
 
         return result
-    }
-
-    public boolean validateOccurrenceRecord(String occurrenceId, List errors) {
-        // first check if a question already exists for this occurrence
-        if (questionExists(occurrenceId)) {
-            errors << "A question already exists for this occurrence"
-            return false
-        }
-        return true
     }
 
     def deleteAnswer(Answer answer) {
@@ -203,6 +221,34 @@ class QuestionService {
         updateRecordAtSource(answer.questionId)
 
         return new ServiceResult<Answer>(result: answer, success: true)
+    }
+
+    static setAnswerProperties(Answer answer, Object answerDetails, List messages) {
+
+        //retrieve a description, and then any additional properties
+        //are lumped into DwC
+        answer.description = answerDetails.description
+
+        def validRequest = true
+        def darwinCore = [:]
+
+        //required fields
+        answer.question.questionType.getRequiredFields().each {
+            if (!answerDetails[it]) {
+                messages << "A ${it} must be supplied"
+                validRequest = false
+            } else {
+                darwinCore[it] = answerDetails[it]
+            }
+        }
+        //optional fields
+        answer.question.questionType.getOptionalFields().each {
+            darwinCore[it] = answerDetails[it]
+        }
+
+        answer.darwinCore = (darwinCore as JSON).toString()
+
+        return validRequest
     }
 
     def unacceptAnswer(Answer answer) {

@@ -1,3 +1,4 @@
+<%@ page import="au.org.ala.taxonoverflow.QuestionType" %>
 <!-- Tabular data -->
 <div class="table-responsive">
     <table class="table table-striped table-hover">
@@ -20,6 +21,7 @@
             <td>Locality:</td>
             <td>${occurrence['locality']}</td>
         </tr>
+        <g:if test="${question.questionType != QuestionType.IDENTIFICATION}">
         <tr>
             <td>Scientific name:</td>
             <td>${occurrence['scientificName']}</td>
@@ -32,6 +34,7 @@
             <td>Occurrence remarks:</td>
             <td>${occurrence['occurrenceRemarks']}</td>
         </tr>
+        </g:if>
         </tbody>
     </table>
 </div>

@@ -157,7 +157,7 @@ class WebServiceController {
         }
 
         def messages = []
-        if (setAnswerProperties(answer, answerDetails, messages)) {
+        if (QuestionService.setAnswerProperties(answer, answerDetails, messages)) {
             questionService.updateAnswer(answer, results)
         } else {
             results.message = messages.join(". ")
@@ -195,7 +195,7 @@ class WebServiceController {
             } else {
                 Answer answer = new Answer(question: question, user: user)
                 def messages = []
-                if (setAnswerProperties(answer, answerDetails, messages)) {
+                if (QuestionService.setAnswerProperties(answer, answerDetails, messages)) {
                     questionService.setAnswer(answer, results)
                 } else {
                     results.success = false
@@ -204,34 +204,6 @@ class WebServiceController {
             }
         }
         renderResults(results)
-    }
-
-    private static setAnswerProperties(Answer answer, Object answerDetails, List messages) {
-
-        //retrieve a description, and then any additional properties
-        //are lumped into DwC
-        answer.description = answerDetails.description
-
-        def validRequest = true
-        def darwinCore = [:]
-
-        //required fields
-        answer.question.questionType.getRequiredFields().each {
-            if (!answerDetails[it]) {
-                messages << "A ${it} must be supplied"
-                validRequest = false
-            } else {
-                darwinCore[it] = answerDetails[it]
-            }
-        }
-        //optional fields
-        answer.question.questionType.getOptionalFields().each {
-            darwinCore[it] = answerDetails[it]
-        }
-
-        answer.darwinCore = (darwinCore as JSON).toString()
-
-        return validRequest
     }
 
     def deleteAnswer(long id) {
