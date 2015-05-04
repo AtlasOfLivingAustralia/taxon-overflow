@@ -10,7 +10,7 @@
     <!-- End alert page information -->
 </div>
 <aa:zone id="answersZone">
-    <g:set var="questionTypeBtnLabels" value="[(QuestionType.IDENTIFICATION): 'Add and identification',
+    <g:set var="questionTypeBtnLabels" value="[(QuestionType.IDENTIFICATION): 'Add an identification',
                                                (QuestionType.GEOCODING_ISSUE): 'Add a location']"/>
     <to:ifUserIsLoggedIn>
     <div class="btn-group padding-bottom-1">

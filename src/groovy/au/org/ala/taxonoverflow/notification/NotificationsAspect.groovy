@@ -166,10 +166,8 @@ class NotificationsAspect {
      * @return
      */
     private Promise sendEmail(List bccEmailAddresses, userDetails, String emailSubject, String htmlBody) {
-        log.debug("I was here 1")
         return task {
             try {
-                log.debug("I was here 2")
                 if (grailsApplication.config.notifications.enabled) {
                     mailService.sendMail {
                         bcc bccEmailAddresses.toArray()
