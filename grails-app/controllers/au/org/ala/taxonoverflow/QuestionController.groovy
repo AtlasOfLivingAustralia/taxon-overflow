@@ -13,13 +13,15 @@ class QuestionController {
     def auditService
     def elasticSearchService
 
+    static int defaultPageSize = 20
+
     def index() {
         redirect(action:'list')
     }
 
     def list() {
 
-        params.max = params.max ?: 20
+        params.max = params.max ?: defaultPageSize
         params.sort = params.sort ?: 'dateCreated'
         params.order = params.order ?: 'desc'
 

@@ -93,6 +93,9 @@ grails.controllers.defaultScope = 'singleton'
 expertRole = 'ROLE_TAXONOVERFLOW_EXPERT'
 
 
+// Fix grails taglib `<g:paginate/>` to work with bootstrap css.
+grails.plugins.twitterbootstrap.fixtaglib = true
+
 // GSP settings
 grails {
     views {

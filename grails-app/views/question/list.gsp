@@ -87,9 +87,13 @@
     </div>
 </div>
 
-<div class="pagination">
-    <g:paginate total="${totalCount}" />
+<g:if test="${totalCount > au.org.ala.taxonoverflow.QuestionController.defaultPageSize}">
+<div class="row-fluid">
+    <nav class="col-sm-12 col-centered text-center">
+    <g:paginate total="${totalCount}" class="pagination-lg"/>
+    </nav>
 </div>
+</g:if>
 
 <a aa-refresh-zones="aggregatedTagsZone" id="refreshAggregatedTagsLink" href="${g.createLink(action: 'showAggregatedTags')}" class="hidden">Refresh</a>
 
