@@ -37,6 +37,11 @@
 
 /* Override Bootstrap */
 
+sup.beta-badge {
+    color: #da644e;
+    font-weight: lighter;
+}
+
 .tag {
     text-transform: uppercase;
 }

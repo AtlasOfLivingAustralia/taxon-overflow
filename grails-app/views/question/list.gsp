@@ -27,7 +27,7 @@
 
 <div class="row-fluid">
     <div class="col-md-12">
-        <h2 class="heading-medium">Taxonoverflow: Community identification help</h2>
+        <h2 class="heading-medium">Community identification help<sup class="beta-badge">&nbsp;beta</sup></h2>
     </div>
 </div>
 
@@ -35,13 +35,12 @@
     <div class="col-md-12">
         <div class="panel panel-default">
             <div class="panel-heading question-heading">
-                <h3 class="heading-underlined">Welcome to Taxonoverflow!</h3>
+                <h3 class="heading-underlined">Welcome to the Community identification help page!</h3>
             </div>
             <div class="panel-body row">
                 <div class="col-md-12">
                     <div id="infoAlert1" class="alert alert-info alert-dismissible" role="alert">
                         <button info-alert="infoAlert1" type="button" class="close info-alert-close-btn" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                        <strong>Welcome to the Community identification help page.</strong>
                         On this page you will find records contributed by others that need confirmation of what they are. Help us identify these species. Every little bit helps.
                         And most importantly, get involved, have fun and contribute to science.
                     </div>
