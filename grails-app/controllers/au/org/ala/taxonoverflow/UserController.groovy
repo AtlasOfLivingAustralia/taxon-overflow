@@ -10,10 +10,12 @@ class UserController {
 
         if (user) {
             UserDetails userDetails = authService.getUserForUserId(user.alaUserId, true)
+            List userAnswers = Answer.findAllByUser(user)
             [
                     user: user,
                     myQuestions: addImageMetaData(Question.findAllByUser(user)),
-                    myAnsweredQuestions: addImageMetaData(getQuestionSetFromAnswers(Answer.findAllByUser(user))),
+                    myAnsweredQuestions: addImageMetaData(getQuestionSetFromAnswers(userAnswers)),
+                    userAnswersAccepted: userAnswers.findAll{it.accepted},
                     followedQuestions: addImageMetaData(user.followedQuestions),
                     userDetails: userDetails
             ]

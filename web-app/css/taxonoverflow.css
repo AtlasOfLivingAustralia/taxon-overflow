@@ -241,6 +241,50 @@ div.facets ul li span.label {
     color: #c44d34;
 }
 
+/** Activity summary */
+.profile-gravatar {
+    display: inline-block !important;
+}
+
+.profile-gravatar img {
+    margin: 0 !important;
+}
+
+#summary .tab-content form {
+    margin-top: 2em
+}
+
+#summary .tab-content input[type=checkbox] {
+    position: relative;
+}
+
+.summary-thumbnails {
+    margin-top: 2em;
+}
+
+.summary-thumbnails a {
+    text-align: center;
+}
+
+.summary-thumbnails a:hover {
+    text-decoration: none !important;
+    border-color: #DA644E !important;
+    -webkit-box-shadow: 2px 2px 4px 0px rgba(218, 100, 78, 0.45);
+    -moz-box-shadow:    2px 2px 4px 0px rgba(218, 100, 78, 0.45);
+    box-shadow:         2px 2px 4px 0px rgba(218, 100, 78, 0.45);
+}
+
+.summary-thumbnails img {
+    margin: 0 !important;
+}
+
+.summary-thumbnails .caption {
+    margin: 0 !important;
+    font-size: 1em;
+    font-weight: normal;
+    padding: 5px 5px 0 !important;
+}
+
 /** Media Queries **/
 
 @media only screen and (min-width : 768px) and (max-width: 1200px) {

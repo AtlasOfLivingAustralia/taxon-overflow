@@ -24,78 +24,87 @@
     </div>
 </div>
 
-<div class="row-fluid">
-    <div class="col-sm-4">
+<!-- Panel content -->
+<div class="row-fluid" id="summary">
+    <div class="col-md-12">
         <div class="panel panel-default">
-            <div class="panel-heading">User Profile</div>
-            <div class="panel-body">
+            <div class="panel-heading question-heading">
+                <h3 class="heading-underlined">Summary</h3>
+            </div>
 
-                    <a href="https://en.gravatar.com/" class="thumbnail" id="gravatar" target="_blank" title="Your Gravatar image, click to edit">
-                        <avatar:gravatar email="${userDetails.userName}" alt="My Avatar" size="100" gravatarRating="G" defaultGravatarUrl="identicon"/><
-                        /a>
-                    <div class="caption">
-                        <h3>Thumbnail label</h3>
-                        <p>...</p>
-                        <p><a href="#" class="btn btn-primary" role="button">Button</a> <a href="#" class="btn btn-default" role="button">Button</a></p>
+            <div class="panel-body row">
+                <div class="col-sm-4">
+                    <div class="well">
+                        <div class="row">
+                            <div class="col-sm-12 text-center">
+                                <a href="https://en.gravatar.com/" class="thumbnail profile-gravatar" target="_blank" title="Your Gravatar image, click to edit">
+                                    <avatar:gravatar email="${userDetails.userName}" alt="My Avatar" size="100" gravatarRating="G" defaultGravatarUrl="identicon"/>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <label>Name</label>
+                                <p>${userDetails.displayName}</p>
+
+                                <label>Organisation</label>
+                                <p>${userDetails.organisation}</p>
+
+                                <label>Number of answers provided</label>
+                                <p>${myAnsweredQuestions?.size()}</p>
+
+                                <label>Number of answers accepted</label>
+                                <p>${userAnswersAccepted?.size()}</p>
+
+                                <label>Tags of interest</label>
+                                <p>
+                                    <g:each in="${user.tags}" var="tag" status="s">
+                                    <span class="label label-primary"><a href="${g.createLink(uri:'/', params:['f.tags': tag])}" title="view all question with this tag" style="color: white;">${tag}</a></span>
+                                    </g:each>
+                                </p>
+                            </div>
+                        </div>
                     </div>
                 </div>
-        </div>
+                <div class="col-sm-8">
+                    <div role="tabpanel">
+                        <!-- Nav tabs -->
+                        <ul class="nav nav-tabs" role="tablist">
+                            <li class="active"><a href="#alerts" aria-controls="home" data-toggle="tab">Alerts</a></li>
+                            <li><a href="#questions" aria-controls="profile" data-toggle="tab">Questions</a></li>
+                            <li><a href="#answers" aria-controls="messages" data-toggle="tab">Answers</a></li>
+                            <li><a href="#following" aria-controls="settings" data-toggle="tab">Questions followed</a></li>
+                        </ul>
 
-    </div>
-</div>
-
-<hr/>
-
-<div class="row-fluid">
-    <div class="col-md-12">
-        <div class="col-md-3">
-            <div id="avatar">
-
-                ${'INST_NOT_AVAIL'}
-                ${'EXPERT_IN_AREA'}
+                        <!-- Tab panes -->
+                        <div class="tab-content">
+                            <div class="tab-pane active" id="alerts">
+                                <form>
+                                    <div class="checkbox">
+                                        <label>
+                                            <g:checkBox name="alertsStatus" id="alertsStatus" value="${user.enableNotifications}"/>
+                                            Send me emails for all my activity updates
+                                        </label>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="tab-pane" id="questions">
+                                <g:render template="listQuestions" model="[questionList: myQuestions, questionLabel: 'questions']"/>
+                            </div>
+                            <div class="tab-pane" id="answers">
+                                <g:render template="listQuestions" model="[questionList: myAnsweredQuestions, questionLabel: 'answers']"/>
+                            </div>
+                            <div class="tab-pane" id="following">
+                                <g:render template="listQuestions" model="[questionList: followedQuestions, questionLabel: 'followed questions']"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            &nbsp;
-        </div>
-        <div class="col-md-5">
-            <table class="table table-condensed table-bordered table-striped">
-                %{--<tr><td>Member since</td><td><g:formatDate date="${new Date()}" format="yyyy-MM-dd"/></td></tr>--}%
-                <tr><td>Number of identifications provided</td><td>${0}</td></tr>
-                <tr><td>Number of identifications accepted</td><td>${0}</td></tr>
-                <tr><td>Tags of interest</td>
-                    <td>
-                        <g:each in="${user.tags}" var="tag" status="s">
-                            <span class="label label-primary"><a href="${g.createLink(uri:'/', params:['f.tags': tag])}" title="view all question with this tag" style="color: white;">${tag}</a></span>
-                        </g:each>
-                    </td></tr>
-            </table>
-        </div>
-        <div class="col-md-4">
-            <div class="well well-small">
-                <h3>Manage my alerts</h3>
-                <label class="checkbox">
-                    <g:checkBox name="alertsStatus" id="alertsStatus" value="${user.enableNotifications}"/>
-                    Send me emails for all my activity updates
-                </label>
-            </div>
-
         </div>
     </div>
 </div>
 
-<div class="taxonoverflow-content row-fluid" id="profile-content">
-    <div class="col-md-4">
-        <h4>My Questions</h4>
-        <g:render template="listQuestions" model="[questionList: myQuestions, questionLabel: 'questions']"/>
-    </div>
-    <div class="col-md-4">
-        <h4>My Answers</h4>
-        <g:render template="listQuestions" model="[questionList: myAnsweredQuestions, questionLabel: 'answers']"/>
-    </div>
-    <div class="col-md-4">
-        <h4>Followed Questions</h4>
-        <g:render template="listQuestions" model="[questionList: followedQuestions, questionLabel: 'followed questions']"/>
-    </div>
-</div>
 <r:script>
     $(document).ready(function () {
         $('#gravatar').tooltip({placement: 'right'});
