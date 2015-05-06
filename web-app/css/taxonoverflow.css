@@ -90,7 +90,26 @@ div.facets ul li span.label {
 }
 
 .question-thumb {
+    text-decoration: none !important;
+}
+
+.question-thumb:hover {
+    border-color: #DA644E !important;
+    -webkit-box-shadow: 2px 2px 4px 0px rgba(218, 100, 78, 0.45);
+    -moz-box-shadow:    2px 2px 4px 0px rgba(218, 100, 78, 0.45);
+    box-shadow:         2px 2px 4px 0px rgba(218, 100, 78, 0.45);
+}
+
+.question-thumb img{
     width: 150px;
+    margin: 0 !important;
+}
+
+.question-thumb .caption {
+    font-size: .8em;
+    font-weight: normal;
+    padding: 5px 5px 0 !important;
+    margin: 0;
 }
 
 .contrib-stats .cp {

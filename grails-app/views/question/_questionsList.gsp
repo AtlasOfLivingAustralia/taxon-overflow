@@ -37,32 +37,34 @@
             </div>
             <div class="col-sm-2">
                 <g:if test="${occurrence.imageUrls}">
-                    <a href="${questionUrl}">
-                        <img class="img-responsive question-thumb" src="${occurrence.imageUrls[0]}" />
+                    <a href="${questionUrl}" class="thumbnail question-thumb">
+                        <img class="img-responsive" src="${occurrence.imageUrls[0]}" />
+                        <div class="caption">
+                            Images: ${occurrence.imageUrls.size}
+                        </div>
                     </a>
                 </g:if>
             </div>
             <div class="col-sm-4">
-
                 <div class="contrib-stats">
                     <div class="cp">
                         <div class="votes">
                             <div class="contrib-number">${question.views?.size()}</div>
-                            <div class="contrib-details"><a href="#">Views</a></div>
+                            <div class="contrib-details"><a href="${questionUrl}">Views</a></div>
                         </div>
                     </div>
 
                     <div class="cp ${acceptedAnswer ? 'accepted' : ''}">
                         <div class="votes">
                             <div class="contrib-number">${question.answers?.size()}</div>
-                            <div class="contrib-details"><a href="#">Answers</a></div>
+                            <div class="contrib-details"><a href="${questionUrl}">Answers</a></div>
                         </div>
                     </div>
 
                     <div class="cp">
                         <div class="votes">
                             <div class="contrib-number">${question.answers?.size() > 0 ? question.answers?.collect({it.votes?.size()}).sum() : 0}</div>
-                            <div class="contrib-details"><a href="#">Votes</a></div>
+                            <div class="contrib-details"><a href="${questionUrl}">Votes</a></div>
                         </div>
                     </div>
                 </div>

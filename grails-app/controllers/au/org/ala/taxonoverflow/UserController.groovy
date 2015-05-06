@@ -1,5 +1,7 @@
 package au.org.ala.taxonoverflow
 
+import au.org.ala.web.UserDetails
+
 class UserController {
     def userService, authService, elasticSearchService
 
@@ -7,13 +9,13 @@ class UserController {
         def user = userService.currentUser
 
         if (user) {
-            user.metaClass.displayName = authService.getDisplayName()
-            user.metaClass.email = authService.getEmail()
+            UserDetails userDetails = authService.getUserForUserId(user.alaUserId, true)
             [
                     user: user,
                     myQuestions: addImageMetaData(Question.findAllByUser(user)),
                     myAnsweredQuestions: addImageMetaData(getQuestionSetFromAnswers(Answer.findAllByUser(user))),
-                    followedQuestions: addImageMetaData(user.followedQuestions)
+                    followedQuestions: addImageMetaData(user.followedQuestions),
+                    userDetails: userDetails
             ]
         } else {
             render(status: 403, text: 'User not logged in or not recognised..')

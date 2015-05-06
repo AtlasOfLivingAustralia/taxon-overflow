@@ -20,15 +20,37 @@
 
 <div class="row-fluid">
     <div class="col-md-12">
-        <h2 class="heading-medium">Activity Summary for ${raw((user.displayName) ? user.displayName : "")}</h2>
+        <h2 class="heading-medium">Activity Summary for <span class="comment-author">${userDetails.displayName}</span></h2>
     </div>
 </div>
+
+<div class="row-fluid">
+    <div class="col-sm-4">
+        <div class="panel panel-default">
+            <div class="panel-heading">User Profile</div>
+            <div class="panel-body">
+
+                    <a href="https://en.gravatar.com/" class="thumbnail" id="gravatar" target="_blank" title="Your Gravatar image, click to edit">
+                        <avatar:gravatar email="${userDetails.userName}" alt="My Avatar" size="100" gravatarRating="G" defaultGravatarUrl="identicon"/><
+                        /a>
+                    <div class="caption">
+                        <h3>Thumbnail label</h3>
+                        <p>...</p>
+                        <p><a href="#" class="btn btn-primary" role="button">Button</a> <a href="#" class="btn btn-default" role="button">Button</a></p>
+                    </div>
+                </div>
+        </div>
+
+    </div>
+</div>
+
+<hr/>
 
 <div class="row-fluid">
     <div class="col-md-12">
         <div class="col-md-3">
             <div id="avatar">
-                <a href="https://en.gravatar.com/" id="gravatar" target="_blank" title="Your Gravatar image, click to edit"><avatar:gravatar email="${user.email}" alt="My Avatar" size="70" gravatarRating="G" defaultGravatarUrl="identicon"/></a>
+
                 ${'INST_NOT_AVAIL'}
                 ${'EXPERT_IN_AREA'}
             </div>
