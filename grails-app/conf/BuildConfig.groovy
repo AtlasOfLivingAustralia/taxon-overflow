@@ -75,8 +75,8 @@ grails.project.dependency.resolution = {
         runtime ":database-migration:1.4.0"
         //runtime ":jquery:1.11.1"
 
-        runtime ":ala-bootstrap3:1.1-SNAPSHOT"
-        runtime(":ala-auth:1.3-SNAPSHOT") {
+        runtime ":ala-bootstrap3:1.1"
+        runtime(":ala-auth:1.3") {
             excludes "servlet-api"
         }
         runtime(":images-client-plugin:0.3") {
