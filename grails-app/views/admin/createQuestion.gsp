@@ -32,7 +32,7 @@
     <g:hiddenField name="source" value="${source}"/>
 
     <div class="control-group">
-        <button type="button" class="btn btn-primary" id="btnSubmit">Create question</button>
+        <button type="button" class="btn btn-primary" id="btnSubmit"><i></i> Create question</button>
     </div>
 </form>
 </body>
@@ -62,7 +62,10 @@
 
         tolib.doJsonPost("${createLink(controller: 'webService', action: 'createQuestionFromExternal')}", question).done(function(response) {
             if (response.success) {
-                location.href = "${createLink(controller: 'question', action: 'list')}";
+                $("#btnSubmit").find('i').addClass('fa fa-cog fa-spin');
+                setTimeout(function() {
+                    location.href = "${createLink(controller: 'question', action: 'list')}";
+                }, 3000);
             } else {
                 displayError(response.message);
             }
