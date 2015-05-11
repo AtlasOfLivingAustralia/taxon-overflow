@@ -24,6 +24,7 @@ class Question {
         comments sort: 'dateCreated', order: 'asc'
         views sort: 'dateCreated', order: 'asc'
         tags sort: 'tag', order:'asc'
+        answers cascade: 'all-delete-orphan'
     }
 
     def afterUpdate() {

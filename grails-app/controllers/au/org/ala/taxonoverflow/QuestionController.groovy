@@ -25,13 +25,14 @@ class QuestionController {
         params.sort = params.sort ?: 'dateCreated'
         params.order = params.order ?: 'desc'
 
-        def searchResults = elasticSearchService.questionSearch(params)
+        int questionsCount = Question.count()
+        def searchResults = questionsCount > 0 ? elasticSearchService.questionSearch(params) : [:]
 
         def acceptedAnswers = [:]
         def c = Answer.createCriteria()
-        if (searchResults.list) {
+        if (searchResults?.list) {
             def l = c.list {
-                inList("question", searchResults.list)
+                inList("question", searchResults?.list)
                 eq("accepted", true)
             }
 
@@ -41,8 +42,8 @@ class QuestionController {
         }
 
         Map imageInfoMap = [:]
-        Map model = [questions: searchResults.list, totalCount: searchResults.totalCount, imageInfoMap: imageInfoMap,
-                     acceptedAnswers: acceptedAnswers, occurrenceData: searchResults.auxdata, tagsFollowing: userService.currentUser?.tags?.toList() ]
+        Map model = [questions: searchResults?.list, totalCount: searchResults?.totalCount, imageInfoMap: imageInfoMap,
+                     acceptedAnswers: acceptedAnswers, occurrenceData: searchResults?.auxdata, tagsFollowing: userService.currentUser?.tags?.toList() ]
         if (AAUtils.isAjaxAnywhereRequest(request)) {
             render template: 'questionsList', model: model
         } else {

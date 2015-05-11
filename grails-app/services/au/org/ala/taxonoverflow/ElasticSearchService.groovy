@@ -1,6 +1,7 @@
 package au.org.ala.taxonoverflow
 
 import grails.converters.JSON
+import grails.plugins.rest.client.RestBuilder
 import grails.transaction.NotTransactional
 import groovy.json.JsonSlurper
 import io.searchbox.client.JestClient
@@ -9,6 +10,7 @@ import io.searchbox.client.config.HttpClientConfig
 import io.searchbox.core.Search
 import io.searchbox.core.SearchResult
 import net.sf.json.JSONObject
+import org.apache.http.HttpStatus
 import org.codehaus.groovy.grails.web.servlet.mvc.GrailsParameterMap
 import org.elasticsearch.action.admin.indices.delete.DeleteIndexRequest
 import org.elasticsearch.action.admin.indices.delete.DeleteIndexResponse
@@ -158,6 +160,18 @@ class ElasticSearchService {
 
     static def scheduleQuestionDeletion(long questionId) {
         _backgroundQueue.add(new IndexQuestionTask(questionId, IndexOperation.Delete))
+    }
+
+    @NotTransactional
+    def isIndexReady() {
+        def response = new RestBuilder().get("http://localhost:9200/${INDEX_NAME}")
+        return response.responseEntity.statusCode.value == HttpStatus.SC_OK
+    }
+
+    @NotTransactional
+    def initializeIndex() {
+        def response = new RestBuilder().post("http://localhost:9200/${INDEX_NAME}")
+        return response.responseEntity.statusCode.value == HttpStatus.SC_OK
     }
 
     @NotTransactional
