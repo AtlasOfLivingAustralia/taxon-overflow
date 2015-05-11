@@ -1,5 +1,6 @@
 
 /* Override Bootstrap */
+
 .label {
     padding: 0.4em 0.6em 0.3em;
     margin-right: .5em;
@@ -37,6 +38,8 @@
 
 /* Override Bootstrap */
 
+/* Common */
+
 sup.beta-badge {
     color: #da644e;
     font-weight: lighter;
@@ -61,6 +64,14 @@ sup.beta-badge {
 .disable-btn-tooltip {
     display: inline-block;
 }
+
+.textarea-preview {
+    min-height: 221px;
+    padding: .8em 1em;
+    border: solid 1px #d7d7d7;
+}
+
+/* Common */
 
 div.facets ul {
     list-style-type: none;

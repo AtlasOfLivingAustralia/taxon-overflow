@@ -17,12 +17,22 @@ $(function() {
     });
 
     // Initialize tooltips for disable buttons or linkss
-    console.log('Tooltips = ' + $('.disable-btn-tooltip').length);
     $('body').tooltip({
         selector: '.disable-btn-tooltip',
         container: 'body',
         title: 'Log in to enable this feature'
-    })
+    });
+
+    $(document).on('keyup', '.markdown-field .textarea-edit > textarea', function() {
+        $(this).parent().next().html(marked($(this).val()));
+    });
+
+    $(document).on('click', '.markdown-field .btn-group button', function(e){
+        e.preventDefault();
+        $('.markdown-field .btn-group button').toggleClass('active');
+        $(this).parent().parent().find('.textarea-edit').toggleClass('hidden');
+        $(this).parent().parent().find('.textarea-preview').toggleClass('hidden');
+    });
 });
 
 var tolib = {};

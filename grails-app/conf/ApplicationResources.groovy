@@ -11,9 +11,13 @@ modules = {
     }
 
     'taxonoverflow-common' {
-        dependsOn 'jquery', 'jquery.cookie', 'bootbox'
+        dependsOn 'jquery', 'jquery.cookie', 'bootbox', 'marked'
         resource url:'js/taxonoverflow-common.js'  //this is temporary
         resource url:'css/taxonoverflow.css'
+    }
+
+    marked {
+        resource url: 'vendor/marked/marked.js'
     }
 
     bootbox {
