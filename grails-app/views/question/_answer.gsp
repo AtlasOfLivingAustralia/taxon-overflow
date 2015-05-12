@@ -84,4 +84,3 @@
     </div>
     <g:render template="answerComments" model="[answer: answer]"/>
 </div>
-<aa:zone id="answerCommentDialogZone"></aa:zone>
