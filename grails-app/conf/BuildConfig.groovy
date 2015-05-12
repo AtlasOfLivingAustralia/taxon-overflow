@@ -39,7 +39,7 @@ grails.project.dependency.resolution = {
         test "org.gebish:geb-spock:0.10.0"
 
         compile 'net.sf.ehcache:ehcache:2.8.4'
-        compile 'com.github.rjeschke:txtmark:0.11'
+        compile 'com.github.rjeschke:txtmark:0.13'
         compile('ognl:ognl:3.0.8') {
             excludes('javassist:javassist:3.11.0.GA')
         }
@@ -67,7 +67,7 @@ grails.project.dependency.resolution = {
         compile ":mail:1.0.7"
         compile ":pretty-time:2.1.3.Final-1.0.1"
         compile ":avatar:0.6.3"
-        compile ":ajaxanywhere:1.0-SNAPSHOT"
+        compile ":ajaxanywhere:1.0"
         // compile ":asset-pipeline:2.1.5"
 
         // plugins needed at runtime but not for compilation
