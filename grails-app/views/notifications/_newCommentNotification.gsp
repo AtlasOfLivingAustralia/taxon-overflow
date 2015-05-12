@@ -1,4 +1,4 @@
-<%@ page import="au.org.ala.taxonoverflow.AnswerComment" %>
+<%@ page import="com.github.rjeschke.txtmark.Processor; au.org.ala.taxonoverflow.AnswerComment" %>
 <style>
 body {
     font-family: Arial,sans-serif;
@@ -31,5 +31,5 @@ blockquote:before {
 <g:set var="questionNumber" value="${comment instanceof AnswerComment ? comment.answer.question.id : comment.question.id}"/>
 <p>${userDetails.displayName} posted the following${comment instanceof AnswerComment ? ' identification' : ''} comment about <a href="${grailsApplication.config.grails.serverURL}/question/view/${questionNumber}">question #${questionNumber} on Taxon-Overflow</a></p>
 <blockquote>
-   ${comment.comment}
+   ${Processor.process(comment.comment)}
 </blockquote>
