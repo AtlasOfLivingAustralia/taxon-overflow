@@ -4,9 +4,9 @@
     Add comments to the existing topic question answers.
 </div>
 <aa:zone id="commentsZone">
-    <g:set var="disableAddCommentForm" value="false"/>
+    <g:set var="disableAddCommentForm" value="${true}"/>
     <to:ifUserIsLoggedIn>
-        <g:set var="disableAddCommentForm" value="true"/>
+        <g:set var="disableAddCommentForm" value="${false}"/>
     </to:ifUserIsLoggedIn>
     <g:form name="addCommentForm" controller="webService" action="addQuestionComment" class="form-horizontal padding-bottom-1">
         <g:hiddenField name="userId" value="${to.currentUserId()}"/>

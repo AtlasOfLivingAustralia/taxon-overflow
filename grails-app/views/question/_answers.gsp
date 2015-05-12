@@ -31,6 +31,7 @@
     </g:each>
 </aa:zone>
 <aa:zone id="answerDialogZone"></aa:zone>
+<aa:zone id="answerCommentDialogZone"></aa:zone>
 <script>
     $(document).on('click', '.thumbs', function(e) {
         e.preventDefault();
