@@ -1,3 +1,4 @@
+<%@ page import="com.github.rjeschke.txtmark.Processor" %>
 <div id="infoAlert4" class="alert alert-info alert-dismissible" role="alert">
     <button info-alert="infoAlert4" type="button" class="close info-alert-close-btn" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
     <strong>Add comments or questions.</strong>
@@ -17,11 +18,43 @@
             <span class="alertText"></span>
         </div>
 
-        <div class="form-group">
-            <label for="comment" class="col-sm-3 control-label">Comments or questions</label>
-            <div class="col-sm-8">
-                <g:textArea name="comment" class="form-control" rows="4" placeholder="Enter your comments or questions" ></g:textArea>
+        <g:if test="${!question.comments}">
+            <div class="comment public_comment">
+                <div class="comment-wrapper push">
+                    <div class="body">
+                        <p>No comments posted yet.</p>
+                    </div>
+                </div>
             </div>
+        </g:if>
+        <div class="comment public_comment">
+            <g:each in="${question.comments}" var="questionComment">
+                <div class="comment-wrapper push">
+                    <div class="body">
+                        <!-- <span class="comment-icon"><i class="fa fa-comment"></i></span> -->
+                        <div class="col-xs-9 margin-bottom-1">
+                            <div class="ident-question">${raw(Processor.process(questionComment.comment))}</div>
+                            <div class="contrib-time"><prettytime:display date="${questionComment.dateCreated}"/> by <span class="comment-author"><to:userDisplayName user="${questionComment.user}" /></span></div>
+                        </div>
+                        <div class="col-md-3">
+                            <to:ifCanEditComment comment="${questionComment}">
+                                <ul class="list-inline pull-right">
+                                    <li class=" font-xsmall"><a class="btnRemoveComment" href="${g.createLink(controller: 'webService', action: 'deleteQuestionComment')}" title="Delete comment" comment-id="${questionComment.id}"><i class="fa fa-trash" title="Delete comment"></i></a></li>
+                                </ul>
+                            </to:ifCanEditComment>
+                        </div>
+                    </div>
+                </div>
+            </g:each>
+        </div>
+
+        <div class="form-group question-comment">
+            <g:render template="/common/markdownComment" model="${[
+                    label: 'Comments or questions',
+                    name: 'comment',
+                    placeholder: 'Enter your comments or questions',
+                    rows: 6
+            ]}"/>
         </div>
         <div class="form-group">
             <div class="col-sm-offset-3 col-sm-8">
@@ -36,31 +69,7 @@
         </div>
     </g:form>
 
-        <a aa-refresh-zones="commentsZone" id="refreshCommentsLink" href="${g.createLink(controller: 'question', action: 'questionComments', id: question.id)}" class="hidden"></a>
-
-    <g:if test="${!question.comments}">
-        <p>No comments posted yet.</p>
-    </g:if>
-    <div class="comment public_comment">
-    <g:each in="${question.comments}" var="questionComment">
-        <div class="comment-wrapper push">
-            <div class="body">
-                <!-- <span class="comment-icon"><i class="fa fa-comment"></i></span> -->
-                <div class="col-xs-9 margin-bottom-1">
-                    <div class="ident-question">${questionComment.comment}</div>
-                    <div class="contrib-time"><prettytime:display date="${questionComment.dateCreated}"/> by <span class="comment-author"><to:userDisplayName user="${questionComment.user}" /></span></div>
-                </div>
-                <div class="col-md-3">
-                    <to:ifCanEditComment comment="${questionComment}">
-                    <ul class="list-inline pull-right">
-                        <li class=" font-xsmall"><a class="btnRemoveComment" href="${g.createLink(controller: 'webService', action: 'deleteQuestionComment')}" title="Delete comment" comment-id="${questionComment.id}"><i class="fa fa-trash" title="Delete comment"></i></a></li>
-                    </ul>
-                    </to:ifCanEditComment>
-                </div>
-            </div>
-        </div>
-    </g:each>
-    </div>
+    <a aa-refresh-zones="commentsZone" id="refreshCommentsLink" href="${g.createLink(controller: 'question', action: 'questionComments', id: question.id)}" class="hidden"></a>
 
     <script>
         $('#addTagForm textarea').on('keypress', function(e){
