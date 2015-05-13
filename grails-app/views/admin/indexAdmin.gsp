@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta name="layout" content="toadmin"/>
+    <meta name="layout" content="to-admin"/>
     <title>Admin Dashboard - Reindex question</title>
 </head>
 <body class="content">

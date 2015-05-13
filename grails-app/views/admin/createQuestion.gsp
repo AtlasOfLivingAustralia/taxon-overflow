@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta name="layout" content="toadmin"/>
+    <meta name="layout" content="to-admin"/>
     <title>Create question | Atlas of Living Australia</title>
 </head>
 

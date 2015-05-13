@@ -166,5 +166,4 @@ class QuestionController {
             render template: 'answers', model: [answers: answers, question: question, user: user, answerVoteTotals: answerVoteTotals, userVotes: userVotes, userAnswers: userAnswers]
         }
     }
-
 }
