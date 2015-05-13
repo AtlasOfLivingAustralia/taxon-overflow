@@ -2,6 +2,8 @@ class UrlMappings {
 
 	static mappings = {
 
+        "/ping"(controller: 'common', action: 'ping')
+
         "/admin"(controller: "admin", action:"index")
 
         "/question/$id"(controller: "question", action: "view" ) {

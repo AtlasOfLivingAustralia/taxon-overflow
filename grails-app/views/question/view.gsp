@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta name="layout" content="main"/>
+    <meta name="layout" content="to-main"/>
     <title>Case #${question.id} | Community identification help | Atlas of Living Australia</title>
     <r:script>
         var GSP_VARS = {

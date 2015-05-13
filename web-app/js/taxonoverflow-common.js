@@ -33,11 +33,24 @@ $(function() {
         $(this).parent().parent().find('.textarea-edit').toggleClass('hidden');
         $(this).parent().parent().find('.textarea-preview').toggleClass('hidden');
     });
+
+    // Keep session alive every 10 minutes
+    $(function() { window.setInterval("keepSessionAlive()", 600000); });
 });
+
+function keepSessionAlive() {
+    $.get(tolib.keepSessionAliveUrl);
+}
 
 var tolib = {};
 
 (function(lib) {
+
+    lib.keepSessionAliveUrl = '';
+
+    lib.keepSessionAlive = function(){
+        $.get(lib.keepSessionAliveUrl);
+    };
 
     lib.areYouSureOptions = {};
 
