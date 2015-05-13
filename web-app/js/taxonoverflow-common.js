@@ -17,17 +17,29 @@ $(function() {
     });
 
     // Initialize tooltips for disable buttons or linkss
-    console.log('Tooltips = ' + $('.disable-btn-tooltip').length);
     $('body').tooltip({
         selector: '.disable-btn-tooltip',
         container: 'body',
         title: 'Log in to enable this feature'
-    })
+    });
+
+    // Keep session alive every 10 minutes
+    $(function() { window.setInterval("keepSessionAlive()", 600000); });
 });
+
+function keepSessionAlive() {
+    $.get(tolib.keepSessionAliveUrl);
+}
 
 var tolib = {};
 
 (function(lib) {
+
+    lib.keepSessionAliveUrl = '';
+
+    lib.keepSessionAlive = function(){
+        $.get(lib.keepSessionAliveUrl);
+    };
 
     lib.areYouSureOptions = {};
 
