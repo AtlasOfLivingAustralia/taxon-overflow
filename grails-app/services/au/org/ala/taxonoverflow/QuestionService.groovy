@@ -25,12 +25,6 @@ class QuestionService {
         return existing != null
     }
 
-    def deleteQuestion(Question question) {
-        if (question) {
-            question.delete()
-        }
-    }
-
     def bulkLoadFromEcodata(){
         def questionsLoaded = 0
         def source = Source.findByName("ecodata")
@@ -506,11 +500,11 @@ class QuestionService {
         }
 
         if (follow) {
-            user.addToFollowedQuestions(question)
+            user.followedQuestions.add(question)
             user.save(flush: true)
             return new ServiceResult<User>(success: true, messages: ["User with id: ${alaUserId} is now following question with id: ${questionId}"])
         } else {
-            user.removeFromFollowedQuestions(question)
+            user.followedQuestions.remove(question)
             user.save(flush: true)
             return new ServiceResult<User>(success: true, messages: ["User with id: ${alaUserId} is now not following question with id: ${questionId}"])
         }
@@ -526,5 +520,26 @@ class QuestionService {
     ServiceResult<List<Question>> searchByTagsAndDatedCriteria(Map searchParams) {
         List<String> questionIdList = elasticSearchService.searchByTagsAndDatedCriteria(searchParams)
         return new ServiceResult<List<Question>>(result: Question.findAllByIdInList(questionIdList) ?: [], success: true)
+    }
+
+    ServiceResult<Question> deleteQuestion(long questionId) {
+        Question question = Question.get(questionId);
+        ServiceResult<Question> serviceResult = new ServiceResult<>()
+        if (question) {
+            question.followers?.each {user ->
+                user.followedQuestions.remove(question)
+                user.save(flush: true)
+            }
+            question.followers?.clear()
+            Set<Answer> answers = Answer.findAllByQuestion(question)
+            Answer.deleteAll(answers)
+            question.delete(flush: true)
+            elasticSearchService.deleteQuestionFromIndex(question)
+            serviceResult.success(null, ["The question with id ${questionId} has been scheduled for removal."])
+        } else {
+            serviceResult.fail('The provided question id is not valid')
+        }
+
+        return serviceResult
     }
 }

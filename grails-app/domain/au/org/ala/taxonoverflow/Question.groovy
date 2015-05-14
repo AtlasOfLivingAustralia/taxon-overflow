@@ -18,6 +18,10 @@ class Question {
         occurrenceId nullable: false
         dateCreated nullable: true
         followers nullable: true
+        answers nullable: true
+        tags nullable: true
+        views nullable: true
+        comments nullable: true
     }
 
     static mapping = {

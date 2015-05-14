@@ -22,6 +22,9 @@
                 <li class="${pageProperty(name: 'page.menuItemId')?.toLowerCase() == 'dashboard' ? 'active' : ''}">
                     <a href="${createLink(controller: 'admin', action: 'dashboard')}">Dashboard</a>
                 </li>
+                <li class="${pageProperty(name: 'page.menuItemId')?.toLowerCase() == 'delete-question' ? 'active' : ''}">
+                    <a href="${createLink(controller: 'admin', action: 'deleteQuestion')}">Delete question</a>
+                </li>
                 <li class="${pageProperty(name: 'page.menuItemId')?.toLowerCase() == 're-index' ? 'active' : ''}">
                     <a href="${createLink(controller: 'admin', action: 'indexAdmin')}">Reindex questions</a>
                 </li>

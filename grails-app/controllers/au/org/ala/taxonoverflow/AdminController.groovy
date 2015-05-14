@@ -10,6 +10,7 @@ class AdminController {
 
     def elasticSearchService
     def authService
+    def questionService
 
     def index() {
         redirect(action:'dashboard')
@@ -95,5 +96,20 @@ class AdminController {
     def previewTagNotification() {
         QuestionTag questionTag = QuestionTag.get(params.int('id'))
         render template: '/notifications/newTagNotification', model: [questionTag: questionTag]
+    }
+
+    def deleteQuestion() {
+
+    }
+
+    def doDeleteQuestion(long questionId) {
+        ServiceResult<Question> serviceResult = questionService.deleteQuestion(questionId)
+        if (serviceResult.success) {
+            flash.put('success', serviceResult.messages)
+        } else {
+            flash.put('error', serviceResult.messages)
+        }
+
+        redirect action: 'deleteQuestion'
     }
 }

@@ -7,7 +7,6 @@ import static grails.async.Promises.waitAll
 
 class QuestionController {
 
-    def questionService
     def userService
     def authService
     def auditService
@@ -50,19 +49,6 @@ class QuestionController {
             return model
         }
 
-    }
-
-    def delete(int id) {
-        def question = Question.get(id)
-        if (question) {
-            log.debug("Deleting question ${question?.id}")
-            //question.delete(flush: true)
-            questionService.deleteQuestion(question)
-        } else {
-            log.debug("Could not find question: ${id}")
-            flash.message = "Failed to delete question id ${id}. Question not found."
-        }
-        redirect(action:'list')
     }
 
     def view(int id) {

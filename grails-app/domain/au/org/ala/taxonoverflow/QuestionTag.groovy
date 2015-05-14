@@ -2,7 +2,6 @@ package au.org.ala.taxonoverflow
 
 class QuestionTag {
 
-    Question question
     String tag
     Date dateCreated
 

@@ -11,7 +11,6 @@ import groovy.json.JsonSlurper
  */
 class Answer {
 
-    Question question
     User user
     Date dateCreated
     boolean accepted
