@@ -526,13 +526,13 @@ class QuestionService {
         Question question = Question.get(questionId);
         ServiceResult<Question> serviceResult = new ServiceResult<>()
         if (question) {
+            // We remove the followedQuestions references to this question first
             question.followers?.each {user ->
                 user.followedQuestions.remove(question)
                 user.save(flush: true)
             }
             question.followers?.clear()
-            Set<Answer> answers = Answer.findAllByQuestion(question)
-            Answer.deleteAll(answers)
+            // Now we can remove the question from the DB and the Elasticsearch index
             question.delete(flush: true)
             elasticSearchService.deleteQuestionFromIndex(question)
             serviceResult.success(question, ["The question with id \"${questionId}\" has been scheduled for removal."])

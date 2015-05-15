@@ -1,5 +1,6 @@
 package au.org.ala.taxonoverflow.services
 
+import au.org.ala.taxonoverflow.Answer
 import au.org.ala.taxonoverflow.Question
 import au.org.ala.taxonoverflow.QuestionService
 import au.org.ala.taxonoverflow.QuestionType
@@ -13,7 +14,9 @@ class QuestionServiceIntegrationSpec extends IntegrationSpec {
     UserService userService
     QuestionService questionService
 
+
     def setup() {
+
     }
 
     def cleanup() {
@@ -28,9 +31,15 @@ class QuestionServiceIntegrationSpec extends IntegrationSpec {
                 ["deleteMe"],
                 someUser,
                 null)
+        Question question = Question.first()
+        // For unknown reasons the answers are not loaded when executing the test, but the code works when deployed O_o
+        // So I need to do this as a workaround for the test to actually work
+        question.answers = [Answer.first()] as Set
+        question.save()
 
         when:
-        def result = questionService.deleteQuestion(serviceResult.result.id)
+        assert question.answers.size() == 1
+        def result = questionService.deleteQuestion(question.id)
 
         then:
         result.success == true
