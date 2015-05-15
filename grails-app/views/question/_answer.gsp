@@ -20,7 +20,7 @@
         </to:ifCanEditAnswer>
         <h4>${answer.accepted ? 'Accepted answer' : 'Answer'}</h4>
     </div>
-    <div class="panel-body">
+    <div class="panel-body answer-panel-body">
         <div class="row">
             <div class="col-md-8">
                 <div class="padding-bottom-1">

@@ -250,10 +250,6 @@ div.facets ul li span.label {
     margin-top: 1em;
 }
 
-.answer .panel-body {
-    padding-top: 0;
-}
-
 .voting-group .fa-thumbs-up {
     color: green;
 }
@@ -307,6 +303,14 @@ div.facets ul li span.label {
 
 .comment-author {
     color: #c44d34;
+}
+
+.panel-body.answer-panel-body {
+    padding-top: 0 !important;
+}
+
+.answer .comment-list {
+    padding: 1em .8em 0;
 }
 
 /** Activity summary */
