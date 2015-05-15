@@ -535,9 +535,9 @@ class QuestionService {
             Answer.deleteAll(answers)
             question.delete(flush: true)
             elasticSearchService.deleteQuestionFromIndex(question)
-            serviceResult.success(question, ["The question with id ${questionId} has been scheduled for removal."])
+            serviceResult.success(question, ["The question with id \"${questionId}\" has been scheduled for removal."])
         } else {
-            serviceResult.fail('The provided question id is not valid')
+            serviceResult.fail("The provided question id \"${questionId}\" is not valid")
         }
 
         return serviceResult

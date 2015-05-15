@@ -107,6 +107,7 @@ class AdminController {
         if (serviceResult.success) {
             flash.put('success', serviceResult.messages)
         } else {
+            flash.put('questionId', questionId)
             flash.put('error', serviceResult.messages)
         }
 
