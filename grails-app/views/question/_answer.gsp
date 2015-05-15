@@ -2,8 +2,8 @@
 <g:set var="answerProperties" value="${new groovy.json.JsonSlurper().parseText(answer.darwinCore)}"/>
 <div class="panel ${answer.accepted ? 'panel-success' : 'panel-default'} answer">
     <div class="panel-heading answer-panel">
-        <to:ifCanEditAnswer answer="${answer}">
         <ul class="list-inline pull-right">
+        <to:ifCanEditAnswer answer="${answer}">
             <li class=" font-xsmall">
                 <a href="${g.createLink(controller: 'dialog', action: 'editAnswerDialog', id: answer.id)}"
                    aa-refresh-zones="answerDialogZone"
@@ -16,13 +16,13 @@
                     <i class="fa fa-trash" title="Delete answer"></i>
                 </a>
             </li>
-        </ul>
         </to:ifCanEditAnswer>
+        </ul>
         <h4>${answer.accepted ? 'Accepted answer' : 'Answer'}</h4>
     </div>
     <div class="panel-body answer-panel-body">
         <div class="row">
-            <div class="col-md-8">
+            <div class="col-md-9">
                 <div class="padding-bottom-1">
                     <g:set var="questionTypeTemplate" value="${[
                             (QuestionType.IDENTIFICATION): 'questionType/identificationIssue',
@@ -32,7 +32,7 @@
                     <small>Posted by <span class="comment-author"><to:userDisplayName user="${answer.user}"/></span> <prettytime:display date="${answer.dateCreated}"/></small>
                 </div>
             </div>
-            <div class="col-md-offset-1 col-md-3 votes">
+            <div class="col-md-3 votes">
                 <g:set var="answerVoteTotal" value="${answerVoteTotals[answer]}"/>
                 <p><span class="stat__number">${answerVoteTotal ?: 0}</span> votes</p>
             </div>
