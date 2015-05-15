@@ -27,26 +27,31 @@
                 </div>
             </div>
         </g:if>
-        <div class="comment public_comment">
+        <section class="comment-list">
             <g:each in="${question.comments}" var="questionComment">
-                <div class="comment-wrapper push">
-                    <div class="body">
-                        <!-- <span class="comment-icon"><i class="fa fa-comment"></i></span> -->
-                        <div class="col-xs-9 margin-bottom-1">
-                            <div class="ident-question">${raw(Processor.process(questionComment.comment))}</div>
-                            <div class="contrib-time"><prettytime:display date="${questionComment.dateCreated}"/> by <span class="comment-author"><to:userDisplayName user="${questionComment.user}" /></span></div>
-                        </div>
-                        <div class="col-md-3">
-                            <to:ifCanEditComment comment="${questionComment}">
-                                <ul class="list-inline pull-right">
-                                    <li class=" font-xsmall"><a class="btnRemoveComment" href="${g.createLink(controller: 'webService', action: 'deleteQuestionComment')}" title="Delete comment" comment-id="${questionComment.id}"><i class="fa fa-trash" title="Delete comment"></i></a></li>
-                                </ul>
-                            </to:ifCanEditComment>
+                <article class="row">
+                    <div class="col-md-2 col-sm-2 hidden-xs">
+                        <figure class="thumbnail">
+                            <avatar:gravatar email="${to.userName(user: questionComment.user)}" class="img-responsive" alt="My Avatar" size="55" gravatarRating="G" defaultGravatarUrl="identicon"/>
+                        </figure>
+                    </div>
+                    <div class="col-md-10 col-sm-10 comment-padding">
+                        <div class="panel panel-default arrow left">
+                            <div class="panel-body">
+                                <header class="text-left">
+                                    <div class="comment-user"><i class="fa fa-user"></i> <span class="comment-author"><to:userDisplayName user="${questionComment.user}" /></span></div>
+                                    <time class="comment-date" datetime="16-12-2014 01:05"><i class="fa fa-clock-o"></i> <prettytime:display date="${questionComment.dateCreated}"/></time>
+                                </header>
+                                <div class="comment-post">
+                                    ${raw(Processor.process(questionComment.comment))}
+                                </div>
+
+                            </div>
                         </div>
                     </div>
-                </div>
+                </article>
             </g:each>
-        </div>
+        </section>
 
         <div class="form-group question-comment">
             <g:render template="/common/markdownComment" model="${[

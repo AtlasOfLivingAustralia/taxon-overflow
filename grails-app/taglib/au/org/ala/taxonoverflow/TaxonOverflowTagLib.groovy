@@ -95,6 +95,12 @@ class TaxonOverflowTagLib {
         out << userDetails?.displayName ?:  user?.alaUserId
     }
 
+    def userName = { attrs, body ->
+        def user = attrs.user as User
+        def userDetails = authService.getUserForUserId(user?.alaUserId)
+        out << userDetails?.userName
+    }
+
     def currentUserDisplayName = { attrs, body ->
         def user = userService.currentUser
         def userDetails = authService.getUserForUserId(user?.alaUserId)
