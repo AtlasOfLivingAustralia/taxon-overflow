@@ -11,7 +11,7 @@ modules = {
     }
 
     'taxonoverflow-common' {
-        dependsOn 'jquery', 'jquery.cookie', 'bootbox', 'marked'
+        dependsOn 'jquery', 'jquery.cookie', 'bootbox', 'marked', 'octicons'
         resource url:'js/taxonoverflow-common.js'  //this is temporary
         resource url:'css/taxonoverflow.css'
     }
@@ -34,6 +34,10 @@ modules = {
     'jquery.cookie' {
         dependsOn 'jquery'
         resource url: 'vendor/jquery.cookie/jquery.cookie.js'
+    }
+
+    'octicons' {
+        resource url: 'vendor/octicons/octicons.css'
     }
 
 }

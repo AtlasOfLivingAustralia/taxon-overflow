@@ -27,11 +27,11 @@ $(function() {
         $(this).parent().next().html(marked($(this).val()));
     });
 
-    $(document).on('click', '.markdown-field .btn-group button', function(e){
+    $(document).on('click', '.markdown-field .toggle-markdown a', function(e){
         e.preventDefault();
-        $('.markdown-field .btn-group button').toggleClass('active');
-        $(this).parent().parent().find('.textarea-edit').toggleClass('hidden');
-        $(this).parent().parent().find('.textarea-preview').toggleClass('hidden');
+        $('.markdown-field .toggle-markdown li').toggleClass('active');
+        $(this).closest('.markdown-field').find('.textarea-edit').toggleClass('hidden');
+        $(this).closest('.markdown-field').find('.textarea-preview').toggleClass('hidden');
     });
 
     // Keep session alive every 10 minutes

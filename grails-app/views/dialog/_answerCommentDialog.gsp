@@ -14,7 +14,6 @@
                     </div>
                     <div class="form-group" class="answer-comment">
                         <g:render template="/common/markdownComment" model="${[
-                                label: 'Comments',
                                 name: 'comment',
                                 placeholder: 'Enter your comment',
                                 rows: 8

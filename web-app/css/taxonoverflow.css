@@ -70,8 +70,27 @@ sup.beta-badge {
     border: solid 1px #d7d7d7;
 }
 
+.markdown-field .markdown-syntax-link {
+    display: inline-block;
+    font-size: .8em;
+    padding-right: 15px;
+    padding-top: 13px;
+}
+
+.markdown-field .markdown-syntax-link:hover {
+    text-decoration: none;
+}
+
+.markdown-field .panel-heading {
+    font-size: .9em !important;
+}
+
+.markdown-field .panel-heading .nav > li > a{
+    padding: 5px 10px;
+}
+
 .question-comment .textarea-preview {
-    min-height: 153px;
+    min-height: 150px;
 }
 
 .answer-comment .textarea-preview {

@@ -63,20 +63,17 @@
 
         <div class="form-group question-comment">
             <g:render template="/common/markdownComment" model="${[
-                    label: 'Comments or questions',
                     name: 'comment',
                     placeholder: 'Add your comments or questions',
                     rows: 6
             ]}"/>
-        </div>
-        <div class="form-group">
-            <div class="col-sm-offset-3 col-sm-8">
+            <div class="col-sm-offset-3 col-sm-9 text-right">
                 <g:if test="${disableAddCommentForm}">
-                <span class="disable-btn-tooltip" data-placement="bottom">
+                    <span class="disable-btn-tooltip" data-placement="bottom">
                 </g:if>
                 <button type="button" class="btn btn-primary btn-lg" id="submitCommentButton" ${disableAddCommentForm ? 'disabled="disabled"' : ''}><i class="fa fa-gear fa-spin hidden fa-2x"></i> Submit comment</button>
                 <g:if test="${disableAddCommentForm}">
-                </span>
+                    </span>
                 </g:if>
             </div>
         </div>
