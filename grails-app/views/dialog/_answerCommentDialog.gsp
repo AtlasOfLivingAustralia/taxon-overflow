@@ -12,11 +12,11 @@
                     <div class="alert alert-danger" role="alert" style="display: none;">
                         <span class="alertText"></span>
                     </div>
-                    <div class="form-group" class="answer-comment">
+                    <div class="form-group answer-comment">
                         <g:render template="/common/markdownComment" model="${[
                                 name: 'comment',
                                 placeholder: 'Enter your comment',
-                                rows: 8
+                                rows: 15
                         ]}"/>
                     </div>
                 </div>
