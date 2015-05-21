@@ -9,12 +9,14 @@
         };
 
         var images = [];
-        <g:each in="${occurrence.imageIds}" var="imageId">
+        <g:each in="${occurrence.imageIds}" var="imageId" >
             images.push("${imageId}");
         </g:each>
 
+        var imageServiceBaseUrl = '${occurrence.imageUrls[0] && occurrence.imageUrls[0].toString().indexOf('images-dev.ala.org.au') < 0 ? imagesServiceBaseUrl : 'http://images-dev.ala.org.au/'}';
         $(function() {
             taxonoverflow.init({
+                imageServiceBaseUrl: imageServiceBaseUrl,
                 images: images,
                 followURL: "${g.createLink(uri: '/ws/question/follow')}/${question.id}/${to.currentUserId()}",
                 unfollowURL: "${g.createLink(uri: '/ws/question/unfollow')}/${question.id}/${to.currentUserId()}"
@@ -98,9 +100,9 @@
                             <g:if test="${occurrence.imageIds?.size() > 1}">
                                 <div class="image-thumbs">
                                     <ul id="media-thumb-list">
-                                        <g:each in="${occurrence.imageIds}" var="imageId">
-                                            <li imageId="${imageId}" >
-                                                <img class="image-thumb" src="http://images.ala.org.au/image/proxyImageThumbnail?imageId=${imageId}" />
+                                        <g:each in="${occurrence.imageUrls}" var="imageUrl" status="index">
+                                            <li imageId="${occurrence.imageIds[index]}" >
+                                                <img class="image-thumb" src="${imageUrl}" />
                                             </li>
                                         </g:each>
                                     </ul>

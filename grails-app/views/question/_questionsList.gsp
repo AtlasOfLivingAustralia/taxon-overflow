@@ -1,7 +1,6 @@
 <aa:zone id="questionsListZone">
 <g:each in="${questions}" var="question" status="i">
     <g:set var="questionUrl" value="${createLink(controller:'question', action:'view', id: question.id)}" />
-    <g:set var="imageInfo" value="${imageInfoMap[question.occurrenceId]}" />
     <g:set var="acceptedAnswer" value="${acceptedAnswers[question]}" />
     <g:set var="occurrence" value="${occurrenceData[question.occurrenceId]}" />
     <div class="comment-wrapper push">
@@ -37,14 +36,22 @@
             </div>
             <div class="col-sm-2">
                 <g:if test="${occurrence.imageUrls}">
-                    <a href="${questionUrl}" class="thumbnail question-thumb">
-                        <img class="img-responsive" src="${occurrence.imageUrls[0]}" />
+                    <div class="thumbnail question-thumb">
+                        <img class="img-responsive thumbnail-zoom" src="${occurrence.imageUrls[0]}" />
+                        <a href="#" class="thumbnail-zoom"><span class="fa fa-search-plus fa-2x"></span></a>
                         <div class="caption">
                             Images: ${occurrence.imageUrls.size}
                         </div>
-                    </a>
+                        <ul class="img-gallery hidden">
+                            <g:each in="${occurrence.imageIds}" var="imageId" status="index">
+                                <g:set var="resolvedImagesServiceBaseUrl" value="${occurrence.imageUrls[index].toString().indexOf('images-dev.ala.org.au') < 0 ? imagesServiceBaseUrl : 'http://images-dev.ala.org.au/'}"/>
+                                <li img-url="${resolvedImagesServiceBaseUrl}image/proxyImage/${imageId}" thumb-url="${occurrence.imageUrls[index]}"></li>
+                            </g:each>
+                        </ul>
+                    </div>
                 </g:if>
             </div>
+
             <div class="col-sm-4">
                 <div class="contrib-stats">
                     <div class="cp">

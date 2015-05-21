@@ -1,6 +1,7 @@
 "use strict";
 
 var taxonoverflow = function() {
+    var imageServiceBaseUrl = "http://images.ala.org.au";
     var images = [];
     var followURL, unfollowURL;
 
@@ -61,20 +62,25 @@ var taxonoverflow = function() {
         });
 
         if (images.length > 0) {
-            imgvwr.viewImage($("#imageViewer"), images[0], {})
+            imgvwr.viewImage($("#imageViewer"), images[0], {
+                imageServiceBaseUrl: imageServiceBaseUrl
+            });
         }
 
         $(".image-thumb").click(function(e) {
             e.preventDefault();
             var imageId = $(this).closest("[imageId]").attr("imageId");
             if (imageId) {
-                imgvwr.viewImage($("#imageViewer"), imageId, {})
+                imgvwr.viewImage($("#imageViewer"), imageId, {
+                    imageServiceBaseUrl: imageServiceBaseUrl
+                });
             }
         });
     };
 
     return {
         init: function(options) {
+            imageServiceBaseUrl = options.imageServiceBaseUrl;
             images = options.images;
             followURL = options.followURL;
             unfollowURL = options.unfollowURL;

@@ -11,6 +11,7 @@ class QuestionController {
     def authService
     def auditService
     def elasticSearchService
+    def imagesWebService
 
     static int defaultPageSize = 20
 
@@ -40,9 +41,8 @@ class QuestionController {
             }
         }
 
-        Map imageInfoMap = [:]
-        Map model = [questions: searchResults?.list, totalCount: searchResults?.totalCount, imageInfoMap: imageInfoMap,
-                     acceptedAnswers: acceptedAnswers, occurrenceData: searchResults?.auxdata, tagsFollowing: userService.currentUser?.tags?.toList() ]
+        Map model = [questions: searchResults?.list, totalCount: searchResults?.totalCount, acceptedAnswers: acceptedAnswers,
+                     occurrenceData: searchResults?.auxdata, tagsFollowing: userService.currentUser?.tags?.toList(), imagesServiceBaseUrl: imagesWebService.getServiceUrl() ]
         if (AAUtils.isAjaxAnywhereRequest(request)) {
             render template: 'questionsList', model: model
         } else {
@@ -72,7 +72,8 @@ class QuestionController {
             auditService.logQuestionView(question)
 
             def viewCount = auditService.getQuestionViewCount(question)
-            return [question: question, imageIds: imageIds, occurrence: specimen, userId: alaUserId, acceptedAnswer: acceptedAnswer, viewCount: viewCount]
+            return [question: question, imageIds: imageIds, occurrence: specimen, userId: alaUserId,
+                    acceptedAnswer: acceptedAnswer, viewCount: viewCount, imagesServiceBaseUrl: imagesWebService.getServiceUrl()]
 
         } else {
             flash.message = "No such question, or question not specified"

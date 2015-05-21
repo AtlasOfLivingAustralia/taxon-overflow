@@ -36,6 +36,22 @@ var taxonoverflow = function() {
             $(this).toggleClass('label-default');
             updateFacetsFilter();
         });
+
+        $(document).on('click', '.question-thumb', function(e) {
+            e.preventDefault();
+            $(this).lightGallery({
+                dynamic:true,
+                mobileSrc:false,
+                showThumbByDefault: true,
+                dynamicEl: $(this).find('.img-gallery li').map(function() {
+                    console.log($(this).attr('img-url'));
+                    return {
+                        'src': $(this).attr('img-url'),
+                        'thumb': $(this).attr('thumb-url')
+                    };
+                }).get()
+            });
+        });
     };
 
     var updateFacetsFilter = function() {

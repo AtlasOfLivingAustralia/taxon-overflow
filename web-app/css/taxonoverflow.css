@@ -175,10 +175,11 @@ div.facets ul li span.label {
 }
 
 .question-thumb:hover {
-    border-color: #DA644E !important;
-    -webkit-box-shadow: 2px 2px 4px 0px rgba(218, 100, 78, 0.45);
-    -moz-box-shadow:    2px 2px 4px 0px rgba(218, 100, 78, 0.45);
-    box-shadow:         2px 2px 4px 0px rgba(218, 100, 78, 0.45);
+    border-color: #ddd !important;
+    -webkit-box-shadow: 3px 2px 5px 0px rgba(50, 50, 50, 0.75);
+    -moz-box-shadow:    3px 2px 5px 0px rgba(50, 50, 50, 0.75);
+    box-shadow:         3px 2px 5px 0px rgba(50, 50, 50, 0.75);
+    cursor: pointer;
 }
 
 .question-thumb img{
@@ -191,6 +192,38 @@ div.facets ul li span.label {
     font-weight: normal;
     padding: 5px 5px 0 !important;
     margin: 0;
+}
+
+.thumbnail:hover a.thumbnail-zoom {
+    opacity: 1;
+    top: 0;
+    z-index: 500;
+}
+
+.thumbnail:hover img.thumbnail-zoom {
+    opacity: .5;
+}
+
+a.thumbnail-zoom {
+    display: block;
+    position: absolute;
+    top: -100%;
+    opacity: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    text-align: center;
+    color: inherit;
+}
+
+a.thumbnail-zoom span {
+    opacity: 1;
+    color: #555555;
+    top: 45%;
+    position: absolute;
+    left: 0;
+    right: 0;
+    transform: translateY(-50%);
 }
 
 .contrib-stats .cp {

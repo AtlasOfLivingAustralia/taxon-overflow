@@ -73,7 +73,7 @@
                     <!-- <p>Tab panel content here - tab 1</p> -->
                     <div class="comment public_comment">
                         <g:render template="questionsList"
-                                  model="${[questions: questions, imageInfoMap: imageInfoMap, acceptedAnswers: acceptedAnswers, occurrenceData: occurrenceData, tagsFollowing: tagsFollowing]}"/>
+                                  model="${[questions: questions, acceptedAnswers: acceptedAnswers, occurrenceData: occurrenceData, tagsFollowing: tagsFollowing, imagesServiceBaseUrl: imagesServiceBaseUrl]}"/>
                     </div>
                 </div>
 
