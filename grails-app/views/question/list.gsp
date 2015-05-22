@@ -88,7 +88,7 @@
 
 <g:if test="${totalCount > au.org.ala.taxonoverflow.QuestionController.defaultPageSize}">
 <div class="row-fluid">
-    <nav class="col-sm-12 col-centered text-center">
+    <nav class="col-sm-12 text-center">
     <g:paginate total="${totalCount}" class="pagination-lg"/>
     </nav>
 </div>
