@@ -6,7 +6,7 @@ modules = {
     }
 
     'taxonoverflow-list' {
-        dependsOn 'taxonoverflow-common', 'ajaxanywhere', 'light-gallery'
+        dependsOn 'taxonoverflow-common', 'ajaxanywhere'
         resource url: 'js/taxonoverflow-list.js'
     }
 
@@ -38,11 +38,5 @@ modules = {
 
     'octicons' {
         resource url: 'vendor/octicons/octicons.css'
-    }
-
-    'light-gallery' {
-        dependsOn 'jquery'
-        resource url: 'vendor/light-gallery/css/lightGallery.css'
-        resource url: 'vendor/light-gallery/js/lightGallery.js'
     }
 }
