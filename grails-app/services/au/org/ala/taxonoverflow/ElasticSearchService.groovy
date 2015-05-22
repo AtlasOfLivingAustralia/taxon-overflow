@@ -4,6 +4,7 @@ import grails.converters.JSON
 import grails.plugins.rest.client.RestBuilder
 import grails.transaction.NotTransactional
 import groovy.json.JsonSlurper
+import groovyx.net.http.RESTClient
 import io.searchbox.client.JestClient
 import io.searchbox.client.JestClientFactory
 import io.searchbox.client.config.HttpClientConfig
@@ -11,9 +12,8 @@ import io.searchbox.core.Search
 import io.searchbox.core.SearchResult
 import net.sf.json.JSONObject
 import org.apache.http.HttpStatus
+import org.codehaus.groovy.grails.core.io.ResourceLocator
 import org.codehaus.groovy.grails.web.servlet.mvc.GrailsParameterMap
-import org.elasticsearch.action.admin.indices.delete.DeleteIndexRequest
-import org.elasticsearch.action.admin.indices.delete.DeleteIndexResponse
 import org.elasticsearch.action.admin.indices.refresh.RefreshRequest
 import org.elasticsearch.action.delete.DeleteResponse
 import org.elasticsearch.action.index.IndexResponse
@@ -40,10 +40,14 @@ class ElasticSearchService {
     private static Queue<IndexQuestionTask> _backgroundQueue = new ConcurrentLinkedQueue<IndexQuestionTask>()
 
     def grailsApplication
+    ResourceLocator grailsResourceLocator
+
     private Node node
     private Client client
     private JestClient jestClient
     private boolean isLoggingEnabled = false
+    private RESTClient restClient
+    private String customMappings
 
     @NotTransactional
     @PostConstruct
@@ -66,8 +70,19 @@ class ElasticSearchService {
                 .multiThreaded(true)
                 .build());
         jestClient = factory.getObject();
+        restClient = new RESTClient("http://localhost:9200/${INDEX_NAME}")
+        customMappings = retrieveCustomMappings()
         log.info("ElasticSearch service initialisation complete.")
 
+    }
+
+    /**
+     * Retrieves the file with the custom mappings required for the question type in the taxonoverflow index
+     * @return
+     */
+    String retrieveCustomMappings() {
+        def resource = grailsResourceLocator.findResourceForURI('classpath:/elasticsearch/taxonoverflow-mappings.json')
+        return resource.file.text
     }
 
     /**
@@ -120,7 +135,7 @@ class ElasticSearchService {
     @NotTransactional
     void deleteAllQuestionsFromIndex() {
         def ct = new CodeTimer("Deleting questions from index")
-        DeleteIndexResponse delete = client.admin().indices().delete(new DeleteIndexRequest(INDEX_NAME)).actionGet()
+        reinitialiseIndex()
         ct.stop(true)
     }
 
@@ -136,14 +151,7 @@ class ElasticSearchService {
     @NotTransactional
     def addMappings() {
         log.info("Adding index mappings")
-        def mappingJson = '''
-        {
-            "mappings": {
-            }
-        }
-        '''
-
-        def parsedJson = new JsonSlurper().parseText(mappingJson)
+        def parsedJson = new JsonSlurper().parseText(customMappings)
         def mappingsDoc = (parsedJson as JSON).toString()
         client.admin().indices().prepareCreate(INDEX_NAME).setSource(mappingsDoc).execute().actionGet()
         client.admin().cluster().prepareHealth().setWaitForYellowStatus().execute().actionGet()
@@ -170,9 +178,11 @@ class ElasticSearchService {
 
     @NotTransactional
     def initializeIndex() {
-        def response = new RestBuilder().post("http://localhost:9200/${INDEX_NAME}")
-        return response.responseEntity.statusCode.value == HttpStatus.SC_OK
+        addMappings()
+        reIndexAllQuestions()
+        return true
     }
+
 
     @NotTransactional
     def processIndexTaskQueue(int maxQuestions = 10000) {
@@ -234,7 +244,7 @@ class ElasticSearchService {
             def filter = FilterBuilders.andFilter()
             if (params.f?.tags) {
                 filter.add(FilterBuilders.orFilter(
-                        FilterBuilders.termsFilter("tags.tag", params.f.tags.split(','))
+                        FilterBuilders.termsFilter("tags.tag.raw", params.f.tags.split(','))
                 ))
             }
 
@@ -288,7 +298,7 @@ class ElasticSearchService {
     "size": 0,
     "aggs": {
         "tags": {
-            "terms": {"field": "tags.tag"}
+            "terms": {"field": "tags.tag.raw"}
         }
     }
 }
@@ -356,6 +366,27 @@ class ElasticSearchService {
             log.debug("ElasticSearch Query using REST API:\n ${query}")
         }
         jestClient.execute(search)
+    }
+
+    def reIndexAllQuestions() {
+        if (Question.count > 0) {
+            deleteAllQuestionsFromIndex()
+            def c = Question.createCriteria()
+            def questionIds = c.list {
+                projections {
+                    property("id")
+                }
+            }
+
+            questionIds?.each { questionId ->
+                scheduleQuestionIndexation(questionId)
+            }
+
+            return [success: true, questionCount: questionIds?.size() ?: 0]
+        } else {
+            return [success: true, questionCount: 0]
+        }
+
     }
 
 }
