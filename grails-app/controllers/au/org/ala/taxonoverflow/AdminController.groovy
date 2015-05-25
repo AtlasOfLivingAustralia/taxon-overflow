@@ -26,26 +26,7 @@ class AdminController {
     def createQuestionFromEcodata()  { render view: 'createQuestion', model:[source:'ecodata']}
 
     def ajaxReindexAll() {
-
-        if (Question.count > 0) {
-            elasticSearchService.deleteAllQuestionsFromIndex()
-            def c = Question.createCriteria()
-            def questionIds = c.list {
-                projections {
-                    property("id")
-                }
-            }
-
-            questionIds?.each { questionId ->
-                elasticSearchService.scheduleQuestionIndexation(questionId)
-            }
-
-            renderResults([success: true, questionCount: questionIds?.size() ?: 0])
-        } else {
-            renderResults([success: true, questionCount: 0])
-        }
-
-
+        renderResults(elasticSearchService.reIndexAllQuestions())
     }
 
     private renderResults(Object results, int responseCode = 200) {

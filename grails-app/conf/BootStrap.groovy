@@ -20,7 +20,7 @@ class BootStrap {
         // Check if the taxonoverflow elastic search index is available
         log.info("Checking if the Elasticsearch \"${ElasticSearchService.INDEX_NAME}\" index is ready...")
         if (!elasticSearchService.isIndexReady()) {
-            log.info("Initializing Elasticsearch \"${ElasticSearchService.INDEX_NAME}\\\" index...")
+            log.info("Initializing Elasticsearch \"${ElasticSearchService.INDEX_NAME}\" index...")
             if (elasticSearchService.initializeIndex()) {
                 log.info("Elasticsearch \"${ElasticSearchService.INDEX_NAME}\" index is now ready")
             } else {

@@ -1,7 +1,9 @@
 package au.org.ala.taxonoverflow.services
 
 import au.org.ala.taxonoverflow.ElasticSearchService
+import grails.converters.JSON
 import grails.test.spock.IntegrationSpec
+import groovy.json.JsonSlurper
 
 class ElasticSearchServiceIntegrationSpec extends IntegrationSpec {
 
@@ -31,5 +33,19 @@ class ElasticSearchServiceIntegrationSpec extends IntegrationSpec {
             results[0].label instanceof String
             results[0].count >= 1
         }
+    }
+
+    void "test custom mappings retrieval"() {
+        when:
+        def mappings = elasticSearchService.retrieveCustomMappings()
+
+        then:
+        mappings instanceof String
+
+        when:
+        new JsonSlurper().parseText(mappings) as JSON
+
+        then:
+        Exception exception = notThrown()
     }
 }
