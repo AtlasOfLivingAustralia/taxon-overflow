@@ -1,0 +1,37 @@
+.modal-fullscreen .modal-dialog {
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    margin: 0;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.modal-fullscreen .modal-dialog .modal-content {
+    height: 100%;
+    border-radius: 0;
+}
+
+#imgGallery .modal-body {
+    height: 85%;
+}
+
+#imgGallery .modal-footer {
+    height: 15%;
+}
+
+.elastislide-prev, .elastislide-next {
+    font-size: 0;
+}
+
+.elastislide-wrapper {
+    -webkit-box-shadow: 3px 2px 5px 0px rgba(50, 50, 50, 0.75);
+    -moz-box-shadow:    3px 2px 5px 0px rgba(50, 50, 50, 0.75);
+    box-shadow:         3px 2px 5px 0px rgba(50, 50, 50, 0.75);
+    border: 1px solid #ddd;
+}
+
+.carousel img {
+    max-height: 100px;
+}

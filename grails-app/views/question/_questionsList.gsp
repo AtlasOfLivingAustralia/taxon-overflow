@@ -36,18 +36,18 @@
             </div>
             <div class="col-sm-2">
                 <g:if test="${occurrence.imageUrls}">
-                    <div class="thumbnail question-thumb">
+                    <div class="thumbnail question-thumb" data-toggle="modal" data-target="#imgGallery">
                         <img class="img-responsive thumbnail-zoom" src="${occurrence.imageUrls[0]}" />
                         <a href="#" class="thumbnail-zoom"><span class="fa fa-search-plus fa-2x"></span></a>
                         <div class="caption">
                             Images: ${occurrence.imageUrls.size}
                         </div>
-                        <ul class="img-gallery hidden">
-                            <g:each in="${occurrence.imageIds}" var="imageId" status="index">
-                                <g:set var="resolvedImagesServiceBaseUrl" value="${occurrence.imageUrls[index].toString().indexOf('images-dev.ala.org.au') < 0 ? imagesServiceBaseUrl : 'http://images-dev.ala.org.au/'}"/>
-                                <li img-url="${resolvedImagesServiceBaseUrl}image/proxyImage/${imageId}" thumb-url="${occurrence.imageUrls[index]}"></li>
-                            </g:each>
-                        </ul>
+                        %{--<ul class="img-gallery hidden">--}%
+                            %{--<g:each in="${occurrence.imageIds}" var="imageId" status="index">--}%
+                                %{--<g:set var="resolvedImagesServiceBaseUrl" value="${occurrence.imageUrls[index].toString().indexOf('images-dev.ala.org.au') < 0 ? imagesServiceBaseUrl : 'http://images-dev.ala.org.au/'}"/>--}%
+                                %{--<li img-url="${resolvedImagesServiceBaseUrl}image/proxyImage/${imageId}" thumb-url="${occurrence.imageUrls[index]}"></li>--}%
+                            %{--</g:each>--}%
+                        %{--</ul>--}%
                     </div>
                 </g:if>
             </div>
@@ -87,4 +87,5 @@
 </script>
 </aa:zone>
 
+<g:render template="/common/imgGallery"/>
 <a aa-refresh-zones="questionsListZone" id="refreshQuestionsListLink" href="#" aa-js-before="href=taxonoverflow.searchUrl" class="hidden">Refresh</a>

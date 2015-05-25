@@ -6,13 +6,13 @@ modules = {
     }
 
     'taxonoverflow-list' {
-        dependsOn 'taxonoverflow-common', 'ajaxanywhere'
+        dependsOn 'taxonoverflow-common', 'ajaxanywhere', 'img-gallery'
         resource url: 'js/taxonoverflow-list.js'
     }
 
     'taxonoverflow-common' {
-        dependsOn 'jquery', 'jquery.cookie', 'bootbox', 'marked', 'octicons'
-        resource url:'js/taxonoverflow-common.js'  //this is temporary
+        dependsOn 'ala','jquery', 'jquery.cookie', 'bootbox', 'marked', 'octicons'
+        resource url:'js/taxonoverflow-common.js'
         resource url:'css/taxonoverflow.css'
     }
 
@@ -39,4 +39,12 @@ modules = {
     'octicons' {
         resource url: 'vendor/octicons/octicons.css'
     }
+
+    'img-gallery' {
+        resource url: 'vendor/img-gallery/css/elastislide.css'
+        resource url: 'vendor/img-gallery/css/img-gallery.css'
+
+        resource url: 'vendor/img-gallery/js/jquery.elastislide.js'
+    }
+
 }
