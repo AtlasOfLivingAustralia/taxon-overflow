@@ -1,0 +1,32 @@
+{
+  "mappings": {
+    "question": {
+      "properties": {
+        "tags": {
+          "properties": {
+            "dateCreated": {
+              "type": "date",
+              "format": "dateOptionalTime"
+            },
+            "questionId": {
+              "type": "long"
+            },
+            "tag": {
+              "type": "multi_field",
+              "fields": {
+                "tag": {
+                  "type": "string",
+                  "index": "analyzed"
+                },
+                "raw": {
+                  "type": "string",
+                  "index": "not_analyzed"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
