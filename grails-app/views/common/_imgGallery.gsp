@@ -34,7 +34,9 @@
                         $('#imgGallery').on('shown.bs.modal', function (e) {
                             $('#carousel').elastislide();
                         });
-
+                        $('#imgGallery').on('hidden.bs.modal', function (e) {
+                            $('#carousel').elastislide('destroy');
+                        });
                     });
                 </script>
             </div>

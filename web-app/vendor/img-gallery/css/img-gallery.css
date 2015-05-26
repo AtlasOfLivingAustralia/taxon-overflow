@@ -11,6 +11,7 @@
 .modal-fullscreen .modal-dialog .modal-content {
     height: 100%;
     border-radius: 0;
+    border: none;
 }
 
 #imgGallery .modal-body {
@@ -32,6 +33,10 @@
     border: 1px solid #ddd;
 }
 
-.carousel img {
+.elastislide-list {
+    text-align: left;
+}
+
+.elastislide-list img {
     max-height: 100px;
 }

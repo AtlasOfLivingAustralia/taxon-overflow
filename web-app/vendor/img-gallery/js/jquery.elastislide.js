@@ -24,7 +24,7 @@
 	*/
 	var $event = $.event,
 	$special,
-	resizeTimeout;
+	resizeTimeout, _currentInstance;
 
 	$special = $event.special.debouncedresize = {
 		setup: function() {
@@ -331,7 +331,7 @@
 			this.imgSize = { width : $img.outerWidth( true ), height : $img.outerHeight( true ) };
 
 			this._setItemsSize();
-			this.options.orientation === 'horizontal' ? this.$el.css( 'max-height', this.imgSize.height ) : this.$el.css( 'height', this.options.minItems * this.imgSize.height );
+			this.options.orientation === 'horizontal' ? this.$el.css( 'max-height', '90%' ) : this.$el.css( 'height', this.options.minItems * this.imgSize.height );
 
 			// add the controls
 			this._addControls();
@@ -474,7 +474,7 @@
 		_destroy : function( callback ) {
 			
 			this.$el.off( this.transEndEventName ).off( 'swipeleft swiperight swipeup swipedown .elastislide' );
-			$window.off( '.elastislide' );
+            //$.off( '.elastislide' );
 			
 			this.$el.css( {
 				'max-height' : 'none',
@@ -749,7 +749,7 @@
 	
 	$.fn.elastislide = function( options ) {
 
-		var self = $.data( this, 'elastislide' );
+		var self = _currentInstance;
 		
 		if ( typeof options === 'string' ) {
 			
@@ -788,8 +788,9 @@
 				}
 				else {
 
-					self = $.data( this, 'elastislide', new $.Elastislide( options, this ) );
-				
+					var instance = new $.Elastislide( options, this );
+                    _currentInstance = instance;
+					self = instance;
 				}
 
 			});

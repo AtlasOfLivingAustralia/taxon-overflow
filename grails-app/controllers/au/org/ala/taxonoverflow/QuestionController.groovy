@@ -67,7 +67,7 @@ class QuestionController {
             waitAll(specimenPromise)
 
             def specimen = specimenPromise.get()
-            def imageIds = specimen?.images*.filePath
+            def imageIds = specimen?.image*.filePath
 
             auditService.logQuestionView(question)
 
