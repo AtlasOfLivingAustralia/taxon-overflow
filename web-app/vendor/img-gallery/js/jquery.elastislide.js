@@ -474,7 +474,7 @@
 		_destroy : function( callback ) {
 			
 			this.$el.off( this.transEndEventName ).off( 'swipeleft swiperight swipeup swipedown .elastislide' );
-            //$.off( '.elastislide' );
+            _currentInstance = null;
 			
 			this.$el.css( {
 				'max-height' : 'none',
