@@ -87,4 +87,5 @@
 </script>
 </aa:zone>
 
+<g:render template="/common/imgGallery"/>
 <a aa-refresh-zones="questionsListZone" id="refreshQuestionsListLink" href="#" aa-js-before="href=taxonoverflow.searchUrl" class="hidden">Refresh</a>
