@@ -5,6 +5,7 @@ var taxonoverflow = function() {
     var searchUrl = '';
     var activePopoverTag = '';
     var counter;
+    var imageServiceBaseUrl = "http://images.ala.org.au";
 
     var initEventHandlers = function() {
         $(document).on('click', "#btnQuestionSearch", function(e) {
@@ -36,6 +37,32 @@ var taxonoverflow = function() {
             $(this).toggleClass('label-default');
             updateFacetsFilter();
         });
+
+        $(document).on('click', '.question-thumb', function() {
+            if ($(this).find('.sp-slide').length > 0 ) {
+                $('#carousel').html($(this).find('.thumbnails'));
+                var firstImage = $('#carousel .thumbnails .sp-thumbnail').length > 0 ? $('#carousel .thumbnails .sp-thumbnail').first().attr('img-id') : null;
+
+                $('#imgGalleryModal').modal('show').on('shown.bs.modal', function (e) {
+                    imgvwr.viewImage($("#imageViewer"), firstImage, {
+                        imageServiceBaseUrl: imageServiceBaseUrl
+                    });
+                    $('#carousel').sliderPro({
+                        width: $(window).width() - 100,
+                        height: '100%',
+                        fade: true,
+                        arrows: false,
+                        buttons: false,
+                        fullScreen: false,
+                        shuffle: false,
+                        thumbnailArrows: true,
+                        autoplay: false
+                    });
+                }).on('hidden.bs.modal', function (e) {
+                    $('#carousel').sliderPro('destroy');
+                });
+            }
+        });
     };
 
     var updateFacetsFilter = function() {
@@ -65,6 +92,7 @@ var taxonoverflow = function() {
             };
 
             searchUrl = options.searchUrl;
+            imageServiceBaseUrl = options.imageServiceBaseUrl;
 
             initEventHandlers();
         },

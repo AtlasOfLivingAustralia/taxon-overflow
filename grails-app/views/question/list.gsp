@@ -4,9 +4,13 @@
     <meta name="layout" content="to-main"/>
     <title>Help identify | Atlas of Living Australia</title>
     <r:script>
+        var imageServiceBaseUrl = '${imagesServiceBaseUrl}';
+
         $(function() {
             var searchUrl = "${raw(createLink(action: 'list', params: [sort: params.sort, order: params.order, offset: 0, max: params.max]))}";
-            taxonoverflow.init({searchUrl: searchUrl});
+            taxonoverflow.init({
+                searchUrl: searchUrl,
+                imageServiceBaseUrl: imageServiceBaseUrl});
         });
     </r:script>
     <r:require module="taxonoverflow-list"/>
