@@ -21,22 +21,3 @@
 #imgGallery .modal-footer {
     height: 15%;
 }
-
-.elastislide-prev, .elastislide-next {
-    font-size: 0;
-}
-
-.elastislide-wrapper {
-    -webkit-box-shadow: 3px 2px 5px 0px rgba(50, 50, 50, 0.75);
-    -moz-box-shadow:    3px 2px 5px 0px rgba(50, 50, 50, 0.75);
-    box-shadow:         3px 2px 5px 0px rgba(50, 50, 50, 0.75);
-    border: 1px solid #ddd;
-}
-
-.elastislide-list {
-    text-align: left;
-}
-
-.elastislide-list img {
-    max-height: 100px;
-}

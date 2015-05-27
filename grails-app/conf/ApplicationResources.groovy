@@ -41,10 +41,8 @@ modules = {
     }
 
     'img-gallery' {
-        resource url: 'vendor/img-gallery/css/elastislide.css'
         resource url: 'vendor/img-gallery/css/img-gallery.css'
 
-        resource url: 'vendor/img-gallery/js/jquery.elastislide.js'
     }
 
 }
