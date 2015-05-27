@@ -282,7 +282,7 @@ a.thumbnail-zoom span {
     top: -5px;
 }
 
-#commentsPane {
+#answersPane, #commentsPane {
     margin-top: 1em;
 }
 
