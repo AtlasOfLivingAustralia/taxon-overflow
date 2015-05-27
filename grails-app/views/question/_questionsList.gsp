@@ -45,7 +45,7 @@
                         %{--<ul class="img-gallery hidden">--}%
                             %{--<g:each in="${occurrence.imageIds}" var="imageId" status="index">--}%
                                 %{--<g:set var="resolvedImagesServiceBaseUrl" value="${occurrence.imageUrls[index].toString().indexOf('images-dev.ala.org.au') < 0 ? imagesServiceBaseUrl : 'http://images-dev.ala.org.au/'}"/>--}%
-                                %{--<li img-url="${resolvedImagesServiceBaseUrl}image/proxyImage/${imageId}" thumb-url="${occurrence.imageUrls[index]}"></li>--}%
+                                %{--<li img-url="${resolvedImagesServiceBaseUrl}image/proxyImageThumbnailLarge/${imageId}" thumb-url="${occurrence.imageUrls[index]}"></li>--}%
                             %{--</g:each>--}%
                         %{--</ul>--}%
                     </div>
@@ -87,5 +87,4 @@
 </script>
 </aa:zone>
 
-<g:render template="/common/imgGallery"/>
 <a aa-refresh-zones="questionsListZone" id="refreshQuestionsListLink" href="#" aa-js-before="href=taxonoverflow.searchUrl" class="hidden">Refresh</a>

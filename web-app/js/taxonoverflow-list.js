@@ -51,7 +51,8 @@ var taxonoverflow = function() {
     };
 
     var doSearch = function() {
-        window.location.href = searchUrl + "&f.tags=" + facetsFilter.tags.join(',') + "&f.types=" + facetsFilter.types.join(',');;
+        var q = $("#txtSearch").val();
+        window.location.href = searchUrl + "&q=" + encodeURIComponent(q) + "&f.tags=" + facetsFilter.tags.join(',') + "&f.types=" + facetsFilter.types.join(',');;
     };
 
     return {
