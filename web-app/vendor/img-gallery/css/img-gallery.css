@@ -16,18 +16,17 @@
 
 #imgGalleryModal .modal-body {
     height: 85%;
+    background-color: #222;
 }
 
 #imgGalleryModal .modal-footer {
     height: 15%;
+    background-color: #222;
 }
 
 #imgGalleryModal #imageViewer {
     height: 100%;
-    -webkit-box-shadow: 3px 2px 5px 0px rgba(50, 50, 50, 0.75);
-    -moz-box-shadow:    3px 2px 5px 0px rgba(50, 50, 50, 0.75);
-    box-shadow:         3px 2px 5px 0px rgba(50, 50, 50, 0.75);
-    margin: 0 18px;
+    margin: 0 20px;
 }
 
 .sp-selected-thumbnail {
@@ -36,11 +35,10 @@
 
 #imgGalleryModal #carousel {
     padding: 1em;
-    -webkit-box-shadow: 3px 2px 5px 0px rgba(50, 50, 50, 0.75);
-    -moz-box-shadow:    3px 2px 5px 0px rgba(50, 50, 50, 0.75);
-    box-shadow:         3px 2px 5px 0px rgba(50, 50, 50, 0.75);
     background-color: #ddd;
     border: 1px solid #ddd;
+    border-radius: 4px;
+    min-height: 85px;
 }
 
 @media (min-height: 620px) and (max-height: 900px) {

@@ -45,6 +45,7 @@
                         <div class="sp-slides thumbnails" style="display: none;">
                             <g:each in="${occurrence.imageIds}" var="imageId" status="index">
                             <div class="sp-slide">
+                                <img class="sp-image" />
                                 <img class="sp-thumbnail" src="${occurrence.imageUrls[index]}" img-id="${imageId}"/>
                             </div>
                             </g:each>

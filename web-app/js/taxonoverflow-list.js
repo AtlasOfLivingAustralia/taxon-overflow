@@ -6,6 +6,7 @@ var taxonoverflow = function() {
     var activePopoverTag = '';
     var counter;
     var imageServiceBaseUrl = "http://images.ala.org.au";
+    var gallery;
 
     var initEventHandlers = function() {
         $(document).on('click', "#btnQuestionSearch", function(e) {
@@ -38,16 +39,23 @@ var taxonoverflow = function() {
             updateFacetsFilter();
         });
 
-        $(document).on('click', '.question-thumb', function() {
-            if ($(this).find('.sp-slide').length > 0 ) {
-                $('#carousel').html($(this).find('.thumbnails'));
-                var firstImage = $('#carousel .thumbnails .sp-thumbnail').length > 0 ? $('#carousel .thumbnails .sp-thumbnail').first().attr('img-id') : null;
 
-                $('#imgGalleryModal').modal('show').on('shown.bs.modal', function (e) {
-                    imgvwr.viewImage($("#imageViewer"), firstImage, {
-                        imageServiceBaseUrl: imageServiceBaseUrl
-                    });
-                    $('#carousel').sliderPro({
+
+        $(document).on('click', '.question-thumb', function() {
+            console.log('# od slides =' + $(this).find('.sp-slide').length);
+            if ($(this).find('.sp-slide').length > 0 ) {
+                $('#carousel').html($(this).find('.thumbnails').clone());
+
+                var firstImageId = $('#carousel').find('.thumbnails > .sp-slide > .sp-thumbnail').length > 0 ? $('#carousel').find('.thumbnails > .sp-slide > .sp-thumbnail').first().attr('img-id') : null;
+
+                $('#imgGalleryModal').on('shown.bs.modal', function (e) {
+
+
+                    if(gallery) {
+                        $('#carousel').sliderPro('destroy');
+                    }
+
+                    gallery = $('#carousel').sliderPro({
                         width: $(window).width() - 100,
                         height: '100%',
                         fade: true,
@@ -56,11 +64,31 @@ var taxonoverflow = function() {
                         fullScreen: false,
                         shuffle: false,
                         thumbnailArrows: true,
-                        autoplay: false
+                        autoplay: false,
+                        init: function() {
+                            imgvwr.viewImage($("#imageViewer"), firstImageId, {
+                                imageServiceBaseUrl: imageServiceBaseUrl
+                            });
+                        },
+                        gotoThumbnail: function() {
+                            var selectedImageId = $('#carousel').find('.sp-selected-thumbnail > img').attr('img-id');
+                            imgvwr.viewImage($("#imageViewer"), selectedImageId, {
+                                imageServiceBaseUrl: imageServiceBaseUrl
+                            });
+                        }
+
                     });
+
                 }).on('hidden.bs.modal', function (e) {
+                    imgvwr.getViewer().eachLayer(function(layer) {
+                        imgvwr.getViewer().removeLayer(layer);
+                    });
+                    $('#carousel').html("");
+                    $('#carousel').sliderPro('update');
                     $('#carousel').sliderPro('destroy');
                 });
+
+                $('#imgGalleryModal').modal('show');
             }
         });
     };

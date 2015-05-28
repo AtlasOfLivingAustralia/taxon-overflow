@@ -344,7 +344,7 @@
 
 				if ( typeof $slide.attr( 'data-init' ) === 'undefined' ) {
 					that._createSlide( index, $slide );
-				} else {
+				} else if (that.slides[ index ]){
 					that.slides[ index ].setIndex( index );
 				}
 
@@ -2823,7 +2823,7 @@
 		// and fire an event when all the layers from the slide become visible.
 		showLayers: function( index ) {
 			var that = this,
-				animatedLayers = this.slides[ index ].animatedLayers,
+				animatedLayers = this.slides[ index ] ? this.slides[ index ].animatedLayers : undefined,
 				layerCounter = 0;
 
 			if ( typeof animatedLayers === 'undefined' ) {
