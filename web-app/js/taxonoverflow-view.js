@@ -62,18 +62,18 @@ var taxonoverflow = function() {
         });
 
         if (images.length > 0) {
-            imgvwr.viewImage($("#imageViewer"), images[0], {
+            imgvwr.viewImage($("#imageViewer"), images[0], $.extend({
                 imageServiceBaseUrl: imageServiceBaseUrl
-            });
+            }, tolib.viewerOptions));
         }
 
         $(".image-thumb").click(function(e) {
             e.preventDefault();
             var imageId = $(this).closest("[imageId]").attr("imageId");
             if (imageId) {
-                imgvwr.viewImage($("#imageViewer"), imageId, {
+                imgvwr.viewImage($("#imageViewer"), imageId, $.extend({
                     imageServiceBaseUrl: imageServiceBaseUrl
-                });
+                }, tolib.viewerOptions));
             }
         });
     };

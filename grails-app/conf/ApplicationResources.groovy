@@ -1,7 +1,7 @@
 modules = {
 
     'taxonoverflow-view' {
-        dependsOn 'viewer', 'flexisel', 'leaflet', 'ajaxanywhere', 'taxonoverflow-common'
+        dependsOn 'image-viewer', 'flexisel', 'ajaxanywhere', 'taxonoverflow-common'
         resource url: 'js/taxonoverflow-view.js'
     }
 
@@ -41,7 +41,7 @@ modules = {
     }
 
     'img-gallery' {
-        dependsOn 'viewer'
+        dependsOn 'image-viewer'
         resource url: 'vendor/img-gallery/lib/slider-pro/css/slider-pro.css'
         resource url: 'vendor/img-gallery/css/img-gallery.css'
 

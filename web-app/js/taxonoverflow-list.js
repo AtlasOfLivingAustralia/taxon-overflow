@@ -66,23 +66,21 @@ var taxonoverflow = function() {
                         thumbnailArrows: true,
                         autoplay: false,
                         init: function() {
-                            imgvwr.viewImage($("#imageViewer"), firstImageId, {
+                            imgvwr.viewImage($("#imageViewer"), firstImageId, $.extend({
                                 imageServiceBaseUrl: imageServiceBaseUrl
-                            });
+                            }, tolib.viewerOptions));
                         },
                         gotoThumbnail: function() {
                             var selectedImageId = $('#carousel').find('.sp-selected-thumbnail > img').attr('img-id');
-                            imgvwr.viewImage($("#imageViewer"), selectedImageId, {
+                            imgvwr.viewImage($("#imageViewer"), selectedImageId, $.extend({
                                 imageServiceBaseUrl: imageServiceBaseUrl
-                            });
+                            }, tolib.viewerOptions));
                         }
 
                     });
 
                 }).on('hidden.bs.modal', function (e) {
-                    imgvwr.getViewer().eachLayer(function(layer) {
-                        imgvwr.getViewer().removeLayer(layer);
-                    });
+                    imgvwr.removeCurrentImage();
                     $('#carousel').html("");
                     $('#carousel').sliderPro('update');
                     $('#carousel').sliderPro('destroy');

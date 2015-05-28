@@ -46,6 +46,14 @@ var tolib = {};
 
 (function(lib) {
 
+    lib.viewerOptions = {
+        addDownloadButton: false,
+        addDrawer: false,
+        addSubImageToggle: false,
+        addCalibration: false,
+        addImageInfo: true
+    };
+
     lib.keepSessionAliveUrl = '';
 
     lib.keepSessionAlive = function(){
