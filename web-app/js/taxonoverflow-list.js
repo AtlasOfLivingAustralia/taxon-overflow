@@ -6,7 +6,7 @@ var taxonoverflow = function() {
     var activePopoverTag = '';
     var counter;
     var imageServiceBaseUrl = "http://images.ala.org.au";
-    var gallery;
+    var devImageServiceBaseUrl = "http://images-dev.ala.org.au";
 
     var initEventHandlers = function() {
         $(document).on('click', "#btnQuestionSearch", function(e) {
@@ -39,23 +39,20 @@ var taxonoverflow = function() {
             updateFacetsFilter();
         });
 
-
-
         $(document).on('click', '.question-thumb', function() {
-            console.log('# od slides =' + $(this).find('.sp-slide').length);
             if ($(this).find('.sp-slide').length > 0 ) {
                 $('#carousel').html($(this).find('.thumbnails').clone());
-
-                var firstImageId = $('#carousel').find('.thumbnails > .sp-slide > .sp-thumbnail').length > 0 ? $('#carousel').find('.thumbnails > .sp-slide > .sp-thumbnail').first().attr('img-id') : null;
+                var images = $('#carousel').find('.thumbnails > .sp-slide > .sp-thumbnail');
+                var resolvedImageServiceBaseUrl = images && images.length > 0 && images.first().attr('src').toString().indexOf("images-dev.ala.org.au") >= 0 ? devImageServiceBaseUrl : imageServiceBaseUrl;
+                var firstImageId = images && images.length > 0 ? images.first().attr('img-id') : null;
+                imgvwr.removeCurrentImage();
+                imgvwr.viewImage($("#imageViewer"), firstImageId, $.extend({
+                    imageServiceBaseUrl: resolvedImageServiceBaseUrl,
+                    closeControlContent: '<i class="fa fa-times" data-dismiss="modal" aria-label="Close" style="line-height:1.65;"></i>'
+                }, tolib.viewerOptions));
 
                 $('#imgGalleryModal').on('shown.bs.modal', function (e) {
-
-
-                    if(gallery) {
-                        $('#carousel').sliderPro('destroy');
-                    }
-
-                    gallery = $('#carousel').sliderPro({
+                    $('#carousel').sliderPro({
                         width: $(window).width() - 100,
                         height: '100%',
                         fade: true,
@@ -65,23 +62,20 @@ var taxonoverflow = function() {
                         shuffle: false,
                         thumbnailArrows: true,
                         autoplay: false,
-                        init: function() {
-                            imgvwr.viewImage($("#imageViewer"), firstImageId, $.extend({
-                                imageServiceBaseUrl: imageServiceBaseUrl
-                            }, tolib.viewerOptions));
-                        },
                         gotoThumbnail: function() {
+                            imgvwr.removeCurrentImage();
                             var selectedImageId = $('#carousel').find('.sp-selected-thumbnail > img').attr('img-id');
                             imgvwr.viewImage($("#imageViewer"), selectedImageId, $.extend({
-                                imageServiceBaseUrl: imageServiceBaseUrl
+                                imageServiceBaseUrl: resolvedImageServiceBaseUrl,
+                                closeControlContent: '<i class="fa fa-times" data-dismiss="modal" aria-label="Close" style="line-height:1.65;"></i>'
                             }, tolib.viewerOptions));
                         }
-
                     });
+                });
 
-                }).on('hidden.bs.modal', function (e) {
+                $('#imgGalleryModal').on('hidden.bs.modal', function (e) {
                     imgvwr.removeCurrentImage();
-                    $('#carousel').html("");
+                    $('#carousel').empty();
                     $('#carousel').sliderPro('update');
                     $('#carousel').sliderPro('destroy');
                 });
@@ -107,6 +101,8 @@ var taxonoverflow = function() {
         var q = $("#txtSearch").val();
         window.location.href = searchUrl + "&q=" + encodeURIComponent(q) + "&f.tags=" + facetsFilter.tags.join(',') + "&f.types=" + facetsFilter.types.join(',');;
     };
+
+
 
     return {
         counter: counter,
