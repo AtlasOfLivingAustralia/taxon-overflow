@@ -6,9 +6,7 @@
                 <div id="imageViewer" class="thumbnail"></div>
             </div>
             <div class="modal-footer">
-                <div id="carousel" class="slider-pro">
-                    %{--Dynamic Content--}%
-                </div>
+                <div id="carousel" class="slider-pro"></div>
             </div>
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
