@@ -93,19 +93,20 @@
 
                     <g:set var="coordinates" value="${au.org.ala.taxonoverflow.OccurrenceHelper.getCoordinates(occurrence)}" />
                     <g:if test="${occurrence.imageIds || coordinates}">
-                        <div id="imagePlaceHolder" class="placeholder">
+                        <div id="imagePlaceHolder" class="placeholder img-gallery">
                             <g:if test="${occurrence.imageIds}">
                                 <div id="imageViewer" class="img-responsive"></div>
                             </g:if>
                             <g:if test="${occurrence.imageIds?.size() > 1}">
-                                <div class="image-thumbs">
-                                    <ul id="media-thumb-list">
-                                        <g:each in="${occurrence.imageUrls}" var="imageUrl" status="index">
-                                            <li imageId="${occurrence.imageIds[index]}" >
-                                                <img class="image-thumb" src="${imageUrl}" />
-                                            </li>
+                                <div id="carousel" class="slider-pro">
+                                    <div class="sp-slides thumbnails" style="display: none;">
+                                        <g:each in="${occurrence.imageIds}" var="imageId" status="index">
+                                            <div class="sp-slide">
+                                                <img class="sp-image" />
+                                                <img class="sp-thumbnail" src="${occurrence.imageUrls[index]}" img-id="${imageId}"/>
+                                            </div>
                                         </g:each>
-                                    </ul>
+                                    </div>
                                 </div>
                             </g:if>
                         </div>

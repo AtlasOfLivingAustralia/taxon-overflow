@@ -1,7 +1,7 @@
 modules = {
 
     'taxonoverflow-view' {
-        dependsOn 'image-viewer', 'flexisel', 'ajaxanywhere', 'taxonoverflow-common'
+        dependsOn 'image-viewer', 'ajaxanywhere', 'taxonoverflow-common', 'img-gallery'
         resource url: 'js/taxonoverflow-view.js'
     }
 
@@ -23,12 +23,6 @@ modules = {
     bootbox {
         dependsOn 'jquery'
         resource url: 'vendor/bootbox/bootbox.js'
-    }
-
-    flexisel {
-        dependsOn 'jquery'
-        resource url:'vendor/flexisel/jquery.flexisel.js'
-        resource url:'vendor/flexisel/style.css'
     }
 
     'jquery.cookie' {

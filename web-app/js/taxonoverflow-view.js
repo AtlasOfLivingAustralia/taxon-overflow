@@ -37,27 +37,22 @@ var taxonoverflow = function() {
     };
 
     var initImagesGallery = function() {
-        $("#media-thumb-list").flexisel({
-            visibleItems: 4,
-            animationSpeed: 200,
-            autoPlay: false,
-            autoPlaySpeed: 3000,
-            pauseOnHover: true,
-            clone:false,
-            enableResponsiveBreakpoints: true,
-            responsiveBreakpoints: {
-                portrait: {
-                    changePoint:480,
-                    visibleItems: 2
-                },
-                landscape: {
-                    changePoint:640,
-                    visibleItems: 3
-                },
-                tablet: {
-                    changePoint:768,
-                    visibleItems: 4
-                }
+        $('#carousel').sliderPro({
+            width: '100%',
+            height: '100%',
+            fade: true,
+            arrows: false,
+            buttons: false,
+            fullScreen: false,
+            shuffle: false,
+            thumbnailArrows: true,
+            autoplay: false,
+            gotoThumbnail: function() {
+                imgvwr.removeCurrentImage();
+                var selectedImageId = $('#carousel').find('.sp-selected-thumbnail > img').attr('img-id');
+                imgvwr.viewImage($("#imageViewer"), selectedImageId, $.extend({
+                    imageServiceBaseUrl: imageServiceBaseUrl
+                }, tolib.viewerOptions));
             }
         });
 
@@ -66,16 +61,6 @@ var taxonoverflow = function() {
                 imageServiceBaseUrl: imageServiceBaseUrl
             }, tolib.viewerOptions));
         }
-
-        $(".image-thumb").click(function(e) {
-            e.preventDefault();
-            var imageId = $(this).closest("[imageId]").attr("imageId");
-            if (imageId) {
-                imgvwr.viewImage($("#imageViewer"), imageId, $.extend({
-                    imageServiceBaseUrl: imageServiceBaseUrl
-                }, tolib.viewerOptions));
-            }
-        });
     };
 
     return {
