@@ -39,7 +39,7 @@ modules = {
         resource url: 'vendor/img-gallery/lib/slider-pro/css/slider-pro.css'
         resource url: 'vendor/img-gallery/css/img-gallery.css'
 
-        resource url: 'vendor/img-gallery/lib/slider-pro/js/jquery.sliderPro.js'
+        resource url: 'vendor/img-gallery/lib/slider-pro/js/jquery.sliderPro.custom.js'
     }
 
 }

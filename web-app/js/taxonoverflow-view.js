@@ -37,6 +37,14 @@ var taxonoverflow = function() {
     };
 
     var initImagesGallery = function() {
+        var customViewerOptions = {
+            imageServiceBaseUrl: imageServiceBaseUrl,
+            galleryOptions: {
+                enableGalleryMode: true,
+                showFullScreenControls: true
+            }
+        };
+
         $('#carousel').sliderPro({
             width: '100%',
             height: '100%',
@@ -50,16 +58,12 @@ var taxonoverflow = function() {
             gotoThumbnail: function() {
                 imgvwr.removeCurrentImage();
                 var selectedImageId = $('#carousel').find('.sp-selected-thumbnail > img').attr('img-id');
-                imgvwr.viewImage($("#imageViewer"), selectedImageId, $.extend({
-                    imageServiceBaseUrl: imageServiceBaseUrl
-                }, tolib.viewerOptions));
+                imgvwr.viewImage($("#imageViewer"), selectedImageId, $.extend(customViewerOptions, tolib.viewerOptions));
             }
         });
 
         if (images.length > 0) {
-            imgvwr.viewImage($("#imageViewer"), images[0], $.extend({
-                imageServiceBaseUrl: imageServiceBaseUrl
-            }, tolib.viewerOptions));
+            imgvwr.viewImage($("#imageViewer"), images[0], $.extend(customViewerOptions, tolib.viewerOptions));
         }
     };
 

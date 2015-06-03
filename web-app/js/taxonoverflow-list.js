@@ -45,11 +45,18 @@ var taxonoverflow = function() {
                 var images = $('#carousel').find('.thumbnails > .sp-slide > .sp-thumbnail');
                 var resolvedImageServiceBaseUrl = images && images.length > 0 && images.first().attr('src').toString().indexOf("images-dev.ala.org.au") >= 0 ? devImageServiceBaseUrl : imageServiceBaseUrl;
                 var firstImageId = images && images.length > 0 ? images.first().attr('img-id') : null;
-                imgvwr.removeCurrentImage();
-                imgvwr.viewImage($("#imageViewer"), firstImageId, $.extend({
+
+                var customViewerOptions = {
                     imageServiceBaseUrl: resolvedImageServiceBaseUrl,
-                    closeControlContent: '<i class="fa fa-times" data-dismiss="modal" aria-label="Close" style="line-height:1.65;"></i>'
-                }, tolib.viewerOptions));
+                    galleryOptions: {
+                        enableGalleryMode: true,
+                        closeControlContent: '<i class="fa fa-times" data-dismiss="modal" aria-label="Close" style="line-height:1.65;"></i>',
+                        showFullScreenControls: true
+                    }
+                };
+
+                imgvwr.removeCurrentImage();
+                imgvwr.viewImage($("#imageViewer"), firstImageId, $.extend(customViewerOptions, tolib.viewerOptions));
 
                 $('#imgGalleryModal').on('shown.bs.modal', function (e) {
                     $('#carousel').sliderPro({
@@ -65,10 +72,7 @@ var taxonoverflow = function() {
                         gotoThumbnail: function() {
                             imgvwr.removeCurrentImage();
                             var selectedImageId = $('#carousel').find('.sp-selected-thumbnail > img').attr('img-id');
-                            imgvwr.viewImage($("#imageViewer"), selectedImageId, $.extend({
-                                imageServiceBaseUrl: resolvedImageServiceBaseUrl,
-                                closeControlContent: '<i class="fa fa-times" data-dismiss="modal" aria-label="Close" style="line-height:1.65;"></i>'
-                            }, tolib.viewerOptions));
+                            imgvwr.viewImage($("#imageViewer"), selectedImageId, $.extend(customViewerOptions, tolib.viewerOptions));
                         }
                     });
                 });
