@@ -37,32 +37,24 @@ var taxonoverflow = function() {
     };
 
     var initImagesGallery = function() {
-        var customViewerOptions = {
-            imageServiceBaseUrl: imageServiceBaseUrl,
-            galleryOptions: {
-                enableGalleryMode: true,
-                showFullScreenControls: true
-            }
-        };
-
-        $('#carousel').sliderPro({
-            width: '100%',
-            height: '100%',
-            fade: true,
-            arrows: false,
-            buttons: false,
-            fullScreen: false,
-            shuffle: false,
-            thumbnailArrows: true,
-            autoplay: false,
-            gotoThumbnail: function() {
-                imgvwr.removeCurrentImage();
-                var selectedImageId = $('#carousel').find('.sp-selected-thumbnail > img').attr('img-id');
-                imgvwr.viewImage($("#imageViewer"), selectedImageId, $.extend(customViewerOptions, tolib.viewerOptions));
-            }
-        });
-
         if (images.length > 0) {
+
+            var customViewerOptions = {
+                imageServiceBaseUrl: imageServiceBaseUrl,
+                galleryOptions: {
+                    enableGalleryMode: true,
+                    showFullScreenControls: true
+                }
+            };
+
+            new GalleryWidget('carousel', {
+                gotoThumbnail: function() {
+                    imgvwr.removeCurrentImage();
+                    var selectedImageId = $('#carousel').find('.sp-selected-thumbnail > img').attr('img-id');
+                    imgvwr.viewImage($("#imageViewer"), selectedImageId, $.extend(customViewerOptions, tolib.viewerOptions));
+                }
+            });
+
             imgvwr.viewImage($("#imageViewer"), images[0], $.extend(customViewerOptions, tolib.viewerOptions));
         }
     };

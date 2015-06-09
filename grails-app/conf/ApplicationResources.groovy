@@ -34,12 +34,4 @@ modules = {
         resource url: 'vendor/octicons/octicons.css'
     }
 
-    'img-gallery' {
-        dependsOn 'image-viewer'
-        resource url: 'vendor/img-gallery/lib/slider-pro/css/slider-pro.css'
-        resource url: 'vendor/img-gallery/css/img-gallery.css'
-
-        resource url: 'vendor/img-gallery/lib/slider-pro/js/jquery.sliderPro.custom.js'
-    }
-
 }

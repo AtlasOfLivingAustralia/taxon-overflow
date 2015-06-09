@@ -46,45 +46,39 @@ var taxonoverflow = function() {
                 var resolvedImageServiceBaseUrl = images && images.length > 0 && images.first().attr('src').toString().indexOf("images-dev.ala.org.au") >= 0 ? devImageServiceBaseUrl : imageServiceBaseUrl;
                 var firstImageId = images && images.length > 0 ? images.first().attr('img-id') : null;
 
-                var customViewerOptions = {
-                    imageServiceBaseUrl: resolvedImageServiceBaseUrl,
-                    galleryOptions: {
-                        enableGalleryMode: true,
-                        closeControlContent: '<i class="fa fa-times" data-dismiss="modal" aria-label="Close" style="line-height:1.65;"></i>',
-                        showFullScreenControls: true
-                    }
-                };
+                if (firstImageId) {
 
-                imgvwr.removeCurrentImage();
-                imgvwr.viewImage($("#imageViewer"), firstImageId, $.extend(customViewerOptions, tolib.viewerOptions));
+                    var galleryWidget;
 
-                $('#imgGalleryModal').on('shown.bs.modal', function (e) {
-                    $('#carousel').sliderPro({
-                        width: $(window).width() - 100,
-                        height: '100%',
-                        fade: true,
-                        arrows: false,
-                        buttons: false,
-                        fullScreen: false,
-                        shuffle: false,
-                        thumbnailArrows: true,
-                        autoplay: false,
-                        gotoThumbnail: function() {
-                            imgvwr.removeCurrentImage();
-                            var selectedImageId = $('#carousel').find('.sp-selected-thumbnail > img').attr('img-id');
-                            imgvwr.viewImage($("#imageViewer"), selectedImageId, $.extend(customViewerOptions, tolib.viewerOptions));
+                    var customViewerOptions = {
+                        imageServiceBaseUrl: resolvedImageServiceBaseUrl,
+                        galleryOptions: {
+                            enableGalleryMode: true,
+                            closeControlContent: '<i class="fa fa-times" data-dismiss="modal" aria-label="Close" style="line-height:1.65;"></i>'
                         }
-                    });
-                });
+                    };
 
-                $('#imgGalleryModal').on('hidden.bs.modal', function (e) {
                     imgvwr.removeCurrentImage();
-                    $('#carousel').empty();
-                    $('#carousel').sliderPro('update');
-                    $('#carousel').sliderPro('destroy');
-                });
+                    imgvwr.viewImage($("#imageViewer"), firstImageId, $.extend(customViewerOptions, tolib.viewerOptions));
 
-                $('#imgGalleryModal').modal('show');
+                    $('#imgGalleryModal').on('shown.bs.modal', function (e) {
+                        galleryWidget = new GalleryWidget('carousel', {
+                            width: $(window).width() - 100,
+                            gotoThumbnail: function() {
+                                imgvwr.removeCurrentImage();
+                                var selectedImageId = $('#carousel').find('.sp-selected-thumbnail > img').attr('img-id');
+                                imgvwr.viewImage($("#imageViewer"), selectedImageId, $.extend(customViewerOptions, tolib.viewerOptions));
+                            }
+                        });
+                    });
+
+                    $('#imgGalleryModal').on('hidden.bs.modal', function (e) {
+                        imgvwr.removeCurrentImage();
+                        galleryWidget.destroy();
+                    });
+
+                    $('#imgGalleryModal').modal('show');
+                }
             }
         });
     };
