@@ -54,7 +54,8 @@ var taxonoverflow = function() {
                         imageServiceBaseUrl: resolvedImageServiceBaseUrl,
                         galleryOptions: {
                             enableGalleryMode: true,
-                            closeControlContent: '<i class="fa fa-times" data-dismiss="modal" aria-label="Close" style="line-height:1.65;"></i>'
+                            closeControlContent: '<i class="fa fa-times" data-dismiss="modal" aria-label="Close" style="line-height:1.65;"></i>',
+                            showFullScreenControls: true
                         }
                     };
 
