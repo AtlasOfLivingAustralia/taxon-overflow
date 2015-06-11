@@ -18,7 +18,7 @@
             </li>
         </to:ifCanEditAnswer>
         </ul>
-        <h4>${answer.accepted ? 'Accepted answer' : 'Answer'}</h4>
+        <h4 class="${answer.accepted ? '' : 'heading-underlined'}">${answer.accepted ? 'Accepted answer' : 'Answer'}</h4>
     </div>
     <div class="panel-body answer-panel-body">
         <div class="row">

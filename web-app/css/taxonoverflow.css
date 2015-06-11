@@ -70,7 +70,7 @@ sup.beta-badge {
 }
 
 .textarea-preview {
-    padding: .8em 1em;
+    padding: 0.4em 0.9em;
     border: solid 1px #d7d7d7;
 }
 
@@ -85,8 +85,12 @@ sup.beta-badge {
     text-decoration: none;
 }
 
-.markdown-field .panel-heading {
-    font-size: .9em !important;
+.markdown-field .panel-heading li {
+    font-size: .7em;
+}
+
+.markdown-field .panel-heading .nav-tabs {
+    margin-bottom: .5em;
 }
 
 .markdown-field .panel-heading .nav > li > a{
@@ -101,7 +105,16 @@ sup.beta-badge {
     min-height: 330px;
 }
 
+.textarea-preview p {
+    font-size: 1em;
+}
+
+.thumbnail img {
+    margin: 0 !important;
+}
+
 /*Comment List styles*/
+
 .comment-list .row {
     margin-bottom: 0px;
 }
@@ -135,6 +148,10 @@ sup.beta-badge {
     margin-top: 6px;
 }
 
+.comment-post > p {
+    font-size: 1em;
+}
+
 .comment-list .comment-user, .comment-list .comment-date {
     color: #5f5d60;
     font-size: small;
@@ -144,8 +161,7 @@ sup.beta-badge {
     padding-left: 10px !important;
 }
 
-
-/* Common */
+/* Question List */
 
 div.facets ul {
     list-style-type: none;
@@ -160,6 +176,10 @@ div.facets li {
 
 div.facets ul li span.label {
     cursor: pointer;
+}
+
+#searchQueryArea {
+    padding-top: 1em;
 }
 
 #followQuestion {
@@ -238,7 +258,6 @@ a.thumbnail-zoom span {
     background-color: #dff0d8;
     border-color: #d6e9c6;
 }
-
 
 /** Question Detail **/
 

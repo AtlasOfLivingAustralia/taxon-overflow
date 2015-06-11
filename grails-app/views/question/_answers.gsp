@@ -1,14 +1,14 @@
 <%@ page import="au.org.ala.taxonoverflow.QuestionType" %>
 <a aa-refresh-zones="answersZone" id="refreshAnswersLink" href="${g.createLink(controller: 'question', action: 'answers', id: question.id)}" class="hidden">Refresh</a>
-<div class="padding-bottom-1">
-    <!-- Alert page information -->
-    <div id="infoAlert3" class="alert alert-info alert-dismissible" role="alert">
-        <button info-alert="infoAlert3" type="button" class="close info-alert-close-btn" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <strong>Add your identification answers.</strong>
-        Add an answer to the topic question or add comments to existing answers.
-    </div>
-    <!-- End alert page information -->
+
+<!-- Alert page information -->
+<div id="infoAlert3" class="alert alert-info alert-dismissible" role="alert">
+    <button info-alert="infoAlert3" type="button" class="close info-alert-close-btn" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+    <strong>Add your identification answers.</strong>
+    Add an answer to the topic question or add comments to existing answers.
 </div>
+<!-- End alert page information -->
+
 <aa:zone id="answersZone">
     <g:set var="questionTypeBtnLabels" value="[(QuestionType.IDENTIFICATION): 'Add an identification',
                                                (QuestionType.GEOCODING_ISSUE): 'Add a location']"/>

@@ -49,7 +49,7 @@
                     </div>
 
                     <!-- Row search -->
-                    <div class="row control-group">
+                    <div id="searchQueryArea" class="row control-group">
                         <div class="col-xs-12">
                             <label for="txtSearch">Search for name, description or author</label>
                             <div class="input-group">
