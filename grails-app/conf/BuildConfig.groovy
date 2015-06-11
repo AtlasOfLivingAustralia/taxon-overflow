@@ -79,7 +79,7 @@ grails.project.dependency.resolution = {
         runtime(":ala-auth:1.3.1") {
             excludes "servlet-api"
         }
-        runtime ":images-client-plugin:0.6-SNAPSHOT"
+        runtime ":images-client-plugin:0.6"
 
         // Uncomment these to enable additional asset-pipeline capabilities
         //compile ":sass-asset-pipeline:1.9.0"
