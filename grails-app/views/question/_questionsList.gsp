@@ -5,7 +5,27 @@
     <g:set var="occurrence" value="${occurrenceData[question.occurrenceId]}" />
     <div class="comment-wrapper push">
         <div class="body" questionId="${question.id}">
-            <div class="col-sm-6">
+            <div class="col-sm-2">
+                <g:if test="${occurrence.imageUrls}">
+                    <div class="thumbnail question-thumb">
+                        <img class="img-responsive thumbnail-zoom" src="${occurrence.imageUrls[0]}" />
+                        <a href="#" class="thumbnail-zoom"><span class="fa fa-search-plus fa-2x"></span></a>
+                        <div class="caption">
+                            Images: ${occurrence.imageUrls.size}
+                        </div>
+                        <div class="sp-slides thumbnails" style="display: none;">
+                            <g:each in="${occurrence.imageIds}" var="imageId" status="index">
+                                <div class="sp-slide">
+                                    <img class="sp-image" />
+                                    <img class="sp-thumbnail" src="${occurrence.imageUrls[index]}" img-id="${imageId}"/>
+                                </div>
+                            </g:each>
+                        </div>
+                    </div>
+                </g:if>
+            </div>
+
+            <div class="col-sm-5">
                 <div class="contrib-question">
                     <a href="${questionUrl}">
                         ${question.questionType.label} - #${question.id}</span>
@@ -34,25 +54,8 @@
                 </div>
                 </g:if>
             </div>
-            <div class="col-sm-2">
-                <g:if test="${occurrence.imageUrls}">
-                    <div class="thumbnail question-thumb">
-                        <img class="img-responsive thumbnail-zoom" src="${occurrence.imageUrls[0]}" />
-                        <a href="#" class="thumbnail-zoom"><span class="fa fa-search-plus fa-2x"></span></a>
-                        <div class="caption">
-                            Images: ${occurrence.imageUrls.size}
-                        </div>
-                        <ul class="img-gallery hidden">
-                            <g:each in="${occurrence.imageIds}" var="imageId" status="index">
-                                <g:set var="resolvedImagesServiceBaseUrl" value="${occurrence.imageUrls[index].toString().indexOf('images-dev.ala.org.au') < 0 ? imagesServiceBaseUrl : 'http://images-dev.ala.org.au/'}"/>
-                                <li img-url="${resolvedImagesServiceBaseUrl}image/proxyImageThumbnailLarge/${imageId}" thumb-url="${occurrence.imageUrls[index]}"></li>
-                            </g:each>
-                        </ul>
-                    </div>
-                </g:if>
-            </div>
 
-            <div class="col-sm-4">
+            <div class="col-sm-5">
                 <div class="contrib-stats">
                     <div class="cp">
                         <div class="votes">
@@ -87,4 +90,5 @@
 </script>
 </aa:zone>
 
+<g:render template="/common/imgGallery"/>
 <a aa-refresh-zones="questionsListZone" id="refreshQuestionsListLink" href="#" aa-js-before="href=taxonoverflow.searchUrl" class="hidden">Refresh</a>

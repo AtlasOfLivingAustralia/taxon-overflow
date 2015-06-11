@@ -1,18 +1,18 @@
 modules = {
 
     'taxonoverflow-view' {
-        dependsOn 'viewer', 'flexisel', 'leaflet', 'ajaxanywhere', 'taxonoverflow-common'
+        dependsOn 'image-viewer', 'ajaxanywhere', 'taxonoverflow-common', 'img-gallery'
         resource url: 'js/taxonoverflow-view.js'
     }
 
     'taxonoverflow-list' {
-        dependsOn 'taxonoverflow-common', 'ajaxanywhere', 'light-gallery'
+        dependsOn 'taxonoverflow-common', 'ajaxanywhere', 'img-gallery'
         resource url: 'js/taxonoverflow-list.js'
     }
 
     'taxonoverflow-common' {
-        dependsOn 'jquery', 'jquery.cookie', 'bootbox', 'marked', 'octicons'
-        resource url:'js/taxonoverflow-common.js'  //this is temporary
+        dependsOn 'ala','jquery', 'jquery.cookie', 'bootbox', 'marked', 'octicons'
+        resource url:'js/taxonoverflow-common.js'
         resource url:'css/taxonoverflow.css'
     }
 
@@ -25,12 +25,6 @@ modules = {
         resource url: 'vendor/bootbox/bootbox.js'
     }
 
-    flexisel {
-        dependsOn 'jquery'
-        resource url:'vendor/flexisel/jquery.flexisel.js'
-        resource url:'vendor/flexisel/style.css'
-    }
-
     'jquery.cookie' {
         dependsOn 'jquery'
         resource url: 'vendor/jquery.cookie/jquery.cookie.js'
@@ -40,9 +34,4 @@ modules = {
         resource url: 'vendor/octicons/octicons.css'
     }
 
-    'light-gallery' {
-        dependsOn 'jquery'
-        resource url: 'vendor/light-gallery/css/lightGallery.css'
-        resource url: 'vendor/light-gallery/js/lightGallery.js'
-    }
 }

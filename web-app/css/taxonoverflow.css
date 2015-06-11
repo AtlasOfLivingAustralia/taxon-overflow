@@ -36,6 +36,10 @@
     color: white;
 }
 
+.popover {
+    z-index: 1040;
+}
+
 /* Override Bootstrap */
 
 /* Common */
@@ -299,7 +303,7 @@ a.thumbnail-zoom span {
 }
 
 .votes {
-    margin-top: 2em;
+    margin-top: 1em;
 }
 
 .voting-group .fa-thumbs-up {

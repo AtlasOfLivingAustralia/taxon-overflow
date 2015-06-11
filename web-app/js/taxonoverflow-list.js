@@ -5,6 +5,8 @@ var taxonoverflow = function() {
     var searchUrl = '';
     var activePopoverTag = '';
     var counter;
+    var imageServiceBaseUrl = "http://images.ala.org.au";
+    var devImageServiceBaseUrl = "http://images-dev.ala.org.au";
 
     var initEventHandlers = function() {
         $(document).on('click', "#btnQuestionSearch", function(e) {
@@ -37,20 +39,48 @@ var taxonoverflow = function() {
             updateFacetsFilter();
         });
 
-        $(document).on('click', '.question-thumb', function(e) {
-            e.preventDefault();
-            $(this).lightGallery({
-                dynamic:true,
-                mobileSrc:false,
-                showThumbByDefault: true,
-                dynamicEl: $(this).find('.img-gallery li').map(function() {
-                    console.log($(this).attr('img-url'));
-                    return {
-                        'src': $(this).attr('img-url'),
-                        'thumb': $(this).attr('thumb-url')
+        $(document).on('click', '.question-thumb', function() {
+            if ($(this).find('.sp-slide').length > 0 ) {
+                $('#carousel').html($(this).find('.thumbnails').clone());
+                var images = $('#carousel').find('.thumbnails > .sp-slide > .sp-thumbnail');
+                var resolvedImageServiceBaseUrl = images && images.length > 0 && images.first().attr('src').toString().indexOf("images-dev.ala.org.au") >= 0 ? devImageServiceBaseUrl : imageServiceBaseUrl;
+                var firstImageId = images && images.length > 0 ? images.first().attr('img-id') : null;
+
+                if (firstImageId) {
+
+                    var galleryWidget;
+
+                    var customViewerOptions = {
+                        imageServiceBaseUrl: resolvedImageServiceBaseUrl,
+                        galleryOptions: {
+                            enableGalleryMode: true,
+                            closeControlContent: '<i class="fa fa-times" data-dismiss="modal" aria-label="Close" style="line-height:1.65;"></i>',
+                            showFullScreenControls: true
+                        }
                     };
-                }).get()
-            });
+
+                    imgvwr.removeCurrentImage();
+                    imgvwr.viewImage($("#imageViewer"), firstImageId, $.extend(customViewerOptions, tolib.viewerOptions));
+
+                    $('#imgGalleryModal').on('shown.bs.modal', function (e) {
+                        galleryWidget = new GalleryWidget('carousel', {
+                            width: $(window).width() - 100,
+                            gotoThumbnail: function() {
+                                imgvwr.removeCurrentImage();
+                                var selectedImageId = $('#carousel').find('.sp-selected-thumbnail > img').attr('img-id');
+                                imgvwr.viewImage($("#imageViewer"), selectedImageId, $.extend(customViewerOptions, tolib.viewerOptions));
+                            }
+                        });
+                    });
+
+                    $('#imgGalleryModal').on('hidden.bs.modal', function (e) {
+                        imgvwr.removeCurrentImage();
+                        galleryWidget.destroy();
+                    });
+
+                    $('#imgGalleryModal').modal('show');
+                }
+            }
         });
     };
 
@@ -71,6 +101,8 @@ var taxonoverflow = function() {
         window.location.href = searchUrl + "&q=" + encodeURIComponent(q) + "&f.tags=" + facetsFilter.tags.join(',') + "&f.types=" + facetsFilter.types.join(',');;
     };
 
+
+
     return {
         counter: counter,
 
@@ -81,6 +113,7 @@ var taxonoverflow = function() {
             };
 
             searchUrl = options.searchUrl;
+            imageServiceBaseUrl = options.imageServiceBaseUrl;
 
             initEventHandlers();
         },

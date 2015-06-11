@@ -1,41 +1,26 @@
 <%@ page import="au.org.ala.taxonoverflow.QuestionType" %>
 <!-- Tabular data -->
 <div class="table-responsive">
-    <table class="table table-striped table-hover">
-        <thead>
-        <tr>
-            <th>Category</th>
-            <th>Details</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr>
-            <td>Recorded by:</td>
-            <td>${occurrence['recordedBy']}</td>
-        </tr>
-        <tr>
-            <td>Event date:</td>
-            <td>${occurrence['eventDate']}</td>
-        </tr>
-        <tr>
-            <td>Locality:</td>
-            <td>${occurrence['locality']}</td>
-        </tr>
+    <dl class="dl-horizontal">
+        <dt>Recorded by:</dt>
+        <dd>${occurrence['recordedBy']}</dd>
+
+        <dt>Event date:</dt>
+        <dd>${occurrence['eventDate']}</dd>
+
+        <dt>Locality:</dt>
+        <dd>${occurrence['locality']}</dd>
+
         <g:if test="${question.questionType != QuestionType.IDENTIFICATION}">
-        <tr>
-            <td>Scientific name:</td>
-            <td>${occurrence['scientificName']}</td>
-        </tr>
-        <tr>
-            <td>Common name:</td>
-            <td>${occurrence['commonName']}</td>
-        </tr>
-        <tr>
-            <td>Occurrence remarks:</td>
-            <td>${occurrence['occurrenceRemarks']}</td>
-        </tr>
+            <dt>Scientific name:</dt>
+            <dd>${occurrence['scientificName']}</dd>
+
+            <dt>Common name:</dt>
+            <dd>${occurrence['commonName']}</dd>
+
+            <dt>Occurrence remarks:</dt>
+            <dd>${occurrence['occurrenceRemarks']}</dd>
         </g:if>
-        </tbody>
-    </table>
+    </dl>
 </div>
 <!-- End Tabular data -->

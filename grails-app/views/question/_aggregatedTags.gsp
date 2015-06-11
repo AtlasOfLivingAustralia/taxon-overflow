@@ -2,7 +2,7 @@
 <to:ifUserIsLoggedIn>
     <g:set var="disableTagFollow" value="${false}"/>
 </to:ifUserIsLoggedIn>
-<h3 class="font-xxsmall">Filter by type</h3>
+<h3 class="font-xxsmall">Filter by tags</h3>
 <aa:zone id="aggregatedTagsZone">
 <ul id="tagsFacet">
     <g:each in="${tags}" var="tag">

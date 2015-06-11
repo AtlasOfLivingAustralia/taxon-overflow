@@ -37,45 +37,26 @@ var taxonoverflow = function() {
     };
 
     var initImagesGallery = function() {
-        $("#media-thumb-list").flexisel({
-            visibleItems: 4,
-            animationSpeed: 200,
-            autoPlay: false,
-            autoPlaySpeed: 3000,
-            pauseOnHover: true,
-            clone:false,
-            enableResponsiveBreakpoints: true,
-            responsiveBreakpoints: {
-                portrait: {
-                    changePoint:480,
-                    visibleItems: 2
-                },
-                landscape: {
-                    changePoint:640,
-                    visibleItems: 3
-                },
-                tablet: {
-                    changePoint:768,
-                    visibleItems: 4
-                }
-            }
-        });
-
         if (images.length > 0) {
-            imgvwr.viewImage($("#imageViewer"), images[0], {
-                imageServiceBaseUrl: imageServiceBaseUrl
-            });
-        }
 
-        $(".image-thumb").click(function(e) {
-            e.preventDefault();
-            var imageId = $(this).closest("[imageId]").attr("imageId");
-            if (imageId) {
-                imgvwr.viewImage($("#imageViewer"), imageId, {
-                    imageServiceBaseUrl: imageServiceBaseUrl
-                });
-            }
-        });
+            var customViewerOptions = {
+                imageServiceBaseUrl: imageServiceBaseUrl,
+                galleryOptions: {
+                    enableGalleryMode: true,
+                    showFullScreenControls: true
+                }
+            };
+
+            new GalleryWidget('carousel', {
+                gotoThumbnail: function() {
+                    imgvwr.removeCurrentImage();
+                    var selectedImageId = $('#carousel').find('.sp-selected-thumbnail > img').attr('img-id');
+                    imgvwr.viewImage($("#imageViewer"), selectedImageId, $.extend(customViewerOptions, tolib.viewerOptions));
+                }
+            });
+
+            imgvwr.viewImage($("#imageViewer"), images[0], $.extend(customViewerOptions, tolib.viewerOptions));
+        }
     };
 
     return {

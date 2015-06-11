@@ -76,10 +76,10 @@ grails.project.dependency.resolution = {
         //runtime ":jquery:1.11.1"
 
         runtime ":ala-bootstrap3:1.2-SNAPSHOT"
-        runtime(":ala-auth:1.3") {
+        runtime(":ala-auth:1.3.1") {
             excludes "servlet-api"
         }
-        runtime ":images-client-plugin:0.4"
+        runtime ":images-client-plugin:0.6"
 
         // Uncomment these to enable additional asset-pipeline capabilities
         //compile ":sass-asset-pipeline:1.9.0"
