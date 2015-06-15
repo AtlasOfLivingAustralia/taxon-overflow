@@ -301,8 +301,7 @@ class ElasticSearchService {
                 "field": "tags.tag.raw",
                 "size": 0,
                 "order": {
-                    "_count" : "asc",
-                    "_term" : "asc"
+                    "_count" : "desc"
                 }
             }
         }
