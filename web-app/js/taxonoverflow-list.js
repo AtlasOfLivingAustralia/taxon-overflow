@@ -161,7 +161,7 @@ var taxonoverflow = function() {
                         $(_this).popover("hide");
                         taxonoverflow.clearActivePopoverTag();
                     }
-                }, 300);
+                }, 450);
             });
 
             taxonoverflow.showActivePopoverTag();
