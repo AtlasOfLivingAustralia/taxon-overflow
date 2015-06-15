@@ -40,10 +40,13 @@
     z-index: 1040;
 }
 
+.well, .panel {
+    box-shadow: none;
+}
+
 /* Override Bootstrap */
 
 /* Common */
-
 sup.beta-badge {
     color: #da644e;
     font-weight: lighter;
