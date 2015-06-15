@@ -7,17 +7,24 @@
     <div class="alert alert-danger" role="alert" style="display: none;">
         <span class="alertText"></span>
     </div>
+    <div id="taxonSelectGroup" class="form-group">
+        <label for="taxonSelect" class="col-sm-3 control-label">Search</label>
+        <div class="col-sm-8 right-inner-addon">
+            <i class="fa fa-search"></i>
+            <g:textField class="form-control taxon-select" name="taxonSelect" value="" placeholder="Enter a common or scientific name"/>
+        </div>
+    </div>
     <div class="form-group">
         <label for="scientificName" class="col-sm-3 control-label">Scientific name</label>
         <div class="col-sm-8">
-            <g:textField class="form-control taxon-select taxon-select-scientific" name="scientificName" value="${answerProperties?.scientificName}" placeholder="Enter a scientific name"/>
+            <g:textField class="form-control taxon-select-scientific" readonly="readonly" name="scientificName" value="${answerProperties?.scientificName}"/>
             <g:hiddenField class="answer-field taxon-select-guid" name="taxonConceptID" value="${answerProperties?.taxonConceptID}"/>
         </div>
     </div>
     <div class="form-group">
         <label for="commonName" class="col-sm-3 control-label">Common name</label>
         <div class="col-sm-8">
-            <g:textField class="form-control taxon-select-common" name="commonName" value="${answerProperties?.commonName}" placeholder="Enter a common name"/>
+            <g:textField class="form-control taxon-select-common" readonly="readonly" name="commonName" value="${answerProperties?.commonName}"/>
         </div>
     </div>
     <div class="form-group">

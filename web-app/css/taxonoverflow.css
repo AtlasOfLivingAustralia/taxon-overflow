@@ -47,6 +47,31 @@
 /* Override Bootstrap */
 
 /* Common */
+.left-inner-addon {
+    position: relative;
+}
+.left-inner-addon input {
+    padding-left: 30px;
+}
+.left-inner-addon i {
+    position: absolute;
+    padding: 10px 12px;
+    pointer-events: none;
+}
+
+.right-inner-addon {
+    position: relative;
+}
+.right-inner-addon input {
+    padding-right: 30px;
+}
+.right-inner-addon i {
+    position: absolute;
+    right: 0px;
+    padding: 10px 12px;
+    pointer-events: none;
+}
+
 sup.beta-badge {
     color: #da644e;
     font-weight: lighter;
@@ -263,6 +288,10 @@ a.thumbnail-zoom span {
 }
 
 /** Question Detail **/
+
+#taxonSelectGroup .right-inner-addon i {
+    padding-right: 22px;
+}
 
 .form-group.question-comment {
     margin-top: 1.5em;
