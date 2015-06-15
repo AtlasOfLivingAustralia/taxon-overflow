@@ -295,10 +295,16 @@ class ElasticSearchService {
         def query =
 """
 {
-    "size": 0,
     "aggs": {
         "tags": {
-            "terms": {"field": "tags.tag.raw"}
+            "terms": {
+                "field": "tags.tag.raw",
+                "size": 0,
+                "order": {
+                    "_count" : "asc",
+                    "_term" : "asc"
+                }
+            }
         }
     }
 }
@@ -368,6 +374,10 @@ class ElasticSearchService {
         jestClient.execute(search)
     }
 
+    /**
+     *
+     * @return
+     */
     def reIndexAllQuestions() {
         if (Question.count > 0) {
             deleteAllQuestionsFromIndex()
