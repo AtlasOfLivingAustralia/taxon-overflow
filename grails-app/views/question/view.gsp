@@ -131,20 +131,21 @@
                 <div class="col-xs-12 col-sm-12 col-md-6">
 
                     <!-- Tab navigation -->
-                    <ul class="nav nav-tabs">
-                        <li class="font-xxsmall ${question.answers ? 'active' : ''}"><a href="#answersPane" data-toggle="tab">Answers</a></li>
-                        <li class="font-xxsmall ${!question.answers ? 'active' : ''}"><a href="#commentsPane" data-toggle="tab">Comments</a></li>
-                    </ul>
+                    %{--<ul class="nav nav-tabs">--}%
+                        %{--<li class="font-xxsmall ${question.answers ? 'active' : ''}"><a href="#answersPane" data-toggle="tab">Answers</a></li>--}%
+                        %{--<li class="font-xxsmall ${!question.answers ? 'active' : ''}"><a href="#commentsPane" data-toggle="tab">Comments</a></li>--}%
+                    %{--</ul>--}%
 
                     <!-- Tab sections -->
                     <div class="tab-content">
-                        <div class="tab-pane ${question.answers ? 'active' : ''}" id="answersPane">
+                        %{--<div class="tab-pane ${question.answers ? 'active' : ''}" id="answersPane">--}%
+                        <div class="tab-pane active" id="answersPane">
                             <g:include action="answers" id="${question.id}"/>
                         </div>
 
-                        <div class="tab-pane ${!question.answers ? 'active' : ''}" id="commentsPane">
-                            <g:include action="questionComments" id="${question.id}"/>
-                        </div>
+                        %{--<div class="tab-pane ${!question.answers ? 'active' : ''}" id="commentsPane">--}%
+                            %{--<g:include action="questionComments" id="${question.id}"/>--}%
+                        %{--</div>--}%
                     </div>
                 </div>
             </div>

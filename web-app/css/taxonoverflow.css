@@ -345,10 +345,6 @@ a.thumbnail-zoom span {
     top: -5px;
 }
 
-#answersPane, #commentsPane {
-    margin-top: 1em;
-}
-
 .panel.panel-default.answer h4 {
     padding-bottom: 10px;
 }
