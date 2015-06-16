@@ -6,6 +6,7 @@ import au.org.ala.web.CASRoles
 import grails.converters.JSON
 import grails.transaction.NotTransactional
 import grails.transaction.Transactional
+import groovy.json.JsonSlurper
 import org.apache.commons.lang.StringUtils
 
 @Transactional
@@ -179,7 +180,6 @@ class QuestionService {
     @FollowQuestionByUser
     @SendEmailNotification
     ServiceResult setAnswer(Answer answer, LinkedHashMap<String, Boolean> results) {
-
         answer.save(failOnError: true)
         results.success = true
 
@@ -541,5 +541,22 @@ class QuestionService {
         }
 
         return serviceResult
+    }
+
+
+    /**
+     * This should be a formal domain or command object constraint but the way web services and services are implemented make this impossible for the time being
+     * @return Boolean
+     */
+    @NotTransactional
+    boolean isAnswerRepeated(Answer answer) {
+        Set answers = answer.question.answers
+        boolean isAnswerRepeated = false;
+        if (answers.size() > 0 && answer.question.questionType == QuestionType.IDENTIFICATION) {
+            String scientificName = new JsonSlurper().parseText(answer.darwinCore)?.scientificName
+            isAnswerRepeated = answers.find {new JsonSlurper().parseText(it.darwinCore)?.scientificName == scientificName} != null
+        }
+
+        return isAnswerRepeated
     }
 }

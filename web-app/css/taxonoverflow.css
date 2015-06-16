@@ -47,6 +47,10 @@
 /* Override Bootstrap */
 
 /* Common */
+.leaflet-gallery-control-bar a > i {
+    color: #000;
+}
+
 .left-inner-addon {
     position: relative;
 }

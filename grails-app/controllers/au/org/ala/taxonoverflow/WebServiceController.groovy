@@ -166,7 +166,7 @@ class WebServiceController {
     }
 
     def submitAnswer() {
-
+        // TODO This is not the way to perform validation
         def answerDetails = request.JSON
         def results = [success: false]
 
@@ -184,6 +184,7 @@ class WebServiceController {
             return
         }
 
+
         if (!answerDetails.userId) {
             results.message = "You must supply a userId!"
         } else if (!question) {
@@ -194,9 +195,14 @@ class WebServiceController {
                 results.message = "Invalid user id!"
             } else {
                 Answer answer = new Answer(question: question, user: user)
+
                 def messages = []
                 if (QuestionService.setAnswerProperties(answer, answerDetails, messages)) {
-                    questionService.setAnswer(answer, results)
+                    if (questionService.isAnswerRepeated(answer)) {
+                        results.message = "Someone has already post this answer"
+                    } else {
+                        questionService.setAnswer(answer, results)
+                    }
                 } else {
                     results.success = false
                     results.message = messages.join(". ")
