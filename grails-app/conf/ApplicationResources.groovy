@@ -6,7 +6,7 @@ modules = {
     }
 
     'taxonoverflow-list' {
-        dependsOn 'taxonoverflow-common', 'ajaxanywhere', 'img-gallery'
+        dependsOn 'taxonoverflow-common', 'ajaxanywhere', 'img-gallery', 'jquery.resizeandcrop'
         resource url: 'js/taxonoverflow-list.js'
     }
 
@@ -32,6 +32,12 @@ modules = {
 
     'octicons' {
         resource url: 'vendor/octicons/octicons.css'
+    }
+
+    'jquery.resizeandcrop' {
+        dependsOn 'jquery'
+        resource url: 'vendor/jquery.resizeandcrop/jquery.resizeandcrop.css'
+        resource url: 'vendor/jquery.resizeandcrop/jquery.resizeandcrop.js'
     }
 
 }

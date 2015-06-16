@@ -116,6 +116,13 @@ var taxonoverflow = function() {
             imageServiceBaseUrl = options.imageServiceBaseUrl;
 
             initEventHandlers();
+
+            $('img.crop-me').resizeAndCrop({
+                width:200,
+                height:150,
+                imgClass: 'thumbnail-zoom',
+                forceResize: true
+            });
         },
 
         setActivePopoverTag: function(tagId) {

@@ -5,13 +5,16 @@
     <g:set var="occurrence" value="${occurrenceData[question.occurrenceId]}" />
     <div class="comment-wrapper push">
         <div class="body" questionId="${question.id}">
-            <div class="col-sm-2">
+            <div class="col-sm-3">
                 <g:if test="${occurrence.imageUrls}">
-                    <div class="thumbnail question-thumb">
-                        <img class="img-responsive thumbnail-zoom" src="${occurrence.imageUrls[0]}" />
+                    <div class="question-thumb">
+                        <div class="thumbnail">
+                         <img class="crop-me img-responsive thumbnail-zoom" src="" realsrc="${occurrence.imageUrls[0]}" style="width: 200px; height: 150px;">
+                        </div>
+                        %{--<img class="img-responsive thumbnail-zoom" src="${occurrence.imageUrls[0]}" />--}%
                         <a href="#" class="thumbnail-zoom"><span class="fa fa-search-plus fa-2x"></span></a>
                         <div class="caption">
-                            Images: ${occurrence.imageUrls.size}
+                            Images available: ${occurrence.imageUrls.size}
                         </div>
                         <div class="sp-slides thumbnails" style="display: none;">
                             <g:each in="${occurrence.imageIds}" var="imageId" status="index">
@@ -25,7 +28,7 @@
                 </g:if>
             </div>
 
-            <div class="col-sm-5">
+            <div class="col-sm-5 question-info-column">
                 <div class="contrib-question">
                     <a href="${questionUrl}">
                         ${question.questionType.label} - #${question.id}</span>
@@ -55,7 +58,7 @@
                 </g:if>
             </div>
 
-            <div class="col-sm-5">
+            <div class="col-sm-4">
                 <div class="contrib-stats">
                     <div class="cp">
                         <div class="votes">
