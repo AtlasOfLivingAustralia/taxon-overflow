@@ -101,7 +101,14 @@ var taxonoverflow = function() {
         window.location.href = searchUrl + "&q=" + encodeURIComponent(q) + "&f.tags=" + facetsFilter.tags.join(',') + "&f.types=" + facetsFilter.types.join(',');;
     };
 
-
+    var resizeAndCropImages = function() {
+        $('img.crop-me').resizeAndCrop({
+            width:200,
+            height:150,
+            imgClass: 'thumbnail-zoom',
+            forceResize: true
+        });
+    };
 
     return {
         counter: counter,
@@ -117,12 +124,7 @@ var taxonoverflow = function() {
 
             initEventHandlers();
 
-            $('img.crop-me').resizeAndCrop({
-                width:200,
-                height:150,
-                imgClass: 'thumbnail-zoom',
-                forceResize: true
-            });
+            resizeAndCropImages();
         },
 
         setActivePopoverTag: function(tagId) {

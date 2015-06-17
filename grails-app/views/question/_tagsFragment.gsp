@@ -5,7 +5,7 @@
     <span class="label label-primary">
         ${tag.tag}
         <to:ifCanEditQuestion question="${question}">
-            &nbsp;<a class="btnRemoveTag" href="${g.createLink(controller: 'webService', action: 'removeTagFromQuestion')}" tag="${tag.tag}"><i class="fa fa-remove"></i></a>
+            &nbsp;<a class="btnRemoveTag" href="${g.createLink(controller: 'webService', action: 'removeTagFromQuestion')}" tag="${tag.tag}" title="Remove tag"><i class="fa fa-remove"></i></a>
         </to:ifCanEditQuestion>
     </span>
 </g:each>
