@@ -20,7 +20,7 @@
        title="Add tag"
        aa-refresh-zones="addTagDialogZone" id="btnSaveTag"
        aa-js-after="$('#addTagModalDialog').modal('show')">
-        <i class="fa fa-tag"></i><span class="hidden-xs"> Add Tag</span></a>
+        <i class="fa fa-tag"></i><span class="hidden-xs"> Add Tags</span></a>
     </to:ifCanEditQuestion>
     <aa:zone id="addTagDialogZone"></aa:zone>
 </div>

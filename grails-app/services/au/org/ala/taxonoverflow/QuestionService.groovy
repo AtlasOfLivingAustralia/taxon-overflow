@@ -451,23 +451,26 @@ class QuestionService {
     }
 
     @SendEmailNotification
-    ServiceResult<QuestionTag> addQuestionTag(Question question, String tag) {
+    ServiceResult<List<QuestionTag>> addQuestionTags(Question question, List tags) {
         if (!question) {
             return new ServiceResult<QuestionTag>().fail("No question supplied")
         }
-        if (!tag) {
-            return new ServiceResult<QuestionTag>().fail("No tag supplied")
+        if (!tags || tags.size() == 0) {
+            return new ServiceResult<QuestionTag>().fail("No tags supplied")
+        }
+        List<QuestionTag> listTags= []
+        tags.each { String tag ->
+            // Find existing tag...
+            tag = tag.trim().toLowerCase()
+            def existing = QuestionTag.findByQuestionAndTagIlike(question, tag)
+            if (!existing) {
+                def tagInstance = new QuestionTag(question: question, tag: tag)
+                tagInstance.save()
+                listTags.add(tagInstance)
+            }
         }
 
-        // Find existing tag...
-        def existing = QuestionTag.findByQuestionAndTagIlike(question, tag.toLowerCase())
-        if (!existing) {
-            def tagInstance = new QuestionTag(question: question, tag: tag.toLowerCase())
-            tagInstance.save()
-            return new ServiceResult<QuestionTag>(result: tagInstance, success: true)
-        } else {
-            return new ServiceResult<QuestionTag>(result: existing, success: true)
-        }
+        return new ServiceResult<QuestionTag>(result: listTags, success: true)
     }
 
     def ServiceResult<QuestionTag> removeQuestionTag(Question question, String tag) {

@@ -509,6 +509,14 @@ a.thumbnail-zoom span {
     padding: 5px 5px 0 !important;
 }
 
+#answersPane a > i {
+    color: #9a9a9a;
+}
+
+#answersPane a > i:hover {
+    color: #da644e;
+}
+
 /** Media Queries **/
 
 @media only screen and (min-width : 768px) and (max-width: 1200px) {

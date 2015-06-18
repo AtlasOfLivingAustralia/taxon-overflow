@@ -1,6 +1,6 @@
 <%@ page import="grails.converters.JSON" %>
 <%@page expressionCodec="none" %>
-<g:form name="addTagForm" controller="webService" action="addTagToQuestion" class="form-horizontal">
+<g:form name="addTagForm" controller="webService" action="addTagsToQuestion" class="form-horizontal">
     <g:hiddenField name="questionId" value="${question.id}"/>
     <div class="modal fade" id="addTagModalDialog" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -16,8 +16,7 @@
                     <div class="form-group">
                         <label for="tags" class="col-md-2 control-label">Tags</label>
                         <div class="col-sm-10">
-                            %{--<g:textField class="form-control" name="tags" placeholder="Enter one or more tags"/>--}%
-                            <input type="text" id="tags" class="form-control select2" multiple="true" name="tags"/>
+                            <input type="text" id="tags" class="form-control select2" name="tags"/>
                             <span class="help-block">Start typing to select existing tags or add new ones separated by comma</span>
                         </div>
                     </div>
@@ -31,9 +30,8 @@
     </div>
 </g:form>
 <script>
-    var tags = ${(raw(tags as grails.converters.JSON).toString())};
     $("#tags").select2({
-            tags: ${(raw(tags.collect {it.id} as grails.converters.JSON).toString())},
+            tags: ${(raw(tags as grails.converters.JSON).toString())},
             tokenSeparators: [','],
             placeholder:"Enter one or more tags"
     });

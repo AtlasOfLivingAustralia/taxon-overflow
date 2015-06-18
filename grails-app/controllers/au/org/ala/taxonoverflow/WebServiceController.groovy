@@ -414,7 +414,7 @@ class WebServiceController {
         renderResults(results)
     }
 
-    def addTagToQuestion() {
+    def addTagsToQuestion() {
 
         def results = [success: false]
         def requestData = request.JSON
@@ -426,13 +426,14 @@ class WebServiceController {
             return
         }
 
-        def tag = requestData?.tag as String
-        tag = tag ?: params.tag
+        def tags = requestData?.tags as String
+        tags = tags ?: params.tags
 
-        def serviceResults = questionService.addQuestionTag(question, tag)
+        List<String> listTags = tags.split(',')
+
+        def serviceResults = questionService.addQuestionTags(question, listTags)
         if (serviceResults) {
             results.success = true
-            results.tagId = serviceResults.get().id
         } else {
             results.message = serviceResults.getCombinedMessages()
         }
