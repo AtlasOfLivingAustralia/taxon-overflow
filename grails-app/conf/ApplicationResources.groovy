@@ -1,7 +1,7 @@
 modules = {
 
     'taxonoverflow-view' {
-        dependsOn 'image-viewer', 'ajaxanywhere', 'taxonoverflow-common', 'img-gallery'
+        dependsOn 'select2', 'image-viewer', 'ajaxanywhere', 'taxonoverflow-common', 'img-gallery'
         resource url: 'js/taxonoverflow-view.js'
     }
 
@@ -43,6 +43,13 @@ modules = {
     'jquery.livefilter' {
         dependsOn 'jquery'
         resource url: 'vendor/jquery.livefilter/jquery.liveFilter.js'
+    }
+
+    'select2' {
+        dependsOn 'jquery'
+        resource url: 'vendor/select2/css/select2.css'
+        resource url: 'vendor/select2/css/select2-bootstrap.css'
+        resource url: 'vendor/select2/js/select2.js'
     }
 
 }

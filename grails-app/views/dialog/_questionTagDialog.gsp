@@ -1,3 +1,5 @@
+<%@ page import="grails.converters.JSON" %>
+<%@page expressionCodec="none" %>
 <g:form name="addTagForm" controller="webService" action="addTagToQuestion" class="form-horizontal">
     <g:hiddenField name="questionId" value="${question.id}"/>
     <div class="modal fade" id="addTagModalDialog" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -12,9 +14,14 @@
                         <span class="alertText"></span>
                     </div>
                     <div class="form-group">
-                        <label for="tag" class="col-md-2 control-label">Tag</label>
+                        <label for="tags" class="col-md-2 control-label">Tags</label>
                         <div class="col-sm-10">
-                            <g:textField class="form-control" name="tag" placeholder="Enter a tag"/>
+                            %{--<g:textField class="form-control" name="tags" placeholder="Enter one or more tags"/>--}%
+                            <select id="tags" class="form-control select2" multiple="true" name="tags" data-tags="true" data-placeholder="Enter one or more tags" style="width: 90%">
+                                %{--<g:each in="${tags}" var="tag">--}%
+                                    %{--<option value="${tag}">${tag}</option>--}%
+                                %{--</g:each>--}%
+                            </select>
                         </div>
                     </div>
                 </div>
@@ -27,16 +34,23 @@
     </div>
 </g:form>
 <script>
-    $('#addTagModalDialog').on('shown.bs.modal', function () {
-        $("#tag").focus();
+    var tags = ${(raw(tags as grails.converters.JSON).toString())};
+    var select2 = $("#tags").select2({
+        data: ${(raw(tags.collect {it.id} as grails.converters.JSON).toString())},
+        tokenSeparators: [','],
+        theme: "bootstrap"
     });
 
-    $('#addTagForm input').on('keypress', function(e){
-        if (e.which == 13) {
-            e.preventDefault();
-            $('#submitTagButton').click();
-        }
+    $('#addTagModalDialog').on('shown.bs.modal', function () {
+        $(select2).focus();
     });
+
+//    $('#addTagForm input').on('keypress', function(e){
+//        if (e.which == 13) {
+//            e.preventDefault();
+//            $('#submitTagButton').click();
+//        }
+//    });
 
     $('#submitTagButton').on('click', function(e) {
         e.preventDefault();
@@ -51,4 +65,7 @@
             }
         });
     });
+
+
+
 </script>

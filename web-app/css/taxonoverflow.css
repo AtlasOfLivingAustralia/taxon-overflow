@@ -49,6 +49,10 @@ p, li, ul {
     font-size: 1em;
 }
 
+a > i {
+    color: #333;
+}
+
 /* Override Bootstrap */
 
 /* Common */
