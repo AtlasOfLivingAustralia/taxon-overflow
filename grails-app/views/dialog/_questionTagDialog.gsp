@@ -7,7 +7,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="myModalLabel">Add Tag</h4>
+                    <h4 class="modal-title" id="myModalLabel">Add Tags</h4>
                 </div>
                 <div class="modal-body">
                     <div class="alert alert-danger" role="alert" style="display: none;">
@@ -17,17 +17,14 @@
                         <label for="tags" class="col-md-2 control-label">Tags</label>
                         <div class="col-sm-10">
                             %{--<g:textField class="form-control" name="tags" placeholder="Enter one or more tags"/>--}%
-                            <select id="tags" class="form-control select2" multiple="true" name="tags" data-tags="true" data-placeholder="Enter one or more tags" style="width: 90%">
-                                %{--<g:each in="${tags}" var="tag">--}%
-                                    %{--<option value="${tag}">${tag}</option>--}%
-                                %{--</g:each>--}%
-                            </select>
+                            <input type="text" id="tags" class="form-control select2" multiple="true" name="tags"/>
+                            <span class="help-block">Start typing to select existing tags or add new ones separated by comma</span>
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" id="submitTagButton">Add tag</button>
+                    <button type="button" class="btn btn-primary" id="submitTagButton">Add tags</button>
                 </div>
             </div>
         </div>
@@ -35,22 +32,16 @@
 </g:form>
 <script>
     var tags = ${(raw(tags as grails.converters.JSON).toString())};
-    var select2 = $("#tags").select2({
-        data: ${(raw(tags.collect {it.id} as grails.converters.JSON).toString())},
-        tokenSeparators: [','],
-        theme: "bootstrap"
+    $("#tags").select2({
+            tags: ${(raw(tags.collect {it.id} as grails.converters.JSON).toString())},
+            tokenSeparators: [','],
+            placeholder:"Enter one or more tags"
     });
 
     $('#addTagModalDialog').on('shown.bs.modal', function () {
-        $(select2).focus();
+        $("#tags").select2('focus');
     });
 
-//    $('#addTagForm input').on('keypress', function(e){
-//        if (e.which == 13) {
-//            e.preventDefault();
-//            $('#submitTagButton').click();
-//        }
-//    });
 
     $('#submitTagButton').on('click', function(e) {
         e.preventDefault();

@@ -47,9 +47,9 @@ modules = {
 
     'select2' {
         dependsOn 'jquery'
-        resource url: 'vendor/select2/css/select2.css'
-        resource url: 'vendor/select2/css/select2-bootstrap.css'
-        resource url: 'vendor/select2/js/select2.js'
+        resource url: 'vendor/select2/select2.css'
+        resource url: 'vendor/select2/select2-bootstrap.css'
+        resource url: 'vendor/select2/select2.js'
     }
 
 }
