@@ -6,7 +6,7 @@ modules = {
     }
 
     'taxonoverflow-list' {
-        dependsOn 'taxonoverflow-common', 'ajaxanywhere', 'img-gallery', 'jquery.resizeandcrop'
+        dependsOn 'taxonoverflow-common', 'ajaxanywhere', 'img-gallery', 'jquery.resizeandcrop', 'jquery.livefilter'
         resource url: 'js/taxonoverflow-list.js'
     }
 
@@ -38,6 +38,11 @@ modules = {
         dependsOn 'jquery'
         resource url: 'vendor/jquery.resizeandcrop/jquery.resizeandcrop.css'
         resource url: 'vendor/jquery.resizeandcrop/jquery.resizeandcrop.js'
+    }
+
+    'jquery.livefilter' {
+        dependsOn 'jquery'
+        resource url: 'vendor/jquery.livefilter/jquery.liveFilter.js'
     }
 
 }

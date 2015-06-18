@@ -51,7 +51,7 @@
                             <a href="#" id="question-${tag.tag}" class="label label-primary ${disableTagFollow ? '' : 'follow-tag'}"
                                data-trigger="manual" data-html="true" data-placement="bottom"
                                data-container="body" data-toggle="popover"
-                               data-content="<a href='${g.createLink(controller: 'webService', action: isFollowingTag ? 'unfollowTag': 'followTag', params: [tag: tag.tag])}' class='btn tag-follow-button'><i class='fa ${isFollowingTag ? 'fa-star' : 'fa-star-o'}'></i> ${isFollowingTag ? 'Following' : 'Follow'}</a>">${tag.tag}</a>
+                               data-content="<a href='${g.createLink(controller: 'webService', action: isFollowingTag ? 'unfollowTag': 'followTag', params: [tag: tag.tag])}' class='btn tag-follow-button'><i class='fa ${isFollowingTag ? 'fa-star fa-star-ala' : 'fa-star-o'}'></i> ${isFollowingTag ? 'Following' : 'Follow'}</a>">${tag.tag}</a>
                         </g:each>
                     </p>
                 </div>

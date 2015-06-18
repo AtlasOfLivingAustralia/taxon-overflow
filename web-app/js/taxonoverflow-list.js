@@ -7,6 +7,7 @@ var taxonoverflow = function() {
     var counter;
     var imageServiceBaseUrl = "http://images.ala.org.au";
     var devImageServiceBaseUrl = "http://images-dev.ala.org.au";
+    var tagsFilterResultsSize = 15;
 
     var initEventHandlers = function() {
         $(document).on('click', "#btnQuestionSearch", function(e) {
@@ -110,6 +111,23 @@ var taxonoverflow = function() {
         });
     };
 
+    var initTagsFilter = function() {
+        $('#tagsFacet').liveFilter('#tagSearch', 'li', {
+            filterChildSelector: 'span',
+            after: function() {
+                var filteredTags = $('#tagsFacet li:visible');
+                $('#tagsNumber').text(filteredTags.length);
+                if (filteredTags.length > tagsFilterResultsSize) {
+                    for (var i = tagsFilterResultsSize; i < filteredTags.length; i++) {
+                        $(filteredTags.get(i)).hide();
+                    }
+                }
+            }
+        });
+
+        $('#tagsFacet li:gt(tagsFilterResultsSize - 1)').hide();
+    };
+
     return {
         counter: counter,
 
@@ -125,6 +143,8 @@ var taxonoverflow = function() {
             initEventHandlers();
 
             resizeAndCropImages();
+
+            initTagsFilter()
         },
 
         setActivePopoverTag: function(tagId) {

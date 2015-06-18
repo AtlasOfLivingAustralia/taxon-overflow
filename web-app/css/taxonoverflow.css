@@ -2,8 +2,9 @@
 /* Override Bootstrap and ala styles*/
 
 .label {
-    padding: 0.4em 0.6em 0.3em;
+    padding: 0.3em 0.5em 0.3em;
     margin-right: .5em;
+    font-size: .7em;
 }
 
 .modal {
@@ -151,6 +152,18 @@ sup.beta-badge {
 
 /*Comment List styles*/
 
+.facet-filter > h3 {
+    margin-bottom: .5em;
+}
+
+.facet-filter #tagsFacet {
+    margin-top: .5em;
+}
+
+.fa-star.fa-star-ala {
+    color: #da644e;
+}
+
 .comment-list .row {
     margin-bottom: 0px;
 }
@@ -209,7 +222,7 @@ div.facets ul {
 
 div.facets li {
     font-size: 1em;
-    margin-bottom: .5em;
+    margin-bottom: .3em;
 }
 
 div.facets ul li span.label {
