@@ -30,7 +30,7 @@
 
 <div class="row-fluid">
     <div class="col-md-12">
-        <h2 class="heading-medium">Community identification help<sup class="beta-badge">&nbsp;beta</sup></h2>
+        <h2 class="heading-medium">Community Identification Help<sup class="beta-badge">&nbsp;beta</sup></h2>
     </div>
 </div>
 
@@ -38,7 +38,7 @@
     <div class="col-md-12">
         <div class="panel panel-default">
             <div class="panel-heading question-heading">
-                <h3 class="heading-underlined">Welcome to the Community identification help page!</h3>
+                <h3 class="heading-underlined">Welcome to the Community Identification Help page!</h3>
             </div>
             <div class="panel-body row">
                 <div class="col-md-12">

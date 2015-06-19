@@ -53,6 +53,14 @@ a > i {
     color: #333;
 }
 
+.main-footer {
+    margin: 1em 0 0;
+}
+
+#main {
+    padding: 1em 0;
+}
+
 /* Override Bootstrap */
 
 /* Common */
@@ -365,7 +373,7 @@ a.thumbnail-zoom span {
 #tags-group span {
     margin-top: 1em;
     display: inline-block;
-    padding: 4px 3px 3px;
+    padding: 4px 3px;
 }
 
 .btnRemoveTag i {

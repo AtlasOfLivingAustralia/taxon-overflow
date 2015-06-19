@@ -8,7 +8,7 @@ class DialogController {
     def addQuestionTagDialog(long id) {
         def question = Question.get(id)
         List<Map> tags = elasticSearchService.getAggregatedTagsWithCount()
-        render template: 'questionTagDialog', model: [question: question, user: userService.currentUser, tags: tags.collect {tag -> tag.label}]
+        render template: 'questionTagDialog', model: [question: question, user: userService.currentUser, tags: tags.collect {tag -> tag.label.toLowerCase()}]
     }
 
     def addAnswerDialog(long id) {
