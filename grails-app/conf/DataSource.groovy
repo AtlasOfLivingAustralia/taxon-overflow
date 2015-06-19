@@ -1,3 +1,5 @@
+import org.hibernate.cache.ehcache.SingletonEhCacheRegionFactory
+
 dataSource {
     pooled = true
     jmxExport = true
@@ -7,8 +9,7 @@ dataSource {
 hibernate {
     cache.use_second_level_cache = true
     cache.use_query_cache = false
-    cache.region.factory_class = 'org.hibernate.cache.ehcache.EhCacheRegionFactory' // Hibernate 4
-
+    cache.region.factory_class = SingletonEhCacheRegionFactory.canonicalName // Hibernate 4
 }
 
 // environment specific settings
