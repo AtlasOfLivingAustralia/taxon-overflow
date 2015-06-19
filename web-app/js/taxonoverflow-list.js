@@ -125,7 +125,7 @@ var taxonoverflow = function() {
             }
         });
 
-        $('#tagsFacet li:gt(tagsFilterResultsSize - 1)').hide();
+        $('#tagsFacet li:lt(' + tagsFilterResultsSize + ')').show();
     };
 
     return {
