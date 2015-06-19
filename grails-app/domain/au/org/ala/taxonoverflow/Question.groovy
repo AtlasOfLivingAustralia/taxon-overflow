@@ -5,6 +5,7 @@ class Question {
     User user
     QuestionType questionType
     String occurrenceId
+    String title
     Date dateCreated
     Source source
 
@@ -16,6 +17,7 @@ class Question {
         user column: "taxonoverflow_user", nullable: false
         questionType nullable: false
         occurrenceId nullable: false
+        title nullable: false, blank: false
         dateCreated nullable: true
         followers nullable: true
         answers nullable: true

@@ -1,6 +1,22 @@
 databaseChangeLog = {
+    def failIfTableExists = {
+        not {
+            tableExists (tableName: 'answer')
+        }
+    }
+
+    def changesetPrecondition = {
+        preConditions (onFail:"MARK_RAN"){
+            failIfTableExists ()
+        }
+    }
+
+    preConditions (onFail:"WARN", onFailMessage:'The database seems in legacy state: standard database initialization is going to be skipped'){
+        failIfTableExists ()
+    }
 
     changeSet(author: "rui008 (generated)", id: "1434687229766-1") {
+        changesetPrecondition ()
         createTable(tableName: "answer") {
             column(name: "id", type: "int8") {
                 constraints(nullable: "false", primaryKey: "true", primaryKeyName: "answerPK")
@@ -301,4 +317,6 @@ databaseChangeLog = {
     changeSet(author: "rui008 (generated)", id: "1434687229766-27") {
         addForeignKeyConstraint(baseColumnNames: "user_id", baseTableName: "vote", constraintName: "FK_dx2u8pwxfq611f6nsatwu44p0", deferrable: "false", initiallyDeferred: "false", referencedColumnNames: "id", referencedTableName: "taxonoverflow_user", referencesUniqueColumn: "false")
     }
+
+//	include file: 'changelog-v1.2.groovy'
 }
