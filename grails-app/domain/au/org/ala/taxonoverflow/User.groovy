@@ -3,7 +3,7 @@ package au.org.ala.taxonoverflow
 class User {
 
     String alaUserId
-    Boolean enableNotifications = true
+    boolean enableNotifications = true
     SortedSet<String> tags // populated from elasticsearch TODO fix QuestionTags to be used here
 
     static hasMany = [followedQuestions: Question, tags: String]

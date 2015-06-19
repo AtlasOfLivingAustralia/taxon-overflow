@@ -17,7 +17,7 @@ class Question {
         user column: "taxonoverflow_user", nullable: false
         questionType nullable: false
         occurrenceId nullable: false
-        title nullable: false, blank: false
+        title nullable: true
         dateCreated nullable: true
         followers nullable: true
         answers nullable: true

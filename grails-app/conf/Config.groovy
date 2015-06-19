@@ -188,8 +188,6 @@ environments {
     }
     production {
         grails.logging.jul.usebridge = false
-        grails.plugin.databasemigration.updateOnStart = true
-        grails.plugin.databasemigration.updateOnStartFileNames = ['changelog.groovy']
     }
 }
 
