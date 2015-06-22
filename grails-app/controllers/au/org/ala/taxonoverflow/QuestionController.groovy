@@ -12,6 +12,7 @@ class QuestionController {
     def auditService
     def elasticSearchService
     def imagesWebService
+    def questionService
 
     static int defaultPageSize = 20
 
@@ -124,18 +125,11 @@ class QuestionController {
         def user = userService.currentUser
         List answers = []
         if (question) {
-            def criteria = Answer.createCriteria()
-            answers = criteria.list {
-                eq("question", question)
-                and {
-                    order("accepted", "desc")
-                    order("dateCreated", "asc")
-                }
-            }
+            answers = questionService.retrieveOrderedQuestionAnswers(question)
 
             def votes = []
             if (answers) {
-                criteria = AnswerVote.createCriteria()
+                def criteria = AnswerVote.createCriteria()
                 votes = criteria {
                     inList("answer", answers)
                     projections {
@@ -153,4 +147,6 @@ class QuestionController {
             render template: 'answers', model: [answers: answers, question: question, user: user, answerVoteTotals: answerVoteTotals, userVotes: userVotes, userAnswers: userAnswers]
         }
     }
+
+
 }

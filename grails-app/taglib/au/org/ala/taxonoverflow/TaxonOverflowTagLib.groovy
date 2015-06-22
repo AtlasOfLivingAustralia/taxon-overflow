@@ -1,6 +1,7 @@
 package au.org.ala.taxonoverflow
 
 import au.org.ala.web.CASRoles
+import grails.converters.JSON
 import groovy.xml.MarkupBuilder
 import net.sf.json.JSONObject
 import ognl.Ognl
@@ -212,6 +213,26 @@ class TaxonOverflowTagLib {
             url = "${grailsApplication.config.ala.image.service.url}/store" + directoryList.join("/") + "/${imageId}/" + imageFormat
         }
         out << url
+    }
+
+    /**
+     * @attr question REQUIRED
+     */
+    def questionTitle =  {attrs, body ->
+        Question question = attrs.question
+        if (!question.title) {
+            if (question.questionType == QuestionType.IDENTIFICATION && question.answers && question.answers.size() > 0) {
+                // Generate fake title based on accepted answer or best answer so far
+                List<Answer> answers = questionService.retrieveOrderedQuestionAnswers(question)
+                def answerProperties = JSON.parse(answers.first().darwinCore?:[:])
+                question.metaClass.generatedTitle = answerProperties.commonName && answerProperties.scientificName ? "${answerProperties.scientificName} : ${answerProperties.commonName}" : "${answerProperties.scientificName}"
+            } else {
+                // Generate fake answer based on tags
+                question.metaClass.generatedTitle = (question.tags.collect {it.tag}).join(', ')
+            }
+        }
+
+        out << "${question.title?:question.generatedTitle}"
     }
 
 }

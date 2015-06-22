@@ -50,7 +50,7 @@ p, li, ul {
 }
 
 a > i {
-    color: #333;
+    cursor: pointer;
 }
 
 .main-footer {

@@ -369,7 +369,7 @@ class QuestionService {
 
     def canUserEditQuestion(Question question, User user) {
         // If the current user is one who asked the question, they can edit the answer
-        if (question.user == user) {
+        if (question.user.id == user.id) {
             return true
         }
 
@@ -561,5 +561,23 @@ class QuestionService {
         }
 
         return isAnswerRepeated
+    }
+
+    /**
+     *
+     * @param question
+     * @return
+     */
+    public List retrieveOrderedQuestionAnswers(question) {
+        List answers
+        def criteria = Answer.createCriteria()
+        answers = criteria.list {
+            eq("question", question)
+            and {
+                order("accepted", "desc")
+                order("dateCreated", "asc")
+            }
+        }
+        return answers
     }
 }

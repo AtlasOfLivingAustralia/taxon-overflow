@@ -30,9 +30,10 @@
 
             <div class="col-sm-5 question-info-column">
                 <div class="contrib-question">
-                    <a href="${questionUrl}">
-                        ${question.questionType.label} - #${question.id}</span>
-                    </a>
+                    <a href="${questionUrl}">${question.questionType.label} - ${to.questionTitle(question: question)}</span></a>
+                    <to:ifCanEditQuestion question="${question}">
+                        &nbsp;<a><i class="fa fa-pencil"></i></a>
+                    </to:ifCanEditQuestion>
                 </div>
                 <div class="contrib-time">
                     <g:set var="askedBy" value="${to.userDisplayName(user:question.user)}"/>
