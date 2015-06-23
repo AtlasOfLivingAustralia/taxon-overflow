@@ -225,10 +225,14 @@ class TaxonOverflowTagLib {
                 // Generate fake title based on accepted answer or best answer so far
                 List<Answer> answers = questionService.retrieveOrderedQuestionAnswers(question)
                 def answerProperties = JSON.parse(answers.first().darwinCore?:[:])
-                question.metaClass.generatedTitle = answerProperties.commonName && answerProperties.scientificName ? "${answerProperties.scientificName} : ${answerProperties.commonName}" : "${answerProperties.scientificName}"
+                question.metaClass.generatedTitle = answerProperties.commonName && answerProperties.scientificName ? "${answerProperties.scientificName} : ${answerProperties.commonName?.split(',')?.first()?.trim()}" : "${answerProperties.scientificName}"
             } else {
-                // Generate fake answer based on tags
-                question.metaClass.generatedTitle = (question.tags.collect {it.tag}).join(', ')
+                if (question.tags?.size() > 0) {
+                    // Generate fake answer based on tags
+                    question.metaClass.generatedTitle = (question.tags.collect { it.tag }).join(', ')
+                } else {
+                    question.metaClass.generatedTitle = 'Pending'
+                }
             }
         }
 

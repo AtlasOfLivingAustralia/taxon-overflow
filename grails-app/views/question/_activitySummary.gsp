@@ -7,7 +7,7 @@
     <g:if test="${disableActivitySummaryBtn}">
         <span class="disable-btn-tooltip" data-placement="bottom">
     </g:if>
-    <a class="btn btn-primary" href="${g.createLink(uri: '/user')}" ${disableActivitySummaryBtn ? 'disabled="disabled"' : ''}>Your activity summary <i class="fa fa-list fa-inverse"></i></a>
+    <a class="btn btn-primary" href="${g.createLink(uri: '/user')}" ${disableActivitySummaryBtn ? 'disabled="disabled"' : ''}>Your activity summary</a>
     <g:if test="${disableActivitySummaryBtn}">
         <span class="disable-btn-tooltip" data-placement="top">
     </g:if>
