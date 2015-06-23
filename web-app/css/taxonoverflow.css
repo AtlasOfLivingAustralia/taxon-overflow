@@ -53,6 +53,10 @@ a > i {
     cursor: pointer;
 }
 
+.alert {
+    border-color: transparent;
+}
+
 .main-footer {
     margin: 1em 0 0;
 }
