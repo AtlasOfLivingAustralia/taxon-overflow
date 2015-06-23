@@ -465,6 +465,20 @@ class WebServiceController {
         renderResults(results)
     }
 
+    def editQuestionTitle() {
+        def requestData = request.JSON
+        Question question = Question.get(requestData?.questionId)
+        ServiceResult<Question> serviceResult = new ServiceResult<Question>()
+        if (question) {
+            question.title = requestData?.title.trim()
+            serviceResult.success(question.save())
+        } else {
+            serviceResult.fail("The provided question id '$questionId' is not valid")
+        }
+
+        renderResults(serviceResult)
+    }
+
     def follow(Long questionId, Long userId) {
         render questionService.followOrUnfollowQuestionByUser(true, questionId, userId) as JSON
     }
@@ -541,7 +555,7 @@ class WebServiceController {
         }
     }
 
-    ServiceResult<Question> validateQuestionSearchParams(LinkedHashMap<String, Object> searchParams) {
+    private ServiceResult<Question> validateQuestionSearchParams(LinkedHashMap<String, Object> searchParams) {
         ServiceResult<Question> serviceResult = new ServiceResult<>(
                 success: true,
                 result: [])

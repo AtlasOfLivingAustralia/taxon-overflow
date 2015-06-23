@@ -128,6 +128,31 @@ var taxonoverflow = function() {
         $('#tagsFacet li:lt(' + tagsFilterResultsSize + ')').show();
     };
 
+    var enableTagPopovers = function() {
+        $('.follow-tag').popover({}).on("mouseenter", function () {
+            var _this = this;
+            taxonoverflow.setActivePopoverTag($(this).attr('id'));
+            clearTimeout(taxonoverflow.counter);
+            taxonoverflow.counter = setTimeout(function () {
+                $(_this).popover("show");
+                $(".popover").on("mouseleave", function () {
+                    $(_this).popover('hide');
+                    taxonoverflow.clearActivePopoverTag();
+                });
+            }, 400);
+        }).on("mouseleave", function () {
+            var _this = this;
+            setTimeout(function () {
+                if (!$(".popover:hover").length) {
+                    $(_this).popover("hide");
+                    taxonoverflow.clearActivePopoverTag();
+                }
+            }, 450);
+        });
+
+        taxonoverflow.showActivePopoverTag();
+    };
+
     return {
         counter: counter,
 
@@ -141,10 +166,14 @@ var taxonoverflow = function() {
             imageServiceBaseUrl = options.imageServiceBaseUrl;
 
             initEventHandlers();
+        },
 
+        refreshQuestionListActions: function() {
             resizeAndCropImages();
 
-            initTagsFilter()
+            initTagsFilter();
+
+            enableTagPopovers();
         },
 
         setActivePopoverTag: function(tagId) {
@@ -168,33 +197,8 @@ var taxonoverflow = function() {
         },
 
         clearActivePopoverTag: function() {
-            activePopoverTag: null;
+            activePopoverTag = null;
         },
-
-        enableTagPopovers: function() {
-            $('.follow-tag').popover({}).on("mouseenter", function () {
-                var _this = this;
-                taxonoverflow.setActivePopoverTag($(this).attr('id'));
-                clearTimeout(taxonoverflow.counter);
-                taxonoverflow.counter = setTimeout(function () {
-                    $(_this).popover("show");
-                    $(".popover").on("mouseleave", function () {
-                        $(_this).popover('hide');
-                        taxonoverflow.clearActivePopoverTag();
-                    });
-                }, 400);
-            }).on("mouseleave", function () {
-                var _this = this;
-                setTimeout(function () {
-                    if (!$(".popover:hover").length) {
-                        $(_this).popover("hide");
-                        taxonoverflow.clearActivePopoverTag();
-                    }
-                }, 450);
-            });
-
-            taxonoverflow.showActivePopoverTag();
-        }
 
     };
 }();
