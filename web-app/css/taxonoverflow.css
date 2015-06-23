@@ -53,6 +53,10 @@ a > i {
     cursor: pointer;
 }
 
+a.btn i:hover {
+    color: inherit;
+}
+
 .alert {
     border-color: transparent;
 }
@@ -345,6 +349,10 @@ a.thumbnail-zoom span {
 }
 
 /** Question Detail **/
+
+a.togglePlaceholder i, #followingZone a i {
+    color: #333;
+}
 
 #taxonSelectGroup .right-inner-addon i {
     padding-right: 22px;
