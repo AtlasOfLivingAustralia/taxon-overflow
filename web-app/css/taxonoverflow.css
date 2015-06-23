@@ -232,6 +232,9 @@ sup.beta-badge {
 
 /* Question List */
 
+.sorting-buttons a i {
+    color: #333;
+}
 
 
 div.facets ul {
