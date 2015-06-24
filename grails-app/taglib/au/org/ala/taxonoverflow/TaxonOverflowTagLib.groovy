@@ -163,7 +163,7 @@ class TaxonOverflowTagLib {
      */
     def ifCanEditQuestion = { attrs, body ->
         def question = attrs.question as Question
-        if (question) {
+        if (question && userService.currentUser) {
             if (questionService.canUserEditQuestion(question, userService.currentUser)) {
                 out << body()
             }
@@ -175,7 +175,7 @@ class TaxonOverflowTagLib {
      */
     def ifCannotEditQuestion = { attrs, body ->
         def question = attrs.question as Question
-        if (question) {
+        if (question && userService.currentUser) {
             if (!questionService.canUserEditQuestion(question, userService.currentUser)) {
                 out << body()
             }
