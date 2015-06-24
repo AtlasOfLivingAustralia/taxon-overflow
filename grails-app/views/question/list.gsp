@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta name="layout" content="to-main"/>
-    <title>Help identify | Atlas of Living Australia</title>
+    <title>Community identification help | Atlas of Living Australia</title>
     <r:script>
         var imageServiceBaseUrl = '${imagesServiceBaseUrl}';
 

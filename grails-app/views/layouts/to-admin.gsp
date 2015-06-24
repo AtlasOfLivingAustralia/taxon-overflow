@@ -1,6 +1,7 @@
 <g:applyLayout name="main">
     <head>
         <r:require modules="taxonoverflow-common"/>
+        <title><g:layoutTitle/></title>
     </head>
 
     <body>
