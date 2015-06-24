@@ -429,7 +429,7 @@ class WebServiceController {
         def tags = requestData?.tags as String
         tags = tags ?: params.tags
 
-        List<String> listTags = tags.split(',')
+        List<String> listTags = tags ? tags.split(',') : []
 
         def serviceResults = questionService.addQuestionTags(question, listTags)
         if (serviceResults) {
